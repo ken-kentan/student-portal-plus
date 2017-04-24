@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_title_select_update_data_all">
+
+        <SwitchPreference
+            android:key="pref_key_update_all"
+            android:title="@string/pref_update_content_all"
+            android:summary="@string/pref_summary_update_content_all"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_title_select_update_data_single">
+
+        <CheckBoxPreference
+            android:key="pref_key_update_my_class"
+            android:title="@string/pref_update_content_my_class"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_key_update_lecture_info"
+            android:title="@string/pref_update_content_lecture_info"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="pref_key_update_cancel_info"
+            android:title="@string/pref_update_content_cancel_info"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="pref_key_update_latest_info"
+            android:title="@string/pref_update_content_latest_info"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

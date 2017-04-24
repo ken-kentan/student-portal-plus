@@ -1,0 +1,140 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_title_idp"
+        android:key="pref_key_category_idp">
+
+        <Preference
+            android:title="@string/pref_title_idp_login"
+            android:summary="@string/pref_description_idp_login">
+            <intent android:action="android.intent.action.MAIN"
+                android:targetPackage="jp.kentan.student_portal_plus"
+                android:targetClass="jp.kentan.student_portal_plus.ui.IdpLoginActivity" />
+        </Preference>
+        <Preference
+            android:key="pref_key_idp_last_login_date"
+            android:title="@string/pref_title_idp_last_login_date"
+            android:summary="@string/pref_description_idp_last_login_date">
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="新着通知"
+        android:key="pref_key_category_auto_fetch">
+
+        <SwitchPreference
+            android:key="pref_key_auto_fetch"
+            android:title="自動受信"
+            android:summary="一定間隔で自動的に受信(フェッチ)します"
+            android:defaultValue="true">
+        </SwitchPreference>
+
+        <ListPreference
+            android:defaultValue="60"
+            android:entries="@array/auto_fetch_interval_name"
+            android:entryValues="@array/auto_fetch_interval_values"
+            android:key="pref_key_auto_fetch_interval"
+            android:summary="N時間ごと"
+            android:title="自動受信間隔" />
+
+        <Preference
+            android:key="pref_key_notify_contents"
+            android:title="通知の種類"
+            android:summary="通知内容をカスタマイズします">
+        </Preference>
+
+        <CheckBoxPreference
+            android:key="pref_key_notify_with_vibrate"
+            android:title="バイブレーション"
+            android:summary="通知が届いたら振動させる"
+            android:defaultValue="true">
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            android:key="pref_key_notify_with_led"
+            android:title="通知LED"
+            android:summary="通知が届いたらLEDを点滅させる"
+            android:defaultValue="true">
+        </CheckBoxPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_title_portal_data"
+        android:key="pref_key_category_portal_data">
+
+        <Preference
+            android:key="pref_key_select_update_data"
+            android:title="@string/pref_title_select_update_data"
+            android:summary="@string/pref_description_about_select_update_data">
+        </Preference>
+
+        <Preference
+            android:key="pref_key_my_class_threshold"
+            android:title="@string/pref_title_my_class_threshold"
+            android:summary="@string/pref_description_my_class_threshold">
+        </Preference>
+
+        <ListPreference
+            android:key="pref_key_limit_of_latest_info"
+            android:title="最新情報の最大保存件数"
+            android:summary="件 (古い情報は自動的に消去されます)"
+            android:entries="@array/limit_of_latest_info_name"
+            android:entryValues="@array/limit_of_latest_info_values"
+            android:defaultValue="100">
+        </ListPreference>
+
+        <CheckBoxPreference
+            android:key="pref_key_pdf_open_with_gdocs"
+            android:title="@string/pref_title_pdf_open_with_gdocs"
+            android:summary="@string/pref_description_pdf_open_with_gdocs"
+            android:defaultValue="true">
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            android:key="pref_key_detail_err_msg"
+            android:title="@string/pref_title_detail_err_msg"
+            android:summary="@string/pref_description_detail_err_msg"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+
+        <Preference
+            android:key="pref_key_delete_all_data"
+            android:title="@string/pref_title_reset"
+            android:summary="@string/pref_title_about_reset" >
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_title_about"
+        android:key="pref_key_category_about">
+
+        <Preference
+            android:key="pref_key_version"
+            android:title="@string/pref_title_about_version"
+            android:summary="@string/version">
+        </Preference>
+        <Preference
+            android:title="@string/pref_title_about_developer"
+            android:summary="@string/pref_description_about_developer" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://ken.kentan.jp/about/" />
+        </Preference>
+
+        <Preference
+            android:key="pref_key_terms"
+            android:title="@string/pref_title_terms"
+            android:summary="@string/pref_description_terms">
+        </Preference>
+
+        <Preference
+            android:key="pref_key_oss_license"
+            android:title="@string/pref_title_oss_license"
+            android:summary="@string/pref_description_oss_license">
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

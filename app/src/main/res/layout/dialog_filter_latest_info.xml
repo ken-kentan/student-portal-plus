@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/title_posting_date"
+            android:textColor="@color/grey_600" />
+
+        <Spinner
+            android:id="@+id/posting_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:entries="@array/posting_date_name"
+            android:entryValues="@array/posting_date_values" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_latest_info_type"
+        android:textColor="@color/grey_600" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/unread"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/material_chip"
+            android:button="@null"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/action_unread"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp" />
+
+        <CheckBox
+            android:id="@+id/read"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/unread"
+            android:background="@drawable/material_chip"
+            android:button="@null"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/action_read"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp" />
+
+        <CheckBox
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/read"
+            android:background="@drawable/material_chip"
+            android:button="@null"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/action_favorite"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+</LinearLayout>

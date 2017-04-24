@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_200"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/msg_no_my_class_info"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:id="@+id/layout_timetable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_50"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/text_mon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="@string/mon"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/text_tue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tue"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/text_wed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wed"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/text_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/thu"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/text_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fri"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layout_period"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey_50"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_1" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_2" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_3" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_4" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_5" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_6" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="5dp"
+                        android:text="@string/period_7" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewMyClassCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/layout_period"
+                    android:background="@color/grey_300"
+                    android:scrollbars="vertical" />
+
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewMyClassList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_200"
+        android:scrollbars="vertical" />
+</LinearLayout>

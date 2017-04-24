@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Theme & Accent -->
+    <color name="colorPrimary">#2d333d</color>
+    <color name="colorPrimaryDark">#1e2128</color>
+    <color name="colorPrimaryLight">#9299a1</color>
+    <color name="colorAccent">#1285d0</color>
+    <color name="colorAccentDark">#2b77ba</color>
+
+
+    <!-- Grey scales -->
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9e9e9e</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_900">#212121</color>
+
+    <color name="blue_grey_600">#546E7A</color>
+
+
+    <!-- Others -->
+    <color name="green_400">#66BB6A</color>
+    <color name="orange_a_400">#ff9100</color>
+    <color name="red_600">#E53935</color>
+
+    <color name="chip_unchecked">@color/grey_300</color>
+    <color name="chip_unchecked_text">@color/grey_900</color>
+    <color name="chip_checked">@color/colorAccent</color>
+    <color name="chip_checked_text">@color/grey_50</color>
+
+    <color name="lightBlue">#82bed9</color>
+    <color name="robinEggBlue">#b0d6e7</color>
+    <color name="aliceBlue">#e8f0f4</color>
+
+    <color name="blue_50">#E3F2FD</color>
+    <color name="blue_100">#BBDEFB</color>
+    <color name="blue_200">#90CAF9</color>
+
+    <color name="red_500">#F44336</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="yellow_500">#FFEB3B</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="purple_500">#9C27B0</color>
+</resources>
