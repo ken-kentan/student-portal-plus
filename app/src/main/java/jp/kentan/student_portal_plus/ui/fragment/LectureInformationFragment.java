@@ -32,6 +32,7 @@ import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.LectureInformation;
 import jp.kentan.student_portal_plus.ui.adapter.LectureInformationRecyclerAdapter;
 import jp.kentan.student_portal_plus.ui.span.CustomTitle;
+import jp.kentan.student_portal_plus.util.AnimationUtils;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 
@@ -78,12 +79,12 @@ public class LectureInformationFragment extends Fragment implements SearchView.O
         final HomeActivity activity = (HomeActivity) getActivity();
         View view = inflater.inflate(R.layout.fragment_lecture_info, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewLectureInfo);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(mAdapter);
         recyclerView.setHasFixedSize(true);
 
-        mTextView = (TextView) view.findViewById(R.id.textViewMsg);
+        mTextView = (TextView) view.findViewById(R.id.text_view);
 
         //Activity UI
         activity.setTitle(new CustomTitle(activity, activity.getString(R.string.title_class_schedule)));
@@ -209,11 +210,11 @@ public class LectureInformationFragment extends Fragment implements SearchView.O
         List<LectureInformation> list = PortalDataProvider.getLectureInfoList(StringUtils.splitWithSpace(mSearchText), mSortBy, isShowUnread, isShowRead, isShowMyClass);
         mAdapter.updateDataList(list);
 
-        if (list.size() <= 0) {
-            mTextView.setVisibility(View.VISIBLE);
+        if(list.size() > 0){
+            if(mTextView.getVisibility() == View.VISIBLE) mTextView.startAnimation(AnimationUtils.fadeOut(mTextView));
+        }else{
             mTextView.setText(getString((mSearchText.length() > 0 || !isShowUnread || !isShowRead || !isShowMyClass) ? R.string.msg_no_result_lecture_info : R.string.msg_no_lecture_info));
-        } else {
-            mTextView.setVisibility(View.GONE);
+            if(mTextView.getVisibility() == View.GONE) mTextView.startAnimation(AnimationUtils.fadeIn(mTextView));
         }
     }
 

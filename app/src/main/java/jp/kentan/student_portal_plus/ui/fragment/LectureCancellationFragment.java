@@ -34,6 +34,7 @@ import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.LectureCancellation;
 import jp.kentan.student_portal_plus.ui.adapter.LectureCancellationRecyclerAdapter;
 import jp.kentan.student_portal_plus.ui.span.TypefaceSpan;
+import jp.kentan.student_portal_plus.util.AnimationUtils;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 
@@ -51,6 +52,7 @@ public class LectureCancellationFragment extends Fragment implements SearchView.
     private LectureCancellationRecyclerAdapter mAdapter;
 
     private TextView mTextView;
+
     private String mSearchText = "";
     private int mSortBy = 0;
     private boolean isShowUnread = true, isShowRead = true, isShowMyClass = true;
@@ -219,9 +221,10 @@ public class LectureCancellationFragment extends Fragment implements SearchView.
         mAdapter.updateDataList(list);
 
         if(list.size() > 0){
-            mTextView.setVisibility(View.GONE);
+            if(mTextView.getVisibility() == View.VISIBLE) mTextView.startAnimation(AnimationUtils.fadeOut(mTextView));
         }else{
-            mTextView.setVisibility(View.VISIBLE);
+            mTextView.setText(getString((mSearchText.length() > 0 || !isShowUnread || !isShowRead || !isShowMyClass) ? R.string.msg_no_result_lecture_cancel : R.string.msg_no_lecture_cancel));
+            if(mTextView.getVisibility() == View.GONE) mTextView.startAnimation(AnimationUtils.fadeIn(mTextView));
         }
     }
 

@@ -143,7 +143,8 @@
     <string name="msg_remove_my_class_info">&lt;b>{subject}&lt;/b> を受講科目から除外しますか？</string>
 
     <!-- Strings related to CancelInfo -->
-    <string name="msg_no_cancel_info">現在、休講情報はありません.</string>
+    <string name="msg_no_result_lecture_cancel">表示できる休講情報はありません.</string>
+    <string name="msg_no_lecture_cancel">現在、休講情報はありません.</string>
     <string name="header_title_faculty_and_day_and_period">学部 曜日時限</string>
     <string name="header_title_cancel_date">休講年月日</string>
     <string name="header_title_note_info">備考</string>

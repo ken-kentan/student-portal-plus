@@ -31,6 +31,7 @@ import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.News;
 import jp.kentan.student_portal_plus.ui.adapter.NewsRecyclerAdapter;
 import jp.kentan.student_portal_plus.ui.span.CustomTitle;
+import jp.kentan.student_portal_plus.util.AnimationUtils;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 
@@ -40,7 +41,7 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
 
     private NewsRecyclerAdapter mAdapter;
 
-    private TextView mTextViewMsg;
+    private TextView mTextView;
 
     private String mSearchText = "";
     private int periodPostingDate = 0; //(0:All, 1:Today, 2:ThisWeek, 3:ThisMonth, 4:ThisYear)
@@ -73,12 +74,12 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
         final HomeActivity activity = (HomeActivity) getActivity();
         final View view = inflater.inflate(R.layout.fragment_news, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewLatestInfo);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(mAdapter);
         recyclerView.setHasFixedSize(true);
 
-        mTextViewMsg = (TextView) view.findViewById(R.id.textViewMsg);
+        mTextView = (TextView) view.findViewById(R.id.text_view);
 
         //Activity UI
         activity.setTitle(new CustomTitle(activity, activity.getString(R.string.title_news_and_events)));
@@ -197,7 +198,11 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
 
         mAdapter.updateDataList(list);
 
-        mTextViewMsg.setVisibility((list.size() > 0) ? View.GONE : View.VISIBLE);
+        if(list.size() > 0){
+            if(mTextView.getVisibility() == View.VISIBLE) mTextView.startAnimation(AnimationUtils.fadeOut(mTextView));
+        }else{
+            if(mTextView.getVisibility() == View.GONE) mTextView.startAnimation(AnimationUtils.fadeIn(mTextView));
+        }
     }
 
     private void restore(Bundle state) {
