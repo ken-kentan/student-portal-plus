@@ -116,6 +116,11 @@
             android:summary="@string/version">
         </Preference>
         <Preference
+            android:key="pref_key_spread"
+            android:title="@string/pref_title_spread"
+            android:summary="@string/pref_description_spread">
+        </Preference>
+        <Preference
             android:title="@string/pref_title_about_developer"
             android:summary="@string/pref_description_about_developer" >
             <intent

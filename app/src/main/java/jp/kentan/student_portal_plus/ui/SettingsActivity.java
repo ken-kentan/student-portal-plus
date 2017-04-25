@@ -4,12 +4,14 @@ package jp.kentan.student_portal_plus.ui;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -109,14 +111,16 @@ public class SettingsActivity extends AppCompatActivity {
             mNotificationScheduler = new NotificationScheduler(getActivity());
 
 
+            final PreferenceScreen screen = getPreferenceScreen();
+
             /*
             Set default values
              */
-            mNotifyContents = getPreferenceScreen().findPreference("pref_key_notify_contents");
-            mAutoFetchInterval = (ListPreference) getPreferenceScreen().findPreference("pref_key_auto_fetch_interval");
-            mLimitOfLatestInfo = (ListPreference) getPreferenceScreen().findPreference("pref_key_limit_of_latest_info");
-            mNotifyWithVibrate = (CheckBoxPreference) getPreferenceScreen().findPreference("pref_key_notify_with_vibrate");
-            mNotifyWithLed = (CheckBoxPreference) getPreferenceScreen().findPreference("pref_key_notify_with_led");
+            mNotifyContents    = screen.findPreference("pref_key_notify_contents");
+            mAutoFetchInterval = (ListPreference) screen.findPreference("pref_key_auto_fetch_interval");
+            mLimitOfLatestInfo = (ListPreference) screen.findPreference("pref_key_limit_of_latest_info");
+            mNotifyWithVibrate = (CheckBoxPreference) screen.findPreference("pref_key_notify_with_vibrate");
+            mNotifyWithLed     = (CheckBoxPreference) screen.findPreference("pref_key_notify_with_led");
 
             final boolean isAutoFetch = sPreferenceCommon.getBoolean("auto_fetch", true);
             mNotifyContents.setEnabled(isAutoFetch);
@@ -135,23 +139,24 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            getPreferenceScreen().findPreference("pref_key_select_update_data").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            screen.findPreference("pref_key_select_update_data").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new SelectUpdateContentsPreferencesFragment()).addToBackStack(null).commit();
                     return true;
                 }
             });
-            getPreferenceScreen().findPreference("pref_key_my_class_threshold").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            screen.findPreference("pref_key_my_class_threshold").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new MyClassThresholdPreferencesFragment()).addToBackStack(null).commit();
                     return true;
                 }
             });
 
-            getPreferenceScreen().findPreference("pref_key_delete_all_data").setOnPreferenceClickListener(this);
-            getPreferenceScreen().findPreference("pref_key_terms").setOnPreferenceClickListener(this);
-            getPreferenceScreen().findPreference("pref_key_oss_license").setOnPreferenceClickListener(this);
-            getPreferenceScreen().findPreference("pref_key_version").setOnPreferenceClickListener(this);
+            screen.findPreference("pref_key_delete_all_data").setOnPreferenceClickListener(this);
+            screen.findPreference("pref_key_spread").setOnPreferenceClickListener(this);
+            screen.findPreference("pref_key_terms").setOnPreferenceClickListener(this);
+            screen.findPreference("pref_key_oss_license").setOnPreferenceClickListener(this);
+            screen.findPreference("pref_key_version").setOnPreferenceClickListener(this);
 
 
             updatePrefSummary();
@@ -197,6 +202,12 @@ public class SettingsActivity extends AppCompatActivity {
                     });
 
                     builder.show();
+                    break;
+                case "pref_key_spread":
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_spread));
+                    startActivity(intent);
                     break;
                 case "pref_key_terms":
                     AlertDialog.Builder dialogTerms = new AlertDialog.Builder(sActivity);

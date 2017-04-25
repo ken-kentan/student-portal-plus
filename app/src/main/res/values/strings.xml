@@ -98,12 +98,15 @@
     <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
     <string name="pref_title_about">概要</string>
     <string name="pref_title_about_version">バージョン</string>
+    <string name="pref_title_spread">友達にシェア</string>
+    <string name="pref_description_spread">このアプリを友達に教える</string>
     <string name="pref_title_about_developer">開発元</string>
     <string name="pref_description_about_developer">K² Studio.</string>
     <string name="pref_title_terms">利用規約・プライバシーポリシー</string>
     <string name="pref_description_terms">利用規約およびプライバシーポリシーの詳細</string>
     <string name="pref_title_oss_license">オープンソースライセンス</string>
     <string name="pref_description_oss_license">オープンソースソフトウェアに関するライセンスの詳細</string>
+    <string name="text_spread">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
 
     <!-- Strings related to LatestInfo -->
     <string name="msg_no_latest_info">表示できる最新情報はありません.</string>
