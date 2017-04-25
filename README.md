@@ -4,7 +4,7 @@ Student Portal Android Client
 ## Description
 Student Portal+ は、学生ポータルサイト専用ブラウザです。
 
-<!--**[Install on Google Play](https://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus)** -->
+**[Install on Google Play](https://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus)**
 
 ## Screenshots
 
