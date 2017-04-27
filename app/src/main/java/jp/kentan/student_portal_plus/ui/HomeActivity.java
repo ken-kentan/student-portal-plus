@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("VIEW_MODE", mViewMode.ordinal());
+        outState.putInt("view_mode", mViewMode.ordinal());
     }
 
 
