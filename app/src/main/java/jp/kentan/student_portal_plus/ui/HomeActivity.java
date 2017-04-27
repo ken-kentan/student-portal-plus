@@ -124,7 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             transaction.commit();
         } else {
             clearFragmentBackStack();
-            switchFragment(VIEW_MODE.values()[savedInstanceState.getInt("VIEW_MODE")]);
+            switchFragment(VIEW_MODE.values()[savedInstanceState.getInt("view_mode")]);
         }
 
 

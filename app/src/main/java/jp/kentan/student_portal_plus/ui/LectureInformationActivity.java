@@ -147,6 +147,7 @@ public class LectureInformationActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isNotificationMode) {
             Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+            home.putExtra("view_mode", HomeActivity.VIEW_MODE.LECTURE_INFO.ordinal());
             startActivity(home);
         }
 
