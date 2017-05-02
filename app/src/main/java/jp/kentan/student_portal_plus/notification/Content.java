@@ -32,7 +32,7 @@ public class Content {
     Static methods
      */
     public static String parseTextWithLectureCancel(String cancelDate, String instructor, String note){
-        return cancelDate.replaceAll("-", "/") + "  " + ((note.length() > 1) ? note : instructor);
+        return cancelDate.replaceAll("-", "/") + "  " + ((note.length() > 1) ? StringUtils.removeHtmlTag(note) : instructor);
     }
 
     public static String parseTextWithNew(String detail, String link){
