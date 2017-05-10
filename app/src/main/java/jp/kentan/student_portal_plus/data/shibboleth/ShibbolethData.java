@@ -42,7 +42,8 @@ public class ShibbolethData {
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
 
-    private KeyStore keyStore;
+    private KeyStore mKeyStore;
+
 
     @SuppressLint("CommitPrefEdits")
     public ShibbolethData(@NonNull Context context) {
@@ -52,8 +53,8 @@ public class ShibbolethData {
             mPreferences = context.getSharedPreferences("IDP", Context.MODE_PRIVATE);
             mEditor = mPreferences.edit();
 
-            keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
+            mKeyStore = KeyStore.getInstance("AndroidKeyStore");
+            mKeyStore.load(null);
 
             createNewKeysIfNeed();
         } catch (Exception e) {
@@ -110,40 +111,40 @@ public class ShibbolethData {
 
     private void createNewKeysIfNeed() {
         try {
-            if (!keyStore.containsAlias(KEY_ALIAS)) {
-                Calendar start = Calendar.getInstance();
-                Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 100);
+            if (mKeyStore.containsAlias(KEY_ALIAS)) return;
 
-                KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+            Calendar start = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.YEAR, 100);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
-                            KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                            .setUserAuthenticationRequired(false)
-                            .setCertificateSubject(new X500Principal("CN=Student Portal Plus, O=K2 Studio"))
-                            .setCertificateSerialNumber(BigInteger.ONE)
-                            .setKeyValidityStart(start.getTime())
-                            .setKeyValidityEnd(end.getTime())
-                            .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-                            .setBlockModes(KeyProperties.BLOCK_MODE_ECB)
-                            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
-                            .build();
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
 
-                    generator.initialize(spec);
-                } else {
-                    KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
-                            .setAlias(KEY_ALIAS)
-                            .setSubject(new X500Principal("CN=Student Portal Plus, O=K2 Studio"))
-                            .setSerialNumber(BigInteger.ONE)
-                            .setStartDate(start.getTime())
-                            .setEndDate(end.getTime())
-                            .build();
-                    generator.initialize(spec);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+                        KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                        .setUserAuthenticationRequired(false)
+                        .setCertificateSubject(new X500Principal("CN=Student Portal Plus, O=K2 Studio"))
+                        .setCertificateSerialNumber(BigInteger.ONE)
+                        .setKeyValidityStart(start.getTime())
+                        .setKeyValidityEnd(end.getTime())
+                        .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_ECB)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
+                        .build();
 
-                generator.generateKeyPair();
+                generator.initialize(spec);
+            } else {
+                KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
+                        .setAlias(KEY_ALIAS)
+                        .setSubject(new X500Principal("CN=Student Portal Plus, O=K2 Studio"))
+                        .setSerialNumber(BigInteger.ONE)
+                        .setStartDate(start.getTime())
+                        .setEndDate(end.getTime())
+                        .build();
+                generator.initialize(spec);
             }
+
+            generator.generateKeyPair();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -151,19 +152,18 @@ public class ShibbolethData {
 
     private String encryptString(String text) {
         try {
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) mKeyStore.getEntry(KEY_ALIAS, null);
             RSAPublicKey publicKey = (RSAPublicKey) privateKeyEntry.getCertificate().getPublicKey();
 
             if (StringUtils.isEmpty(text)) {
                 return null;
             }
 
-            Cipher inCipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER);
-            inCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            Cipher cipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER);
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(
-                    outputStream, inCipher);
+            CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher);
             cipherOutputStream.write(text.getBytes("UTF-8"));
             cipherOutputStream.close();
 
@@ -177,15 +177,15 @@ public class ShibbolethData {
         return null;
     }
 
-    private String decryptString(String cipherText) {
+    private String decryptString(String text) {
         try {
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) mKeyStore.getEntry(KEY_ALIAS, null);
 
-            Cipher output = Cipher.getInstance(CIPHER_TYPE);
-            output.init(Cipher.DECRYPT_MODE, privateKeyEntry.getPrivateKey());
+            Cipher cipher = Cipher.getInstance(CIPHER_TYPE);
+            cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.getPrivateKey());
 
             CipherInputStream cipherInputStream = new CipherInputStream(
-                    new ByteArrayInputStream(Base64.decode(cipherText, Base64.DEFAULT)), output);
+                    new ByteArrayInputStream(Base64.decode(text, Base64.DEFAULT)), cipher);
             ArrayList<Byte> values = new ArrayList<>();
             int nextByte;
             while ((nextByte = cipherInputStream.read()) != -1) {
