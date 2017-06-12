@@ -68,7 +68,7 @@ public class LectureCancellationFragment extends Fragment implements SearchView.
 
         mPreference = context.getSharedPreferences("common", Context.MODE_PRIVATE);
 
-        mAdapter = new LectureCancellationRecyclerAdapter(context, null, VIEWTYPE_LIST);
+        mAdapter = new LectureCancellationRecyclerAdapter(context, VIEWTYPE_LIST);
 
         mTitle = new SpannableString(getString(R.string.title_class_cancel));
         mTitle.setSpan(new TypefaceSpan(getActivity(), "Orkney-Medium.otf"), 0, mTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

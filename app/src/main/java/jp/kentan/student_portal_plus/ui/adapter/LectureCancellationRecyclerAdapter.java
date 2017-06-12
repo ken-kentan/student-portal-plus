@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.kentan.student_portal_plus.ui.LectureCancellationActivity;
@@ -28,17 +29,15 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
 
     private int mViewType, mListSize = 0;
 
-    private List<LectureCancellation> mLectureCancelList = null;
+    private List<LectureCancellation> mLectureCancelList = new ArrayList<>();
     private Context mContext;
 
     private int mLimit = -1;
 
 
-    public LectureCancellationRecyclerAdapter(Context context, List<LectureCancellation> list, int viewType) {
+    public LectureCancellationRecyclerAdapter(Context context, int viewType) {
         super();
 
-        mLectureCancelList = list;
-        mListSize = (list == null) ? 0 : list.size();
         mContext = context;
         mViewType = viewType;
 
@@ -47,8 +46,8 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
         IC_SIMILAR_ON = AppCompatResources.getDrawable(mContext, R.drawable.ic_similar_on);
     }
 
-    public LectureCancellationRecyclerAdapter(Context context, List<LectureCancellation> list, int viewType, int limit) {
-        this(context, list, viewType);
+    public LectureCancellationRecyclerAdapter(Context context, int viewType, int limit) {
+        this(context, viewType);
 
         mLimit = limit;
     }
@@ -57,8 +56,9 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
         final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mLectureCancelList, list);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        mLectureCancelList = list;
-        mListSize = (list == null) ? 0 : list.size();
+        mLectureCancelList.clear();
+        mLectureCancelList.addAll(list);
+        mListSize = list.size();
 
         diffResult.dispatchUpdatesTo(this);
     }

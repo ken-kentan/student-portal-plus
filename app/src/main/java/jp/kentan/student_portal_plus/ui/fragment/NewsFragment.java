@@ -56,7 +56,7 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
         super.onCreate(savedInstanceState);
         final Context context = getContext();
 
-        mAdapter = new NewsRecyclerAdapter(context, null, 1);
+        mAdapter = new NewsRecyclerAdapter(context, 1);
 
         if (savedInstanceState != null || (savedInstanceState = getArguments()) != null) {
             restore(savedInstanceState);

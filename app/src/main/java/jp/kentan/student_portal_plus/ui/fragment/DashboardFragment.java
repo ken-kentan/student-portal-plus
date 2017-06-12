@@ -50,10 +50,10 @@ public class DashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Context context = getContext();
 
-        mMyTimetableRecyclerAdapter = new MyTimetableRecyclerAdapter(context, null, TYPE_DASHBOARD);
-        mLectureInfoAdapter         = new LectureInformationRecyclerAdapter(context, null, TYPE_DASHBOARD, 3);
-        mLectureCancelAdapter       = new LectureCancellationRecyclerAdapter(context, null, TYPE_DASHBOARD, 3);
-        mNewsAdapter                = new NewsRecyclerAdapter(context, null, TYPE_DASHBOARD, 3);
+        mMyTimetableRecyclerAdapter = new MyTimetableRecyclerAdapter(context, TYPE_DASHBOARD);
+        mLectureInfoAdapter         = new LectureInformationRecyclerAdapter(context, TYPE_DASHBOARD, 3);
+        mLectureCancelAdapter       = new LectureCancellationRecyclerAdapter(context, TYPE_DASHBOARD, 3);
+        mNewsAdapter                = new NewsRecyclerAdapter(context, TYPE_DASHBOARD, 3);
     }
 
     @Override

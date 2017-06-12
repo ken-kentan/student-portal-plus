@@ -32,13 +32,11 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     private int mViewType;
 
     private List<MyClass> mMyClassList = new ArrayList<>();
-    private int mListSize;
+    private int mListSize = 0;
     private Context mContext;
 
-    public MyTimetableRecyclerAdapter(Context context, List<MyClass> list, final int viewType) {
+    public MyTimetableRecyclerAdapter(Context context, final int viewType) {
         super();
-        mMyClassList = list;
-        mListSize    = (list != null) ? list.size() : 0;
         mContext = context;
         mViewType = viewType;
 
@@ -47,17 +45,19 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     }
 
     public void updateDataList(List<MyClass> list) {
-        mListSize = (list == null) ? 0 : list.size();
+        mListSize = list.size();
 
         if(mViewType == TYPE_WEEK){
-            mMyClassList = list;
+            mMyClassList.clear();
+            mMyClassList.addAll(list);
 
             notifyDataSetChanged();
         }else{
             final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mMyClassList, list);
             final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-            mMyClassList = list;
+            mMyClassList.clear();
+            mMyClassList.addAll(list);
 
             diffResult.dispatchUpdatesTo(this);
         }

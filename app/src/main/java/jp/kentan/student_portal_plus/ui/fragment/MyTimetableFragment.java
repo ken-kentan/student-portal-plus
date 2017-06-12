@@ -57,7 +57,7 @@ public class MyTimetableFragment extends Fragment {
 
         mPreferences = context.getSharedPreferences("common", Context.MODE_PRIVATE);
 
-        mAdapter = new MyTimetableRecyclerAdapter(context, null, mViewType);
+        mAdapter = new MyTimetableRecyclerAdapter(context, mViewType);
     }
 
     @Override

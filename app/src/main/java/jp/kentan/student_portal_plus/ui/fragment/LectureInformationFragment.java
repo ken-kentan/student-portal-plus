@@ -61,7 +61,7 @@ public class LectureInformationFragment extends Fragment implements SearchView.O
 
         mPreference = context.getSharedPreferences("common", Context.MODE_PRIVATE);
 
-        mAdapter = new LectureInformationRecyclerAdapter(context, null, 1);
+        mAdapter = new LectureInformationRecyclerAdapter(context, 1);
 
         if (savedInstanceState != null || (savedInstanceState = getArguments()) != null) {
             restore(savedInstanceState);

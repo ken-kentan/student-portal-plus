@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.kentan.student_portal_plus.ui.NewsActivity;
@@ -26,28 +27,26 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     private static Drawable IC_FAVORITE_ON, IC_FAVORITE_OFF;
 
-    private int mViewType, mListSize;
+    private int mViewType, mListSize = 0;
 
-    private List<News> mNewsList = null;
+    private List<News> mNewsList = new ArrayList<>();
     private Context mContext;
 
     private int mLimit = -1;
 
 
-    public NewsRecyclerAdapter(Context context, List<News> list, final int viewType) {
+    public NewsRecyclerAdapter(Context context, final int viewType) {
         super();
 
         mContext = context;
-        mNewsList = list;
-        mListSize = (list == null) ? 0 : list.size();
         mViewType = viewType;
 
         IC_FAVORITE_ON  = AppCompatResources.getDrawable(mContext, R.drawable.ic_favorite_on);
         IC_FAVORITE_OFF = AppCompatResources.getDrawable(mContext, R.drawable.ic_favorite_off);
     }
 
-    public NewsRecyclerAdapter(Context context, List<News> list, final int viewType, final int limit) {
-        this(context, list, viewType);
+    public NewsRecyclerAdapter(Context context, final int viewType, final int limit) {
+        this(context, viewType);
 
         mLimit = limit;
     }
@@ -56,8 +55,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mNewsList, list);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        mNewsList = list;
-        mListSize = (list == null) ? 0 : list.size();
+        mNewsList.clear();
+        mNewsList.addAll(list);
+        mListSize = list.size();
 
         diffResult.dispatchUpdatesTo(this);
     }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.kentan.student_portal_plus.ui.LectureInformationActivity;
@@ -27,20 +28,18 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
 
     private static Drawable IC_INFO_ON, IC_INFO_OFF, IC_SIMILAR_ON;
 
-    private int mViewType, mListSize;
+    private int mViewType, mListSize = 0;
 
-    private List<LectureInformation> mLectureInfoList = null;
+    private List<LectureInformation> mLectureInfoList = new ArrayList<>();
     private Context mContext;
 
     private int mLimit = -1;
 
-    public LectureInformationRecyclerAdapter(Context context, List<LectureInformation> list, int viewType) {
+    public LectureInformationRecyclerAdapter(Context context, int viewType) {
         super();
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        mLectureInfoList = list;
-        mListSize = (list == null) ? 0 : list.size();
         mContext = context;
         mViewType = viewType;
 
@@ -49,8 +48,8 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
         IC_SIMILAR_ON = AppCompatResources.getDrawable(mContext, R.drawable.ic_similar_on);
     }
 
-    public LectureInformationRecyclerAdapter(Context context, List<LectureInformation> list, int viewType, int limit) {
-        this(context, list, viewType);
+    public LectureInformationRecyclerAdapter(Context context, int viewType, int limit) {
+        this(context, viewType);
 
         mLimit = limit;
     }
@@ -59,8 +58,9 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
         final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mLectureInfoList, list);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        mLectureInfoList = list;
-        mListSize = (list == null) ? 0 : list.size();
+        mLectureInfoList.clear();
+        mLectureInfoList.addAll(list);
+        mListSize = list.size();
 
         diffResult.dispatchUpdatesTo(this);
     }
