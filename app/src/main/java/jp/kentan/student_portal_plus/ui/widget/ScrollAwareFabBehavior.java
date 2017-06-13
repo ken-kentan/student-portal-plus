@@ -6,25 +6,29 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 
-public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior {
+public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior{
 
-    public ScrollAwareFabBehavior() {
+    private FloatingActionButton.OnVisibilityChangedListener mListener;
+
+    public ScrollAwareFabBehavior(FloatingActionButton.OnVisibilityChangedListener listener){
         super();
+
+        mListener = listener;
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        if (dyConsumed > 0) {
-            child.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, final FloatingActionButton fab, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        super.onNestedScroll(coordinatorLayout, fab, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        if (dyConsumed > 0 && fab.getVisibility() == View.VISIBLE) {
+            fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
                 @Override
                 public void onHidden(FloatingActionButton fab) {
                     super.onHidden(fab);
                     fab.setVisibility(View.INVISIBLE);
                 }
             });
-        } else if (dyConsumed < 0) {
-            child.show();
+        } else if (dyConsumed < 0 && fab.getVisibility() == View.INVISIBLE) {
+            fab.show(mListener);
         }
     }
 

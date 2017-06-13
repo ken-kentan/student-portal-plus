@@ -58,6 +58,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private boolean isShowOptionsMenu = false;
     private boolean isReadyExit = false;
 
+    private final FloatingActionButton.OnVisibilityChangedListener FAB_SHOWN_LISTENER = new FloatingActionButton.OnVisibilityChangedListener() {
+        @Override
+        public void onShown(FloatingActionButton fab) {
+            super.onShown(fab);
+
+            if(PortalDataProvider.isFetching()){
+                animateFabRefresh(fab);
+            }else{
+                fab.setRotation(0.0f);
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFabRefresh.getLayoutParams();
-        params.setBehavior(new ScrollAwareFabBehavior());
+        params.setBehavior(new ScrollAwareFabBehavior(FAB_SHOWN_LISTENER));
         mFabRefresh.setLayoutParams(params);
 
 
@@ -196,16 +209,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        mFabRefresh.show();
+        mFabRefresh.show(FAB_SHOWN_LISTENER);
         transaction.addToBackStack(null);
         transaction.commit();
         mViewMode = mode;
     }
 
     //FABをぐーるぐーる回す
+    public void animateFabRefresh(FloatingActionButton fab){
+        fab.setRotation(0.0f);
+        fab.animate().rotation(360.0f).withLayer().setDuration(1000).setListener(this).start();
+    }
+
     public void animateFabRefresh(){
-        mFabRefresh.setRotation(0.0f);
-        mFabRefresh.animate().rotation(360.0f).withLayer().setDuration(1000).setListener(this).start();
+        animateFabRefresh(mFabRefresh);
     }
 
     //NavigationViewのAccountHeaderを更新
@@ -375,7 +392,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             if (getSupportFragmentManager().getBackStackEntryCount() > 0 && mViewMode != VIEW_MODE.DASHBOARD) {
                 getSupportFragmentManager().popBackStack();
-                mFabRefresh.show();
+                mFabRefresh.show(FAB_SHOWN_LISTENER);
                 return;
             } else if (!isReadyExit) {
                 isReadyExit = true;
