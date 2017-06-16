@@ -1,8 +1,11 @@
 package jp.kentan.student_portal_plus.data;
 
 import android.annotation.SuppressLint;
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
 import org.jsoup.nodes.Document;
@@ -238,34 +241,39 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
     Fetch
      */
     public void fetch() {
-        if (mPreferences.getBoolean("all", true)) {
-            mQueryList.add(MyClass.URL);
-            mQueryList.add(LectureInformation.URL);
-            mQueryList.add(LectureCancellation.URL);
-            mQueryList.add(News.URL);
-        } else {
-            if (mPreferences.getBoolean(MyClass.KEY, true)) {
-                mQueryList.add(MyClass.URL);
-            }
-            if (mPreferences.getBoolean(LectureInformation.KEY, true)) {
-                mQueryList.add(LectureInformation.URL);
-            }
-            if (mPreferences.getBoolean(LectureCancellation.KEY, true)) {
-                mQueryList.add(LectureCancellation.URL);
-            }
-            if (mPreferences.getBoolean(News.KEY, true)) {
-                mQueryList.add(News.URL);
-            }
-        }
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (mPreferences.getBoolean("all", true)) {
+                    mQueryList.add(MyClass.URL);
+                    mQueryList.add(LectureInformation.URL);
+                    mQueryList.add(LectureCancellation.URL);
+                    mQueryList.add(News.URL);
+                } else {
+                    if (mPreferences.getBoolean(MyClass.KEY, true)) {
+                        mQueryList.add(MyClass.URL);
+                    }
+                    if (mPreferences.getBoolean(LectureInformation.KEY, true)) {
+                        mQueryList.add(LectureInformation.URL);
+                    }
+                    if (mPreferences.getBoolean(LectureCancellation.KEY, true)) {
+                        mQueryList.add(LectureCancellation.URL);
+                    }
+                    if (mPreferences.getBoolean(News.KEY, true)) {
+                        mQueryList.add(News.URL);
+                    }
+                }
 
-        if (mQueryList.size() <= 0) {
-            mCallback.failed("取得データがありません", null);
-            return;
-        }
+                if (mQueryList.size() <= 0) {
+                    mCallback.failed("取得データがありません", null);
+                    return;
+                }
 
-        isFetching = true;
-        mShibbolethClient.fetchDocument(mQueryList.get(0));
-        mQueryList.remove(0);
+                isFetching = true;
+                mShibbolethClient.fetchDocument(mQueryList.get(0));
+                mQueryList.remove(0);
+            }
+        })).start();
     }
 
     public static boolean isFetching() {
@@ -338,12 +346,24 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
                 break;
         }
 
+        final String query;
         if (mQueryList.size() > 0) {
-            mShibbolethClient.fetchDocument(mQueryList.get(0));
+            query = mQueryList.get(0);
             mQueryList.remove(0);
         } else {
-            finishAllQuery();
+            query = null;
         }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(query != null){
+                    mShibbolethClient.fetchDocument(query);
+                }else{
+                    finishAllQuery();
+                }
+            }
+        }).start();
     }
 
 

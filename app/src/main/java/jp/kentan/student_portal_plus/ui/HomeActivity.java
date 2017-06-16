@@ -211,6 +211,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onRefresh() {
         if (!PortalDataProvider.isFetching()){
             mPortalData.fetch();
+//            new PortalDataProvider.AsyncFetchTask(mPortalData).execute();
         }
     }
 
@@ -313,43 +314,53 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     PortalDataProvider Callback
      */
     @Override
-    public void failed(String errorMessage, Throwable error) {
-        mSwipeRefreshLayout.setRefreshing(false);
+    public void failed(final String errorMessage, final Throwable error) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
 
-        if (error != null && !mPreferenceCommon.getBoolean("detail_err_msg", false)) {
-            errorMessage = getString(R.string.err_msg_failed_to_update);
-        }
+                String message = errorMessage;
 
-        final Snackbar snackbar = Snackbar.make(mFab, errorMessage, Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("閉じる", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snackbar.dismiss();
+                if (error != null && !mPreferenceCommon.getBoolean("detail_err_msg", false)) {
+                    message = getString(R.string.err_msg_failed_to_update);
+                }
+
+                final Snackbar snackbar = Snackbar.make(mFab, message, Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("閉じる", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
-        }).show();
+        });
     }
 
     @Override
     public void success() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
 
-        switch (mViewMode) {
-            case DASHBOARD:
-                mDashboardFragment.update();
-                break;
-            case MY_CLASS:
-                mMyTimetableFragment.update();
-                break;
-            case LECTURE_INFO:
-                mLectureInformationFragment.update();
-                break;
-            case LECTURE_CANCEL:
-                mLectureCancellationFragment.update();
-                break;
-            case NEWS:
-                mNewsFragment.update();
-                break;
-        }
+                switch (mViewMode) {
+                    case DASHBOARD:
+                        mDashboardFragment.update();
+                        break;
+                    case MY_CLASS:
+                        mMyTimetableFragment.update();
+                        break;
+                    case LECTURE_INFO:
+                        mLectureInformationFragment.update();
+                        break;
+                    case LECTURE_CANCEL:
+                        mLectureCancellationFragment.update();
+                        break;
+                    case NEWS:
+                        mNewsFragment.update();
+                        break;
+                }
+            }
+        });
     }
 
 
