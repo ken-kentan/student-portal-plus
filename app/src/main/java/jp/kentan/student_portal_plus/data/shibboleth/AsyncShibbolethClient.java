@@ -3,6 +3,7 @@ package jp.kentan.student_portal_plus.data.shibboleth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -17,14 +18,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.util.StringUtils;
@@ -76,28 +84,14 @@ public class AsyncShibbolethClient {
 
         this.mShibbolethData = new ShibbolethData(mContext);
 
-        ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
-                .cipherSuites(
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-                        CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA256,
-                        CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA)
-                .build();
 
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        CookieJar cookieJar;
         if (useCookies) {
-            CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
-
-            mClient = new OkHttpClient.Builder()
-                    .cookieJar(cookieJar)
-                    .connectionSpecs(Collections.singletonList(spec))
-                    .followSslRedirects(true)
-                    .followRedirects(true)
-                    .connectTimeout(CONNECT_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .writeTimeout(WRITE_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .readTimeout(READ_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .build();
+            cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
         } else {
-            CookieJar cookieJar = new CookieJar() {
+            cookieJar = new CookieJar() {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
                 @Override
@@ -111,17 +105,62 @@ public class AsyncShibbolethClient {
                     return cookies != null ? cookies : new ArrayList<Cookie>();
                 }
             };
-
-            mClient = new OkHttpClient.Builder()
-                    .cookieJar(cookieJar)
-                    .connectionSpecs(Collections.singletonList(spec))
-                    .followSslRedirects(true)
-                    .followRedirects(true)
-                    .connectTimeout(CONNECT_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .writeTimeout(WRITE_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .readTimeout(READ_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .build();
         }
+
+        builder.cookieJar(cookieJar)
+                .followSslRedirects(true)
+                .followRedirects(true)
+                .connectTimeout(CONNECT_TIMEOUT_SEC, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT_SEC, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT_SEC, TimeUnit.SECONDS);
+
+
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+
+            ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_2)
+                    .cipherSuites(
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256)
+                    .build();
+
+            builder.connectionSpecs(Collections.singletonList(spec));
+
+        }else{//Support TLS v1.2 on Android 4.+ (~19)
+
+            try {
+                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                        TrustManagerFactory.getDefaultAlgorithm());
+                trustManagerFactory.init((KeyStore) null);
+                TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+                if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+                    throw new IllegalStateException("Unexpected default trust managers:"
+                            + Arrays.toString(trustManagers));
+                }
+                X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+
+
+                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+                sslContext.init(null, new TrustManager[] { trustManager }, null);
+                builder.sslSocketFactory(new Tls12SocketFactory(sslContext.getSocketFactory()), trustManager);
+
+                ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                        .tlsVersions(TlsVersion.TLS_1_2)
+                        .build();
+
+                List<ConnectionSpec> specs = new ArrayList<>();
+                specs.add(cs);
+                specs.add(ConnectionSpec.COMPATIBLE_TLS);
+                specs.add(ConnectionSpec.CLEARTEXT);
+
+                builder.connectionSpecs(specs);
+            } catch (Exception e) {
+                Log.e(TAG, "Error while setting TLS 1.2", e);
+            }
+        }
+
+        mClient = builder.build();
     }
 
     public void fetchDocument(final String targetUrl) {
