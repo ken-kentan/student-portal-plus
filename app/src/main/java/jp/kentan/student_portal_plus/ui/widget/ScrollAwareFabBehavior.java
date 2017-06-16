@@ -8,6 +8,8 @@ import android.view.View;
 
 public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior{
 
+    private boolean mIsEnabled = false;
+
     public ScrollAwareFabBehavior(){
         super();
     }
@@ -15,6 +17,9 @@ public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior{
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, final FloatingActionButton fab, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, fab, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+
+        if(!mIsEnabled) return;
+
         if (dyConsumed > 0 && fab.getVisibility() == View.VISIBLE) {
             fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
                 @Override
@@ -31,5 +36,9 @@ public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior{
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
+    }
+
+    public void setEnabled(boolean isEnabled){
+        mIsEnabled = isEnabled;
     }
 }

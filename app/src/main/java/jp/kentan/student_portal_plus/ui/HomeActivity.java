@@ -50,6 +50,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private FloatingActionButton mFab;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private ScrollAwareFabBehavior mFabBehavior;
+
     private Snackbar mSnackbarFinish;
 
     private PortalDataProvider mPortalData;
@@ -106,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFab.getLayoutParams();
-        params.setBehavior(new ScrollAwareFabBehavior());
+        params.setBehavior(mFabBehavior = new ScrollAwareFabBehavior());
         mFab.setLayoutParams(params);
 
 
@@ -237,8 +239,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mViewMode = mode;
 
         if(mode == VIEW_MODE.MY_CLASS){
+            mFabBehavior.setEnabled(true);
             mFab.show();
         }else{
+            mFabBehavior.setEnabled(false);
             mFab.hide();
         }
 
@@ -346,8 +350,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 mNewsFragment.update();
                 break;
         }
-
-        Snackbar.make(mFab, "更新しました", Snackbar.LENGTH_SHORT).show();
     }
 
 
