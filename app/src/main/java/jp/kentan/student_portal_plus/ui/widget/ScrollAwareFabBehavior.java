@@ -1,11 +1,9 @@
 package jp.kentan.student_portal_plus.ui.widget;
 
-import android.animation.Animator;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 
 
 public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior{
