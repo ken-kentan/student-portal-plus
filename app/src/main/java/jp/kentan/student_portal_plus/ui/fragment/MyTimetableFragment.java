@@ -109,19 +109,15 @@ public class MyTimetableFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_my_timetable_fragment, menu);
-    }
 
-    public void onMenuItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_switch_view_type:
+        menu.findItem(R.id.action_switch_view_type).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
                 showViewSelectPopup();
-                break;
-            case R.id.action_register_class:
-                Intent intent = new Intent(getContext(), MyClassEditActivity.class);
-                intent.putExtra("edit_mode", MyClassEditActivity.REGISTER_MODE);
-                startActivity(intent);
-                break;
-        }
+
+                return false;
+            }
+        });
     }
 
     private void showViewSelectPopup() {

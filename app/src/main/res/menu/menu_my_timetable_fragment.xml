@@ -8,9 +8,4 @@
         android:title="@string/menu_change_timetable_view"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_register_class"
-        android:icon="@drawable/ic_add"
-        android:title="@string/menu_register_class"
-        app:showAsAction="ifRoom" />
 </menu>

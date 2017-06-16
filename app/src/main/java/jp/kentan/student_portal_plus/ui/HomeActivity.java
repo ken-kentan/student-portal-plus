@@ -14,12 +14,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import jp.kentan.student_portal_plus.R;
@@ -33,7 +36,7 @@ import jp.kentan.student_portal_plus.ui.widget.ScrollAwareFabBehavior;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, PortalDataProvider.Callback {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PortalDataProvider.Callback, SwipeRefreshLayout.OnRefreshListener {
 
     public enum VIEW_MODE {NONE, DASHBOARD, MY_CLASS, LECTURE_INFO, LECTURE_CANCEL, NEWS}
 
@@ -47,7 +50,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private NavigationView mNavigationView;
     private DrawerLayout mDrawer;
-    private FloatingActionButton mFabRefresh;
+    private FloatingActionButton mFab;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Snackbar mSnackbarFinish;
 
@@ -57,19 +61,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private boolean isShowOptionsMenu = false;
     private boolean isReadyExit = false;
-
-    private final FloatingActionButton.OnVisibilityChangedListener FAB_SHOWN_LISTENER = new FloatingActionButton.OnVisibilityChangedListener() {
-        @Override
-        public void onShown(FloatingActionButton fab) {
-            super.onShown(fab);
-
-            if(PortalDataProvider.isFetching()){
-                animateFabRefresh(fab);
-            }else{
-                fab.setRotation(0.0f);
-            }
-        }
-    };
 
 
     @Override
@@ -104,20 +95,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.getMenu().getItem(0).setChecked(true);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        mFabRefresh = (FloatingActionButton) findViewById(R.id.fab_refresh);
-        mFabRefresh.setOnClickListener(new View.OnClickListener() {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!PortalDataProvider.isFetching()){
-                    mPortalData.fetch();
-
-                    animateFabRefresh();
-                }
+                Intent intent = new Intent(getApplicationContext(), MyClassEditActivity.class);
+                intent.putExtra("edit_mode", MyClassEditActivity.REGISTER_MODE);
+                startActivity(intent);
             }
         });
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFabRefresh.getLayoutParams();
-        params.setBehavior(new ScrollAwareFabBehavior(FAB_SHOWN_LISTENER));
-        mFabRefresh.setLayoutParams(params);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFab.getLayoutParams();
+        params.setBehavior(new ScrollAwareFabBehavior());
+        mFab.setLayoutParams(params);
 
 
         /*
@@ -147,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         updateAccountHeader();
         new NotificationController(this).cancelAll();
         if(PortalDataProvider.isFetching()){
-            animateFabRefresh();
+            mSwipeRefreshLayout.setRefreshing(true);
         }
 
 
@@ -164,7 +157,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             if (intent.getBooleanExtra("first_login", false)) {
                 mPortalData.fetch();
-                animateFabRefresh();
+                mSwipeRefreshLayout.setRefreshing(true);
             } else if (viewMode >= 0) {
                 switchFragment(VIEW_MODE.values()[viewMode]);
             }
@@ -209,20 +202,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        mFabRefresh.show(FAB_SHOWN_LISTENER);
         transaction.addToBackStack(null);
         transaction.commit();
         mViewMode = mode;
     }
 
-    //FABをぐーるぐーる回す
-    public void animateFabRefresh(FloatingActionButton fab){
-        fab.setRotation(0.0f);
-        fab.animate().rotation(360.0f).withLayer().setDuration(1000).setListener(this).start();
-    }
-
-    public void animateFabRefresh(){
-        animateFabRefresh(mFabRefresh);
+    //SwipeRefresh
+    @Override
+    public void onRefresh() {
+        if (!PortalDataProvider.isFetching()){
+            mPortalData.fetch();
+        }
     }
 
     //NavigationViewのAccountHeaderを更新
@@ -248,6 +238,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //各Fragmentからcall. OptionsMenuなどのレイアウトを更新
     public void setViewMode(VIEW_MODE mode) {
         mViewMode = mode;
+
+        if(mode == VIEW_MODE.MY_CLASS){
+            mFab.show();
+        }else{
+            mFab.hide();
+        }
 
         isShowOptionsMenu = (mode != VIEW_MODE.DASHBOARD);
         supportInvalidateOptionsMenu();
@@ -308,34 +304,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        item.setChecked(!item.isChecked());
-
-        if(mViewMode == VIEW_MODE.MY_CLASS){
-            mMyTimetableFragment.onMenuItemSelected(item);
-        }
-
         return super.onOptionsItemSelected(item);
     }
-
-
-    /*
-    AnimatorListener (FAB)
-     */
-    @Override
-    public void onAnimationStart(Animator animator) {}
-
-    @Override
-    public void onAnimationEnd(Animator animator) {
-        if (PortalDataProvider.isFetching()) {
-            animateFabRefresh();
-        }
-    }
-
-    @Override
-    public void onAnimationCancel(Animator animator) {}
-
-    @Override
-    public void onAnimationRepeat(Animator animator) {}
 
 
     /*
@@ -343,11 +313,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public void failed(String errorMessage, Throwable error) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
         if (error != null && !mPreferenceCommon.getBoolean("detail_err_msg", false)) {
             errorMessage = getString(R.string.err_msg_failed_to_update);
         }
 
-        final Snackbar snackbar = Snackbar.make(mFabRefresh, errorMessage, Snackbar.LENGTH_INDEFINITE);
+        final Snackbar snackbar = Snackbar.make(mFab, errorMessage, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("閉じる", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -358,6 +330,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void success() {
+        mSwipeRefreshLayout.setRefreshing(false);
+
         switch (mViewMode) {
             case DASHBOARD:
                 mDashboardFragment.update();
@@ -376,7 +350,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        Snackbar.make(mFabRefresh, "更新しました", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mFab, "更新しました", Snackbar.LENGTH_SHORT).show();
     }
 
 
@@ -392,11 +366,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             if (getSupportFragmentManager().getBackStackEntryCount() > 0 && mViewMode != VIEW_MODE.DASHBOARD) {
                 getSupportFragmentManager().popBackStack();
-                mFabRefresh.show(FAB_SHOWN_LISTENER);
                 return;
             } else if (!isReadyExit) {
                 isReadyExit = true;
-                mSnackbarFinish = Snackbar.make(mFabRefresh, getString(R.string.msg_back_to_exit), Snackbar.LENGTH_LONG);
+                mSnackbarFinish = Snackbar.make(mFab, getString(R.string.msg_back_to_exit), Snackbar.LENGTH_LONG);
                 mSnackbarFinish.addCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
