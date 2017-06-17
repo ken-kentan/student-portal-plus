@@ -1,11 +1,8 @@
 package jp.kentan.student_portal_plus.data;
 
 import android.annotation.SuppressLint;
-import android.app.IntentService;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
 import org.jsoup.nodes.Document;
@@ -24,7 +21,6 @@ import jp.kentan.student_portal_plus.data.component.MyClass;
 import jp.kentan.student_portal_plus.data.component.News;
 import jp.kentan.student_portal_plus.notification.Content;
 import jp.kentan.student_portal_plus.data.shibboleth.AsyncShibbolethClient;
-import jp.kentan.student_portal_plus.ui.HomeActivity;
 
 
 public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
