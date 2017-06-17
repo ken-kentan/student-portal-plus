@@ -1,12 +1,16 @@
 package jp.kentan.student_portal_plus.ui;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -21,8 +25,7 @@ import jp.kentan.student_portal_plus.util.StringUtils;
 
 public class MyClassActivity extends AppCompatActivity {
 
-    private int mInfoId;
-    private boolean hasDeletedByUser = false;
+    private MyClass mInfo;
 
 
     @Override
@@ -41,10 +44,9 @@ public class MyClassActivity extends AppCompatActivity {
         Intent
          */
         Intent intent = getIntent();
-        mInfoId = intent.getIntExtra("id", 1);
-        final MyClass info;
+        final int infoId = intent.getIntExtra("id", 1);
         try {
-            info = PortalDataProvider.getMyClassById(mInfoId);
+            mInfo = PortalDataProvider.getMyClassById(intent.getIntExtra("id", 1));
         } catch (Exception e) {
             Toast.makeText(this, getString(R.string.err_msg_failed_to_load), Toast.LENGTH_LONG).show();
             finish();
@@ -62,10 +64,9 @@ public class MyClassActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, MyClassEditActivity.class);
-                intent.putExtra("edit_mode", (info.hasRegisteredByUser()) ? MyClassEditActivity.UPDATE_MODE : MyClassEditActivity.UPDATE_LIMIT_MODE);
-                intent.putExtra("id", mInfoId);
+                intent.putExtra("edit_mode", (mInfo.hasRegisteredByUser()) ? MyClassEditActivity.UPDATE_MODE : MyClassEditActivity.UPDATE_LIMIT_MODE);
+                intent.putExtra("id", infoId);
                 startActivity(intent);
-                hasDeletedByUser = true;
             }
         });
 
@@ -74,8 +75,24 @@ public class MyClassActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(mInfo.hasRegisteredByUser()) {
+            getMenuInflater().inflate(R.menu.menu_delete, menu);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                showDeleteDialog();
+                break;
+            default:
+                finish();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -89,11 +106,9 @@ public class MyClassActivity extends AppCompatActivity {
     private void updateInformationTextViews() {
         MyClass info;
         try {
-            info = PortalDataProvider.getMyClassById(mInfoId);
+            info = PortalDataProvider.getMyClassById(mInfo.getId());
         } catch (Exception e) {
-            if (!hasDeletedByUser) {
-                Toast.makeText(this, getString(R.string.err_msg_failed_to_load), Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(this, getString(R.string.err_msg_failed_to_load), Toast.LENGTH_LONG).show();
 
             finish();
             return;
@@ -156,5 +171,26 @@ public class MyClassActivity extends AppCompatActivity {
         final TextView syllabusView = (TextView)findViewById(R.id.web_syllabus);
         syllabusView.setText(webSyllabus);
         syllabusView.setTransformationMethod(new LinkTransformationMethod(this));
+    }
+
+    private void showDeleteDialog() {
+        final Context context = this;
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("消去");
+        builder.setMessage(StringUtils.fromHtml(getString(R.string.msg_delete_my_class_info).replaceFirst("\\{subject\\}", mInfo.getSubject())));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mInfo.delete()) {
+                    Toast.makeText(context, getString(R.string.msg_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(context, getString(R.string.err_msg_failed_to_delete), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton(getString(R.string.no), null);
+        builder.show();
     }
 }

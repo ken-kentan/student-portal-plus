@@ -24,6 +24,7 @@ import jp.kentan.student_portal_plus.data.component.MyClass;
 import jp.kentan.student_portal_plus.data.component.News;
 import jp.kentan.student_portal_plus.notification.Content;
 import jp.kentan.student_portal_plus.data.shibboleth.AsyncShibbolethClient;
+import jp.kentan.student_portal_plus.ui.HomeActivity;
 
 
 public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
@@ -59,6 +60,10 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
         mEditor      = mPreferences.edit();
 
         setMyClassThreshold(context.getSharedPreferences("common", Context.MODE_PRIVATE).getFloat("my_class_threshold", 0.8f));
+    }
+
+    public void bindCallback(@Nullable Callback callback){
+        mCallback = callback;
     }
 
     private static void createManagersIfNeed(Context context) {

@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.MyClass;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
-public class MyClassEditActivity extends AppCompatActivity implements View.OnClickListener {
+public class MyClassEditActivity extends AppCompatActivity{
 
     private final static String TAG = "MyClassEditActivity";
     public final static int REGISTER_MODE = 0, UPDATE_MODE = 1, UPDATE_LIMIT_MODE = 2;
@@ -45,10 +46,6 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_class_edit);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
-
 
         /*
         Intent
@@ -92,8 +89,6 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
         mSpinnerWeek   = (Spinner)findViewById(R.id.week);
         mSpinnerPeriod = (Spinner)findViewById(R.id.date);
 
-        findViewById(R.id.button_save).setOnClickListener(this);
-
         mSpinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -127,7 +122,13 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-        setTitle((mEditMode == REGISTER_MODE) ? "受講科目の追加" : "受講科目の編集");
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setTitle(StringUtils.fromHtml("<font color='#1e2128'>" + ((mEditMode == REGISTER_MODE) ? "受講科目の追加" : "受講科目の編集") + "</font>"));
+            actionBar.setBackgroundDrawable(new ColorDrawable(0xFFEEEEEE));
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
         if(savedInstanceState == null || mEditMode == UPDATE_LIMIT_MODE){
@@ -151,9 +152,7 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mEditMode == UPDATE_MODE) {
-            getMenuInflater().inflate(R.menu.menu_delete, menu);
-        }
+        getMenuInflater().inflate(R.menu.menu_my_class_edit, menu);
 
         return true;
     }
@@ -161,8 +160,8 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete:
-                showDeleteDialog();
+            case R.id.action_save:
+                save();
                 break;
             default:
                 if (wasEditedByUser()) {
@@ -175,8 +174,7 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
+    private void save() {
         View focusView = null;
 
         int colorRgb   = ((ColorDrawable)mViewColor.getBackground()).getColor();
@@ -282,27 +280,6 @@ public class MyClassEditActivity extends AppCompatActivity implements View.OnCli
             mSpinnerWeek        .setEnabled(false);
             mSpinnerPeriod      .setEnabled(false);
         }
-    }
-
-    private void showDeleteDialog() {
-        final MyClassEditActivity activity = this;
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("消去");
-        builder.setMessage(StringUtils.fromHtml(getString(R.string.msg_delete_my_class_info).replaceFirst("\\{subject\\}", mInfo.getSubject())));
-        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (mInfo.delete()) {
-                    Toast.makeText(activity, getString(R.string.msg_deleted), Toast.LENGTH_LONG).show();
-                    activity.exit();
-                } else {
-                    Toast.makeText(activity, getString(R.string.err_msg_failed_to_delete), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        builder.setNegativeButton(getString(R.string.no), null);
-        builder.show();
     }
 
     private void showDiscardDialog() {

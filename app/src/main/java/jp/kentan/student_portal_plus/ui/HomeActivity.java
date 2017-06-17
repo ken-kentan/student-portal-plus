@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private Snackbar mSnackbarFinish;
 
-    private PortalDataProvider mPortalData;
+    private static PortalDataProvider sPortalData = null;
 
     private SharedPreferences mPreferenceCommon;
 
@@ -75,7 +75,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         /*
         Data Initialization
          */
-        mPortalData = new PortalDataProvider(this, this);
+        if(sPortalData == null) {
+            sPortalData = new PortalDataProvider(this, this);
+        }else{
+            sPortalData.bindCallback(this);
+        }
 
 
         /*
@@ -155,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             final int viewMode = intent.getIntExtra("view_mode", -1);
 
             if (intent.getBooleanExtra("first_login", false)) {
-                mPortalData.fetch();
+                sPortalData.fetch();
                 mSwipeRefreshLayout.setRefreshing(true);
             } else if (viewMode >= 0) {
                 switchFragment(VIEW_MODE.values()[viewMode]);
@@ -210,8 +214,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRefresh() {
         if (!PortalDataProvider.isFetching()){
-            mPortalData.fetch();
-//            new PortalDataProvider.AsyncFetchTask(mPortalData).execute();
+            sPortalData.fetch();
         }
     }
 

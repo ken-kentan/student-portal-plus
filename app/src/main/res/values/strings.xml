@@ -131,6 +131,7 @@
     <string name="menu_day_view">受講リスト表示</string>
     <string name="menu_share">共有</string>
     <string name="menu_delete">消去</string>
+    <string name="menu_save">保存</string>
 
     <!-- Strings related to LectureInfo -->
     <string name="msg_no_result_lecture_info">表示できる授業連絡はありません.</string>
