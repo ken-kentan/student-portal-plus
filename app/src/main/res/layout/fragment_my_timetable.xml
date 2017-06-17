@@ -26,14 +26,14 @@
             android:layout_height="wrap_content"
             android:background="@color/grey_50"
             android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp">
 
             <TextView
                 android:id="@+id/text_mon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:layout_weight="1"
                 android:text="@string/mon"
                 android:textAlignment="center" />
@@ -81,59 +81,178 @@
 
                 <LinearLayout
                     android:id="@+id/layout_period"
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:background="@color/grey_50"
                     android:orientation="vertical">
 
-                    <TextView
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_1" />
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_2" />
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_1_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_3" />
+                        android:text="@string/period_1"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_4" />
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_2_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_5" />
+                        android:text="@string/period_2"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_6" />
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_3_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:padding="5dp"
-                        android:text="@string/period_7" />
+                        android:text="@string/period_3"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_4_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/period_4"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_5_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/period_5"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_6_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/period_6"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:padding="2dp"
+                        android:text="@string/period_7_begin"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey_600"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_marginBottom="31dp"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/period_7"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 

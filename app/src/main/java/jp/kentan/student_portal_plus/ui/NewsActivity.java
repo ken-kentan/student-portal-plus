@@ -167,7 +167,7 @@ public class NewsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         if (mInfo.delete()) {
                             finish();
-                            Toast.makeText(context, getString(R.string.msg_deleted), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getString(R.string.msg_deleted), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, getString(R.string.err_msg_failed_to_delete), Toast.LENGTH_LONG).show();
                         }

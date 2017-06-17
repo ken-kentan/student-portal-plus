@@ -1,12 +1,12 @@
 package jp.kentan.student_portal_plus.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import jp.kentan.student_portal_plus.ui.HomeActivity;
-import jp.kentan.student_portal_plus.ui.MyClassEditActivity;
 import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.MyClass;
@@ -37,6 +36,8 @@ public class MyTimetableFragment extends Fragment {
 
     private final static int TYPE_LIST = 1;
     private final static int TYPE_WEEK = 2;
+
+    private static int COLOR_ACCENT, COLOR_NORMAL;
 
     private SharedPreferences mPreferences;
 
@@ -58,6 +59,9 @@ public class MyTimetableFragment extends Fragment {
         mPreferences = context.getSharedPreferences("common", Context.MODE_PRIVATE);
 
         mAdapter = new MyTimetableRecyclerAdapter(context, mViewType);
+
+        COLOR_ACCENT = ResourcesCompat.getColor(getResources(), R.color.colorAccent, null);
+        COLOR_NORMAL = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
     }
 
     @Override
@@ -169,6 +173,7 @@ public class MyTimetableFragment extends Fragment {
         final int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-2;
         for(int i=0; i<5; ++i){
             mTextViewWeek[i].setTypeface(null, (i == dayOfWeek) ? Typeface.BOLD : Typeface.NORMAL);
+            mTextViewWeek[i].setTextColor((i == dayOfWeek) ? COLOR_ACCENT : COLOR_NORMAL);
         }
 
         mAdapter.updateDataList(list);

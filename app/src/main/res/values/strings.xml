@@ -193,6 +193,13 @@
     <string name="period_5">5</string>
     <string name="period_6">6</string>
     <string name="period_7">7</string>
+    <string name="period_1_begin">&#160;8:50</string>
+    <string name="period_2_begin">10:30</string>
+    <string name="period_3_begin">12:50</string>
+    <string name="period_4_begin">14:30</string>
+    <string name="period_5_begin">16:10</string>
+    <string name="period_6_begin">17:50</string>
+    <string name="period_7_begin">19:30</string>
 
     <!-- Strings related to Url -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
