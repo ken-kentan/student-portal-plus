@@ -22,4 +22,10 @@
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 
+    <style name="WhiteToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/grey_100</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse</item>
+    </style>
+
 </resources>

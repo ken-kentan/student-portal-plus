@@ -99,7 +99,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.grey_100);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);

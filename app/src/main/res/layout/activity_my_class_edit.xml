@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:background="@color/light_blue_500"
                 android:clickable="true"
-                android:elevation="2dp"
+                android:elevation="6dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:stateListAnimator="@animator/raise" />
 
