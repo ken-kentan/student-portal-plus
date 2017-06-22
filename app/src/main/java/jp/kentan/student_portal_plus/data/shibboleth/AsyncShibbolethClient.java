@@ -53,7 +53,7 @@ import okhttp3.TlsVersion;
 
 public class AsyncShibbolethClient {
 
-    public enum FAILED_STATUS {ERROR, ERROR_UNKNOWN, FAILED_TO_SCRAPING, INVALID_USERNAME, INVALID_PASSWORD, FAILED_TO_DECRYPT}
+    public enum FAILED_STATUS {ERROR, ERROR_UNKNOWN, FAILED_TO_SCRAPING, INVALID_USERNAME, INVALID_PASSWORD, FAILED_TO_DECRYPT, FAILED_TO_ACCESS_IDP}
 
     private final static String TAG = "AsyncShibbolethClient";
 
@@ -199,6 +199,10 @@ public class AsyncShibbolethClient {
                         break;
                     case FAILED_TO_DECRYPT:
                         mCallback.failed(status, mContext.getString(R.string.error_failed_to_decrypt), null);
+                        break;
+                    case FAILED_TO_ACCESS_IDP:
+                        mCallback.failed(status, mContext.getString(R.string.error_failed_to_access_idp), null);
+                        break;
                 }
             }
         });
@@ -219,24 +223,36 @@ public class AsyncShibbolethClient {
             public void onResponse(Call call, Response response) throws IOException {
                 updateStatus("レスポンスを処理中...");
 
-                final Document document = Jsoup.parse(response.body().string());
+                final Document document;
 
-                String title = document.title();
+                final Element idpFormElement;
+                final String formAction;
 
-                Log.d(TAG, title);
 
-                if (title.contains("京都工芸繊維大学 学務課ホームページ") || title.contains("京都工芸繊維大学 学生情報ポータル")) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCallback.success(spEndPoint, document);
-                        }
-                    });
+                try {
+                    document = Jsoup.parse(response.body().string());
+
+                    final String title = document.title();
+
+                    Log.d(TAG, title);
+
+                    if (title.contains("京都工芸繊維大学 学務課ホームページ") || title.contains("京都工芸繊維大学 学生情報ポータル")) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mCallback.success(spEndPoint, document);
+                            }
+                        });
+                        return;
+                    }
+
+                    idpFormElement = document.select("form").get(0);
+                    formAction = idpFormElement.attr("action");
+                } catch (Exception e) {
+                    failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, e);
                     return;
                 }
 
-                Element idpFormElement = document.select("form").get(0);
-                String formAction = idpFormElement.attr("action");
 
                 if (formAction.equals("https://portal.student.kit.ac.jp/Shibboleth.sso/SAML2/POST")) {
                     redirectSAMLResponse(spEndPoint, response);
@@ -307,8 +323,7 @@ public class AsyncShibbolethClient {
             relayStateElement       = document.select("input").get(0);
             SAMLResponseElement     = document.select("input").get(1);
         } catch (Exception e) {
-            //認証方式が変更されてるかも
-            failed(FAILED_STATUS.ERROR, e);
+            failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, null);
             return;
         }
 

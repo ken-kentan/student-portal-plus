@@ -63,6 +63,7 @@
     <string name="error_incorrect_username">ユーザー名が正しくありません</string>
     <string name="error_incorrect_password">パスワードが正しくありません</string>
     <string name="error_failed_to_decrypt">データの復号に失敗しました.\n設定から再ログインしてください.</string>
+    <string name="error_failed_to_access_idp">シボレス認証フォームの取得に失敗しました.</string>
     <string name="error_field_required">未入力です</string>
     <string name="login_progress_done">"認証完了." </string>
 
