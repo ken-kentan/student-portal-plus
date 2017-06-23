@@ -165,7 +165,14 @@ public class MyTimetableFragment extends Fragment {
     }
 
     public void update() {
-        List<MyClass> list = PortalDataProvider.getMyClassList();
+        final List<MyClass> list;
+
+        if(mViewType == TYPE_WEEK){
+            list = PortalDataProvider.getWeekTimetable();
+        }else{
+            list = PortalDataProvider.getMyClassList();
+        }
+
         mMyClassInformationSize = list.size();
 
         setVisibility(mMyClassInformationSize > 0);
@@ -184,8 +191,16 @@ public class MyTimetableFragment extends Fragment {
 
         setVisibility(mMyClassInformationSize > 0);
 
+        final List<MyClass> list;
+
+        if(mViewType == TYPE_WEEK){
+            list = PortalDataProvider.getWeekTimetable();
+        }else{
+            list = PortalDataProvider.getMyClassList();
+        }
+
         mAdapter.setViewType(mViewType);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.updateDataListBySilent(list);
 
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt("timetable_view_type", mViewType);

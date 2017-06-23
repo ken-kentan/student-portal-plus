@@ -104,8 +104,12 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
         return sMyClass.getById(id);
     }
 
-    public static List<MyClass> getTimetable() {
-        return sMyClass.getTimetable();
+    public static List<MyClass> getDayTimetable() {
+        return sMyClass.getDayTimetable();
+    }
+
+    public static List<MyClass> getWeekTimetable() {
+        return sMyClass.getWeekTimetable();
     }
 
     public static MyClassManager.WEEK getTimetableWeek() {

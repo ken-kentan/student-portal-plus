@@ -140,7 +140,7 @@ public class DashboardFragment extends Fragment {
     }
 
     public void update() {
-        List<MyClass> timetableList = PortalDataProvider.getTimetable();
+        List<MyClass> timetableList = PortalDataProvider.getDayTimetable();
         List<LectureInformation> lectureInfoList = PortalDataProvider.getLectureInfoList(LectureInformation.MY_CLASS);
         List<LectureCancellation> lectureCancelList = PortalDataProvider.getLectureCancelList(LectureCancellation.MY_CLASS);
 
