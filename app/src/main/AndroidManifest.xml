@@ -46,7 +46,8 @@
             android:name=".ui.MyClassActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.MyClassEditActivity"/>
+            android:name=".ui.MyClassEditActivity"
+            android:theme="@style/AppTheme.LightActionBar" />
 
         <receiver
             android:name=".notification.DeviceStatusReceiver"

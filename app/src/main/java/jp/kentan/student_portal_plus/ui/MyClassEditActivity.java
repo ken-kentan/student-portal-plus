@@ -22,6 +22,7 @@ import com.android.colorpicker.ColorPickerSwatch;
 import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.data.component.MyClass;
+import jp.kentan.student_portal_plus.ui.span.CustomTitle;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 public class MyClassEditActivity extends AppCompatActivity{
@@ -123,8 +124,7 @@ public class MyClassEditActivity extends AppCompatActivity{
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
-            actionBar.setTitle(StringUtils.fromHtml("<font color='#1e2128'>" + ((mEditMode == REGISTER_MODE) ? "受講科目の追加" : "受講科目の編集") + "</font>"));
-            actionBar.setBackgroundDrawable(new ColorDrawable(0xFFEEEEEE));
+            actionBar.setTitle(new CustomTitle(this, (mEditMode == REGISTER_MODE) ? "Add" : "Edit"));
             actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
