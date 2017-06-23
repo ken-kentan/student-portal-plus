@@ -26,7 +26,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     private final static int TYPE_DASHBOARD = 0;
     private final static int TYPE_LIST      = 1;
     private final static int TYPE_WEEK      = 2;
-    private final static int TYPE_INDEX      = 3;
+    private final static int TYPE_EMPTY     = 3;
 
     private static Drawable IC_LOCK_ON, IC_LOCK_OFF;
 
@@ -48,20 +48,22 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     public void updateDataList(List<MyClass> list) {
         mListSize = list.size();
 
-        if(mViewType == TYPE_WEEK){
-            mMyClassList.clear();
-            mMyClassList.addAll(list);
+        final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mMyClassList, list);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-            notifyDataSetChanged();
-        }else{
-            final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mMyClassList, list);
-            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        mMyClassList.clear();
+        mMyClassList.addAll(list);
 
-            mMyClassList.clear();
-            mMyClassList.addAll(list);
+        diffResult.dispatchUpdatesTo(this);
+    }
 
-            diffResult.dispatchUpdatesTo(this);
-        }
+    public void updateDataListBySilent(List<MyClass> list) {
+        mListSize = list.size();
+
+        mMyClassList.clear();
+        mMyClassList.addAll(list);
+
+        notifyDataSetChanged();
     }
 
     public void setViewType(int viewType) {
@@ -71,12 +73,8 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     @Override
     public int getItemViewType(final int position) {
         if(mViewType == TYPE_WEEK){
-            if(mMyClassList.get(position) == null){
-                return TYPE_INDEX;
-            }
-            return TYPE_WEEK;
+            return (mMyClassList.get(position) != null) ? TYPE_WEEK : TYPE_EMPTY;
         }
-
         return mViewType;
     }
 
@@ -91,30 +89,9 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
     @Override
     public void onBindViewHolder(final ViewHolder vh, final int index) {
-        MyClass myClass = null;
+        final MyClass myClass = mMyClassList.get(index);
 
-        if (mViewType == TYPE_WEEK) {
-//            final int dayOfWeek = index % 6, period = (index / 6) + 1;
-//
-//            MyClass tmp;
-//            for(int i=0; i<mListSize; ++i) {
-//                tmp = mMyClassList.get(i);
-//
-//                if(tmp.equalTimetable(dayOfWeek, period)){
-//                    myClass = tmp;
-//                    break;
-//                }
-//            }
-
-            myClass = mMyClassList.get(index);
-
-            if (myClass == null) {
-                vh.mView.setVisibility(View.GONE);
-                return;
-            }
-        } else {
-            myClass = mMyClassList.get(index);
-        }
+        if (myClass == null) return;
 
 
         switch (mViewType){
@@ -141,8 +118,6 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             case TYPE_WEEK:
                 vh.mLayout.setBackgroundColor(myClass.getColor());
                 break;
-            case TYPE_INDEX:
-                break;
         }
 
         vh.bind(myClass);
@@ -151,6 +126,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     @Override
     public MyTimetableRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+
         View v = null;
 
         switch (viewType) {
@@ -163,9 +139,9 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             case TYPE_WEEK:
                 v = layoutInflater.inflate(R.layout.card_flat_my_class, parent, false);
                 break;
-            case TYPE_INDEX:
-                v = layoutInflater.inflate(R.layout.card_flat_timetable_index, parent, false);
-                break;
+            case TYPE_EMPTY:
+                v = layoutInflater.inflate(R.layout.card_flat_empty_class, parent, false);
+                return new ViewHolder(null, v);
         }
         return new ViewHolder(mContext, v);
     }
@@ -193,6 +169,11 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         ViewHolder(final Context context, View v) {
             super(v);
             mView = v;
+
+            if(context == null){
+                mView.setVisibility(View.INVISIBLE);
+                return;
+            }
 
             mLayout = (RelativeLayout) v.findViewById(R.id.layout);
             mTextViewSubject = (TextView) v.findViewById(R.id.subject);
@@ -259,7 +240,14 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return sOldList.get(oldItemPosition).getId() == sNewList.get(newItemPosition).getId();
+            final MyClass oldItem = sOldList.get(oldItemPosition);
+            final MyClass newItem = sNewList.get(newItemPosition);
+
+            if(oldItem != null && newItem != null){
+                return sOldList.get(oldItemPosition).getId() == sNewList.get(newItemPosition).getId();
+            }else{
+                return oldItem == null && newItem == null;
+            }
         }
 
         @Override
@@ -267,7 +255,11 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             final MyClass oldItem = sOldList.get(oldItemPosition);
             final MyClass newItem = sNewList.get(newItemPosition);
 
-            return oldItem.equals(newItem) && !hasChangedListSize;
+            if(oldItem != null && newItem != null){
+                return oldItem.equals(newItem) && !hasChangedListSize;
+            }else{
+                return oldItem == null && newItem == null;
+            }
         }
     }
 }

@@ -262,20 +262,21 @@ class MyClassManager {
         List<MyClass> list = mDatabase.selectMyClass(where);
         List<MyClass> timetable = new ArrayList<>();
 
-        for(int week = 0; week < 6; ++week){
-            for(int period = 0; period < 7; ++period){
+        for(int period = 1; period < 8; ++period){
+            for(int week = 0; week < 5; ++week){
 
-                boolean match = false;
+                boolean isEmpty = true;
 
                 for(MyClass myClass : list){
-                    if(myClass.getDayOfWeek() == week && myClass.getPeriod() == period){
+                    if(myClass.equalTimetable(week, period)){
                         timetable.add(myClass);
-                        match = true;
+                        list.remove(myClass);
+                        isEmpty = false;
                         break;
                     }
                 }
 
-                if(!match) timetable.add(null);
+                if(isEmpty) timetable.add(null);
             }
         }
         return timetable;

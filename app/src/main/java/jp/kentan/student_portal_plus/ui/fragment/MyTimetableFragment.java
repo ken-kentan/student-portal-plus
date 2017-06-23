@@ -79,9 +79,9 @@ public class MyTimetableFragment extends Fragment {
         RecyclerView recyclerViewWeek = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassCard);
         RecyclerView recyclerViewDay  = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassList);
 
-        recyclerViewWeek.setLayoutManager(new GridLayoutManager(activity, 6 /* index + 月~金 */));
+        recyclerViewWeek.setLayoutManager(new GridLayoutManager(activity, 5 /* 月~金 */));
         recyclerViewWeek.setAdapter(mAdapter);
-//        recyclerViewWeek.setNestedScrollingEnabled(false);
+        recyclerViewWeek.setNestedScrollingEnabled(false);
         recyclerViewWeek.setHasFixedSize(true);
 
         recyclerViewDay.setLayoutManager(new LinearLayoutManager(activity));
@@ -165,8 +165,14 @@ public class MyTimetableFragment extends Fragment {
     }
 
     public void update() {
-//        List<MyClass> list = PortalDataProvider.getMyClassList();
-        List<MyClass> list = PortalDataProvider.getWeekTimetable();
+        final List<MyClass> list;
+
+        if(mViewType == TYPE_WEEK){
+            list = PortalDataProvider.getWeekTimetable();
+        }else{
+            list = PortalDataProvider.getMyClassList();
+        }
+
         mMyClassInformationSize = list.size();
 
         setVisibility(mMyClassInformationSize > 0);
@@ -185,8 +191,16 @@ public class MyTimetableFragment extends Fragment {
 
         setVisibility(mMyClassInformationSize > 0);
 
+        final List<MyClass> list;
+
+        if(mViewType == TYPE_WEEK){
+            list = PortalDataProvider.getWeekTimetable();
+        }else{
+            list = PortalDataProvider.getMyClassList();
+        }
+
         mAdapter.setViewType(mViewType);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.updateDataListBySilent(list);
 
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt("timetable_view_type", mViewType);

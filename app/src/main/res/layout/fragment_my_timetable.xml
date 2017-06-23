@@ -71,14 +71,6 @@
                 android:textAlignment="center" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewMyClassCard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/layout_period"
-            android:background="@color/grey_300"
-            android:scrollbars="vertical" />
-<!--
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -275,7 +267,7 @@
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
 
-        -->
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
