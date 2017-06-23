@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="30dp"
+    android:layout_height="@dimen/timetable_cell_height"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="2dp">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:padding="1dp"
+            android:shadowColor="@color/grey_900"
+            android:shadowRadius="2"
+            android:text="@string/sample_subject"
+            android:textColor="@color/grey_50"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/instructor"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:padding="1dp"
+            android:shadowColor="@color/grey_900"
+            android:shadowRadius="2"
+            android:text="@string/sample_place"
+            android:textColor="@color/grey_100"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/instructor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:padding="1dp"
+            android:shadowColor="@color/grey_900"
+            android:shadowRadius="2"
+            android:text="@string/sample_instructor"
+            android:textColor="@color/grey_100"
+            android:textSize="11sp" />
+
+    </RelativeLayout>
+</LinearLayout>

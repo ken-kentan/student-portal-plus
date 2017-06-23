@@ -69,6 +69,10 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
     @Override
     public int getItemViewType(int position) {
+        if(mViewType == TYPE_WEEK){
+            //ToDo index time
+        }
+
         return mViewType;
     }
 
@@ -86,7 +90,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         MyClass myClass = null;
 
         if (mViewType == TYPE_WEEK) {
-            final int dayOfWeek = index % 5, period = (index / 5) + 1;
+            final int dayOfWeek = index % 6, period = (index / 6) + 1;
 
             MyClass tmp;
             for(int i=0; i<mListSize; ++i) {

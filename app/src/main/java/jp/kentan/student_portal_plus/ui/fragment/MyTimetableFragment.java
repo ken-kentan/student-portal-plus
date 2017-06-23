@@ -79,9 +79,9 @@ public class MyTimetableFragment extends Fragment {
         RecyclerView recyclerViewWeek = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassCard);
         RecyclerView recyclerViewDay  = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassList);
 
-        recyclerViewWeek.setLayoutManager(new GridLayoutManager(activity, 5 /* 月~金 */));
+        recyclerViewWeek.setLayoutManager(new GridLayoutManager(activity, 6 /* index + 月~金 */));
         recyclerViewWeek.setAdapter(mAdapter);
-        recyclerViewWeek.setNestedScrollingEnabled(false);
+//        recyclerViewWeek.setNestedScrollingEnabled(false);
         recyclerViewWeek.setHasFixedSize(true);
 
         recyclerViewDay.setLayoutManager(new LinearLayoutManager(activity));
