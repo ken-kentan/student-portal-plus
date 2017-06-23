@@ -26,6 +26,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     private final static int TYPE_DASHBOARD = 0;
     private final static int TYPE_LIST      = 1;
     private final static int TYPE_WEEK      = 2;
+    private final static int TYPE_INDEX      = 3;
 
     private static Drawable IC_LOCK_ON, IC_LOCK_OFF;
 
@@ -68,9 +69,12 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(final int position) {
         if(mViewType == TYPE_WEEK){
-            //ToDo index time
+            if(mMyClassList.get(position) == null){
+                return TYPE_INDEX;
+            }
+            return TYPE_WEEK;
         }
 
         return mViewType;
@@ -90,17 +94,19 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         MyClass myClass = null;
 
         if (mViewType == TYPE_WEEK) {
-            final int dayOfWeek = index % 6, period = (index / 6) + 1;
+//            final int dayOfWeek = index % 6, period = (index / 6) + 1;
+//
+//            MyClass tmp;
+//            for(int i=0; i<mListSize; ++i) {
+//                tmp = mMyClassList.get(i);
+//
+//                if(tmp.equalTimetable(dayOfWeek, period)){
+//                    myClass = tmp;
+//                    break;
+//                }
+//            }
 
-            MyClass tmp;
-            for(int i=0; i<mListSize; ++i) {
-                tmp = mMyClassList.get(i);
-
-                if(tmp.equalTimetable(dayOfWeek, period)){
-                    myClass = tmp;
-                    break;
-                }
-            }
+            myClass = mMyClassList.get(index);
 
             if (myClass == null) {
                 vh.mView.setVisibility(View.GONE);
@@ -135,6 +141,8 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             case TYPE_WEEK:
                 vh.mLayout.setBackgroundColor(myClass.getColor());
                 break;
+            case TYPE_INDEX:
+                break;
         }
 
         vh.bind(myClass);
@@ -154,6 +162,9 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
                 break;
             case TYPE_WEEK:
                 v = layoutInflater.inflate(R.layout.card_flat_my_class, parent, false);
+                break;
+            case TYPE_INDEX:
+                v = layoutInflater.inflate(R.layout.card_flat_timetable_index, parent, false);
                 break;
         }
         return new ViewHolder(mContext, v);

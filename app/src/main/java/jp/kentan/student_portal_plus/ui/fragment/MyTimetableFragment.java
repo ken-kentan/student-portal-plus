@@ -165,7 +165,8 @@ public class MyTimetableFragment extends Fragment {
     }
 
     public void update() {
-        List<MyClass> list = PortalDataProvider.getMyClassList();
+//        List<MyClass> list = PortalDataProvider.getMyClassList();
+        List<MyClass> list = PortalDataProvider.getWeekTimetable();
         mMyClassInformationSize = list.size();
 
         setVisibility(mMyClassInformationSize > 0);

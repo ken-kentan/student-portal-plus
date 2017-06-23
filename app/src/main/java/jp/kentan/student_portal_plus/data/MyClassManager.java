@@ -251,9 +251,34 @@ class MyClassManager {
         return mCache = mDatabase.selectMyClass(null);
     }
 
-    List<MyClass> getTimetable() {
+    List<MyClass> getDayTimetable() {
         String where = "WHERE day_of_week=" + getTimetableWeek().ordinal();
         return mDatabase.selectMyClass(where);
+    }
+
+    List<MyClass> getWeekTimetable() {
+        String where = "WHERE day_of_week<=6";
+
+        List<MyClass> list = mDatabase.selectMyClass(where);
+        List<MyClass> timetable = new ArrayList<>();
+
+        for(int week = 0; week < 6; ++week){
+            for(int period = 0; period < 7; ++period){
+
+                boolean match = false;
+
+                for(MyClass myClass : list){
+                    if(myClass.getDayOfWeek() == week && myClass.getPeriod() == period){
+                        timetable.add(myClass);
+                        match = true;
+                        break;
+                    }
+                }
+
+                if(!match) timetable.add(null);
+            }
+        }
+        return timetable;
     }
 
     WEEK getTimetableWeek(){
