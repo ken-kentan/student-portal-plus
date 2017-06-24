@@ -181,6 +181,8 @@
 
     <string name="msg_warn_database_reset">一部または全てのデータベースが破損しています。\nデータベースを初期化しますか?</string>
 
+    <string name="shortcut_disabled_my_timetable">Disable \'My Timetable\' shortcut</string>
+
     <!-- Strings related to Timetable -->
     <string name="mon">月</string>
     <string name="tue">火</string>

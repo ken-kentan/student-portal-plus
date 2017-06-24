@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="shortcut_my_timetable"
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_my_timetable"
+        android:shortcutShortLabel="@string/title_my_timetable"
+        android:shortcutLongLabel="@string/title_my_timetable"
+        android:shortcutDisabledMessage="@string/shortcut_disabled_my_timetable">
+
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="jp.kentan.student_portal_plus"
+            android:targetClass="jp.kentan.student_portal_plus.ui.HomeActivity" >
+
+            <extra android:name="view_mode" android:value="2" />
+
+        </intent>
+
+    </shortcut>
+
+</shortcuts>

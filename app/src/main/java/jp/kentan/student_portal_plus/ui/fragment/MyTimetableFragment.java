@@ -105,7 +105,7 @@ public class MyTimetableFragment extends Fragment {
         activity.setTitle(new CustomTitle(activity, activity.getString(R.string.title_my_timetable)));
         ((NavigationView) activity.findViewById(R.id.nav_view)).getMenu().getItem(1).setChecked(true);
 
-        activity.setViewMode(HomeActivity.VIEW_MODE.MY_CLASS);
+        activity.setViewMode(HomeActivity.VIEW_MODE.MY_TIMETABLE);
 
         return v;
     }

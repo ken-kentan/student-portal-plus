@@ -35,7 +35,7 @@ import jp.kentan.student_portal_plus.util.StringUtils;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PortalDataProvider.Callback, SwipeRefreshLayout.OnRefreshListener {
 
-    public enum VIEW_MODE {NONE, DASHBOARD, MY_CLASS, LECTURE_INFO, LECTURE_CANCEL, NEWS}
+    public enum VIEW_MODE {NONE, DASHBOARD, MY_TIMETABLE, LECTURE_INFO, LECTURE_CANCEL, NEWS}
 
     private VIEW_MODE mViewMode = VIEW_MODE.NONE;
 
@@ -192,7 +192,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case DASHBOARD:
                 transaction.replace(R.id.container, mDashboardFragment);
                 break;
-            case MY_CLASS:
+            case MY_TIMETABLE:
                 transaction.replace(R.id.container, mMyTimetableFragment);
                 break;
             case LECTURE_INFO:
@@ -243,7 +243,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void setViewMode(VIEW_MODE mode) {
         mViewMode = mode;
 
-        if(mode == VIEW_MODE.MY_CLASS){
+        if(mode == VIEW_MODE.MY_TIMETABLE){
             mFabBehavior.setEnabled(true);
             mFab.show();
         }else{
@@ -272,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         switchFragment(VIEW_MODE.DASHBOARD);
                         break;
                     case R.id.nav_my_timetable:
-                        switchFragment(VIEW_MODE.MY_CLASS);
+                        switchFragment(VIEW_MODE.MY_TIMETABLE);
                         break;
                     case R.id.nav_class_schedule_change:
                         switchFragment(VIEW_MODE.LECTURE_INFO);
@@ -350,7 +350,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     case DASHBOARD:
                         mDashboardFragment.update();
                         break;
-                    case MY_CLASS:
+                    case MY_TIMETABLE:
                         mMyTimetableFragment.update();
                         break;
                     case LECTURE_INFO:
