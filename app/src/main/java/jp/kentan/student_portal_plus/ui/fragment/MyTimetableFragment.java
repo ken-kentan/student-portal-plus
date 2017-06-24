@@ -60,7 +60,7 @@ public class MyTimetableFragment extends Fragment {
 
         mAdapter = new MyTimetableRecyclerAdapter(context, mViewType);
 
-        COLOR_ACCENT = ResourcesCompat.getColor(getResources(), R.color.colorAccent, null);
+        COLOR_ACCENT = ResourcesCompat.getColor(getResources(), R.color.colorAccent , null);
         COLOR_NORMAL = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
     }
 

@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/timetable_cell_height"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:padding="2dp">
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_300" />
 
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="2dp"
         android:background="@color/colorAccent">
 
         <TextView
@@ -62,4 +68,12 @@
             android:textSize="11sp" />
 
     </RelativeLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/border"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/mask"
+        android:background="@color/colorPrimary" />
+
+</RelativeLayout>

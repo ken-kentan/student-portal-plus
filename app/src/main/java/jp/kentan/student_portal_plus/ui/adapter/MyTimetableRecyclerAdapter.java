@@ -10,18 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import jp.kentan.student_portal_plus.ui.MyClassActivity;
 import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.data.component.MyClass;
+import jp.kentan.student_portal_plus.util.ConvertUtils;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetableRecyclerAdapter.ViewHolder> {
+
+    private static final int[] CLASS_PERIOD_M = new int[]{(8*60 + 50), (10*60 + 30), (12*60 + 50), (14*60 + 30), (16*60 + 10), (17*60 + 50), (19*60 + 30)};
 
     private final static int TYPE_DASHBOARD = 0;
     private final static int TYPE_LIST      = 1;
@@ -87,12 +92,33 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         }
     }
 
+    private float getTimeProgress(final int index){
+        final int dayOfWeek = index % 5 + 2, period = index / 5;
+        final Calendar now = Calendar.getInstance();
+
+        final int DAY_OF_WEEK = now.get(Calendar.DAY_OF_WEEK);
+
+        if(dayOfWeek < DAY_OF_WEEK){
+            return 1.0f;
+        }else if(dayOfWeek == DAY_OF_WEEK){
+            final int nowMinute = now.get(Calendar.MINUTE) + now.get(Calendar.HOUR_OF_DAY) * 60;
+
+            //授業開始時間から何分経ったか
+            final int diffMinute = nowMinute - CLASS_PERIOD_M[period];
+
+            if(diffMinute > 0){
+                float progress = (float)diffMinute / 90.0f;
+
+                return Math.min(progress, 1.0f);
+            }
+        }
+
+        return 0.0f;
+    }
+
     @Override
     public void onBindViewHolder(final ViewHolder vh, final int index) {
         final MyClass myClass = mMyClassList.get(index);
-
-        if (myClass == null) return;
-
 
         switch (mViewType){
             case TYPE_DASHBOARD:
@@ -116,6 +142,20 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
                 vh.mIcon.setImageDrawable((myClass.hasRegisteredByUser()) ? IC_LOCK_OFF: IC_LOCK_ON);
                 break;
             case TYPE_WEEK:
+
+                final float progress = getTimeProgress(index);
+
+                if(progress > 0.0f){
+                    vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)ConvertUtils.dpToPixel(mContext, progress * 97.0f)));
+
+                    if(progress > 0.98f) vh.mBorder.setVisibility(View.GONE);
+                }else{
+                    vh.mBorder.setVisibility(View.GONE);
+                    vh.mMask.setVisibility(View.INVISIBLE);
+                }
+
+                if(myClass == null) return;
+
                 vh.mLayout.setBackgroundColor(myClass.getColor());
                 break;
         }
@@ -159,6 +199,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
         //Week
         RelativeLayout mLayout;
+        View mMask, mBorder;
 
         //Day
         ImageView mIcon;
@@ -170,10 +211,10 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             super(v);
             mView = v;
 
-            if(context == null){
-                mView.setVisibility(View.INVISIBLE);
-                return;
-            }
+            mMask   = v.findViewById(R.id.mask);
+            mBorder = v.findViewById(R.id.border);
+
+            if(context == null) return;
 
             mLayout = (RelativeLayout) v.findViewById(R.id.layout);
             mTextViewSubject = (TextView) v.findViewById(R.id.subject);
