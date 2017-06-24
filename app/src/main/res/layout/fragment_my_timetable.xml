@@ -89,7 +89,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -107,13 +107,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_1"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -131,13 +130,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_2"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -155,13 +153,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_3"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -179,13 +176,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_4"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -203,13 +199,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_5"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -227,13 +222,12 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_6"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#c0c0c0" />
+                        android:background="@color/grey_200" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -251,8 +245,7 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@string/period_7"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorPrimary"/>
 
                 </LinearLayout>
 
@@ -261,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/layout_period"
-                    android:background="@color/grey_300"
+                    android:background="@color/grey_200"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>
