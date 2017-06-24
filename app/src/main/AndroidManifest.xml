@@ -29,6 +29,15 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
+            android:name=".ui.widget.MyTimetableShortcutActivity"
+            android:icon="@mipmap/ic_my_timetable"
+            android:label="@string/title_my_timetable">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.IdpLoginActivity"
             android:label="@string/title_activity_login" />
         <activity
