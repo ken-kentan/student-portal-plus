@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import java.util.List;
 import jp.kentan.student_portal_plus.ui.MyClassActivity;
 import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.data.component.MyClass;
-import jp.kentan.student_portal_plus.util.ConvertUtils;
 import jp.kentan.student_portal_plus.util.StringUtils;
 
 public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetableRecyclerAdapter.ViewHolder> {
@@ -151,8 +149,6 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
                 if(progress > 0.0f){
                     vh.mMask.setVisibility(View.VISIBLE);
-
-                    Log.d("Test", "" + CELL_HEIGHT_PX);
 
                     if(progress < 0.98f){
                         vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(progress * CELL_HEIGHT_PX)));
