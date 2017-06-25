@@ -31,182 +31,231 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/layout_period"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:background="@color/grey_50"
                     android:orientation="vertical">
 
-                    <View
+                    <RelativeLayout
+                        android:id="@+id/period1"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
+                        android:layout_height="@dimen/timetable_cell_height">
 
-                    <TextView
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_1_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_1"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period2"
                         android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_1_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period1">
 
-                    <TextView
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_2_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_2"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period3"
                         android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_1"
-                        android:textColor="@color/colorPrimary" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period2">
 
-                    <View
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_3_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_3"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period4"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period3">
 
-                    <TextView
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_4_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_4"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period5"
                         android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_2_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period4">
 
-                    <TextView
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_5_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_5"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period6"
                         android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_2"
-                        android:textColor="@color/colorPrimary" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period5">
 
-                    <View
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_6_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_6"
+                            android:textColor="@color/colorPrimary" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/period7"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
+                        android:layout_height="@dimen/timetable_cell_height"
+                        android:layout_below="@+id/period6">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_3_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey_200" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_3"
-                        android:textColor="@color/colorPrimary" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/period_7_begin"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey_600"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/period_7"
+                            android:textColor="@color/colorPrimary" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_4_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
+                    </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_4"
-                        android:textColor="@color/colorPrimary" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_5_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_5"
-                        android:textColor="@color/colorPrimary" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_6_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_6"
-                        android:textColor="@color/colorPrimary" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey_200" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:padding="2dp"
-                        android:text="@string/period_7_begin"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_marginBottom="31dp"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/period_7"
-                        android:textColor="@color/colorPrimary" />
-
-                </LinearLayout>
+                </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewMyClassCard"

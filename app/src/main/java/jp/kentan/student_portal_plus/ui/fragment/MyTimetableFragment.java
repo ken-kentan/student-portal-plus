@@ -183,7 +183,11 @@ public class MyTimetableFragment extends Fragment {
             mTextViewWeek[i].setTextColor((i == dayOfWeek) ? COLOR_ACCENT : COLOR_NORMAL);
         }
 
-        mAdapter.updateDataList(list);
+        if(mViewType == TYPE_WEEK){
+            mAdapter.updateDataListBySilent(list);
+        }else{
+            mAdapter.updateDataList(list);
+        }
     }
 
     private void setViewType(final int viewType) {

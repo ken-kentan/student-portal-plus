@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
     private static Drawable IC_LOCK_ON, IC_LOCK_OFF;
 
+    private static float CELL_HEIGHT_PX;
+
     private int mViewType;
 
     private List<MyClass> mMyClassList = new ArrayList<>();
@@ -44,6 +47,8 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         super();
         mContext = context;
         mViewType = viewType;
+
+        CELL_HEIGHT_PX = (float)mContext.getResources().getDimensionPixelSize(R.dimen.timetable_cell_height);
 
         IC_LOCK_ON  = AppCompatResources.getDrawable(mContext, R.drawable.ic_lock_on);
         IC_LOCK_OFF = AppCompatResources.getDrawable(mContext, R.drawable.ic_lock_off);
@@ -145,9 +150,17 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
                 final float progress = getTimeProgress(index);
 
                 if(progress > 0.0f){
-                    vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)ConvertUtils.dpToPixel(mContext, progress * 97.0f)));
+                    vh.mMask.setVisibility(View.VISIBLE);
 
-                    if(progress > 0.98f) vh.mBorder.setVisibility(View.GONE);
+                    Log.d("Test", "" + CELL_HEIGHT_PX);
+
+                    if(progress < 0.98f){
+                        vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(progress * CELL_HEIGHT_PX)));
+                        vh.mBorder.setVisibility((progress > 0.98f) ? View.GONE : View.VISIBLE);
+                    }else{
+                        vh.mBorder.setVisibility(View.GONE);
+                    }
+
                 }else{
                     vh.mBorder.setVisibility(View.GONE);
                     vh.mMask.setVisibility(View.INVISIBLE);
