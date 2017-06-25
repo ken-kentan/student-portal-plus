@@ -154,17 +154,19 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
             mTextViewSubject.setText(info.getSubject());
             mTextViewInstructor.setText(info.getCancelDate() + "   " + info.getInstructor());
 
-            switch (info.getMyClassStatus()){
-                case LectureCancellation.RESISTED_BY_PORTAL:
-                case LectureCancellation.RESISTED_BY_USER:
-                    mIcon.setImageDrawable(IC_INFO_ON);
-                    break;
-                case LectureCancellation.RESISTED_BY_SIMILAR:
-                    mIcon.setImageDrawable(IC_SIMILAR_ON);
-                    break;
-                default:
-                    mIcon.setImageDrawable(IC_INFO_OFF);
-                    break;
+            if(mIcon != null) {
+                switch (info.getMyClassStatus()) {
+                    case LectureCancellation.RESISTED_BY_PORTAL:
+                    case LectureCancellation.RESISTED_BY_USER:
+                        mIcon.setImageDrawable(IC_INFO_ON);
+                        break;
+                    case LectureCancellation.RESISTED_BY_SIMILAR:
+                        mIcon.setImageDrawable(IC_SIMILAR_ON);
+                        break;
+                    default:
+                        mIcon.setImageDrawable(IC_INFO_OFF);
+                        break;
+                }
             }
 
             final int TYPEFACE = (info.hasRead()) ? Typeface.NORMAL : Typeface.BOLD;

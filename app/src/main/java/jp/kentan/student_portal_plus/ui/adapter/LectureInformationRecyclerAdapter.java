@@ -154,17 +154,19 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
             mSubject.setText(info.getSubject());
             mDetail.setText(info.getDetailText());
 
-            switch (info.getMyClassStatus()){
-                case LectureInformation.RESISTED_BY_PORTAL:
-                case LectureInformation.RESISTED_BY_USER:
-                    mIcon.setImageDrawable(IC_INFO_ON);
-                    break;
-                case LectureInformation.RESISTED_BY_SIMILAR:
-                    mIcon.setImageDrawable(IC_SIMILAR_ON);
-                    break;
-                default:
-                    mIcon.setImageDrawable(IC_INFO_OFF);
-                    break;
+            if(mIcon != null) {
+                switch (info.getMyClassStatus()) {
+                    case LectureInformation.RESISTED_BY_PORTAL:
+                    case LectureInformation.RESISTED_BY_USER:
+                        mIcon.setImageDrawable(IC_INFO_ON);
+                        break;
+                    case LectureInformation.RESISTED_BY_SIMILAR:
+                        mIcon.setImageDrawable(IC_SIMILAR_ON);
+                        break;
+                    default:
+                        mIcon.setImageDrawable(IC_INFO_OFF);
+                        break;
+                }
             }
 
             final int TYPEFACE = (info.hasRead()) ? Typeface.NORMAL : Typeface.BOLD;

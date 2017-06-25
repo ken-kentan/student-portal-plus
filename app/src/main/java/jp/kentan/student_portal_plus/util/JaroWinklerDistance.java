@@ -92,9 +92,8 @@ public class JaroWinklerDistance {
             return 0f;
         }
         float j = ((m / s1.length() + m / s2.length() + (m - mtp[1]) / m)) / 3;
-        float jw = j < getThreshold() ? j : j + Math.min(0.1f, 1f / mtp[3]) * mtp[2]
+        return j < threshold ? j : j + Math.min(0.1f, 1f / mtp[3]) * mtp[2]
                 * (1 - j);
-        return jw;
     }
 
     /**

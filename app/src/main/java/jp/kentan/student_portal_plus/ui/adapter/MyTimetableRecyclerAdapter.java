@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -98,7 +97,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
         final int DAY_OF_WEEK = now.get(Calendar.DAY_OF_WEEK);
 
-        if(dayOfWeek < DAY_OF_WEEK){
+        if(dayOfWeek < DAY_OF_WEEK || DAY_OF_WEEK == 1){
             return 1.0f;
         }else if(dayOfWeek == DAY_OF_WEEK){
             final int nowMinute = now.get(Calendar.MINUTE) + now.get(Calendar.HOUR_OF_DAY) * 60;
@@ -228,8 +227,9 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
             mTextViewPlace  = (TextView)v.findViewById(R.id.place);
             mSeparator = v.findViewById(R.id.separator);
 
+            final View clickableView = (mLayout == null) ? mView : mLayout;
 
-            mView.setOnClickListener(new View.OnClickListener() {
+            clickableView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(mClass == null) return;

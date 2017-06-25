@@ -31,17 +31,7 @@
         android:layout_marginTop="5dp"
         android:background="@android:color/holo_green_light" />
 
-    <!--<ImageView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:srcCompat="@drawable/ic_star_orange"-->
-    <!--android:id="@+id/imageViewStatus"-->
-    <!--android:paddingLeft="3dp"-->
-    <!--android:paddingTop="3dp"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_toEndOf="@+id/linearLayout" />-->
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toStartOf="@+id/icon"
@@ -65,13 +55,14 @@
             android:id="@+id/instructor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/subject"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/sample_instructor"
             android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info"
             android:textColor="@color/grey_600" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/day_and_period"

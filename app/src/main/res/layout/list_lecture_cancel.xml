@@ -30,7 +30,7 @@
         android:textColor="@color/blue_grey_600"
         android:textSize="12sp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -57,13 +57,14 @@
             android:id="@+id/instructor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/subject"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/sample_instructor"
             android:textColor="@color/grey_600"
             android:textSize="13sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

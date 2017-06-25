@@ -12,25 +12,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="end"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/sample_date"
         android:textColor="@color/blue_grey_600"
         android:textSize="12sp" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/info"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_info_on" />
+    <!--<ImageView-->
+        <!--android:id="@+id/icon"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="5dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:contentDescription="@string/info"-->
+        <!--android:visibility="gone"-->
+        <!--app:srcCompat="@drawable/ic_info_on" />-->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -43,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="70dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingEnd="70dp"
@@ -55,13 +54,14 @@
             android:id="@+id/instructor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/subject"
             android:layout_marginTop="1dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/sample_instructor"
             android:textColor="@color/grey_600"
             android:textSize="13sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:id="@+id/separator"
