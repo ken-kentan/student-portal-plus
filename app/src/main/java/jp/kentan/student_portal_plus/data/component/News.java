@@ -1,8 +1,6 @@
 package jp.kentan.student_portal_plus.data.component;
 
 
-import android.util.Log;
-
 import jp.kentan.student_portal_plus.data.PortalDataProvider;
 import jp.kentan.student_portal_plus.util.StringUtils;
 

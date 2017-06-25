@@ -74,7 +74,7 @@ public class NewsActivity extends AppCompatActivity {
         final boolean isFavorite = mInfo.isFavorite();
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        fab.setImageDrawable(AppCompatResources.getDrawable(context, (isFavorite) ? R.drawable.ic_star : R.drawable.ic_star_borde));
+        fab.setImageDrawable(AppCompatResources.getDrawable(context, (isFavorite) ? R.drawable.ic_star : R.drawable.ic_star_border));
         fab.setRotation((isFavorite) ? 144.0f : 0.0f);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ public class NewsActivity extends AppCompatActivity {
                 String msg = (mInfo.isFavorite()) ? getString(R.string.snackbar_star_set) : getString(R.string.snackbar_star_reset);
                 Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
-                fab.setImageDrawable(AppCompatResources.getDrawable(context, (isFavorite) ? R.drawable.ic_star : R.drawable.ic_star_borde));
+                fab.setImageDrawable(AppCompatResources.getDrawable(context, (isFavorite) ? R.drawable.ic_star : R.drawable.ic_star_border));
                 fab.animate().rotation((isFavorite) ? 144.0f : 0.0f).setInterpolator(new OvershootInterpolator()).setDuration(800).start();
             }
         });

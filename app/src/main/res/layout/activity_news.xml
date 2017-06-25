@@ -71,6 +71,6 @@
         app:backgroundTint="@color/orange_a_400"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_star_borde" />
+        app:srcCompat="@drawable/ic_star_border" />
 
 </android.support.design.widget.CoordinatorLayout>
