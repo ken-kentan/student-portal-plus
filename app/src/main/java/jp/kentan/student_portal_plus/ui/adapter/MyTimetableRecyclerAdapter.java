@@ -154,6 +154,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
                         vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(progress * CELL_HEIGHT_PX)));
                         vh.mBorder.setVisibility((progress > 0.98f) ? View.GONE : View.VISIBLE);
                     }else{
+                        vh.mMask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                         vh.mBorder.setVisibility(View.GONE);
                     }
 
