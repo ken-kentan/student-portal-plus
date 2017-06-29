@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
          */
         updateAccountHeader();
         new NotificationController(this).cancelAll();
-        if(PortalDataProvider.isFetching()){
+        if(PortalDataProvider.isFetching() && !sPortalData.isQueryEmpty()){
             mSwipeRefreshLayout.setRefreshing(true);
         }
 

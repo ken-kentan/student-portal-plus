@@ -246,7 +246,7 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
     Fetch
      */
     public void fetch() {
-        (new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 if (mPreferences.getBoolean("all", true)) {
@@ -278,12 +278,14 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
                 mShibbolethClient.fetchDocument(mQueryList.get(0));
                 mQueryList.remove(0);
             }
-        })).start();
+        }).start();
     }
 
     public static boolean isFetching() {
         return isFetching;
     }
+
+    public boolean isQueryEmpty(){ return mQueryList.isEmpty(); }
 
     private void finishAllQuery(){
         isFetching = false;
