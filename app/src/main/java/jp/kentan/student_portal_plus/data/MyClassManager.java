@@ -44,17 +44,13 @@ class MyClassManager {
         int countUpdate = 0;
         List<String> fetchedTimetableNumList = new ArrayList<>();
 
-        final Element table, table2;
-        try {
-            table  = document.body().children().select("table#enroll_data_tbl" ).get(0);
-            table2 = document.body().children().select("table#enroll_data_tbl2").get(0); //集中科目
-        } catch (Exception e){
+        final Element table  = document.body().children().select("table#enroll_data_tbl" ).first();
+        final Element table2 = document.body().children().select("table#enroll_data_tbl2" ).first();
+
+        if(table == null || table2 == null){
             //受講登録情報は、次学期になると表示されないため、ユーザーが登録したもの以外を消去
             if(document.body().children().select("div.information_area") != null){
                 DatabaseProvider.getDatabase().delete("my_class", "registered_by_user=0", null);
-            }else{
-                callback.failed("failed to scraping of class", e);
-                Log.d(TAG, "Web scraping failed. :" + e);
             }
 
             return;
@@ -189,6 +185,7 @@ class MyClassManager {
             statement.close();
             database.setTransactionSuccessful();
         } catch (Exception e) {
+            callback.failed(e.getMessage(), e);
             Log.e(TAG, e.getMessage(), e);
         } finally {
             database.endTransaction();

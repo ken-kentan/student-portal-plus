@@ -72,14 +72,9 @@ class LectureInformationManager {
         List<String> fetchedList = new ArrayList<>(); //取得情報をハッシュ化して保持
         mUnregisteredInfoList.clear();
 
-        final Element table;
-        try {
-            table = document.body().children().select("table#class_msg_data_tbl").get(0);
-        } catch (Exception e){
-            callback.failed("failed to scraping of lecture info", e);
-            Log.d(TAG, "Web scraping failed. :" + e);
-            return;
-        }
+        final Element table = document.body().children().select("table#class_msg_data_tbl").first();
+
+        if(table == null) return;
 
         createCache();
 
@@ -189,6 +184,7 @@ class LectureInformationManager {
 
             database.setTransactionSuccessful();
         } catch (Exception e) {
+            callback.failed(e.getMessage(), e);
             Log.e(TAG, e.getMessage(), e);
         } finally {
             database.endTransaction();

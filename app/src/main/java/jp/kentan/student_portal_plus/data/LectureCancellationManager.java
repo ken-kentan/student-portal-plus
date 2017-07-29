@@ -69,15 +69,9 @@ class LectureCancellationManager {
         final List<String> fetchedList = new ArrayList<>(); //取得情報をハッシュ化して保持
         mUnregisteredInfoList.clear();
 
-        final Element table;
-        try {
-            table  = document.body().children().select("table#cancel_info_data_tbl" ).get(0);
-        } catch (Exception e){
-            callback.failed("failed to scraping of class", e);
-            Log.d(TAG, "Web scraping failed. :" + e);
+        final Element table = document.body().children().select("table#cancel_info_data_tbl" ).first();
 
-            return;
-        }
+        if(table == null) return;
 
         createCache();
 
@@ -164,6 +158,7 @@ class LectureCancellationManager {
 
             database.setTransactionSuccessful();
         } catch (Exception e){
+            callback.failed(e.getMessage(), e);
             Log.e(TAG, e.getMessage(), e);
         } finally {
             database.endTransaction();
