@@ -13,6 +13,8 @@ import java.util.Locale;
 
 import jp.kentan.student_portal_plus.data.PortalDataProvider;
 
+import static jp.kentan.student_portal_plus.notification.NotificationService.NOTIFY_ALL;
+
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class NotificationJob extends JobService implements PortalDataProvider.Callback {
@@ -20,8 +22,6 @@ public class NotificationJob extends JobService implements PortalDataProvider.Ca
     private final static String TAG = "NotificationJob";
 
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN);
-
-    private final static int NOTIFY_ALL = 0;
 
     private JobParameters mParams;
 
