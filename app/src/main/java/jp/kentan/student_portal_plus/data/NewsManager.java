@@ -34,12 +34,10 @@ class NewsManager {
     private DatabaseProvider mDatabase;
 
 
-    NewsManager(DatabaseProvider database, int limit) {
+    NewsManager(DatabaseProvider database) {
         mDatabase = database;
 
         createCache();
-
-        mDatabase.setLimitToNews(limit);
     }
 
     private void createCache() {

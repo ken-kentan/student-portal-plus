@@ -462,20 +462,6 @@ public class DatabaseProvider {
         }
     }
 
-    void setLimitToNews(final int limit) {
-        sInstance.mDatabase.beginTransaction();
-        try {
-            if (limit > 10) { //safety
-                sInstance.mDatabase.execSQL("DELETE FROM " + NEWS_TABLE + " WHERE date NOT IN (SELECT date FROM " + NEWS_TABLE + " ORDER BY DATE(date) DESC LIMIT " + limit + " )");
-            }
-            sInstance.mDatabase.setTransactionSuccessful();
-        } catch (SQLException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } finally {
-            sInstance.mDatabase.endTransaction();
-        }
-    }
-
 //    boolean deleteMyClass(final String where) {
 //        sInstance.mDatabase.beginTransaction();
 //        try {

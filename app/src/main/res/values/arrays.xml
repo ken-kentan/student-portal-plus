@@ -29,19 +29,6 @@
         <item>100</item>
     </string-array>
 
-    <string-array name="limit_of_latest_info_name">
-        <item>100件</item>
-        <item>120件</item>
-        <item>150件</item>
-        <item>200件</item>
-    </string-array>
-    <string-array name="limit_of_latest_info_values">
-        <item>100</item>
-        <item>120</item>
-        <item>150</item>
-        <item>200</item>
-    </string-array>
-
     <string-array name="notify_type_lecture_info_name">
         <item>すべて</item>
         <item>受講科目・類似科目</item>

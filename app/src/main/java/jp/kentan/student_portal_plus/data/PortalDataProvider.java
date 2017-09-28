@@ -65,13 +65,6 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
     private static void createManagersIfNeed(Context context) {
         final SharedPreferences pref = context.getSharedPreferences("common", Context.MODE_PRIVATE);
         final DatabaseProvider database = DatabaseProvider.getInstance(context);
-        int newsNumLimit = pref.getInt("limit_of_latest_info", 100);
-
-//        if(newsNumLimit < 200){
-//            SharedPreferences.Editor editor = pref.edit();
-//            editor.putInt("limit_of_latest_info", newsNumLimit=200);
-//            editor.apply();
-//        }
 
         if (sMyClass == null) {
             sMyClass = new MyClassManager(database);
@@ -83,7 +76,7 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
             sLectureCancellation = new LectureCancellationManager(database);
         }
         if (sNews == null) {
-            sNews = new NewsManager(database, newsNumLimit);
+            sNews = new NewsManager(database);
         }
     }
 

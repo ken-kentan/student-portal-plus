@@ -75,15 +75,6 @@
             android:summary="@string/pref_description_my_class_threshold">
         </Preference>
 
-        <ListPreference
-            android:key="pref_key_limit_of_latest_info"
-            android:title="最新情報の最大保存件数"
-            android:summary="件 (古い情報は自動的に消去されます)"
-            android:entries="@array/limit_of_latest_info_name"
-            android:entryValues="@array/limit_of_latest_info_values"
-            android:defaultValue="100">
-        </ListPreference>
-
         <CheckBoxPreference
             android:key="pref_key_pdf_open_with_gdocs"
             android:title="@string/pref_title_pdf_open_with_gdocs"

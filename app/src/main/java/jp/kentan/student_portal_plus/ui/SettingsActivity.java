@@ -93,7 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
         private Preference mNotifyContents;
-        private ListPreference mAutoFetchInterval, mLimitOfLatestInfo;
+        private ListPreference mAutoFetchInterval;
         private CheckBoxPreference mNotifyWithVibrate, mNotifyWithLed;
 
         private NotificationScheduler mNotificationScheduler;
@@ -118,7 +118,6 @@ public class SettingsActivity extends AppCompatActivity {
              */
             mNotifyContents    = screen.findPreference("pref_key_notify_contents");
             mAutoFetchInterval = (ListPreference) screen.findPreference("pref_key_auto_fetch_interval");
-            mLimitOfLatestInfo = (ListPreference) screen.findPreference("pref_key_limit_of_latest_info");
             mNotifyWithVibrate = (CheckBoxPreference) screen.findPreference("pref_key_notify_with_vibrate");
             mNotifyWithLed     = (CheckBoxPreference) screen.findPreference("pref_key_notify_with_led");
 
@@ -175,7 +174,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             mAutoFetchInterval.setSummary(autoFetchSummary);
-            mLimitOfLatestInfo.setSummary(sPreferenceCommon.getInt("limit_of_latest_info", 100) + "件 (古い情報は自動的に消去されます)");
         }
 
         private void updateLastLoginDate(){
@@ -310,12 +308,6 @@ public class SettingsActivity extends AppCompatActivity {
                     break;
                 case "pref_key_notify_with_led":
                     editorNotification.putBoolean("led", pref.getBoolean(key, true));
-                    break;
-                case "pref_key_limit_of_latest_info":
-                    String limit = pref.getString(key, "90");
-
-                    editorCommon.putInt("limit_of_latest_info", Integer.parseInt(limit));
-                    mLimitOfLatestInfo.setSummary(limit + "件 (古い情報は自動的に消去されます)");
                     break;
                 case "pref_key_pdf_open_with_gdocs":
                     editorCommon.putBoolean("pdf_open_with_gdocs", pref.getBoolean(key, true));
