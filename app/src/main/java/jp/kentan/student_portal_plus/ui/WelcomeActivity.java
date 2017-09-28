@@ -28,7 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         setTitle(new CustomTitle(this, getString(R.string.title_activity_welcome)));
 
-        mWebView = (WebView) findViewById(R.id.web_view);
+        mWebView = findViewById(R.id.web_view);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -46,9 +46,9 @@ public class WelcomeActivity extends AppCompatActivity {
         });
         mWebView.loadUrl(getString(R.string.url_terms));
 
-        final CheckBox checkBoxAgree = (CheckBox) findViewById(R.id.check_box_agree);
+        final CheckBox checkBoxAgree = findViewById(R.id.check_box_agree);
 
-        Button buttonIdp = (Button) findViewById(R.id.button_shibboleth);
+        Button buttonIdp = findViewById(R.id.button_shibboleth);
         buttonIdp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

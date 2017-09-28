@@ -44,15 +44,15 @@ class LectureInformationManager {
     private enum INFO_STATUS {EXIST, EXIST_UPDATED, NEW}
 
     private List<LectureInformation> mCache = new ArrayList<>();
-    private List<Content> mUnregisteredInfoList = new ArrayList<>();
+    private final List<Content> UNREGISTERED_INFO_LIST = new ArrayList<>();
 
-    private DatabaseProvider mDatabase;
+    private final DatabaseProvider DATABASE;
 
     private float mMyClassThreshold = 0.8f;
 
 
     LectureInformationManager(DatabaseProvider database) {
-        mDatabase = database;
+        DATABASE = database;
 
         createCache();
     }
@@ -63,14 +63,14 @@ class LectureInformationManager {
 
 
     private void createCache() {
-        mCache = mDatabase.selectLectureInformation(null);
+        mCache = DATABASE.selectLectureInformation(null);
 
         Log.d(TAG, "cache created. (" + mCache.size() + ")");
     }
 
     void scrape(PortalDataProvider.Callback callback, Document document) {
         List<String> fetchedList = new ArrayList<>(); //取得情報をハッシュ化して保持
-        mUnregisteredInfoList.clear();
+        UNREGISTERED_INFO_LIST.clear();
 
         final Element table = document.body().children().select("table#class_msg_data_tbl").first();
 
@@ -114,7 +114,7 @@ class LectureInformationManager {
 
                 final int id;
                 final InformationStatus infoStatus = getInfoStatus(faculty, semester, subject, instructor, dayOfWeek, period, type, detail, releaseDate, updateDate);
-                switch (infoStatus.status) {
+                switch (infoStatus.STATUS) {
                     case NEW:
                         statement.bindNull(1);
                         statement.bindString( 2, releaseDate);
@@ -140,7 +140,7 @@ class LectureInformationManager {
                         values.put("detail"     , detail);
                         values.put("read"       , 0);
 
-                        id = infoStatus.info.getId();
+                        id = infoStatus.INFO.getId();
                         database.update(DatabaseProvider.LECTURE_INFO_TABLE, values, "_id=?", new String[]{Integer.toString(id)});
 
                         Log.d(TAG, "EXIST_UPDATED: " + subject);
@@ -153,7 +153,7 @@ class LectureInformationManager {
                 }
 
                 //NEWまたはEXIST_UPDATEDの場合は通知リストに追加
-                mUnregisteredInfoList.add(new Content(Content.TYPE.LECTURE_INFO, subject, StringUtils.removeHtmlTag(detail), hash));
+                UNREGISTERED_INFO_LIST.add(new Content(Content.TYPE.LECTURE_INFO, subject, StringUtils.removeHtmlTag(detail), hash));
             }
             statement.close();
 
@@ -190,11 +190,11 @@ class LectureInformationManager {
             database.endTransaction();
         }
 
-        Log.d(TAG, "updated. (" + mUnregisteredInfoList.size() + ")");
+        Log.d(TAG, "updated. (" + UNREGISTERED_INFO_LIST.size() + ")");
     }
 
     void updateReadStatus(int id, boolean read) {
-        mDatabase.updateLectureInformation(new String[]{Integer.toString(id)}, read);
+        DATABASE.updateLectureInformation(new String[]{Integer.toString(id)}, read);
     }
 
 
@@ -202,7 +202,7 @@ class LectureInformationManager {
     Getter
      */
     List<LectureInformation> get() {
-        return mCache = mDatabase.selectLectureInformation(null);
+        return mCache = DATABASE.selectLectureInformation(null);
     }
 
     List<LectureInformation> getWithMyClass() {
@@ -255,7 +255,7 @@ class LectureInformationManager {
             }
         }
 
-        List<LectureInformation> informations = mDatabase.selectLectureInformation(where.toString());
+        List<LectureInformation> informations = DATABASE.selectLectureInformation(where.toString());
 
         if (myClass) {
             for (int index = 0; index < informations.size(); ) {
@@ -296,7 +296,7 @@ class LectureInformationManager {
     LectureInformation getById(final int id) throws Exception {
         String where = "WHERE _id=" + id + " LIMIT 1";
 
-        return mDatabase.selectLectureInformation(where).get(0);
+        return DATABASE.selectLectureInformation(where).get(0);
     }
 
     LectureInformation getByHash(String hash){
@@ -304,7 +304,7 @@ class LectureInformationManager {
 
         Log.d(TAG, where);
 
-        return mDatabase.selectLectureInformation(where).get(0);
+        return DATABASE.selectLectureInformation(where).get(0);
     }
 
     List<Content> getUnregisteredList(final int type) {
@@ -315,7 +315,7 @@ class LectureInformationManager {
             final List<String> mySubjectList = PortalDataProvider.getMyClassSubjectList();
 
             String subject;
-            for (Content content : mUnregisteredInfoList) {
+            for (Content content : UNREGISTERED_INFO_LIST) {
                 subject = content.getTitle();
 
                 for (String mySubject : mySubjectList) {
@@ -328,7 +328,7 @@ class LectureInformationManager {
 
             return filteredList;
         } else {
-            return mUnregisteredInfoList;
+            return UNREGISTERED_INFO_LIST;
         }
     }
 
@@ -350,12 +350,12 @@ class LectureInformationManager {
 
 
     private static class InformationStatus {
-        INFO_STATUS status;
-        LectureInformation info;
+        final INFO_STATUS STATUS;
+        final LectureInformation INFO;
 
         private InformationStatus(INFO_STATUS status, LectureInformation info) {
-            this.status = status;
-            this.info = info;
+            STATUS = status;
+            INFO = info;
         }
     }
 }

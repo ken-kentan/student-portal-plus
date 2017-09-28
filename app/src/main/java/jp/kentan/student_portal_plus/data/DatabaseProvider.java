@@ -527,13 +527,13 @@ public class DatabaseProvider {
     private class DatabaseHelper extends SQLiteOpenHelper {
 
         private final static String TAG = "DatabaseHelper";
-        private Context mContext;
+        private final Context CONTEXT;
 
 
         DatabaseHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
 
-            mContext = context;
+            CONTEXT = context;
         }
 
         @Override
@@ -561,7 +561,7 @@ public class DatabaseProvider {
                     db.execSQL("DROP TABLE " + NEWS_TABLE);
                     db.execSQL("ALTER TABLE tmp RENAME TO " + NEWS_TABLE);
 
-                    Toast.makeText(mContext, "データベースをアップグレードしました", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CONTEXT, "データベースをアップグレードしました", Toast.LENGTH_LONG).show();
 
                     db.setTransactionSuccessful();
                 } catch (Exception e){

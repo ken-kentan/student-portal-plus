@@ -10,10 +10,15 @@ public class News {
     public final static String KEY = "news";
     public final static String KEY_DATE = "news_last_date";
 
-    private int mId;
+    private final int mId;
 
     private boolean hasRead, isFavorite;
-    private String mDate, mInCharge, mCategory, mTitle, mDetail, mLink;
+    private final String mDate;
+    private final String mInCharge;
+    private final String mCategory;
+    private final String mTitle;
+    private final String mDetail;
+    private final String mLink;
     private String mDetailText = "";
 
 

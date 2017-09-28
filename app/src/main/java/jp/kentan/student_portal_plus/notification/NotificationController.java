@@ -2,6 +2,7 @@ package jp.kentan.student_portal_plus.notification;
 
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -28,20 +29,21 @@ public class NotificationController {
     private final static long[] VIBRATE = {0, 300, 300, 300};
 
     private final static String GROUP_KEY = "student_portal_plus";
+    private final static String CHANNEL_ID = "jp.kentan.student_portal_plus.notification";
 
     private final static int INBOX_LINE_LIMIT = 4;
     final static int ERROR_ID = -1;
 
     private static Bitmap LARGE_ICON;
     private static int APP_ICON;
-    private static int[] SMALL_ICON = new int[3];
+    private static final int[] SMALL_ICON = new int[3];
 
     private static int COLOR_ACCENT;
     private final boolean isVibrate, isLed;
 
-    private NotificationManagerCompat mNotificationManager;
-    private Context mContext;
-    private SharedPreferences mPreference;
+    private final NotificationManagerCompat mNotificationManager;
+    private final Context mContext;
+    private final SharedPreferences mPreference;
 
     private final static boolean IS_SUPPORT_NOTIFICATION_SUMMARY = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N);
     private final static boolean IS_SUPPORT_VECTOR_IMG           = (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT);
@@ -116,7 +118,7 @@ public class NotificationController {
             final String subText = Content.NAME[intType];
 
             for(Content content : list){
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setSmallIcon(SMALL_ICON[intType])
@@ -153,7 +155,7 @@ public class NotificationController {
         PendingIntent serviceIntent = PendingIntent.getService(mContext, ERROR_ID, service, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionRetry = new NotificationCompat.Action.Builder(R.drawable.ic_refresh, "再試行", serviceIntent).build();
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -178,7 +180,7 @@ public class NotificationController {
 
         final PendingIntent contentIntent = PendingIntent.getActivity(mContext, SUMMARY_NOTIFY_ID, new Intent(mContext, HomeActivity.class), 0);
 
-        Notification summaryNotification = new NotificationCompat.Builder(mContext)
+        Notification summaryNotification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(APP_ICON)
                 .setColor(COLOR_ACCENT)
@@ -237,7 +239,7 @@ public class NotificationController {
     }
 
     private NotificationCompat.Builder getNotificationBuilder(Content.TYPE type, String title, Spanned text, PendingIntent intent) {
-        return new NotificationCompat.Builder(mContext)
+        return new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setLargeIcon(LARGE_ICON)
@@ -266,5 +268,16 @@ public class NotificationController {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         return notification;
+    }
+
+    //ToDo Android O の通知チャンネル対応
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+
+        NotificationChannel channel = new NotificationChannel("jp.kentan.student_portal_plus.notification", mContext.getString(R.string.app_name), NotificationManagerCompat.IMPORTANCE_HIGH);
+        channel.setLightColor(COLOR_ACCENT);
+        channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     }
 }

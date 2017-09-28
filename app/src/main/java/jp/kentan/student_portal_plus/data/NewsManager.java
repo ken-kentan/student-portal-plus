@@ -29,9 +29,9 @@ class NewsManager {
     private final static SimpleDateFormat PORTAL_DATE_FORMAT = new SimpleDateFormat("yyyy.M.d", Locale.JAPAN);
 
     private List<News> mCache = new ArrayList<>();
-    private List<Content> mUnregisteredNewsList = new ArrayList<>();
+    private final List<Content> mUnregisteredNewsList = new ArrayList<>();
 
-    private DatabaseProvider mDatabase;
+    private final DatabaseProvider mDatabase;
 
 
     NewsManager(DatabaseProvider database) {

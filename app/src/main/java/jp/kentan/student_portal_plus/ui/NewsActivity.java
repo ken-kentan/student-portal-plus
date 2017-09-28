@@ -38,7 +38,7 @@ public class NewsActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         setContentView(R.layout.activity_news);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -72,7 +72,7 @@ public class NewsActivity extends AppCompatActivity {
          */
         final Context context = this;
         final boolean isFavorite = mInfo.isFavorite();
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setImageDrawable(AppCompatResources.getDrawable(context, (isFavorite) ? R.drawable.ic_star : R.drawable.ic_star_border));
         fab.setRotation((isFavorite) ? 144.0f : 0.0f);
@@ -103,7 +103,7 @@ public class NewsActivity extends AppCompatActivity {
 
 
         //詳細情報がなければ GONE
-        final TextView detail   = (TextView)findViewById(R.id.detail);
+        final TextView detail   = findViewById(R.id.detail);
 
         final String strDetail = mInfo.getDetail();
         if (StringUtils.isEmpty(strDetail)) {
@@ -116,7 +116,7 @@ public class NewsActivity extends AppCompatActivity {
 
 
         //リンクがなければ GONE
-        final TextView link     = (TextView)findViewById(R.id.link);
+        final TextView link     = findViewById(R.id.link);
 
         final String strLink = mInfo.getLink();
         if (StringUtils.isEmpty(strLink)) {

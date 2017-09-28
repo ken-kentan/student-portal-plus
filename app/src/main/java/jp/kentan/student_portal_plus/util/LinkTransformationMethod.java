@@ -15,7 +15,7 @@ import jp.kentan.student_portal_plus.ui.span.CustomTabsURLSpan;
 
 public class LinkTransformationMethod implements TransformationMethod {
 
-    private Context mContext;
+    private final Context mContext;
     private final static int LINK_OPTION = Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES;
 
 

@@ -95,12 +95,12 @@ public class AsyncShibbolethClient {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
                 @Override
-                public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                public void saveFromResponse(@NonNull HttpUrl url, @NonNull List<Cookie> cookies) {
                     cookieStore.put(url.host(), cookies);
                 }
 
                 @Override
-                public List<Cookie> loadForRequest(HttpUrl url) {
+                public List<Cookie> loadForRequest(@NonNull HttpUrl url) {
                     List<Cookie> cookies = cookieStore.get(url.host());
                     return cookies != null ? cookies : new ArrayList<Cookie>();
                 }
@@ -220,17 +220,14 @@ public class AsyncShibbolethClient {
 
         mClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 updateStatus("レスポンスを処理中...");
-
-                final Document document;
 
                 final Element idpFormElement;
                 final String formAction;
 
-
                 try {
-                    document = Jsoup.parse(response.body().string());
+                    final Document document = Jsoup.parse(response.body().string());
 
                     final String title = document.title();
 
@@ -280,7 +277,7 @@ public class AsyncShibbolethClient {
                     mClient.newCall(request).enqueue(new Callback() {
 
                         @Override
-                        public void onResponse(Call call, Response response) throws IOException {
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                             if(!useCookies){
                                 mShibbolethData.setUsername(username);
                                 mShibbolethData.setPassword(password);
@@ -291,7 +288,7 @@ public class AsyncShibbolethClient {
                         }
 
                         @Override
-                        public void onFailure(Call call, final IOException e) {
+                        public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                             Log.e(TAG, "onFailure 192:" + e.toString());
                             failed(FAILED_STATUS.ERROR, e);
                         }
@@ -300,7 +297,7 @@ public class AsyncShibbolethClient {
             }
 
             @Override
-            public void onFailure(Call call, final IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                 Log.e(TAG, "onFailure 201:" + e.toString());
                 failed(FAILED_STATUS.ERROR, e);
             }
@@ -364,7 +361,7 @@ public class AsyncShibbolethClient {
 
             mClient.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onResponse(Call call, final Response response) throws IOException {
+                public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                     final Document document = Jsoup.parse(response.body().string());
                     final Element element = document.getElementById("user_info");
 
@@ -392,7 +389,7 @@ public class AsyncShibbolethClient {
                 }
 
                 @Override
-                public void onFailure(Call call, final IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                     Log.e(TAG, "onFailure 295:" + e.toString());
                     failed(FAILED_STATUS.ERROR, e);
                 }

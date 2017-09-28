@@ -18,7 +18,7 @@ public class LectureInformation {
 
     public final static String[] DAY_OF_WEEK = {"月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日", "集中", "-"};
 
-    private int mId;
+    private final int ID;
     private boolean hasRead;
     private int mMyClassStatus;
     private final String mFaculty, mSemester, mSubject, mDayOfWeek, mPeriod, mType, mReleaseDate;
@@ -27,19 +27,19 @@ public class LectureInformation {
 
     public LectureInformation(final int id, final String releaseDate, final String updateDate, final String faculty, final String semester, final String subject, final String instructor,
                               final String dayOfWeek, final String period, final String type, final String detail, final int read, final int myClassStatus) {
-        this.mId            = id;
-        this.hasRead        = (read == 1);
-        this.mFaculty       = faculty;
-        this.mSemester      = semester;
-        this.mSubject       = subject;
-        this.mInstructor    = instructor;
-        this.mDayOfWeek     = dayOfWeek;
-        this.mPeriod        = period;
-        this.mType          = type;
-        this.mDetail        = detail;
-        this.mReleaseDate   = releaseDate;
-        this.mUpdateDate    = updateDate;
-        this.mMyClassStatus = myClassStatus;
+        ID            = id;
+        hasRead        = (read == 1);
+        mFaculty       = faculty;
+        mSemester      = semester;
+        mSubject       = subject;
+        mInstructor    = instructor;
+        mDayOfWeek     = dayOfWeek;
+        mPeriod        = period;
+        mType          = type;
+        mDetail        = detail;
+        mReleaseDate   = releaseDate;
+        mUpdateDate    = updateDate;
+        mMyClassStatus = myClassStatus;
 
         mDetailText = StringUtils.removeHtmlTag(detail);
     }
@@ -56,7 +56,7 @@ public class LectureInformation {
      */
     public void setRead(boolean read) {
         this.hasRead = read;
-        PortalDataProvider.updateLectureInfoStatus(mId, read);
+        PortalDataProvider.updateLectureInfoStatus(ID, read);
     }
 
     public boolean setMyClass(boolean isMyClass) {
@@ -104,7 +104,7 @@ public class LectureInformation {
     }
 
     public int getId() {
-        return mId;
+        return ID;
     }
 
     public String getUpdateDate() {

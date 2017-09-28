@@ -28,10 +28,11 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
 
     private static Drawable IC_INFO_ON, IC_INFO_OFF, IC_SIMILAR_ON;
 
-    private int mViewType, mListSize = 0;
+    private final int mViewType;
+    private int mListSize = 0;
 
-    private List<LectureInformation> mLectureInfoList = new ArrayList<>();
-    private Context mContext;
+    private final List<LectureInformation> mLectureInfoList = new ArrayList<>();
+    private final Context mContext;
 
     private int mLimit = -1;
 
@@ -109,21 +110,23 @@ public class LectureInformationRecyclerAdapter extends RecyclerView.Adapter<Lect
     static class ViewHolder extends RecyclerView.ViewHolder {
         private LectureInformation mInfo = null;
 
-        private View mView;
-        private ImageView mIcon;
-        private TextView mDate, mSubject, mDetail;
+        private final View mView;
+        private final ImageView mIcon;
+        private final TextView mDate;
+        private final TextView mSubject;
+        private final TextView mDetail;
 
-        View mSeparator;
+        final View mSeparator;
 
         ViewHolder(final Context context, View v) {
             super(v);
             mView = v;
 
-            mIcon = (ImageView) v.findViewById(R.id.icon);
+            mIcon = v.findViewById(R.id.icon);
 
-            mDate    = (TextView) v.findViewById(R.id.date);
-            mSubject = (TextView) v.findViewById(R.id.subject);
-            mDetail  = (TextView) v.findViewById(R.id.detail);
+            mDate    = v.findViewById(R.id.date);
+            mSubject = v.findViewById(R.id.subject);
+            mDetail  = v.findViewById(R.id.detail);
 
             mSeparator = v.findViewById(R.id.separator);
 

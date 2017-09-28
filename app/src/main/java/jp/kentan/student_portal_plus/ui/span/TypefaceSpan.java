@@ -33,8 +33,7 @@ public class TypefaceSpan extends MetricAffectingSpan {
     /**
      * An <code>LruCache</code> for previously loaded typefaces.
      */
-    private static LruCache<String, Typeface> sTypefaceCache =
-            new LruCache<String, Typeface>(12);
+    private static final LruCache<String, Typeface> sTypefaceCache = new LruCache<>(12);
 
     private Typeface mTypeface;
 

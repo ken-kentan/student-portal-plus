@@ -38,7 +38,7 @@ public class ShibbolethData {
     private static final String CIPHER_TYPE = "RSA/ECB/PKCS1Padding";
     private static final String CIPHER_PROVIDER = "AndroidOpenSSL";
 
-    private Context mContext;
+    private final Context mContext;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
 

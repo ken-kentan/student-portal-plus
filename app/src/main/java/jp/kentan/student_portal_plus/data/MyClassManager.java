@@ -23,7 +23,7 @@ class MyClassManager {
 
     private List<MyClass> mCache = new ArrayList<>();
 
-    private DatabaseProvider mDatabase;
+    private final DatabaseProvider mDatabase;
 
     public enum WEEK{MON, TUE, WED, THU, FRI, SAT, SUN}
 

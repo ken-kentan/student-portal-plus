@@ -126,7 +126,7 @@ public class NotificationService extends Service implements PortalDataProvider.C
         return (now < 5 || now >= 23);
     }
 
-    static void saveLastAutoFetchedDate(Context context) {
+    private static void saveLastAutoFetchedDate(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences("common", MODE_PRIVATE).edit();
         editor.putString("last_auto_fetched_date", DATE_FORMAT.format(Calendar.getInstance().getTime()));
         editor.apply();

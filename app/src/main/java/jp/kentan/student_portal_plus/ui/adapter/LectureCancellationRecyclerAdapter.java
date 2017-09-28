@@ -27,10 +27,11 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
 
     private static Drawable IC_INFO_ON, IC_INFO_OFF, IC_SIMILAR_ON;
 
-    private int mViewType, mListSize = 0;
+    private final int VIEW_TYPE;
+    private int mListSize = 0;
 
-    private List<LectureCancellation> mLectureCancelList = new ArrayList<>();
-    private Context mContext;
+    private final List<LectureCancellation> LECTURE_CANCEL_LIST = new ArrayList<>();
+    private final Context CONTEXT;
 
     private int mLimit = -1;
 
@@ -38,12 +39,12 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
     public LectureCancellationRecyclerAdapter(Context context, int viewType) {
         super();
 
-        mContext = context;
-        mViewType = viewType;
+        CONTEXT = context;
+        VIEW_TYPE = viewType;
 
-        IC_INFO_ON    = AppCompatResources.getDrawable(mContext, R.drawable.ic_info_on);
-        IC_INFO_OFF   = AppCompatResources.getDrawable(mContext, R.drawable.ic_info_off);
-        IC_SIMILAR_ON = AppCompatResources.getDrawable(mContext, R.drawable.ic_similar_on);
+        IC_INFO_ON    = AppCompatResources.getDrawable(CONTEXT, R.drawable.ic_info_on);
+        IC_INFO_OFF   = AppCompatResources.getDrawable(CONTEXT, R.drawable.ic_info_off);
+        IC_SIMILAR_ON = AppCompatResources.getDrawable(CONTEXT, R.drawable.ic_similar_on);
     }
 
     public LectureCancellationRecyclerAdapter(Context context, int viewType, int limit) {
@@ -53,11 +54,11 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
     }
 
     public void updateDataList(List<LectureCancellation> list) {
-        final DiffCallback diffCallback = new DiffCallback((mViewType == TYPE_DASHBOARD), mLectureCancelList, list);
+        final DiffCallback diffCallback = new DiffCallback((VIEW_TYPE == TYPE_DASHBOARD), LECTURE_CANCEL_LIST, list);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        mLectureCancelList.clear();
-        mLectureCancelList.addAll(list);
+        LECTURE_CANCEL_LIST.clear();
+        LECTURE_CANCEL_LIST.addAll(list);
         mListSize = list.size();
 
         diffResult.dispatchUpdatesTo(this);
@@ -65,7 +66,7 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
 
     @Override
     public int getItemViewType(int position) {
-        return mViewType;
+        return VIEW_TYPE;
     }
 
     @Override
@@ -75,9 +76,9 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
 
     @Override
     public void onBindViewHolder(final ViewHolder vh, final int index) {
-        final LectureCancellation info = mLectureCancelList.get(index);
+        final LectureCancellation info = LECTURE_CANCEL_LIST.get(index);
 
-        if (mViewType == TYPE_DASHBOARD) {
+        if (VIEW_TYPE == TYPE_DASHBOARD) {
             if (mListSize <= mLimit && index == mListSize - 1) {
                 vh.mSeparator.setVisibility(View.GONE);
             }else{
@@ -90,7 +91,7 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
 
     @Override
     public LectureCancellationRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        LayoutInflater layoutInflater = LayoutInflater.from(CONTEXT);
         View v = null;
 
         switch (viewType) {
@@ -101,29 +102,31 @@ public class LectureCancellationRecyclerAdapter extends RecyclerView.Adapter<Lec
                 v = layoutInflater.inflate(R.layout.list_small_lecture_cancel, parent, false);
                 break;
         }
-        return new ViewHolder(mContext, v);
+        return new ViewHolder(CONTEXT, v);
     }
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private LectureCancellation mInfo = null;
 
-        private View mView;
-        private ImageView mIcon;
-        private TextView mTextViewDate, mTextViewSubject, mTextViewInstructor;
+        private final View mView;
+        private final ImageView mIcon;
+        private final TextView mTextViewDate;
+        private final TextView mTextViewSubject;
+        private final TextView mTextViewInstructor;
 
-        View mSeparator;
+        final View mSeparator;
 
 
         ViewHolder(final Context context, View v) {
             super(v);
             mView = v;
 
-            mIcon = (ImageView) v.findViewById(R.id.icon);
+            mIcon = v.findViewById(R.id.icon);
 
-            mTextViewDate       = (TextView) v.findViewById(R.id.date);
-            mTextViewSubject    = (TextView) v.findViewById(R.id.subject);
-            mTextViewInstructor = (TextView) v.findViewById(R.id.instructor);
+            mTextViewDate       = v.findViewById(R.id.date);
+            mTextViewSubject    = v.findViewById(R.id.subject);
+            mTextViewInstructor = v.findViewById(R.id.instructor);
 
             mSeparator = v.findViewById(R.id.separator);
 

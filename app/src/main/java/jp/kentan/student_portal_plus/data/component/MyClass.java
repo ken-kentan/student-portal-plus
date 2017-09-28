@@ -28,11 +28,11 @@ public class MyClass {
             Color.parseColor("#3E2723"), Color.parseColor("#5D4037"), Color.parseColor("#795548"), Color.parseColor("#A1887F"), //Brown      900 700 500 300
     };
 
-    private int mId;
+    private final int mId;
 
     private int mDayOfWeek, mPeriod, mCredits, mTimetableNumber, mColorRgb;
     private String mSubject, mInstructor, mPlace, mType;
-    private boolean hasRegisteredByUser;
+    private final boolean hasRegisteredByUser;
 
 
     public MyClass(final int id, final int dayOfWeek, final int period, final String subject, final String instructor, final String place, final String type, final int credits,

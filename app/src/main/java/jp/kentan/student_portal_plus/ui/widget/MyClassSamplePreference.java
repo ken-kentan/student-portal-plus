@@ -21,7 +21,7 @@ public class MyClassSamplePreference extends Preference {
     private final static JaroWinklerDistance JARO_WINKLER_DISTANCE = new JaroWinklerDistance();
 
     private View[] mViews = null;
-    private ImageView[] mIconViews = new ImageView[4];
+    private final ImageView[] mIconViews = new ImageView[4];
 
     private float threshold = 0.8f;
 
@@ -50,10 +50,10 @@ public class MyClassSamplePreference extends Preference {
         int index = 0;
         char indexChar = 'A';
         for(View item : mViews){
-            mIconViews[index] = (ImageView)item.findViewById(R.id.icon);
-            TextView date       = (TextView)item.findViewById(R.id.date);
-            TextView subject    = (TextView)item.findViewById(R.id.subject);
-            TextView detail = (TextView)item.findViewById(R.id.detail);
+            mIconViews[index] = item.findViewById(R.id.icon);
+            TextView date       = item.findViewById(R.id.date);
+            TextView subject    = item.findViewById(R.id.subject);
+            TextView detail = item.findViewById(R.id.detail);
 
             String strDate = "2017/01/0" + (index+1);
             String strDetail = "詳細テキスト" + (indexChar++);

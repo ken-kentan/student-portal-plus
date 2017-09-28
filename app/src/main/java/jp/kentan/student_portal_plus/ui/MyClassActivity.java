@@ -32,7 +32,7 @@ public class MyClassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_class);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -56,7 +56,7 @@ public class MyClassActivity extends AppCompatActivity {
          /*
         UI Initialize
          */
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         final MyClassActivity activity = this;
 
@@ -125,7 +125,7 @@ public class MyClassActivity extends AppCompatActivity {
 
 
         //Layout initialize
-        final CollapsingToolbarLayout layout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
+        final CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
         layout.setBackgroundColor(info.getColor());
         layout.setTitle(subject);
 
@@ -137,7 +137,7 @@ public class MyClassActivity extends AppCompatActivity {
 
 
         //分類View に複数の情報をまとめて表示
-        final TextView typeView = (TextView) findViewById(R.id.type);
+        final TextView typeView = findViewById(R.id.type);
 
         if (credits > 0) {
             if(!StringUtils.isBlank(type)) typeAndCredits.append(" ");
@@ -168,7 +168,7 @@ public class MyClassActivity extends AppCompatActivity {
             webSyllabus = info.getWebSyllabusUrl();
         }
 
-        final TextView syllabusView = (TextView)findViewById(R.id.web_syllabus);
+        final TextView syllabusView = findViewById(R.id.web_syllabus);
         syllabusView.setText(webSyllabus);
         syllabusView.setTransformationMethod(new LinkTransformationMethod(this));
     }

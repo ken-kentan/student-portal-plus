@@ -41,15 +41,15 @@ class LectureCancellationManager {
     private final static JaroWinklerDistance JARO_WINKLER_DISTANCE = new JaroWinklerDistance();
 
     private List<LectureCancellation> mCache = new ArrayList<>();
-    private List<Content> mUnregisteredInfoList = new ArrayList<>();
+    private final List<Content> UNREGISTERED_INFO_LIST = new ArrayList<>();
 
-    private DatabaseProvider mDatabase;
+    private final DatabaseProvider DATABASE;
 
     private float mMyClassThreshold = 0.8f;
 
 
     LectureCancellationManager(DatabaseProvider database) {
-        mDatabase = database;
+        DATABASE = database;
 
         createCache();
     }
@@ -60,14 +60,14 @@ class LectureCancellationManager {
 
 
     private void createCache() {
-        mCache = mDatabase.selectLectureCancellation(null);
+        mCache = DATABASE.selectLectureCancellation(null);
 
         Log.d(TAG, "cache created. (" + mCache.size() + ")");
     }
 
     void scrape(PortalDataProvider.Callback callback, Document document){
         final List<String> fetchedList = new ArrayList<>(); //取得情報をハッシュ化して保持
-        mUnregisteredInfoList.clear();
+        UNREGISTERED_INFO_LIST.clear();
 
         final Element table = document.body().children().select("table#cancel_info_data_tbl" ).first();
 
@@ -126,7 +126,7 @@ class LectureCancellationManager {
                 statement.clearBindings();
 
                 //NEWの場合は通知リストに追加
-                mUnregisteredInfoList.add(new Content(Content.TYPE.LECTURE_CANCEL, subject, Content.parseTextWithLectureCancel(cancelDate, instructor, note), hash));
+                UNREGISTERED_INFO_LIST.add(new Content(Content.TYPE.LECTURE_CANCEL, subject, Content.parseTextWithLectureCancel(cancelDate, instructor, note), hash));
                 Log.d(TAG, "NEW:" + subject);
             }
             statement.close();
@@ -164,7 +164,7 @@ class LectureCancellationManager {
             database.endTransaction();
         }
 
-        Log.d(TAG, "updated. (" + mUnregisteredInfoList.size() + ")");
+        Log.d(TAG, "updated. (" + UNREGISTERED_INFO_LIST.size() + ")");
     }
 
     private boolean hasFetched(String releaseDate, String cancelDate, String faculty, String subject, String instructor, String dayOfWeek, String period, String note) {
@@ -177,27 +177,27 @@ class LectureCancellationManager {
     }
 
     void updateReadStatus(int id, boolean read) {
-        mDatabase.updateLectureCancellation(new String[]{Integer.toString(id)}, read);
+        DATABASE.updateLectureCancellation(new String[]{Integer.toString(id)}, read);
     }
 
     /*
     Getter
      */
     List<LectureCancellation> get() {
-        return mCache = mDatabase.selectLectureCancellation(null);
+        return mCache = DATABASE.selectLectureCancellation(null);
     }
 
     LectureCancellation getById(int id) throws Exception {
         String where = "WHERE _id=" + id + " LIMIT 1";
 
-        return mDatabase.selectLectureCancellation(where).get(0);
+        return DATABASE.selectLectureCancellation(where).get(0);
     }
 
     LectureCancellation getByHash(String hash) throws Exception {
         String where = "WHERE (release_date || cancel_date || faculty || subject || instructor || day_of_week || period || note)="
                 + DatabaseUtils.sqlEscapeString(hash) + " LIMIT 1";
 
-        return mDatabase.selectLectureCancellation(where).get(0);
+        return DATABASE.selectLectureCancellation(where).get(0);
     }
 
     List<LectureCancellation> getWithMyClass() {
@@ -250,7 +250,7 @@ class LectureCancellationManager {
             }
         }
 
-        List<LectureCancellation> informations = mDatabase.selectLectureCancellation(where.toString());
+        List<LectureCancellation> informations = DATABASE.selectLectureCancellation(where.toString());
 
         if (myClass) {
             for (int index = 0; index < informations.size(); ) {
@@ -296,7 +296,7 @@ class LectureCancellationManager {
             final List<String> mySubjectList = PortalDataProvider.getMyClassSubjectList();
 
             String subject;
-            for (Content content : mUnregisteredInfoList) {
+            for (Content content : UNREGISTERED_INFO_LIST) {
                 subject = content.getText();
 
                 for (String mySubject : mySubjectList) {
@@ -309,7 +309,7 @@ class LectureCancellationManager {
 
             return filteredList;
         } else {
-            return mUnregisteredInfoList;
+            return UNREGISTERED_INFO_LIST;
         }
     }
 }

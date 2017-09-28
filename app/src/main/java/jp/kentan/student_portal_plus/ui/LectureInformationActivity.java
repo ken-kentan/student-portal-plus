@@ -36,7 +36,7 @@ public class LectureInformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecture_information);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -70,7 +70,7 @@ public class LectureInformationActivity extends AppCompatActivity {
         /*
         UI Initialize
          */
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         final int status = mInfo.getMyClassStatus();
         if (status == LectureInformation.RESISTED_BY_PORTAL) {
@@ -124,7 +124,7 @@ public class LectureInformationActivity extends AppCompatActivity {
 
         setTitle(mInfo.getSubject());
 
-        final TextView detail    = (TextView)findViewById(R.id.detail);
+        final TextView detail    = findViewById(R.id.detail);
 
         String faculty = mInfo.getFaculty();
         String semester = mInfo.getSemester();

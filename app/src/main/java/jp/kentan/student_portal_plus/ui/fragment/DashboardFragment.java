@@ -66,21 +66,21 @@ public class DashboardFragment extends Fragment {
         final HomeActivity activity = (HomeActivity) getActivity();
         final View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        RecyclerView timetable     = (RecyclerView) view.findViewById(R.id.timetable);
-        RecyclerView lectureInfo   = (RecyclerView) view.findViewById(R.id.recycler_view_lecture_info);
-        RecyclerView lectureCancel = (RecyclerView) view.findViewById(R.id.recycler_view_lecture_cancel);
-        RecyclerView news          = (RecyclerView) view.findViewById(R.id.recycler_view_news);
+        RecyclerView timetable     = view.findViewById(R.id.timetable);
+        RecyclerView lectureInfo   = view.findViewById(R.id.recycler_view_lecture_info);
+        RecyclerView lectureCancel = view.findViewById(R.id.recycler_view_lecture_cancel);
+        RecyclerView news          = view.findViewById(R.id.recycler_view_news);
 
-        mCardViewTimetable     = (CardView) view.findViewById(R.id.card_view_timetable);
-        mCardViewLectureInfo   = (CardView) view.findViewById(R.id.card_view_lecture_info);
-        mCardViewLectureCancel = (CardView) view.findViewById(R.id.card_view_lecture_cancel);
-        mCardViewNews          = (CardView) view.findViewById(R.id.card_view_news);
+        mCardViewTimetable     = view.findViewById(R.id.card_view_timetable);
+        mCardViewLectureInfo   = view.findViewById(R.id.card_view_lecture_info);
+        mCardViewLectureCancel = view.findViewById(R.id.card_view_lecture_cancel);
+        mCardViewNews          = view.findViewById(R.id.card_view_news);
 
-        mHeaderLectureInfo   = (TextView) view.findViewById(R.id.header_lecture_info);
-        mHeaderLectureCancel = (TextView) view.findViewById(R.id.header_lecture_cancel);
+        mHeaderLectureInfo   = view.findViewById(R.id.header_lecture_info);
+        mHeaderLectureCancel = view.findViewById(R.id.header_lecture_cancel);
 
-        mButtonLectureInfo   = (TextView) view.findViewById(R.id.button_lecture_info);
-        mButtonLectureCancel = (TextView) view.findViewById(R.id.button_lecture_cancel);
+        mButtonLectureInfo   = view.findViewById(R.id.button_lecture_info);
+        mButtonLectureCancel = view.findViewById(R.id.button_lecture_cancel);
 
 
         setupRecyclerView(timetable, mMyTimetableRecyclerAdapter);
@@ -115,8 +115,8 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        mTextViewLectureInfo = (TextView) view.findViewById(R.id.text_view_lecture_info);
-        mTextViewLectureCancel = (TextView) view.findViewById(R.id.text_view_lecture_cancel);
+        mTextViewLectureInfo = view.findViewById(R.id.text_view_lecture_info);
+        mTextViewLectureCancel = view.findViewById(R.id.text_view_lecture_cancel);
 
         //Activity UI
         activity.setTitle(new CustomTitle(activity, activity.getString(R.string.title_dashboard)));
@@ -206,7 +206,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void updateTimetableHeaderText() {
-        final TextView textView = (TextView) mCardViewTimetable.findViewById(R.id.header_timetable);
+        final TextView textView = mCardViewTimetable.findViewById(R.id.header_timetable);
         final int dayOfWeek = PortalDataProvider.getTimetableWeek().ordinal();
         final String text = MyClass.DAY_OF_WEEK[dayOfWeek] + "曜日の時間割";
 

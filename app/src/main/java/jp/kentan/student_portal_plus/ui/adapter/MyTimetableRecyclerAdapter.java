@@ -37,9 +37,9 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
     private int mViewType;
 
-    private List<MyClass> mMyClassList = new ArrayList<>();
+    private final List<MyClass> mMyClassList = new ArrayList<>();
     private int mListSize = 0;
-    private Context mContext;
+    private final Context mContext;
 
     public MyTimetableRecyclerAdapter(Context context, final int viewType) {
         super();
@@ -199,7 +199,7 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
         private MyClass mClass = null;
 
         //Common
-        private View mView;
+        private final View mView;
         private TextView mTextViewSubject, mTextViewInstructor, mTextViewPlace;
 
         //Dashboard
@@ -208,7 +208,8 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
         //Week
         RelativeLayout mLayout;
-        View mMask, mBorder;
+        final View mMask;
+        final View mBorder;
 
         //Day
         ImageView mIcon;
@@ -225,16 +226,16 @@ public class MyTimetableRecyclerAdapter extends RecyclerView.Adapter<MyTimetable
 
             if(context == null) return;
 
-            mLayout = (RelativeLayout) v.findViewById(R.id.layout);
-            mTextViewSubject = (TextView) v.findViewById(R.id.subject);
-            mTextViewInstructor = (TextView) v.findViewById(R.id.instructor);
+            mLayout = v.findViewById(R.id.layout);
+            mTextViewSubject = v.findViewById(R.id.subject);
+            mTextViewInstructor = v.findViewById(R.id.instructor);
 
-            mIcon = (ImageView) v.findViewById(R.id.icon);
+            mIcon = v.findViewById(R.id.icon);
             mViewColorHeader = v.findViewById(R.id.color_header);
-            mTextViewDatAndPeriod = (TextView) v.findViewById(R.id.day_and_period);
+            mTextViewDatAndPeriod = v.findViewById(R.id.day_and_period);
 
-            mTextViewPeriod = (TextView)v.findViewById(R.id.date);
-            mTextViewPlace  = (TextView)v.findViewById(R.id.place);
+            mTextViewPeriod = v.findViewById(R.id.date);
+            mTextViewPlace  = v.findViewById(R.id.place);
             mSeparator = v.findViewById(R.id.separator);
 
             final View clickableView = (mLayout == null) ? mView : mLayout;

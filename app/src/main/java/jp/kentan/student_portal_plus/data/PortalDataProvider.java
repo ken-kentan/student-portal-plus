@@ -30,13 +30,13 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
     private static boolean isFetching = false;
 
     private Callback mCallback;
-    private AsyncShibbolethClient mShibbolethClient;
+    private final AsyncShibbolethClient mShibbolethClient;
 
-    private SharedPreferences mPreferences;
-    private SharedPreferences.Editor mEditor;
+    private final SharedPreferences mPreferences;
+    private final SharedPreferences.Editor mEditor;
 
-    private List<String> mQueryList = new ArrayList<>();
-    private Map<String, Document> mResultMap = new HashMap<>();
+    private final List<String> mQueryList = new ArrayList<>();
+    private final Map<String, Document> mResultMap = new HashMap<>();
 
     private static MyClassManager sMyClass = null;
     private static LectureInformationManager sLectureInformation = null;
@@ -63,7 +63,6 @@ public class PortalDataProvider implements AsyncShibbolethClient.AuthCallback {
     }
 
     private static void createManagersIfNeed(Context context) {
-        final SharedPreferences pref = context.getSharedPreferences("common", Context.MODE_PRIVATE);
         final DatabaseProvider database = DatabaseProvider.getInstance(context);
 
         if (sMyClass == null) {

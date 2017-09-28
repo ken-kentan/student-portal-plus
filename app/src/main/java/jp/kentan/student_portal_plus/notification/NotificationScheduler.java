@@ -26,7 +26,7 @@ public class  NotificationScheduler {
 
     private final static boolean IS_SUPPORT_JOBSCHEDULER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
-    private Context mContext;
+    private final Context mContext;
 
 
     public NotificationScheduler(Context context) {

@@ -45,7 +45,7 @@ public class MyTimetableFragment extends Fragment {
 
     private View mTimeTable, mListTimeTable;
     private TextView mTextViewMsg;
-    private TextView mTextViewWeek[] = new TextView[5];
+    private final TextView[] mTextViewWeek = new TextView[5];
 
     private int mViewType = TYPE_WEEK;
     private int mMyClassInformationSize = 0;
@@ -76,8 +76,8 @@ public class MyTimetableFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        RecyclerView recyclerViewWeek = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassCard);
-        RecyclerView recyclerViewDay  = (RecyclerView) v.findViewById(R.id.recyclerViewMyClassList);
+        RecyclerView recyclerViewWeek = v.findViewById(R.id.recyclerViewMyClassCard);
+        RecyclerView recyclerViewDay  = v.findViewById(R.id.recyclerViewMyClassList);
 
         recyclerViewWeek.setLayoutManager(new GridLayoutManager(activity, 5 /* 月~金 */));
         recyclerViewWeek.setAdapter(mAdapter);
@@ -91,13 +91,13 @@ public class MyTimetableFragment extends Fragment {
         mListTimeTable = recyclerViewDay;
 
         mTimeTable = v.findViewById(R.id.layout_timetable);
-        mTextViewMsg = (TextView) v.findViewById(R.id.textViewMsg);
+        mTextViewMsg = v.findViewById(R.id.textViewMsg);
 
-        mTextViewWeek[0] = (TextView) v.findViewById(R.id.text_mon);
-        mTextViewWeek[1] = (TextView) v.findViewById(R.id.text_tue);
-        mTextViewWeek[2] = (TextView) v.findViewById(R.id.text_wed);
-        mTextViewWeek[3] = (TextView) v.findViewById(R.id.text_thu);
-        mTextViewWeek[4] = (TextView) v.findViewById(R.id.text_fri);
+        mTextViewWeek[0] = v.findViewById(R.id.text_mon);
+        mTextViewWeek[1] = v.findViewById(R.id.text_tue);
+        mTextViewWeek[2] = v.findViewById(R.id.text_wed);
+        mTextViewWeek[3] = v.findViewById(R.id.text_thu);
+        mTextViewWeek[4] = v.findViewById(R.id.text_fri);
 
         setViewType(mPreferences.getInt("timetable_view_type", TYPE_WEEK));
 

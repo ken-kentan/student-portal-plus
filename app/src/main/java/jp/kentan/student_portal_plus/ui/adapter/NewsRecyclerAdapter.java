@@ -27,10 +27,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     private static Drawable IC_FAVORITE_ON, IC_FAVORITE_OFF;
 
-    private int mViewType, mListSize = 0;
+    private final int mViewType;
+    private int mListSize = 0;
 
-    private List<News> mNewsList = new ArrayList<>();
-    private Context mContext;
+    private final List<News> mNewsList = new ArrayList<>();
+    private final Context mContext;
 
     private int mLimit = -1;
 
@@ -97,19 +98,21 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
         private News mNews = null;
 
-        private View mView;
-        private ImageView mIcon;
-        private TextView mDate, mTitle, mDetail;
+        private final View mView;
+        private final ImageView mIcon;
+        private final TextView mDate;
+        private final TextView mTitle;
+        private final TextView mDetail;
 
         ViewHolder(final Context context, View v, int viewType) {
             super(v);
             mView = v;
 
-            mIcon = (ImageView) v.findViewById(R.id.icon);
+            mIcon = v.findViewById(R.id.icon);
 
-            mDate   = (TextView) v.findViewById(R.id.date);
-            mTitle  = (TextView) v.findViewById(R.id.title);
-            mDetail = (TextView) v.findViewById(R.id.detail);
+            mDate   = v.findViewById(R.id.date);
+            mTitle  = v.findViewById(R.id.title);
+            mDetail = v.findViewById(R.id.detail);
 
 
             mView.setOnClickListener(new View.OnClickListener() {

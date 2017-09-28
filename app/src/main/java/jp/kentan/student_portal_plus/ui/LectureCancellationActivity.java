@@ -37,7 +37,7 @@ public class LectureCancellationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecture_cancellation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -70,7 +70,7 @@ public class LectureCancellationActivity extends AppCompatActivity {
         /*
         UI Initialize
          */
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         final int status = mInfo.getMyClassStatus();
         if (status == LectureInformation.RESISTED_BY_PORTAL) {
@@ -124,7 +124,7 @@ public class LectureCancellationActivity extends AppCompatActivity {
 
         setTitle(mInfo.getSubject());
 
-        final TextView note        = (TextView)findViewById(R.id.note);
+        final TextView note = findViewById(R.id.note);
 
         ((TextView)findViewById(R.id.subtitle)                  ).setText(mInfo.getInstructor());
         ((TextView)findViewById(R.id.subject)                   ).setText(mInfo.getSubject());

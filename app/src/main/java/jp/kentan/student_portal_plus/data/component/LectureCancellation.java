@@ -15,29 +15,30 @@ public class LectureCancellation {
     public final static int RESISTED_BY_USER    = 1;
     public final static int RESISTED_BY_SIMILAR = 2;
 
-    private int mId, mMyClassStatus;
+    private final int ID;
+    private int mMyClassStatus;
     private boolean hasRead;
-    private final String mReleaseDate, mCancelDate, mFaculty, mSubject, mInstructor, mDayOfWeek, mPeriod, mNote;
+    private final String RELEASE_DATE, CANCEL_DATE, FACULTY, SUBJECT, INSTRUCTOR, DAY_OF_WEEK, PERIOD, NOTE;
 
 
     public LectureCancellation(final int id, final String releaseDate, final String cancelDate, final String faculty, final String subject, final String instructor,
                                final String dayOfWeek, final String period, final String note, final int read, final int myClassStatus) {
-        this.mId            = id;
-        this.mReleaseDate   = releaseDate;
-        this.mCancelDate    = cancelDate;
-        this.mFaculty       = faculty;
-        this.mSubject       = subject;
-        this.mInstructor    = instructor;
-        this.mDayOfWeek     = dayOfWeek;
-        this.mPeriod        = period;
-        this.mNote          = note;
-        this.hasRead        = (read == 1);
-        this.mMyClassStatus = myClassStatus;
+        ID             = id;
+        RELEASE_DATE   = releaseDate;
+        CANCEL_DATE    = cancelDate;
+        FACULTY       = faculty;
+        SUBJECT       = subject;
+        INSTRUCTOR    = instructor;
+        DAY_OF_WEEK     = dayOfWeek;
+        PERIOD        = period;
+        NOTE          = note;
+        hasRead        = (read == 1);
+        mMyClassStatus = myClassStatus;
     }
 
     public boolean equals(String releaseDate, String cancelDate, String faculty, String subject, String instructor, String dayOfWeek, String period, String note){
-        return mReleaseDate.equals(releaseDate) && mCancelDate.equals(cancelDate) && mFaculty.equals(faculty) && mSubject.equals(subject) && mInstructor.equals(instructor) && mDayOfWeek.equals(dayOfWeek) &&
-                mPeriod.equals(period) && mNote.equals(note);
+        return RELEASE_DATE.equals(releaseDate) && CANCEL_DATE.equals(cancelDate) && FACULTY.equals(faculty) && SUBJECT.equals(subject) && INSTRUCTOR.equals(instructor) && DAY_OF_WEEK.equals(dayOfWeek) &&
+                PERIOD.equals(period) && NOTE.equals(note);
     }
 
 
@@ -46,17 +47,17 @@ public class LectureCancellation {
      */
     public void setRead(boolean read) {
         this.hasRead = read;
-        PortalDataProvider.updateLectureCancelStatus(mId, read);
+        PortalDataProvider.updateLectureCancelStatus(ID, read);
     }
 
     public boolean setMyClass(boolean isMyClass) {
         if ((mMyClassStatus >= RESISTED_BY_PORTAL && mMyClassStatus < RESISTED_BY_SIMILAR) == isMyClass || mMyClassStatus == RESISTED_BY_PORTAL) return true;
 
         if (isMyClass) {
-            PortalDataProvider.registerToMyClass(mSubject, mInstructor, mDayOfWeek, mPeriod);
+            PortalDataProvider.registerToMyClass(SUBJECT, INSTRUCTOR, DAY_OF_WEEK, PERIOD);
             this.mMyClassStatus = RESISTED_BY_USER;
         } else {
-            if(!PortalDataProvider.unregisterFromMyClass(mSubject)){
+            if(!PortalDataProvider.unregisterFromMyClass(SUBJECT)){
                 return false;
             }
             this.mMyClassStatus = -1;
@@ -77,36 +78,36 @@ public class LectureCancellation {
         return mMyClassStatus != -1;
     }
 
-    public int getId(){ return mId; }
+    public int getId(){ return ID; }
 
-    public String getReleaseDate(){ return mReleaseDate.replaceAll("-", "/"); }
+    public String getReleaseDate(){ return RELEASE_DATE.replaceAll("-", "/"); }
 
-    public String getCancelDate(){ return mCancelDate.replaceAll("-", "/"); }
+    public String getCancelDate(){ return CANCEL_DATE.replaceAll("-", "/"); }
 
     public String getDate(){
         return "掲示年月日: " + getReleaseDate();
     }
 
     public String getSubject(){
-        return mSubject;
+        return SUBJECT;
     }
 
-    public String getInstructor(){ return mInstructor; }
+    public String getInstructor(){ return INSTRUCTOR; }
 
-    public String getFaculty(){ return mFaculty; }
+    public String getFaculty(){ return FACULTY; }
 
     public String getDayAndPeriod() {
-        final String dayOfWeek = mDayOfWeek.replaceFirst("曜日", "曜 ");
+        final String dayOfWeek = DAY_OF_WEEK.replaceFirst("曜日", "曜 ");
 
         if (dayOfWeek.equals("集中") || dayOfWeek.equals("-")) {
             return dayOfWeek;
         } else {
-            return dayOfWeek + mPeriod + "限";
+            return dayOfWeek + PERIOD + "限";
         }
 
     }
 
-    public String getNote(){ return mNote; }
+    public String getNote(){ return NOTE; }
 
     public int getMyClassStatus() {
         return mMyClassStatus;

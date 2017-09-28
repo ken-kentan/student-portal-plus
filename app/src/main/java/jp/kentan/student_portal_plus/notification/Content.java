@@ -12,20 +12,20 @@ public class Content {
 
     final static String NAME[] = {"授業関連連絡", "休講情報", "最新情報"};
 
-    private final String mTitle, mText;
+    private final String TITLE, TEXT;
 
-    private final TYPE mType;
+    private final TYPE TYPE;
 
-    private String mHash; //DBから参照するための検索用ハッシュ
+    private final String HASH; //DBから参照するための検索用ハッシュ
 
 
     public Content(TYPE type, String title, String text, String hash){
-        this.mType = type;
+        TYPE = type;
 
-        this.mTitle = title;
-        this.mText  = text;
+        TITLE = title;
+        TEXT  = text;
 
-        this.mHash = hash;
+        HASH = hash;
     }
 
     /*
@@ -47,17 +47,17 @@ public class Content {
     /*
     Getter
      */
-    public TYPE getType(){ return mType; }
+    public TYPE getType(){ return TYPE; }
 
-    public String getTitle(){ return mTitle; }
-    public String getText(){ return mText; }
+    public String getTitle(){ return TITLE; }
+    public String getText(){ return TEXT; }
 
-    String getHash(){ return mHash; }
+    String getHash(){ return HASH; }
 
 
     Spannable getInboxStyleText() {
-        Spannable spannable = new SpannableString(mTitle + " " + mText);
-        spannable.setSpan(StringUtils.BOLD, 0, mTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Spannable spannable = new SpannableString(TITLE + " " + TEXT);
+        spannable.setSpan(StringUtils.BOLD, 0, TITLE.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }
 }

@@ -79,15 +79,15 @@ public class MyClassEditActivity extends AppCompatActivity{
          */
         mViewColor = findViewById(R.id.color);
 
-        mEditSubject         = (TextInputEditText)findViewById(R.id.subject);
-        mEditInstructor      = (TextInputEditText)findViewById(R.id.instructor);
-        mEditPlace           = (TextInputEditText)findViewById(R.id.place);
-        mEditType            = (TextInputEditText)findViewById(R.id.type);
-        mEditCredits         = (TextInputEditText)findViewById(R.id.credits);
-        mEditTimetableNumber = (TextInputEditText)findViewById(R.id.timetable_number);
+        mEditSubject         = findViewById(R.id.subject);
+        mEditInstructor      = findViewById(R.id.instructor);
+        mEditPlace           = findViewById(R.id.place);
+        mEditType            = findViewById(R.id.type);
+        mEditCredits         = findViewById(R.id.credits);
+        mEditTimetableNumber = findViewById(R.id.timetable_number);
 
-        mSpinnerWeek   = (Spinner)findViewById(R.id.week);
-        mSpinnerPeriod = (Spinner)findViewById(R.id.date);
+        mSpinnerWeek   = findViewById(R.id.week);
+        mSpinnerPeriod = findViewById(R.id.date);
 
         mSpinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -386,7 +386,7 @@ public class MyClassEditActivity extends AppCompatActivity{
         finish();
     }
 
-    public void exit() {
+    private void exit() {
         super.finish();
     }
 }

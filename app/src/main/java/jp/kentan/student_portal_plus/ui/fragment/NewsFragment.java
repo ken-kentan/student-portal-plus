@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,12 +73,12 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
         final HomeActivity activity = (HomeActivity) getActivity();
         final View view = inflater.inflate(R.layout.fragment_news, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(mAdapter);
         recyclerView.setHasFixedSize(true);
 
-        mTextView = (TextView) view.findViewById(R.id.text_view);
+        mTextView = view.findViewById(R.id.text_view);
 
         //Activity UI
         activity.setTitle(new CustomTitle(activity, activity.getString(R.string.title_news_and_events)));
@@ -101,7 +100,7 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
         final SearchView searchView = (SearchView)searchItem.getActionView();
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 mSearchText = "";
@@ -229,11 +228,11 @@ public class NewsFragment extends Fragment implements SearchView.OnQueryTextList
 
         final View view = View.inflate(context, R.layout.dialog_filter_latest_info, null);
 
-        mSpinnerPostingDate = (Spinner) view.findViewById(R.id.posting_date);
+        mSpinnerPostingDate = view.findViewById(R.id.posting_date);
 
-        mCheckBoxUnread   = (CheckBox) view.findViewById(R.id.unread);
-        mCheckBoxRead     = (CheckBox) view.findViewById(R.id.read);
-        mCheckBoxFavorite = (CheckBox) view.findViewById(R.id.icon);
+        mCheckBoxUnread   = view.findViewById(R.id.unread);
+        mCheckBoxRead     = view.findViewById(R.id.read);
+        mCheckBoxFavorite = view.findViewById(R.id.icon);
 
         mSpinnerPostingDate.setSelection(periodPostingDate);
 
