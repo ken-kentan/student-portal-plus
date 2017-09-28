@@ -27,9 +27,8 @@
 
 -keep class android.support.v7.widget.SearchView { *; }
 
--keep class com.squareup.**  { *; } # okhttp
--keep interface com.squareup.**  { *; } # okhttp
-
 -keep class org.jsoup.**  { *; } # jsoup
 
+-dontwarn okhttp3.**
 -dontwarn okio.**
+-dontwarn javax.annotation.**
