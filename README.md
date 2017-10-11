@@ -8,12 +8,12 @@ Student Portal+ は、学生ポータルサイト専用ブラウザです。
 
 ## Screenshots
 
+
 ## Requirement
 - [Chrome Custom Tabs](https://developer.chrome.com/multidevice/android/customtabs)
 - [Color Picker](http://www.materialdoc.com/color-picker/)
 
 ## Licence
-**パッケージ名、アプリ名、規約本文、X500Principal、の使い回しは行わないで下さい。**
 
 [GPLv3](https://github.com/ken-kentan/student-portal-plus/blob/master/LICENSE)
 
