@@ -152,7 +152,9 @@ public class IdpLoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, 0);
+            if (imm != null) {
+                imm.toggleSoftInput(0, 0);
+            }
 
             showProgress(true);
 
@@ -168,16 +170,17 @@ public class IdpLoginActivity extends AppCompatActivity {
 
                     switch (status) {
                         case ERROR:
+                        case ERROR_FORM:
                             Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
                             break;
-                        case INVALID_USERNAME:
-                            mUsernameView.setError(getString(R.string.error_incorrect_username));
-                            mUsernameView.requestFocus();
-                            break;
-                        case INVALID_PASSWORD:
-                            mPasswordView.setError(getString(R.string.error_incorrect_password));
-                            mPasswordView.requestFocus();
-                            break;
+//                        case ERROR_FORM:
+//                            mUsernameView.setError(getString(R.string.error_incorrect_username));
+//                            mUsernameView.requestFocus();
+//                            break;
+//                        case INVALID_PASSWORD:
+//                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                            mPasswordView.requestFocus();
+//                            break;
                     }
                 }
 

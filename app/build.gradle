@@ -7,8 +7,8 @@ android {
         applicationId "jp.kentan.student_portal_plus"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 19
-        versionName "1.1.15"
+        versionCode 20
+        versionName "1.1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -47,7 +47,7 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:26.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.jsoup:jsoup:1.11.2'
 
     testCompile 'junit:junit:4.12'
 }

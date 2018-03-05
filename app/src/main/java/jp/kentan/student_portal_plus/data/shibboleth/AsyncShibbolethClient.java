@@ -38,7 +38,6 @@ import jp.kentan.student_portal_plus.R;
 import jp.kentan.student_portal_plus.util.StringUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -48,21 +47,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.TlsVersion;
 
 
 public class AsyncShibbolethClient {
 
-    public enum FAILED_STATUS {ERROR, ERROR_UNKNOWN, FAILED_TO_SCRAPING, INVALID_USERNAME, INVALID_PASSWORD, FAILED_TO_DECRYPT, FAILED_TO_ACCESS_IDP}
+    public enum FAILED_STATUS {ERROR, ERROR_UNKNOWN, ERROR_FORM, FAILED_TO_SCRAPING, FAILED_TO_DECRYPT, FAILED_TO_ACCESS_IDP}
 
     private final static String TAG = "AsyncShibbolethClient";
 
     private final static SimpleDateFormat LOGIN_DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.JAPAN);
 
     private final static String IDP_END_POINT = "https://auth.cis.kit.ac.jp";
-
-    private final static String INVALID_USERNAME_MSG = "The username you entered cannot be identified.";
-    private final static String INVALID_PASSWORD_MSG = "The password you entered was incorrect.";
 
     private final static int CONNECT_TIMEOUT_SEC = 30, WRITE_TIMEOUT_SEC = 30, READ_TIMEOUT_SEC = 60;
 
@@ -119,10 +116,7 @@ public class AsyncShibbolethClient {
 
             ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                     .tlsVersions(TlsVersion.TLS_1_2)
-                    .cipherSuites(
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256)
+                    .allEnabledCipherSuites()
                     .build();
 
             builder.connectionSpecs(Collections.singletonList(spec));
@@ -147,6 +141,7 @@ public class AsyncShibbolethClient {
 
                 ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                         .tlsVersions(TlsVersion.TLS_1_2)
+                        .allEnabledCipherSuites()
                         .build();
 
                 List<ConnectionSpec> specs = new ArrayList<>();
@@ -176,7 +171,7 @@ public class AsyncShibbolethClient {
         });
     }
 
-    private void failed(final FAILED_STATUS status, final Exception e) {
+    private void failed(final FAILED_STATUS status, final String message, final Exception e) {
         Log.w(TAG, e);
         mHandler.post(new Runnable() {
             @Override
@@ -191,11 +186,8 @@ public class AsyncShibbolethClient {
                     case FAILED_TO_SCRAPING:
                         mCallback.failed(status, mContext.getString(R.string.err_msg_failed_to_scraping), null);
                         break;
-                    case INVALID_USERNAME:
-                        mCallback.failed(status, mContext.getString(R.string.error_invalid_username), null);
-                        break;
-                    case INVALID_PASSWORD:
-                        mCallback.failed(status, mContext.getString(R.string.error_incorrect_password), null);
+                    case ERROR_FORM:
+                        mCallback.failed(status, message, null);
                         break;
                     case FAILED_TO_DECRYPT:
                         mCallback.failed(status, mContext.getString(R.string.error_failed_to_decrypt), null);
@@ -246,7 +238,7 @@ public class AsyncShibbolethClient {
                     idpFormElement = document.select("form").get(0);
                     formAction = idpFormElement.attr("action");
                 } catch (Exception e) {
-                    failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, e);
+                    failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, null, e);
                     return;
                 }
 
@@ -255,19 +247,14 @@ public class AsyncShibbolethClient {
                     redirectSAMLResponse(spEndPoint, response);
                 } else { //need login
                     if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){ //復号化失敗
-                        failed(FAILED_STATUS.FAILED_TO_DECRYPT, null);
+                        failed(FAILED_STATUS.FAILED_TO_DECRYPT, null, null);
                         return;
                     }
 
                     RequestBody requestParams = new FormBody.Builder()
-                            .add("j_username", username)
-                            .add("j_password", password)
+                            .add("shib_idp_ls_supported", "false")
                             .add("_eventId_proceed", "")
                             .build();
-
-                    Log.d(TAG, "POST: " + idpEndPoint + formAction);
-
-                    updateStatus(idpEndPoint + formAction + " にリクエストを送信中...");
 
                     Request request = new Request.Builder()
                             .url(idpEndPoint + formAction)
@@ -275,22 +262,52 @@ public class AsyncShibbolethClient {
                             .build();
 
                     mClient.newCall(request).enqueue(new Callback() {
-
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                            if(!useCookies){
-                                mShibbolethData.setUsername(username);
-                                mShibbolethData.setPassword(password);
-                            }
+                            RequestBody requestParams = new FormBody.Builder()
+                                    .add("j_username", username)
+                                    .add("j_password", password)
+                                    .add("_shib_idp_revokeConsent", "false")
+                                    .add("_eventId_proceed", "")
+                                    .build();
+
+                            final Document document = Jsoup.parse(response.body().string());
+                            Element idpFormElement = document.select("form").get(0);
+                            String formAction = idpFormElement.attr("action");
+
+                            Log.d(TAG, "POST: " + idpEndPoint + formAction);
+
+                            updateStatus(idpEndPoint + formAction + " にリクエストを送信中...");
+
+                            Request request = new Request.Builder()
+                                    .url(idpEndPoint + formAction)
+                                    .post(requestParams)
+                                    .build();
+
+                            mClient.newCall(request).enqueue(new Callback() {
+
+                                @Override
+                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                    if(!useCookies){
+                                        mShibbolethData.setUsername(username);
+                                        mShibbolethData.setPassword(password);
+                                    }
 
 
-                            redirectSAMLResponse(spEndPoint, response);
+                                    redirectSAMLResponse(spEndPoint, response);
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                                    Log.e(TAG, "onFailure 192:" + e.toString());
+                                    failed(FAILED_STATUS.ERROR, null, e);
+                                }
+                            });
                         }
 
                         @Override
-                        public void onFailure(@NonNull Call call, @NonNull final IOException e) {
-                            Log.e(TAG, "onFailure 192:" + e.toString());
-                            failed(FAILED_STATUS.ERROR, e);
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            failed(FAILED_STATUS.ERROR, null, e);
                         }
                     });
                 }
@@ -299,7 +316,7 @@ public class AsyncShibbolethClient {
             @Override
             public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                 Log.e(TAG, "onFailure 201:" + e.toString());
-                failed(FAILED_STATUS.ERROR, e);
+                failed(FAILED_STATUS.ERROR,null, e);
             }
         });
     }
@@ -309,18 +326,23 @@ public class AsyncShibbolethClient {
 
         updateStatus("SAMLResponseを処理中...");
 
-        final String body;
-        Element authResponseFormElement, relayStateElement, SAMLResponseElement;
+        Element authResponseFormElement, relayStateElement, SAMLResponseElement, formErrorElement;
+
+        ResponseBody body = response.body();
+        if (body == null) {
+            failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, null, null);
+            return;
+        }
 
         try {
-            body = response.body().string();
-            Document document = Jsoup.parse(body);
+            Document document = Jsoup.parse(body.string());
 
-            authResponseFormElement = document.select("form" ).get(0);
-            relayStateElement       = document.select("input").get(0);
+            authResponseFormElement = document.select("form" ).first();
+            relayStateElement       = document.select("input").first();
             SAMLResponseElement     = document.select("input").get(1);
+            formErrorElement        = document.select(".form-error").first();
         } catch (Exception e) {
-            failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, null);
+            failed(FAILED_STATUS.FAILED_TO_ACCESS_IDP, null, null);
             return;
         }
 
@@ -338,12 +360,10 @@ public class AsyncShibbolethClient {
         if (StringUtils.isEmpty(relayStateValue) || StringUtils.isEmpty(SAMLResponseValue)) {
             Log.e(TAG, "invalid username or password.");
 
-            if (body.contains(INVALID_USERNAME_MSG)) {
-                failed(FAILED_STATUS.INVALID_USERNAME, null);
-            } else if (body.contains(INVALID_PASSWORD_MSG)) {
-                failed(FAILED_STATUS.INVALID_PASSWORD, null);
+            if (formErrorElement != null) {
+                failed(FAILED_STATUS.ERROR_FORM, formErrorElement.text(), null);
             } else {
-                failed(FAILED_STATUS.ERROR_UNKNOWN, null);
+                failed(FAILED_STATUS.ERROR_UNKNOWN, null, null);
             }
         } else {
             RequestBody requestParams = new FormBody.Builder()
@@ -391,7 +411,7 @@ public class AsyncShibbolethClient {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                     Log.e(TAG, "onFailure 295:" + e.toString());
-                    failed(FAILED_STATUS.ERROR, e);
+                    failed(FAILED_STATUS.ERROR, null, e);
                 }
             });
         }
