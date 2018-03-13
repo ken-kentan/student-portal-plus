@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,12 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
 
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.PortalDataManager
+import jp.kentan.studentportalplus.data.component.NoticeData
+import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -28,7 +26,25 @@ class DashboardFragment : Fragment() {
 
         val context = context ?: throw NullPointerException("Null context")
 
-        noticeAdapter = NoticeAdapter(context)
+        if (context is MainActivity) {
+            val manager = context.portalDataManager ?: return
+
+            noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
+                override fun onUpdateFavorite(data: NoticeData, isFavorite: Boolean) {
+                    manager.update(data.copy(isFavorite = isFavorite))
+                }
+
+                override fun onClick(data: NoticeData) {
+                    manager.update(data.copy(hasRead = true))
+                }
+
+            })
+
+            manager.noticeDataSubject?.subscribe {
+                // Select latest 3 notice
+                noticeAdapter?.submitList(it.take(3))
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,14 +56,6 @@ class DashboardFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 
     private fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {

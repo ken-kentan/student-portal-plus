@@ -5,7 +5,9 @@ import jp.kentan.studentportalplus.data.component.NoticeData
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.collections.forEachReversedByIndex
+import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.db.update
 
 
 class NoticeDao(val context: Context) {
@@ -16,7 +18,7 @@ class NoticeDao(val context: Context) {
     }
 
     fun getAll(): List<NoticeData> = context.database.use {
-        select(TABLE_NAME).parseList(PARSER)
+        select(TABLE_NAME).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
     }
 
     fun updateAll(list: List<NoticeData>) = context.database.use {
@@ -60,5 +62,11 @@ class NoticeDao(val context: Context) {
 
         setTransactionSuccessful()
         endTransaction()
+    }
+
+    fun update(data: NoticeData): Int = context.database.use {
+        update(TABLE_NAME, "favorite" to data.isFavorite.toLong(), "read" to data.hasRead.toLong())
+                .whereArgs("hash = ${data.hash}")
+                .exec()
     }
 }

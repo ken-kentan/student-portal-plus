@@ -21,7 +21,8 @@ import org.jetbrains.anko.intentFor
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var portalDataManager: PortalDataManager? = null
+    var portalDataManager: PortalDataManager? = null
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +33,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return
         }
 
+        portalDataManager = PortalDataManager(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-
         }
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -50,12 +51,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupSwipeRefresh()
 
-        portalDataManager = PortalDataManager(this)
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, DashboardFragment.instance)
         transaction.commit()
 
+        // Load portal data from DB
+        portalDataManager?.loadAll()
     }
 
     override fun onBackPressed() {
