@@ -33,6 +33,9 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'org.jsoup:jsoup:1.11.2'
+    implementation project(':customtabs')
+    implementation project(':shared')
+    implementation project(':colorpicker')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
