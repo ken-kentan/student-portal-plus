@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.LectureInformationData
+import jp.kentan.studentportalplus.util.Murmur3
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,18 +27,32 @@ class LectureInformationParser : BaseParser() {
                 return@forEach
             }
 
+            val grade          = tdElements[1].text()
+            val semester       = tdElements[2].text()
+            val subject        = tdElements[3].text()
+            val instructor     = tdElements[4].text()
+            val week           = tdElements[5].text()
+            val period         = tdElements[6].text()
+            val category       = tdElements[7].text()
+            val detail         = tdElements[8].html()
+            val createdDateStr = tdElements[9].text()
+            val updatedDateStr = tdElements[10].text()
+
+            val hashStr = grade + semester + subject + instructor + week + period + category + detail + createdDateStr + updatedDateStr
+
             resultList.add(
                     LectureInformationData(
-                            grade = tdElements[1].text(),
-                            semester = tdElements[2].text(),
-                            subject = tdElements[3].text(),
-                            instructor = tdElements[4].text(),
-                            week = tdElements[5].text(),
-                            period = tdElements[6].text(),
-                            category = tdElements[7].text(),
-                            detail = tdElements[8].html(),
-                            createdDate = tdElements[9].text().toDate(),
-                            updatedDate = tdElements[10].text().toDate()
+                            hash        = Murmur3.hash32(hashStr.toByteArray()),
+                            grade       = grade,
+                            semester    = semester,
+                            subject     = subject,
+                            instructor  = instructor,
+                            week        = week,
+                            period      = period,
+                            category    = category,
+                            detail      = detail,
+                            createdDate = createdDateStr.toDate(),
+                            updatedDate = updatedDateStr.toDate()
                     )
             )
         }

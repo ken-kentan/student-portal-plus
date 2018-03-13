@@ -12,7 +12,6 @@ data class LectureCancellationData(
         val cancelDate  :Date,   // 休講日
         val week        :String, // 曜日
         val period      :String, // 時限
-        val category    :String, //
         val detail      :String, // 概要
         val createdDate :Date    // 初回掲示日
 )

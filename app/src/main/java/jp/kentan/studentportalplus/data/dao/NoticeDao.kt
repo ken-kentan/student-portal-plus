@@ -1,7 +1,6 @@
 package jp.kentan.studentportalplus.data.dao
 
 import android.content.Context
-import android.util.Log
 import jp.kentan.studentportalplus.data.component.NoticeData
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
@@ -20,13 +19,13 @@ class NoticeDao(val context: Context) {
         select(TABLE_NAME).parseList(PARSER)
     }
 
-    fun updateAll(data: List<NoticeData>) = context.database.use {
+    fun updateAll(list: List<NoticeData>) = context.database.use {
         beginTransaction()
 
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
-        data.forEachReversedByIndex {
+        list.forEachReversedByIndex {
             st.bindNull(1)
             st.bindLong(2, it.hash.toLong())
             st.bindString(3, DatabaseOpenHelper.toString(it.createdDate))
@@ -43,14 +42,14 @@ class NoticeDao(val context: Context) {
         }
 
         // Delete old data
-        if (data.isNotEmpty()) {
+        if (list.isNotEmpty()) {
             val args = StringBuilder("?")
-            for (i in 1..data.size) {
+            for (i in 1..list.size) {
                 args.append(",?")
             }
 
             st = compileStatement("DELETE FROM $TABLE_NAME WHERE favorite=0 AND hash NOT IN ($args)")
-            data.forEachIndexed { i, d ->
+            list.forEachIndexed { i, d ->
                 st.bindLong(i+1, d.hash.toLong())
             }
 

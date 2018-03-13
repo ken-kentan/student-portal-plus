@@ -23,6 +23,8 @@ class PortalDataManager(val context: Context) {
     private val lectureInformationParser = LectureInformationParser()
     private val lectureCancellationParser = LectureCancellationParser()
 
+    private val noticeDao = NoticeDao(context)
+
     /**
      * Sync local data with online
      */
@@ -32,8 +34,9 @@ class PortalDataManager(val context: Context) {
             val lecInfoList = lectureInformationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_INFORMATION.url))
             val lecCancelList = lectureCancellationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_CANCELLATION.url))
 
-            val dao = NoticeDao(context)
-            dao.updateAll(noticeList)
+            noticeDao.updateAll(noticeList)
+//            noticeDao.updateAll(lecInfoList)
+//            noticeDao.updateAll(lecCancelList)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
             return@bg Pair(false, e.message)

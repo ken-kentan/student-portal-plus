@@ -49,6 +49,19 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "read"         to INTEGER + DEFAULT("0"),
                 "favorite"     to INTEGER + DEFAULT("0"))
 
+        // Create notice table
+        db.createTable(NoticeDao.TABLE_NAME, true,
+                "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                "hash"         to INTEGER + NOT_NULL + UNIQUE,
+                "created_date" to TEXT + NOT_NULL,
+                "in_charge"    to TEXT + NOT_NULL,
+                "category"     to TEXT + NOT_NULL,
+                "title"        to TEXT + NOT_NULL,
+                "detail"       to TEXT,
+                "link"         to TEXT,
+                "read"         to INTEGER + DEFAULT("0"),
+                "favorite"     to INTEGER + DEFAULT("0"))
+
         Log.d(TAG, "Created notice table")
     }
 

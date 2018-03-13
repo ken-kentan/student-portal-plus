@@ -49,13 +49,13 @@ class NoticeParser : BaseParser(), RowParser<NoticeData> {
 
             resultList.add(
                     NoticeData(
-                            hash = Murmur3.hash32(hashStr.toByteArray()),
+                            hash        = Murmur3.hash32(hashStr.toByteArray()),
                             createdDate = createdDateStr.toDate(),
-                            inCharge = inCharge,
-                            category = category,
-                            title = title,
-                            detail = detail,
-                            link = link
+                            inCharge    = inCharge,
+                            category    = category,
+                            title       = title,
+                            detail      = detail,
+                            link        = link
                     )
             )
         }
