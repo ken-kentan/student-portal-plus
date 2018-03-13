@@ -20,6 +20,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Custom Button -->
     <style name="FlatButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/colorAccentDark</item>
         <item name="colorButtonNormal">@color/colorAccent</item>

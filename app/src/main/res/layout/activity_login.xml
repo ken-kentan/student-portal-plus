@@ -4,28 +4,16 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="jp.kentan.student_portal_plus.ui.IdpLoginActivity">
+    tools:context="jp.kentan.studentportalplus.ui.LoginActivity">
 
     <!-- Login progress -->
-
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
         android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/login_progress_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:textAlignment="center" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -33,16 +21,17 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/idp_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="@string/info_idp_login"
+                android:layout_marginBottom="16dp"
+                android:text="@string/message_input_login_form"
                 android:textAlignment="center" />
 
             <android.support.design.widget.TextInputLayout
@@ -54,8 +43,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:nextFocusForward="@id/password"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -68,24 +60,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_login"
-                    android:imeOptions="actionUnspecified"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/sign_in_button"
+            <TextView
+                android:id="@+id/error_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_login"
                 android:textColor="@color/grey_50"
                 android:textStyle="bold"
-                android:theme="@style/FlatButton"/>
+                android:theme="@style/FlatButton" />
 
         </LinearLayout>
     </ScrollView>

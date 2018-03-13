@@ -1,233 +1,39 @@
 <resources>
     <string name="app_name">Student Portal+</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_welcome">Welcome</string>
-    <string name="title_activity_login">Shibboleth Identity Provider</string>
-    <string name="title_activity_settings">設定</string>
-    <string name="title_activity_home">Dashboard</string>
-    <string name="title_activity_latest_information">Latest Information</string>
-    <string name="title_activity_lecture_information">Class Information</string>
-    <string name="title_activity_my_class">My Class</string>
+    <string name="title_activity_login">Shibboleth</string>
 
-    <string name="title_terms">Student Portal+ 利用規約・プライバシーポリシー</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    
+    <!-- Strings related to welcome -->
+    <string name="description_header">ヘッダ画像</string>
+    <string name="agree_to_terms">上記の利用規約に同意します</string>
+    <string name="action_shibboleth_auth">シボレス認証</string>
+    <string name="error_not_agree_to_terms">利用するには利用規約に同意して下さい</string>
 
-    <!-- Strings related to Common -->
-    <string name="title_search_filter">検索フィルタ</string>
-    <string name="apply">適用</string>
-    <string name="add">追加</string>
-    <string name="edit">編集</string>
-    <string name="cancel">キャンセル</string>
-    <string name="yes">はい</string>
-    <string name="no">いいえ</string>
-    <string name="delete">消去</string>
-    <string name="info">情報</string>
-    <string name="save">保存</string>
-    <string name="favorite">お気に入り</string>
-    <string name="show_all_lecture_info">すべての授業関連連絡を表示</string>
-    <string name="show_all_lecture_cancel">すべての休講情報を表示</string>
-    <string name="show_all_news_and_events">すべての最新情報を表示</string>
-    <string name="msg_deleted">消去しました</string>
-    <string name="action_unread">未読</string>
-    <string name="action_read">既読</string>
-
-    <!-- Strings related to Home -->
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_my_timetable">My Timetable</string>
-    <string name="title_class_cancel">Class Cancellations</string>
-    <string name="title_class_schedule_changes">Class Schedule Changes</string>
-    <string name="title_class_schedule">Class Schedule</string>
-    <string name="title_news_and_events">News &amp; Events</string>
-    <string name="title_campus_map">Campus Map</string>
-    <string name="title_room_map">Room Map</string>
-    <string name="title_setting">Setting</string>
-    <string name="title_today_timetable">今日の時間割</string>
-    <string name="title_lecture_cancel_jp">休講情報</string>
-    <string name="title_lecture_info_jp">授業関連連絡</string>
-    <string name="title_news_and_events_jp">最新情報</string>
-    <string name="msg_no_your_cancel_information">現在、あなたへの休講情報はありません.</string>
-    <string name="msg_no_your_announce">現在、あなたへの授業連絡はありません.</string>
-    <string name="navigation_drawer_open">drawer open.</string>
-    <string name="navigation_drawer_close">drawer close.</string>
-    <string name="msg_back_to_exit">もう一度押すとアプリを終了します</string>
-
-    <!-- Strings related to Welcome -->
-    <string name="terms_agree">上記の利用規約に同意します</string>
-    <string name="btn_idp_login">シボレス認証</string>
-
-    <!-- Strings related to Login -->
+    <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_login">Login</string>
-    <string name="info_idp_login">ユーザ名とパスワードを入力してください</string>
+    <string name="message_input_login_form">ユーザー名とパスワードを入力して下さい</string>
     <string name="error_invalid_username">無効なユーザー名です</string>
     <string name="error_invalid_password">無効なパスワード文字数です</string>
-    <string name="error_incorrect_username">ユーザー名が正しくありません</string>
-    <string name="error_incorrect_password">パスワードが正しくありません</string>
-    <string name="error_failed_to_decrypt">データの復号に失敗しました.\n設定から再ログインしてください.</string>
-    <string name="error_failed_to_access_idp">シボレス認証フォームの取得に失敗しました.</string>
     <string name="error_field_required">未入力です</string>
-    <string name="login_progress_done">"認証完了." </string>
 
-    <!-- Strings related to Settings -->
-    <string name="pref_title_idp">シボレス認証サービス</string>
-    <string name="pref_title_idp_login">再ログイン</string>
-    <string name="pref_description_idp_login">ユーザ名とパスワードを更新します</string>
-    <string name="pref_title_idp_last_login_date">最終ログイン</string>
-    <string name="pref_description_idp_last_login_date">未ログイン</string>
-    <string name="pref_title_auto_fetch">自動更新</string>
-    <string name="pref_title_portal_data">ポータルデータ</string>
-    <string name="pref_title_select_update_data">取得データ選択</string>
-    <string name="pref_title_select_update_data_all">一括選択</string>
-    <string name="pref_title_select_update_data_single">個別選択</string>
-    <string name="pref_description_about_select_update_data">更新時に取得するデータを選択します</string>
-    <string name="pref_title_my_class_threshold">類似科目の設定</string>
-    <string name="pref_description_my_class_threshold">類似科目名のしきい値を変更します</string>
-    <string name="msg_my_class_threshold_01">が受講科目、</string>
-    <string name="msg_my_class_threshold_02">が類似科目です.</string>
-    <string name="msg_my_class_threshold_03">類似科目は受講科目と同様に通知されます.</string>
-    <string name="pref_update_content_all">全部</string>
-    <string name="pref_summary_update_content_all">以下のすべてのデータを取得します</string>
-    <string name="pref_update_content_latest_info">最新情報</string>
-    <string name="pref_update_content_my_class">受講科目</string>
-    <string name="pref_update_content_lecture_info">授業関連連絡</string>
-    <string name="pref_update_content_cancel_info">休講情報</string>
-    <string name="pref_title_pdf_open_with_gdocs">PDFをGoogle Docsで開く</string>
-    <string name="pref_description_pdf_open_with_gdocs">ダウンロードせずGoogle Docsで表示します</string>
-    <string name="pref_title_detail_err_msg">詳細なエラーメッセージを表示</string>
-    <string name="pref_description_detail_err_msg">エラー発生時に原因を詳細に表示します</string>
-    <string name="pref_title_reset">リセット</string>
-    <string name="pref_title_about_reset">取得したデータを消去します</string>
-    <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
-    <string name="pref_title_about">概要</string>
-    <string name="pref_title_about_version">バージョン</string>
-    <string name="pref_title_spread">友達にシェア</string>
-    <string name="pref_description_spread">このアプリを友達に教える</string>
-    <string name="pref_title_about_developer">開発元</string>
-    <string name="pref_description_about_developer">K² Studio.</string>
-    <string name="pref_title_terms">利用規約・プライバシーポリシー</string>
-    <string name="pref_description_terms">利用規約およびプライバシーポリシーの詳細</string>
-    <string name="pref_title_oss_license">オープンソースライセンス</string>
-    <string name="pref_description_oss_license">オープンソースソフトウェアに関するライセンスの詳細</string>
-    <string name="text_spread">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
+    <!-- Common actions -->
+    <string name="action_close">閉じる</string>
 
-    <!-- Strings related to LatestInfo -->
-    <string name="msg_no_latest_info">表示できる最新情報はありません.</string>
-    <string name="msg_delete_latest_info">&lt;b>{title}&lt;/b> を消去しますか？\n更新時に記載されている場合は再度取得・通知します。</string>
-    <string name="header_title">タイトル</string>
-    <string name="header_title_in_charge_and_category">発信課 カテゴリ</string>
-    <string name="header_title_content">内容</string>
-    <string name="header_title_link">リンク</string>
-    <string name="snackbar_star_set">お気に入りに登録しました</string>
-    <string name="snackbar_star_reset">お気に入りを解除しました</string>
-    <string name="action_list_filter">フィルタ</string>
-    <string name="title_posting_date">掲載日</string>
-    <string name="title_latest_info_type">特徴</string>
-    <string name="action_favorite">お気に入り</string>
+    <!-- Common errors -->
+    <string name="error_unknown">不明なエラーです</string>
+    <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい。</string>
 
-    <!-- Strings related to Menu -->
-    <string name="menu_search_with_title">タイトルで検索&#8230;</string>
-    <string name="menu_search_with_subject_or_instructor">科目名、教員名で検索&#8230;</string>
-    <string name="menu_change_timetable_view">レイアウトを切り替え</string>
-    <string name="menu_register_class">受講科目を追加</string>
-    <string name="menu_week_view">週表示</string>
-    <string name="menu_day_view">受講リスト表示</string>
-    <string name="menu_share">共有</string>
-    <string name="menu_delete">消去</string>
-    <string name="menu_save">保存</string>
-
-    <!-- Strings related to LectureInfo -->
-    <string name="msg_no_result_lecture_info">表示できる授業連絡はありません.</string>
-    <string name="msg_no_lecture_info">現在、授業連絡はありません.</string>
-    <string name="header_title_subject">授業科目</string>
-    <string name="header_title_instructor">担当教員</string>
-    <string name="header_title_semester_and_day_and_period">学期 曜日時限</string>
-    <string name="header_title_place">場所</string>
-    <string name="header_title_type">分類</string>
-    <string name="header_title_announce_info">連絡事項</string>
-    <string name="title_sort_by">表示順</string>
-    <string name="action_my_class">受講科目</string>
-    <string name="msg_remove_my_class_info">&lt;b>{subject}&lt;/b> を受講科目から除外しますか？</string>
-
-    <!-- Strings related to CancelInfo -->
-    <string name="msg_no_result_lecture_cancel">表示できる休講情報はありません.</string>
-    <string name="msg_no_lecture_cancel">現在、休講情報はありません.</string>
-    <string name="header_title_faculty_and_day_and_period">学部 曜日時限</string>
-    <string name="header_title_cancel_date">休講年月日</string>
-    <string name="header_title_note_info">備考</string>
-
-    <!-- Strings related to MyClassInfo -->
-    <string name="msg_no_my_class_info">表示できる受講科目がありません.\nデータが未取得、または受講登録・修正期間の可能性があります.</string>
-    <string name="msg_delete_my_class_info">&lt;b>{subject}&lt;/b> を消去しますか？</string>
-    <string name="header_title_class_type">形態</string>
-    <string name="header_title_day_and_period">曜日時限</string>
-    <string name="header_title_web_syllabus">シラバス</string>
-    <string name="hint_subject">授業科目</string>
-    <string name="hint_instructor">担当教員</string>
-    <string name="hint_place">場所</string>
-    <string name="hint_day_and_period">曜日時限</string>
-    <string name="hint_type">分類</string>
-    <string name="hint_credits">単位数</string>
-    <string name="hint_timetable_num">時間割番号</string>
-    <string name="title_color_dialog">色を選択</string>
-    <string name="msg_warn_attend_course">正式な受講登録は大学のシステムを使用して下さい</string>
-
-    <!-- Strings related to ErrorMsg -->
-    <string name="err_msg_failed_to_update">更新に失敗しました\nしばらく待ってから再度お試しください</string>
-    <string name="err_msg_not_agree">利用するには利用規約に同意して下さい</string>
-    <string name="err_msg_failed_to_delete">消去に失敗しました</string>
-    <string name="err_msg_failed_to_remove_from_my_class">受講科目から除外できませんでした</string>
-    <string name="err_msg_failed_to_load">読み込みに失敗しました</string>
-    <string name="err_msg_failed_to_scraping">スクレイピングに失敗しました</string>
-    <string name="err_msg_unknown">未知のエラーが発生しました</string>
-
-    <string name="msg_warn_database_reset">一部または全てのデータベースが破損しています。\nデータベースを初期化しますか?</string>
-
-    <string name="shortcut_disabled_my_timetable">Disable \'My Timetable\' shortcut</string>
-
-    <!-- Strings related to Timetable -->
-    <string name="mon">月</string>
-    <string name="tue">火</string>
-    <string name="wed">水</string>
-    <string name="thu">木</string>
-    <string name="fri">金</string>
-    <string name="period_1">1</string>
-    <string name="period_2">2</string>
-    <string name="period_3">3</string>
-    <string name="period_4">4</string>
-    <string name="period_5">5</string>
-    <string name="period_6">6</string>
-    <string name="period_7">7</string>
-    <string name="period_1_begin">&#160;8:50</string>
-    <string name="period_2_begin">10:30</string>
-    <string name="period_3_begin">12:50</string>
-    <string name="period_4_begin">14:30</string>
-    <string name="period_5_begin">16:10</string>
-    <string name="period_6_begin">17:50</string>
-    <string name="period_7_begin">19:30</string>
-
-    <!-- Strings related to Url -->
+    <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
     <string name="url_terms_local">file:///android_asset/terms_and_privacy_policy.html</string>
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
-
-
-    <!-- Sample -->
-    <string name="sample">THIS IS SAMPLE TEXT</string>
-    <string name="sample_date">2017/01/01</string>
-    <string name="sample_day_and_period">月1</string>
-    <string name="sample_latest_info_title">[重要] 平成28年度 後（秋）学期 成績発表について / 2016 Second (Fall) Semester Grade Report </string>
-    <string name="sample_latest_info_detail">
-        "成績発表日時 / Grade Report Download Starting Date：　平成29年3月1日(水)10時 / From 10:00 on March 1 (Wed), 2017\n"
-        "成績閲覧Webシステム / Grade Browsing System URL：　https://record.student.kit.ac.jp/\n"
-        "* メニュー「学生ポータル ⇒ 成績閲覧」からもアクセスできます。\n"
-        "* You can also access to the above page from the menu of “Students' Info. Portal > Grade Browsing\n"</string>
-    <string name="sample_subject">物理学基礎実験Ａmb</string>
-    <string name="sample_instructor">猿山　靖夫, 八尾　晴彦, 辰巳　創一, (鶴谷　直樹), (厳樫　昌弘)</string>
-    <string name="sample_in_charge">学務課</string>
-    <string name="sample_category">課外活動（クラブ・サークル）・運動施設等</string>
-    <string name="sample_place">WL23</string>
-    <string name="sample_class_info_detail">物理学基礎実験Ａmbのレポート未提出者のリストを実験室前に掲示したので、全て提出済みであることを確認して下さい。</string>
-    <string name="sample_link">https://www.cis.kit.ac.jp/~gakumuka/ead/ead_portal/gakumuka/ta/2016aki-zenbun.html</string>
-    <string name="sample_period">3</string>
 </resources>
