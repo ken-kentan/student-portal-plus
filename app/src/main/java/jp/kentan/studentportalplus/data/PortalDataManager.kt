@@ -44,4 +44,6 @@ class PortalDataManager(val context: Context) {
 
         return@bg Pair<Boolean, String?>(true, null)
     }
+
+    fun getNoticeDataAll() = noticeDao.getAll()
 }

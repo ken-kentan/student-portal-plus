@@ -1,5 +1,6 @@
 package jp.kentan.studentportalplus.data.component
 
+import android.support.v7.util.DiffUtil
 import java.util.*
 
 
@@ -14,4 +15,16 @@ data class NoticeData(
         val link        :String?, // お知らせ > リンク
         val hasRead     :Boolean = false,
         val isFavorite  :Boolean = false
-)
+) {
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoticeData>() {
+            override fun areItemsTheSame(oldItem: NoticeData?, newItem: NoticeData?): Boolean {
+                return oldItem?.id == newItem?.id
+            }
+
+            override fun areContentsTheSame(oldItem: NoticeData?, newItem: NoticeData?): Boolean {
+                return  oldItem == newItem
+            }
+        }
+    }
+}

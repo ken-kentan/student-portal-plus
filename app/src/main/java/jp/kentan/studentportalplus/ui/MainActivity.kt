@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalDataManager
+import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.coroutines.experimental.android.UI
@@ -50,6 +51,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupSwipeRefresh()
 
         portalDataManager = PortalDataManager(this)
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragment_container, DashboardFragment.instance)
+        transaction.commit()
+
     }
 
     override fun onBackPressed() {
