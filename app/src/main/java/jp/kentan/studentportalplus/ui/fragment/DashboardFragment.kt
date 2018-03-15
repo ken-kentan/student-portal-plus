@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.NoticeData
+import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
@@ -30,20 +30,17 @@ class DashboardFragment : Fragment() {
             val manager = context.portalDataManager ?: return
 
             noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
-                override fun onUpdateFavorite(data: NoticeData, isFavorite: Boolean) {
+                override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
                     manager.update(data.copy(isFavorite = isFavorite))
                 }
 
-                override fun onClick(data: NoticeData) {
+                override fun onClick(data: Notice) {
                     manager.update(data.copy(hasRead = true))
                 }
 
             })
 
-            manager.noticeDataSubject?.subscribe {
-                // Select latest 3 notice
-                noticeAdapter?.submitList(it.take(3))
-            }
+            manager.noticeLiveData.observe(context, noticeAdapter!!) //TODO
         }
     }
 

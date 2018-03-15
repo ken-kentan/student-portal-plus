@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
 import android.util.Log
+import jp.kentan.studentportalplus.data.component.LectureInformation
 import org.jetbrains.anko.db.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,23 +47,26 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "title"        to TEXT + NOT_NULL,
                 "detail"       to TEXT,
                 "link"         to TEXT,
-                "read"         to INTEGER + DEFAULT("0"),
-                "favorite"     to INTEGER + DEFAULT("0"))
+                "read"         to INTEGER + NOT_NULL + DEFAULT("0"),
+                "favorite"     to INTEGER + NOT_NULL + DEFAULT("0"))
 
-        // Create notice table
-        db.createTable(NoticeDao.TABLE_NAME, true,
+        // Create lecture info table
+        db.createTable(LectureInformationDao.TABLE_NAME, true,
                 "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 "hash"         to INTEGER + NOT_NULL + UNIQUE,
-                "created_date" to TEXT + NOT_NULL,
-                "in_charge"    to TEXT + NOT_NULL,
+                "grade"        to TEXT + NOT_NULL,
+                "semester"     to TEXT + NOT_NULL,
+                "subject"      to TEXT + NOT_NULL,
+                "instructor"   to TEXT + NOT_NULL,
+                "week"         to TEXT + NOT_NULL,
+                "period"       to TEXT + NOT_NULL,
                 "category"     to TEXT + NOT_NULL,
-                "title"        to TEXT + NOT_NULL,
-                "detail"       to TEXT,
-                "link"         to TEXT,
-                "read"         to INTEGER + DEFAULT("0"),
-                "favorite"     to INTEGER + DEFAULT("0"))
+                "detail"       to TEXT + NOT_NULL,
+                "created_date" to TEXT + NOT_NULL,
+                "updated_date" to TEXT + NOT_NULL,
+                "read"         to INTEGER + NOT_NULL + DEFAULT("0"))
 
-        Log.d(TAG, "Created notice table")
+        Log.d(TAG, "Created tables")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

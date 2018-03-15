@@ -1,27 +1,27 @@
 package jp.kentan.studentportalplus.data.dao
 
-import android.content.Context
-import jp.kentan.studentportalplus.data.component.NoticeData
+import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.collections.forEachReversedByIndex
 import org.jetbrains.anko.db.SqlOrderDirection
+import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 
 
-class NoticeDao(val context: Context) {
+class NoticeDao(private val database: DatabaseOpenHelper) {
 
     companion object {
         const val TABLE_NAME = "notice"
         private val PARSER = NoticeParser()
     }
 
-    fun getAll(): List<NoticeData> = context.database.use {
+    fun getAll(): List<Notice> = database.use {
         select(TABLE_NAME).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
     }
 
-    fun updateAll(list: List<NoticeData>) = context.database.use {
+    fun updateAll(list: List<Notice>) = database.use {
         beginTransaction()
 
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?);")
@@ -57,16 +57,16 @@ class NoticeDao(val context: Context) {
 
             st.executeUpdateDelete()
         } else {
-            delete(TABLE_NAME, "favorite", arrayOf("0"))
+            delete(TABLE_NAME, "favorite=0")
         }
 
         setTransactionSuccessful()
         endTransaction()
     }
 
-    fun update(data: NoticeData): Int = context.database.use {
+    fun update(data: Notice): Int = database.use {
         update(TABLE_NAME, "favorite" to data.isFavorite.toLong(), "read" to data.hasRead.toLong())
-                .whereArgs("hash = ${data.hash}")
+                .whereArgs("_id = ${data.id}")
                 .exec()
     }
 }

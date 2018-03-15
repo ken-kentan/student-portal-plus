@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.NoticeData
+import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
 import jp.kentan.studentportalplus.util.Murmur3
 import org.jetbrains.anko.db.RowParser
@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class NoticeParser : BaseParser(), RowParser<NoticeData> {
+class NoticeParser : BaseParser(), RowParser<Notice> {
 
     private companion object {
         const val TAG = "NoticeParser"
@@ -18,8 +18,8 @@ class NoticeParser : BaseParser(), RowParser<NoticeData> {
     }
 
     @Throws(Exception::class)
-    override fun parse(document: Document): List<NoticeData> {
-        val resultList = mutableListOf<NoticeData>()
+    override fun parse(document: Document): List<Notice> {
+        val resultList = mutableListOf<Notice>()
 
         val dlElements = document.select("dl")
 
@@ -48,7 +48,7 @@ class NoticeParser : BaseParser(), RowParser<NoticeData> {
             val hashStr = createdDateStr + inCharge + category + title + detail + link
 
             resultList.add(
-                    NoticeData(
+                    Notice(
                             hash        = Murmur3.hash32(hashStr.toByteArray()),
                             createdDate = createdDateStr.toDate(),
                             inCharge    = inCharge,
@@ -60,13 +60,12 @@ class NoticeParser : BaseParser(), RowParser<NoticeData> {
             )
         }
 
-        Log.d(TAG, "Parsed ${resultList.size} NoticeData")
+        Log.d(TAG, "Parsed ${resultList.size} Notice")
 
         return resultList
     }
 
-    override fun parseRow(columns: Array<Any?>): NoticeData {
-        return NoticeData(
+    override fun parseRow(columns: Array<Any?>) = Notice(
                 id          = (columns[0] as Long).toInt(),
                 hash        = (columns[1] as Long).toInt(),
                 createdDate = DatabaseOpenHelper.toDate(columns[2] as String),
@@ -78,7 +77,6 @@ class NoticeParser : BaseParser(), RowParser<NoticeData> {
                 hasRead     = (columns[8] as Long) == 1L,
                 isFavorite  = (columns[9] as Long) == 1L
         )
-    }
 
     @Throws(Exception::class)
     private fun String.toDate(): Date = try {

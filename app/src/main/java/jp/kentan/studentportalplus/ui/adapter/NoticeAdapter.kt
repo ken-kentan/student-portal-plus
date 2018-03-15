@@ -1,5 +1,6 @@
 package jp.kentan.studentportalplus.ui.adapter
 
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.recyclerview.extensions.ListAdapter
@@ -8,13 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.NoticeData
+import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.notice_small_view.view.*
 
 
 class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
-        ListAdapter<NoticeData, NoticeAdapter.ViewHolder>(NoticeData.DIFF_CALLBACK) {
+        ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK),
+        Observer<List<Notice>> {
+    override fun onChanged(t: List<Notice>?) {
+        submitList(t)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -32,7 +37,7 @@ class NoticeAdapter(private val context: Context, private val listener: NoticeAd
             private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
-        fun bindTo(data: NoticeData) {
+        fun bindTo(data: Notice) {
             view.setOnClickListener {
                 listener.onClick(data)
             }
@@ -60,7 +65,7 @@ class NoticeAdapter(private val context: Context, private val listener: NoticeAd
     }
 
     interface Listener{
-        fun onUpdateFavorite(data: NoticeData, isFavorite: Boolean)
-        fun onClick(data: NoticeData)
+        fun onUpdateFavorite(data: Notice, isFavorite: Boolean)
+        fun onClick(data: Notice)
     }
 }
