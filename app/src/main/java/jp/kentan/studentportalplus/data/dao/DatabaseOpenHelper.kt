@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.LectureInformation
 import org.jetbrains.anko.db.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +36,7 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Create notice table
+
         db.createTable(NoticeDao.TABLE_NAME, true,
                 "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 "hash"         to INTEGER + NOT_NULL + UNIQUE,
@@ -50,7 +49,6 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "read"         to INTEGER + NOT_NULL + DEFAULT("0"),
                 "favorite"     to INTEGER + NOT_NULL + DEFAULT("0"))
 
-        // Create lecture info table
         db.createTable(LectureInformationDao.TABLE_NAME, true,
                 "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 "hash"         to INTEGER + NOT_NULL + UNIQUE,
@@ -64,6 +62,19 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "detail"       to TEXT + NOT_NULL,
                 "created_date" to TEXT + NOT_NULL,
                 "updated_date" to TEXT + NOT_NULL,
+                "read"         to INTEGER + NOT_NULL + DEFAULT("0"))
+
+        db.createTable(LectureCancellationDao.TABLE_NAME, true,
+                "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                "hash"         to INTEGER + NOT_NULL + UNIQUE,
+                "grade"        to TEXT + NOT_NULL,
+                "subject"      to TEXT + NOT_NULL,
+                "instructor"   to TEXT + NOT_NULL,
+                "cancel_date" to TEXT + NOT_NULL,
+                "week"         to TEXT + NOT_NULL,
+                "period"       to TEXT + NOT_NULL,
+                "detail"       to TEXT + NOT_NULL,
+                "created_date" to TEXT + NOT_NULL,
                 "read"         to INTEGER + NOT_NULL + DEFAULT("0"))
 
         Log.d(TAG, "Created tables")

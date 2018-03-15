@@ -6,6 +6,7 @@ import android.util.Log
 import io.reactivex.subjects.BehaviorSubject
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.data.component.PortalDataType
+import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
 import jp.kentan.studentportalplus.data.dao.LectureInformationDao
 import jp.kentan.studentportalplus.data.dao.NoticeDao
 import jp.kentan.studentportalplus.data.dao.database
@@ -30,6 +31,7 @@ class PortalDataManager(context: Context) {
 
     private val noticeDao = NoticeDao(context.database)
     private val lectureInformationDao = LectureInformationDao(context.database)
+    private val lectureCancellationDao = LectureCancellationDao(context.database)
 
     val noticeLiveData = MutableLiveData<List<Notice>>()
 
@@ -40,10 +42,11 @@ class PortalDataManager(context: Context) {
         try {
             val noticeList = noticeParser.parse(shibbolethClient.fetch(PortalDataType.NOTICE.url))
             val lecInfoList = lectureInformationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_INFORMATION.url))
-//            val lecCancelList = lectureCancellationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_CANCELLATION.url))
+            val lecCancelList = lectureCancellationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_CANCELLATION.url))
 
             noticeDao.updateAll(noticeList)
             lectureInformationDao.updateAll(lecInfoList)
+            lectureCancellationDao.updateAll(lecCancelList)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
             return@bg Pair(false, e.message)
@@ -51,6 +54,9 @@ class PortalDataManager(context: Context) {
 
         noticeLiveData.postValue(noticeDao.getAll())
         lectureInformationDao.getAll()
+        lectureCancellationDao.getAll().forEach {
+            Log.d(TAG, it.subject)
+        }
 
         return@bg Pair<Boolean, String?>(true, null)
     }

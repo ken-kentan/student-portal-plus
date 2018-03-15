@@ -66,17 +66,17 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
     }
 
     override fun parseRow(columns: Array<Any?>) = Notice(
-                id          = (columns[0] as Long).toInt(),
-                hash        = (columns[1] as Long).toInt(),
-                createdDate = DatabaseOpenHelper.toDate(columns[2] as String),
-                inCharge    = columns[3] as String,
-                category    = columns[4] as String,
-                title       = columns[5] as String,
-                detail      = columns[6] as String?,
-                link        = columns[7] as String?,
-                hasRead     = (columns[8] as Long) == 1L,
-                isFavorite  = (columns[9] as Long) == 1L
-        )
+            id          = (columns[0] as Long).toInt(),
+            hash        = (columns[1] as Long).toInt(),
+            createdDate = DatabaseOpenHelper.toDate(columns[2] as String),
+            inCharge    = columns[3] as String,
+            category    = columns[4] as String,
+            title       = columns[5] as String,
+            detail      = columns[6] as String?,
+            link        = columns[7] as String?,
+            hasRead     = (columns[8] as Long) == 1L,
+            isFavorite  = (columns[9] as Long) == 1L
+    )
 
     @Throws(Exception::class)
     private fun String.toDate(): Date = try {

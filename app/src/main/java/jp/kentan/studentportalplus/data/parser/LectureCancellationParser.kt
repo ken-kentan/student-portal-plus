@@ -1,14 +1,16 @@
 package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.LectureCancellationData
+import jp.kentan.studentportalplus.data.component.LectureCancellation
+import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
 import jp.kentan.studentportalplus.util.Murmur3
+import org.jetbrains.anko.db.RowParser
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LectureCancellationParser : BaseParser() {
+class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
 
     private companion object {
         const val TAG = "LectureCancelParser"
@@ -16,8 +18,8 @@ class LectureCancellationParser : BaseParser() {
     }
 
     @Throws(Exception::class)
-    override fun parse(document: Document): List<LectureCancellationData> {
-        val resultList = mutableListOf<LectureCancellationData>()
+    override fun parse(document: Document): List<LectureCancellation> {
+        val resultList = mutableListOf<LectureCancellation>()
 
         val trElements = document.select("tr[class~=gen_tbl1_(odd|even)]")
 
@@ -39,7 +41,7 @@ class LectureCancellationParser : BaseParser() {
             val hashStr = grade + subject + instructor + cancelDateStr + week + period + detail + createdDateStr
 
             resultList.add(
-                    LectureCancellationData(
+                    LectureCancellation(
                             hash        = Murmur3.hash32(hashStr.toByteArray()),
                             grade       = grade,
                             subject     = subject,
@@ -57,6 +59,20 @@ class LectureCancellationParser : BaseParser() {
 
         return resultList
     }
+
+    override fun parseRow(columns: Array<Any?>) = LectureCancellation(
+            id          = (columns[0] as Long).toInt(),
+            hash        = (columns[1] as Long).toInt(),
+            grade       = columns[2] as String,
+            subject     = columns[3] as String,
+            instructor  = columns[4] as String,
+            cancelDate  = DatabaseOpenHelper.toDate(columns[5] as String),
+            week        = columns[6] as String,
+            period      = columns[7] as String,
+            detail      = columns[8] as String,
+            createdDate = DatabaseOpenHelper.toDate(columns[9] as String),
+            hasRead     = (columns[10] as Long) == 1L
+    )
 
     @Throws(Exception::class)
     private fun String.toDate(): Date = try {
