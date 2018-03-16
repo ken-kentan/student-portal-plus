@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import jp.kentan.studentportalplus.R
@@ -15,8 +16,10 @@ import jp.kentan.studentportalplus.data.PortalDataManager
 import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.intentFor
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
+            portalDataManager?.loadAll()
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
         }
@@ -54,9 +58,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, DashboardFragment.instance)
         transaction.commit()
+    }
 
-        // Load portal data from DB
+    override fun onStart() {
+        super.onStart()
         portalDataManager?.loadAll()
+        Log.d("Main", "onStart")
     }
 
     override fun onBackPressed() {

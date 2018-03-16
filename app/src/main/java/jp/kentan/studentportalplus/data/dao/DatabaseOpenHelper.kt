@@ -70,7 +70,7 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "grade"        to TEXT + NOT_NULL,
                 "subject"      to TEXT + NOT_NULL,
                 "instructor"   to TEXT + NOT_NULL,
-                "cancel_date" to TEXT + NOT_NULL,
+                "cancel_date"  to TEXT + NOT_NULL,
                 "week"         to TEXT + NOT_NULL,
                 "period"       to TEXT + NOT_NULL,
                 "detail"       to TEXT + NOT_NULL,
