@@ -5,6 +5,6 @@ enum class LectureAttendType {
     PORTAL,
     USER,
     SIMILAR,
-    NONE,
+    NOT,
     UNKNOWN
 }

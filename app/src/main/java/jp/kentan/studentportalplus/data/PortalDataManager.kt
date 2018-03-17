@@ -6,12 +6,10 @@ import android.util.Log
 import io.reactivex.subjects.BehaviorSubject
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.data.component.PortalDataType
-import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
-import jp.kentan.studentportalplus.data.dao.LectureInformationDao
-import jp.kentan.studentportalplus.data.dao.NoticeDao
-import jp.kentan.studentportalplus.data.dao.database
+import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
+import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -28,10 +26,12 @@ class PortalDataManager(context: Context) {
     private val noticeParser = NoticeParser()
     private val lectureInformationParser = LectureInformationParser()
     private val lectureCancellationParser = LectureCancellationParser()
+    private val myClassParser = MyClassParser()
 
     private val noticeDao = NoticeDao(context.database)
     private val lectureInformationDao = LectureInformationDao(context.database)
     private val lectureCancellationDao = LectureCancellationDao(context.database)
+    private val myClassDao =  MyClassDao(context.database)
 
     val noticeLiveData = MutableLiveData<List<Notice>>()
 
@@ -43,10 +43,12 @@ class PortalDataManager(context: Context) {
             val noticeList = noticeParser.parse(shibbolethClient.fetch(PortalDataType.NOTICE.url))
             val lecInfoList = lectureInformationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_INFORMATION.url))
             val lecCancelList = lectureCancellationParser.parse(shibbolethClient.fetch(PortalDataType.LECTURE_CANCELLATION.url))
+            val myClassList   = myClassParser.parse(shibbolethClient.fetch(PortalDataType.MY_CLASS.url))
 
             noticeDao.updateAll(noticeList)
             lectureInformationDao.updateAll(lecInfoList)
             lectureCancellationDao.updateAll(lecCancelList)
+            myClassDao.updateAll(myClassList)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
             return@bg Pair(false, e.message)
@@ -55,6 +57,9 @@ class PortalDataManager(context: Context) {
         noticeLiveData.postValue(noticeDao.getAll())
         lectureInformationDao.getAll()
         lectureCancellationDao.getAll().forEach {
+            Log.d(TAG, it.subject)
+        }
+        myClassDao.getAll().forEach {
             Log.d(TAG, it.subject)
         }
 

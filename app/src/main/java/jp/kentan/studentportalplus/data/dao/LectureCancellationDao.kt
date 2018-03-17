@@ -27,7 +27,7 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
-        list.forEachReversedByIndex {
+        list.forEach {
             st.bindNull(1)
             st.bindLong(2, it.hash.toLong())
             st.bindString(3, it.grade)
