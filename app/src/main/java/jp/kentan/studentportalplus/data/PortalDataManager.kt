@@ -3,7 +3,6 @@ package jp.kentan.studentportalplus.data
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
-import io.reactivex.subjects.BehaviorSubject
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.dao.*

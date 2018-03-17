@@ -1,16 +1,23 @@
 package jp.kentan.studentportalplus
 
-import android.app.Application
-import android.util.Log
 
-class StudentPortalPlus : Application() {
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import dagger.android.support.DaggerApplication
+import jp.kentan.studentportalplus.di.AppModule
+import jp.kentan.studentportalplus.di.FragmentModule
+import javax.inject.Singleton
 
-    companion object {
-        const val TAG = "StudentPortalPlusApp"
+
+open class StudentPortalPlus : DaggerApplication() {
+
+    override fun applicationInjector(): AndroidInjector<StudentPortalPlus> {
+        return DaggerStudentPortalPlus_Component.builder()
+                .appModule(AppModule(this))
+                .build()
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        Log.d(TAG, "onCreate")
-    }
+    @Singleton
+    @dagger.Component(modules = [(AndroidSupportInjectionModule::class), (AppModule::class), (FragmentModule::class)])
+    internal interface Component : AndroidInjector<StudentPortalPlus>
 }

@@ -7,22 +7,32 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import javax.inject.Inject
 
 
 class DashboardFragment : Fragment() {
 
     private var noticeAdapter: NoticeAdapter? = null
 
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var portalRepository: PortalRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AndroidSupportInjection.inject(this)
 
         val context = context ?: throw NullPointerException("Null context")
 
