@@ -90,7 +90,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         val subject      = lineList[3].trim()
         val instructor   = lineList[4].trim()
 
-        val hashStr = week.toString() + period + scheduleCode + credit + category + subject + instructor
+        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor
 
         return MyClass(
                 hash         = Murmur3.hash32(hashStr.toByteArray()),
