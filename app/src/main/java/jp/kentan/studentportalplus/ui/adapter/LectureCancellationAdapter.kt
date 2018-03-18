@@ -14,7 +14,7 @@ import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 
 
-class LectureCancellationAdapter(private val context: Context?, private val listener: Listener) :
+class LectureCancellationAdapter(private val context: Context, private val listener: Listener) :
         ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK),
         Observer<List<LectureCancellation>> {
 

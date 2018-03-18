@@ -14,7 +14,7 @@ class DashboardViewModel(private val portalRepository: PortalRepository) : ViewM
 
     fun getLectureInformations() = portalRepository.lectureInformationLiveData
 
-    fun getLectureCancellation() = portalRepository.lectureCancellationLiveData
+    fun getLectureCancellations() = portalRepository.lectureCancellationLiveData
 
     fun updateNotice(data: Notice) = bg {
         portalRepository.update(data)

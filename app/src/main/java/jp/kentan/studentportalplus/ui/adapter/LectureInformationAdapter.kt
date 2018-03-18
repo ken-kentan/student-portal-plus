@@ -14,7 +14,7 @@ import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 
 
-class LectureInformationAdapter(private val context: Context?, private val listener: Listener) :
+class LectureInformationAdapter(private val context: Context, private val listener: Listener) :
         ListAdapter<LectureInformation, LectureInformationAdapter.ViewHolder>(LectureInformation.DIFF_CALLBACK),
         Observer<List<LectureInformation>> {
 

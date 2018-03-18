@@ -14,7 +14,7 @@ import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_notice.view.*
 
 
-class NoticeAdapter(private val context: Context?, private val listener: NoticeAdapter.Listener) :
+class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK),
         Observer<List<Notice>> {
 
