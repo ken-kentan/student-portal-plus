@@ -9,14 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.LectureInformation
+import jp.kentan.studentportalplus.data.component.LectureCancellation
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 
 
-class LectureInformationAdapter(private val context: Context?, private val listener: Listener) :
-        ListAdapter<LectureInformation, LectureInformationAdapter.ViewHolder>(LectureInformation.DIFF_CALLBACK),
-        Observer<List<LectureInformation>> {
+class LectureCancellationAdapter(private val context: Context?, private val listener: Listener) :
+        ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK),
+        Observer<List<LectureCancellation>> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -29,7 +29,7 @@ class LectureInformationAdapter(private val context: Context?, private val liste
         holder.bindTo(getItem(position))
     }
 
-    override fun onChanged(t: List<LectureInformation>?) {
+    override fun onChanged(t: List<LectureCancellation>?) {
         submitList(t?.take(3))
     }
 
@@ -38,8 +38,8 @@ class LectureInformationAdapter(private val context: Context?, private val liste
             private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
-        fun bindTo(data: LectureInformation) {
-            view.date_text.text    = data.updatedDate.toShortString()
+        fun bindTo(data: LectureCancellation) {
+            view.date_text.text    = data.createdDate.toShortString()
             view.subject_text.text = data.subject
             view.detail_text.text  = data.detailText
 
@@ -58,6 +58,6 @@ class LectureInformationAdapter(private val context: Context?, private val liste
     }
 
     interface Listener{
-        fun onClick(data: LectureInformation)
+        fun onClick(data: LectureCancellation)
     }
 }

@@ -74,7 +74,8 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "cancel_date"  to TEXT + NOT_NULL,
                 "week"         to TEXT + NOT_NULL,
                 "period"       to TEXT + NOT_NULL,
-                "detail"       to TEXT + NOT_NULL,
+                "detail_text"  to TEXT + NOT_NULL,
+                "detail_html"  to TEXT + NOT_NULL,
                 "created_date" to TEXT + NOT_NULL,
                 "read"         to INTEGER + NOT_NULL + DEFAULT("0"))
 

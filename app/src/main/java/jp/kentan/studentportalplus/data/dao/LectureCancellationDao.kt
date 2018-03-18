@@ -51,7 +51,7 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
     fun updateAll(list: List<LectureCancellation>) = database.use {
         beginTransaction()
 
-        var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
+        var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
         list.forEach {
@@ -63,9 +63,10 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
             st.bindString(6, DatabaseOpenHelper.toString(it.cancelDate))
             st.bindString(7, it.week)
             st.bindString(8, it.period)
-            st.bindString(9, it.detail)
-            st.bindString(10, DatabaseOpenHelper.toString(it.createdDate))
-            st.bindLong(11, it.hasRead.toLong())
+            st.bindString(9, it.detailText)
+            st.bindString(10, it.detailHtml)
+            st.bindString(11, DatabaseOpenHelper.toString(it.createdDate))
+            st.bindLong(12, it.hasRead.toLong())
 
             st.executeInsert()
             st.clearBindings()

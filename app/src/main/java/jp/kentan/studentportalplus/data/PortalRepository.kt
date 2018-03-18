@@ -12,7 +12,7 @@ import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 
 
-class PortalRepository(private val context: Context) {
+class PortalRepository(context: Context) {
 
     private companion object {
         const val TAG = "PortalRepository"
@@ -74,6 +74,12 @@ class PortalRepository(private val context: Context) {
     fun update(data: LectureInformation) {
         if (lectureInfoDao.update(data) > 0) {
             lectureInformationLiveData.postValue(lectureInfoDao.getAll())
+        }
+    }
+
+    fun update(data: LectureCancellation) {
+        if (lectureCancelDao.update(data) > 0) {
+            lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
         }
     }
 

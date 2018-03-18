@@ -4,6 +4,7 @@ import android.util.Log
 import jp.kentan.studentportalplus.data.component.LectureCancellation
 import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
 import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.db.RowParser
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
@@ -33,12 +34,14 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             val subject        = tdElements[2].text()
             val instructor     = tdElements[3].text()
             val cancelDateStr  = tdElements[4].text()
+            val cancelDate     = cancelDateStr.toDate()
             val week           = tdElements[5].text()
             val period         = tdElements[6].text()
-            val detail         = tdElements[7].html()
+            val detailText     = cancelDate.toShortString() + ' ' +  tdElements[7].text()
+            val detailHtml     = tdElements[7].html()
             val createdDateStr = tdElements[8].text()
 
-            val hashStr = grade + subject + instructor + cancelDateStr + week + period + detail + createdDateStr
+            val hashStr = grade + subject + instructor + cancelDateStr + week + period + detailHtml + createdDateStr
 
             resultList.add(
                     LectureCancellation(
@@ -46,10 +49,11 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
                             grade       = grade,
                             subject     = subject,
                             instructor  = instructor,
-                            cancelDate  = cancelDateStr.toDate(),
+                            cancelDate  = cancelDate,
                             week        = week,
                             period      = period,
-                            detail      = detail,
+                            detailText  = detailText,
+                            detailHtml  = detailHtml,
                             createdDate = createdDateStr.toDate()
                     )
             )
@@ -69,9 +73,10 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             cancelDate  = DatabaseOpenHelper.toDate(columns[5] as String),
             week        = columns[6] as String,
             period      = columns[7] as String,
-            detail      = columns[8] as String,
-            createdDate = DatabaseOpenHelper.toDate(columns[9] as String),
-            hasRead     = (columns[10] as Long) == 1L
+            detailText  = columns[8] as String,
+            detailHtml  = columns[9] as String,
+            createdDate = DatabaseOpenHelper.toDate(columns[10] as String),
+            hasRead     = (columns[11] as Long) == 1L
     )
 
     @Throws(Exception::class)

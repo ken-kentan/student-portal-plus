@@ -11,8 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.component.LectureCancellation
 import jp.kentan.studentportalplus.data.component.LectureInformation
 import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.DashboardViewModel
@@ -55,11 +57,20 @@ class DashboardFragment : Fragment() {
             }
         })
 
+        val lectureCancelAdapter =  LectureCancellationAdapter(context, object : LectureCancellationAdapter.Listener{
+            override fun onClick(data: LectureCancellation) {
+                viewModel.updateLectureCancellation(data.copy(hasRead = true))
+                //TODO start activity
+            }
+        })
+
         viewModel.getNotices().observe(activity as AppCompatActivity, noticeAdapter)
         viewModel.getLectureInformations().observe(activity as AppCompatActivity, lectureInfoAdapter)
+        viewModel.getLectureCancellation().observe(activity as AppCompatActivity, lectureCancelAdapter)
 
         bindAdapter(notice_recycler_view, noticeAdapter)
         bindAdapter(lecture_info_recycler_view, lectureInfoAdapter)
+        bindAdapter(lecture_cancel_recycler_view, lectureCancelAdapter)
     }
 
     private fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {
