@@ -1,7 +1,9 @@
 package jp.kentan.studentportalplus.ui.fragment
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,60 +11,45 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.Notice
-import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
-import kotlinx.android.synthetic.main.fragment_dashboard.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import jp.kentan.studentportalplus.ui.viewmodel.DashboardViewModel
+import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
 
 class DashboardFragment : Fragment() {
 
-    private var noticeAdapter: NoticeAdapter? = null
-
-//    @Inject
-//    lateinit var viewModelFactory: ViewModelFactory
-
     @Inject
-    lateinit var portalRepository: PortalRepository
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        AndroidSupportInjection.inject(this)
-
-        val context = context ?: throw NullPointerException("Null context")
-
-        if (context is MainActivity) {
-            val manager = context.portalDataManager ?: return
-
-            noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
-                override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
-                    manager.update(data.copy(isFavorite = isFavorite))
-                }
-
-                override fun onClick(data: Notice) {
-                    manager.update(data.copy(hasRead = true))
-                }
-
-            })
-
-            manager.noticeLiveData.observe(context, noticeAdapter!!) //TODO
-        }
-    }
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+    }
 
-        async(UI) {
-            bindAdapter(view.notice_recycler_view, noticeAdapter)
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        AndroidSupportInjection.inject(this)
 
-        return view
+        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
+
+        val noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
+            override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
+                viewModel.updateNotice(data.copy(isFavorite = isFavorite))
+            }
+
+            override fun onClick(data: Notice) {
+                viewModel.updateNotice(data.copy(hasRead = true))
+                //TODO start activity
+            }
+
+        })
+
+        viewModel.getNotices().observe(activity as AppCompatActivity, noticeAdapter)
+
+        bindAdapter(notice_recycler_view, noticeAdapter)
     }
 
     private fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {

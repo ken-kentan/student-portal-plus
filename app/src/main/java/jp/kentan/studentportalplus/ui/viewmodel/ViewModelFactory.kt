@@ -5,15 +5,9 @@ import android.arch.lifecycle.ViewModelProvider
 import jp.kentan.studentportalplus.data.PortalRepository
 import javax.inject.Inject
 
-/**
- * ViewModelFactory
- *
- * @see <a href="https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live-kotlin/">GitHub</a>
- */
-class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
-    @Inject
-    lateinit var portalRepository: PortalRepository
+class ViewModelFactory(private val portalRepository: PortalRepository) : ViewModelProvider.NewInstanceFactory() {
+
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>) =

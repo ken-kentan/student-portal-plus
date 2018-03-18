@@ -3,29 +3,29 @@ package jp.kentan.studentportalplus.ui
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.PortalDataManager
+import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.intentFor
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var portalDataManager: PortalDataManager? = null
-        private set
+    @Inject
+    lateinit var portalRepository: PortalRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +36,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return
         }
 
-        portalDataManager = PortalDataManager(this)
-
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        AndroidInjection.inject(this)
+
         fab.setOnClickListener { view ->
-            portalDataManager?.loadAll()
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
+            bg{
+                portalRepository.syncFromWeb()
+            }
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
         }
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -62,8 +64,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
-        portalDataManager?.loadAll()
-        Log.d("Main", "onStart")
+        bg{
+            portalRepository.loadFromDb()
+        }
     }
 
     override fun onBackPressed() {
@@ -122,8 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         swipe_refresh_layout.setColorSchemeResources(R.color.grey_100)
         swipe_refresh_layout.setOnRefreshListener {
             async(UI) {
-                val manager = portalDataManager ?: return@async
-                val result = manager.sync()
+                val result = bg {portalRepository.syncFromWeb()}
 
                 val (success, message) = result.await()
 

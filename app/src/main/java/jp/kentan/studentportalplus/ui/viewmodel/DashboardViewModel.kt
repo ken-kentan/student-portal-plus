@@ -1,16 +1,16 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.Notice
+import org.jetbrains.anko.coroutines.experimental.bg
 
 
 class DashboardViewModel(private val portalRepository: PortalRepository) : ViewModel() {
 
-    val noticeLiveData = MutableLiveData<List<Notice>>()
+    fun getNotices() = portalRepository.noticeLiveData
 
-    fun updateNoticeData(data: Notice) {
-        portalRepository.updateNoticeData(data)
+    fun updateNotice(data: Notice) = bg {
+        portalRepository.updateNotice(data)
     }
 }

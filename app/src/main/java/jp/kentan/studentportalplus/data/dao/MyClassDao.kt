@@ -55,7 +55,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
 
             st.executeUpdateDelete()
         } else {
-            delete(TABLE_NAME)
+            delete(TABLE_NAME, "attend='${LectureAttendType.PORTAL.name}'")
         }
 
         setTransactionSuccessful()

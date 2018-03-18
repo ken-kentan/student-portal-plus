@@ -14,11 +14,11 @@ import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.notice_small_view.view.*
 
 
-class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
+class NoticeAdapter(private val context: Context?, private val listener: NoticeAdapter.Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK),
         Observer<List<Notice>> {
     override fun onChanged(t: List<Notice>?) {
-        submitList(t)
+        submitList(t?.take(3))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

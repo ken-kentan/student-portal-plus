@@ -5,11 +5,14 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import jp.kentan.studentportalplus.data.PortalRepository
+import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import javax.inject.Singleton
 
 
 @Module
 class AppModule(private val app: Application) {
+
+    private val portalRepository = PortalRepository(app.applicationContext)
 
     @Provides
     @Singleton
@@ -17,5 +20,10 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun providePortalRepository() = PortalRepository(app.applicationContext)
+    fun providePortalRepository() = portalRepository
+
+    @Provides
+    @Singleton
+    fun provideViewModelFactory() = ViewModelFactory(portalRepository)
+
 }
