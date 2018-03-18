@@ -1,6 +1,8 @@
 package jp.kentan.studentportalplus.ui.fragment
 
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelStoreOwner
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -37,7 +39,7 @@ class DashboardFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         AndroidSupportInjection.inject(this)
 
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
+        val viewModel = ViewModelProvider(activity as ViewModelStoreOwner, viewModelFactory).get(DashboardViewModel::class.java)
 
         val noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
@@ -64,9 +66,10 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        viewModel.getNotices().observe(activity as AppCompatActivity, noticeAdapter)
-        viewModel.getLectureInformations().observe(activity as AppCompatActivity, lectureInfoAdapter)
-        viewModel.getLectureCancellation().observe(activity as AppCompatActivity, lectureCancelAdapter)
+        val owner = activity as LifecycleOwner
+        viewModel.getNotices().observe(owner, noticeAdapter)
+        viewModel.getLectureInformations().observe(owner, lectureInfoAdapter)
+        viewModel.getLectureCancellation().observe(owner, lectureCancelAdapter)
 
         bindAdapter(notice_recycler_view, noticeAdapter)
         bindAdapter(lecture_info_recycler_view, lectureInfoAdapter)
