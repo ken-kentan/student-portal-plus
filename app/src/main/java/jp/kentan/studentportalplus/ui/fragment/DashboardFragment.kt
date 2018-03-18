@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.component.LectureInformation
 import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.DashboardViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
@@ -44,12 +46,20 @@ class DashboardFragment : Fragment() {
                 viewModel.updateNotice(data.copy(hasRead = true))
                 //TODO start activity
             }
+        })
 
+        val lectureInfoAdapter = LectureInformationAdapter(context, object : LectureInformationAdapter.Listener{
+            override fun onClick(data: LectureInformation) {
+                viewModel.updateLectureInformation(data.copy(hasRead = true))
+                //TODO start activity
+            }
         })
 
         viewModel.getNotices().observe(activity as AppCompatActivity, noticeAdapter)
+        viewModel.getLectureInformations().observe(activity as AppCompatActivity, lectureInfoAdapter)
 
         bindAdapter(notice_recycler_view, noticeAdapter)
+        bindAdapter(lecture_info_recycler_view, lectureInfoAdapter)
     }
 
     private fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {

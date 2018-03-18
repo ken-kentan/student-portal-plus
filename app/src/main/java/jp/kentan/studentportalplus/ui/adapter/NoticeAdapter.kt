@@ -11,19 +11,16 @@ import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.util.toShortString
-import kotlinx.android.synthetic.main.notice_small_view.view.*
+import kotlinx.android.synthetic.main.list_small_notice.view.*
 
 
 class NoticeAdapter(private val context: Context?, private val listener: NoticeAdapter.Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK),
         Observer<List<Notice>> {
-    override fun onChanged(t: List<Notice>?) {
-        submitList(t?.take(3))
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.notice_small_view, parent, false)
+        val view = layoutInflater.inflate(R.layout.list_small_notice, parent, false)
 
         return ViewHolder(view, viewType, listener)
     }
@@ -32,17 +29,18 @@ class NoticeAdapter(private val context: Context?, private val listener: NoticeA
         holder.bindTo(getItem(position))
     }
 
+    override fun onChanged(t: List<Notice>?) {
+        submitList(t?.take(3))
+    }
+
     class ViewHolder(
             private val view: View,
             private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
-            view.setOnClickListener {
-                listener.onClick(data)
-            }
             view.created_date_text.text = data.createdDate.toShortString()
-            view.title_text.text = data.title
+            view.subject_text.text      = data.title
 
             if (data.isFavorite) {
                 view.favorite_icon.setImageResource(R.drawable.ic_favorite_on)
@@ -51,13 +49,16 @@ class NoticeAdapter(private val context: Context?, private val listener: NoticeA
             }
 
             if (data.hasRead) {
-                view.created_date_text.setTypeface(null, Typeface.NORMAL)
-                view.title_text.setTypeface(null, Typeface.NORMAL)
+                view.created_date_text.typeface = Typeface.DEFAULT
+                view.subject_text.typeface      = Typeface.DEFAULT
             } else {
-                view.created_date_text.setTypeface(null, Typeface.BOLD)
-                view.title_text.setTypeface(null, Typeface.BOLD)
+                view.created_date_text.typeface = Typeface.DEFAULT_BOLD
+                view.subject_text.typeface      = Typeface.DEFAULT_BOLD
             }
 
+            view.setOnClickListener {
+                listener.onClick(data)
+            }
             view.favorite_icon.setOnClickListener{
                 listener.onUpdateFavorite(data, !data.isFavorite)
             }

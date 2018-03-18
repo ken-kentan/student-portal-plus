@@ -36,11 +36,12 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
             val week           = tdElements[5].text()
             val period         = tdElements[6].text()
             val category       = tdElements[7].text()
-            val detail         = tdElements[8].html()
+            val detailText     = tdElements[8].text()
+            val detailHtml     = tdElements[8].html()
             val createdDateStr = tdElements[9].text()
             val updatedDateStr = tdElements[10].text()
 
-            val hashStr = grade + semester + subject + instructor + week + period + category + detail + createdDateStr + updatedDateStr
+            val hashStr = grade + semester + subject + instructor + week + period + category + detailHtml + createdDateStr + updatedDateStr
 
             resultList.add(
                     LectureInformation(
@@ -52,7 +53,8 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
                             week        = week,
                             period      = period,
                             category    = category,
-                            detail      = detail,
+                            detailText  = detailText,
+                            detailHtml  = detailHtml,
                             createdDate = createdDateStr.toDate(),
                             updatedDate = updatedDateStr.toDate()
                     )
@@ -74,10 +76,11 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
             week        = columns[6] as String,
             period      = columns[7] as String,
             category    = columns[8] as String,
-            detail      = columns[9] as String,
-            createdDate = DatabaseOpenHelper.toDate(columns[10] as String),
-            updatedDate = DatabaseOpenHelper.toDate(columns[11] as String),
-            hasRead     = (columns[12] as Long) == 1L
+            detailText  = columns[9] as String,
+            detailHtml  = columns[10] as String,
+            createdDate = DatabaseOpenHelper.toDate(columns[11] as String),
+            updatedDate = DatabaseOpenHelper.toDate(columns[12] as String),
+            hasRead     = (columns[13] as Long) == 1L
     )
 
     @Throws(Exception::class)

@@ -65,9 +65,15 @@ class PortalRepository(private val context: Context) {
         return Pair<Boolean, String?>(true, null)
     }
 
-    fun updateNotice(data: Notice) {
+    fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {
             noticeLiveData.postValue(noticeDao.getAll())
+        }
+    }
+
+    fun update(data: LectureInformation) {
+        if (lectureInfoDao.update(data) > 0) {
+            lectureInformationLiveData.postValue(lectureInfoDao.getAll())
         }
     }
 

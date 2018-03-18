@@ -2,47 +2,54 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:focusable="true"
+    android:layout_height="64dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/created_date_text"
+        android:id="@+id/date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/blue_grey_600"
         android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title_text"
+        android:id="@+id/subject_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/favorite_icon"
-        app:layout_constraintTop_toBottomOf="@+id/created_date_text" />
-
-    <ImageView
-        android:id="@+id/favorite_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:contentDescription="@string/description_favorite"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/detail_text"
+        app:layout_constraintEnd_toStartOf="@+id/date_text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favorite_off" />
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/detail_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/grey_600"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/separeter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subject_text" />
 
     <View
+        android:id="@+id/separeter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey_300"
