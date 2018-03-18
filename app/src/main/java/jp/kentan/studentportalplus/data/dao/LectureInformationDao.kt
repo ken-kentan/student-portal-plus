@@ -1,7 +1,10 @@
 package jp.kentan.studentportalplus.data.dao
 
+import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.component.LectureInformation
+import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
+import jp.kentan.studentportalplus.util.JaroWinklerDistance
 import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
@@ -13,11 +16,36 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
 
     companion object {
         const val TABLE_NAME = "lecture_info"
+
         private val PARSER = LectureInformationParser()
+        private val LECTURE_ATTEND_PARSER = LectureAttendParser()
+
+        private val STRING_DISTANCE = JaroWinklerDistance()
     }
 
     fun getAll(): List<LectureInformation> = database.use {
-        select(TABLE_NAME).orderBy("updated_date", SqlOrderDirection.DESC).parseList(PARSER)
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, attend").parseList(LECTURE_ATTEND_PARSER)
+
+        val lectureInfoList = select(TABLE_NAME)
+                .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
+                .orderBy("subject")
+                .parseList(PARSER)
+
+        return@use lectureInfoList.map {
+            val subject = it.subject
+            var attend  = LectureAttendType.NOT
+
+            myClassList.forEach {
+                if (it.first == subject) {
+                    attend = it.second
+                    return@forEach
+                } else if (STRING_DISTANCE.getDistance(it.first, subject) >= 0.8f) {
+                    attend = LectureAttendType.SIMILAR
+                }
+            }
+
+            it.copy(attend = attend)
+        }
     }
 
     fun updateAll(list: List<LectureInformation>) = database.use {

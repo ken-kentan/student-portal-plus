@@ -1,9 +1,11 @@
 package jp.kentan.studentportalplus.data.dao
 
+import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.component.LectureCancellation
+import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
+import jp.kentan.studentportalplus.util.JaroWinklerDistance
 import jp.kentan.studentportalplus.util.toLong
-import org.jetbrains.anko.collections.forEachReversedByIndex
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
@@ -14,11 +16,36 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
 
     companion object {
         const val TABLE_NAME = "lecture_cancel"
+
         private val PARSER = LectureCancellationParser()
+        private val LECTURE_ATTEND_PARSER = LectureAttendParser()
+
+        private val STRING_DISTANCE = JaroWinklerDistance()
     }
 
     fun getAll(): List<LectureCancellation> = database.use {
-        select(TABLE_NAME).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, attend").parseList(LECTURE_ATTEND_PARSER)
+
+        val lectureCancelList = select(TABLE_NAME)
+                .orderBy("DATE(created_date)", SqlOrderDirection.DESC)
+                .orderBy("subject")
+                .parseList(PARSER)
+
+        return@use lectureCancelList.map {
+            val subject = it.subject
+            var attend  = LectureAttendType.NOT
+
+            myClassList.forEach {
+                if (it.first == subject) {
+                    attend = it.second
+                    return@forEach
+                } else if (STRING_DISTANCE.getDistance(it.first, subject) >= 0.8f) {
+                    attend = LectureAttendType.SIMILAR
+                }
+            }
+
+            it.copy(attend = attend)
+        }
     }
 
     fun updateAll(list: List<LectureCancellation>) = database.use {
