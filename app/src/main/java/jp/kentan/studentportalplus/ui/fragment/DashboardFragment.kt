@@ -1,7 +1,9 @@
 package jp.kentan.studentportalplus.ui.fragment
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,12 +15,14 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.LectureCancellation
 import jp.kentan.studentportalplus.data.component.LectureInformation
 import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.DashboardViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 
@@ -62,13 +66,22 @@ class DashboardFragment : Fragment() {
 
             override fun onClick(data: Notice) {
                 viewModel.updateNotice(data.copy(hasRead = true))
-                //TODO start activity
+                startActivity<NoticeActivity>("id" to data.id)
             }
         })
 
-        viewModel.getLectureInformations().observe(activity, lectureInfoAdapter)
-        viewModel.getLectureCancellations().observe(activity, lectureCancelAdapter)
-        viewModel.getNotices().observe(activity, noticeAdapter)
+        viewModel.getLectureInformations().observe(activity, Observer {
+            lectureInfoAdapter.submitList(it?.take(3))
+            TransitionManager.beginDelayedTransition(dashboard_layout)
+        })
+        viewModel.getLectureCancellations().observe(activity, Observer {
+            lectureCancelAdapter.submitList(it?.take(3))
+            TransitionManager.beginDelayedTransition(dashboard_layout)
+        })
+        viewModel.getNotices().observe(activity, Observer {
+            noticeAdapter.submitList(it?.take(3))
+            TransitionManager.beginDelayedTransition(dashboard_layout)
+        })
 
         initRecyclerView(lecture_info_recycler_view, lectureInfoAdapter)
         initRecyclerView(lecture_cancel_recycler_view, lectureCancelAdapter)

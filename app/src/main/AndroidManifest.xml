@@ -12,11 +12,11 @@
     <application
         android:name=".StudentPortalPlus"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
@@ -32,6 +32,10 @@
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.WelcomeActivity" />
+        <activity
+            android:name=".ui.NoticeActivity"
+            android:label="@string/title_activity_notice"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

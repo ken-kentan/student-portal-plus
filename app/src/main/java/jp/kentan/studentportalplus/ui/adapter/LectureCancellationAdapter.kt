@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.ui.adapter
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.recyclerview.extensions.ListAdapter
@@ -15,8 +14,7 @@ import kotlinx.android.synthetic.main.list_small_lecture.view.*
 
 
 class LectureCancellationAdapter(private val context: Context, private val listener: Listener) :
-        ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK),
-        Observer<List<LectureCancellation>> {
+        ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -27,10 +25,6 @@ class LectureCancellationAdapter(private val context: Context, private val liste
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
-    }
-
-    override fun onChanged(t: List<LectureCancellation>?) {
-        submitList(t?.take(3))
     }
 
     class ViewHolder(

@@ -43,7 +43,7 @@ class PortalRepository(context: Context) {
         myClassLiveData.postValue(myClassDao.getAll())
     }
 
-    fun syncFromWeb(): Pair<Boolean, String?> {
+    fun syncWithWeb(): Pair<Boolean, String?> {
         try {
             val noticeList        = noticeParser.parse(fetchDocument(PortalDataType.NOTICE))
             val lectureInfoList   = lectureInfoParser.parse(fetchDocument(PortalDataType.LECTURE_INFORMATION))
@@ -64,6 +64,8 @@ class PortalRepository(context: Context) {
 
         return Pair<Boolean, String?>(true, null)
     }
+
+    fun getNoticeById(id: Long) = noticeDao.get(id)
 
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {

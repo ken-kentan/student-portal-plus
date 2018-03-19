@@ -21,6 +21,10 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         select(TABLE_NAME).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
     }
 
+    fun get(id: Long): Notice? = database.use {
+        select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER)
+    }
+
     fun updateAll(list: List<Notice>) = database.use {
         beginTransaction()
 

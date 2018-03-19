@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fab.setOnClickListener { view ->
             bg{
-                portalRepository.syncFromWeb()
+                portalRepository.syncWithWeb()
             }
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         swipe_refresh_layout.setColorSchemeResources(R.color.grey_100)
         swipe_refresh_layout.setOnRefreshListener {
             async(UI) {
-                val result = bg {portalRepository.syncFromWeb()}
+                val result = bg {portalRepository.syncWithWeb()}
 
                 val (success, message) = result.await()
 

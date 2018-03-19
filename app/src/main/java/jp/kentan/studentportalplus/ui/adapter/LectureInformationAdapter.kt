@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.ui.adapter
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.recyclerview.extensions.ListAdapter
@@ -14,9 +13,10 @@ import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 
 
-class LectureInformationAdapter(private val context: Context, private val listener: Listener) :
-        ListAdapter<LectureInformation, LectureInformationAdapter.ViewHolder>(LectureInformation.DIFF_CALLBACK),
-        Observer<List<LectureInformation>> {
+class LectureInformationAdapter(
+        private val context: Context,
+        private val listener: Listener) :
+        ListAdapter<LectureInformation, LectureInformationAdapter.ViewHolder>(LectureInformation.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -27,10 +27,6 @@ class LectureInformationAdapter(private val context: Context, private val listen
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
-    }
-
-    override fun onChanged(t: List<LectureInformation>?) {
-        submitList(t?.take(3))
     }
 
     class ViewHolder(

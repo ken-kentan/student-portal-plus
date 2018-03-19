@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.ui.adapter
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Typeface
 import android.support.v7.recyclerview.extensions.ListAdapter
@@ -15,8 +14,7 @@ import kotlinx.android.synthetic.main.list_small_notice.view.*
 
 
 class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
-        ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK),
-        Observer<List<Notice>> {
+        ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -27,10 +25,6 @@ class NoticeAdapter(private val context: Context, private val listener: NoticeAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
-    }
-
-    override fun onChanged(t: List<Notice>?) {
-        submitList(t?.take(3))
     }
 
     class ViewHolder(

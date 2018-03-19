@@ -12,7 +12,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.LightActionBar" parent="Theme.AppCompat.Light" >
+    <style name="AppTheme.LightActionBar" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
