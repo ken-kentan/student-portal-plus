@@ -26,7 +26,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
         // Insert new data
         list.forEach {
             st.bindNull(1)
-            st.bindLong(2, it.hash.toLong())
+            st.bindLong(2, it.hash)
             st.bindLong(3, it.week.code.toLong())
             st.bindLong(4, it.period.toLong())
             st.bindString(5, it.scheduleCode)
@@ -50,7 +50,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
 
             st = compileStatement("DELETE FROM $TABLE_NAME WHERE attend='${LectureAttendType.PORTAL.name}' AND hash NOT IN ($args)")
             list.forEachIndexed { i, d ->
-                st.bindLong(i+1, d.hash.toLong())
+                st.bindLong(i+1, d.hash)
             }
 
             st.executeUpdateDelete()

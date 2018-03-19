@@ -71,8 +71,8 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
     }
 
     override fun parseRow(columns: Array<Any?>) = MyClass(
-            id           = (columns[0] as Long).toInt(),
-            hash         = (columns[1] as Long).toInt(),
+            id           = columns[0] as Long,
+            hash         = columns[1] as Long,
             week         = ClassWeekType.valueOf((columns[2] as Long).toInt()),
             period       = (columns[3] as Long).toInt(),
             scheduleCode = columns[4] as String,
@@ -93,7 +93,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor
 
         return MyClass(
-                hash         = Murmur3.hash32(hashStr.toByteArray()),
+                hash         = Murmur3.hash64(hashStr.toByteArray()),
                 week         = week,
                 period       = period,
                 scheduleCode = scheduleCode,

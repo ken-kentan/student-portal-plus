@@ -45,7 +45,7 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
 
             resultList.add(
                     LectureCancellation(
-                            hash        = Murmur3.hash32(hashStr.toByteArray()),
+                            hash        = Murmur3.hash64(hashStr.toByteArray()),
                             grade       = grade,
                             subject     = subject,
                             instructor  = instructor,
@@ -65,8 +65,8 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
     }
 
     override fun parseRow(columns: Array<Any?>) = LectureCancellation(
-            id          = (columns[0] as Long).toInt(),
-            hash        = (columns[1] as Long).toInt(),
+            id          = columns[0] as Long,
+            hash        = columns[1] as Long,
             grade       = columns[2] as String,
             subject     = columns[3] as String,
             instructor  = columns[4] as String,

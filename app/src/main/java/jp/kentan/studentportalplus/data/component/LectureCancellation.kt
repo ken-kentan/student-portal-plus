@@ -5,8 +5,8 @@ import java.util.*
 
 
 data class LectureCancellation(
-        val id         : Int = -1,
-        val hash       : Int,    // Murmur3.hash32(grade + subject + instructor + cancelDate + week + period + detailHtml + createdDate)
+        val id         : Long = -1,
+        val hash       : Long,   // Murmur3.hash64(grade + subject + instructor + cancelDate + week + period + detailHtml + createdDate)
         val grade      : String, // 学部名など
         val subject    : String, // 授業科目名
         val instructor : String, // 担当教員名

@@ -49,7 +49,7 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
 
             resultList.add(
                     Notice(
-                            hash        = Murmur3.hash32(hashStr.toByteArray()),
+                            hash        = Murmur3.hash64(hashStr.toByteArray()),
                             createdDate = createdDateStr.toDate(),
                             inCharge    = inCharge,
                             category    = category,
@@ -66,8 +66,8 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
     }
 
     override fun parseRow(columns: Array<Any?>) = Notice(
-            id          = (columns[0] as Long).toInt(),
-            hash        = (columns[1] as Long).toInt(),
+            id          = columns[0] as Long,
+            hash        = columns[1] as Long,
             createdDate = DatabaseOpenHelper.toDate(columns[2] as String),
             inCharge    = columns[3] as String,
             category    = columns[4] as String,

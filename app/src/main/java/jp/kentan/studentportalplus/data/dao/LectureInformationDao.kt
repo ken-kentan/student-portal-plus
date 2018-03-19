@@ -56,7 +56,7 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
         // Insert new data
         list.forEach {
             st.bindNull(1)
-            st.bindLong(2, it.hash.toLong())
+            st.bindLong(2, it.hash)
             st.bindString(3, it.grade)
             st.bindString(4, it.semester)
             st.bindString(5, it.subject)
@@ -83,7 +83,7 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
 
             st = compileStatement("DELETE FROM $TABLE_NAME WHERE hash NOT IN ($args)")
             list.forEachIndexed { i, d ->
-                st.bindLong(i+1, d.hash.toLong())
+                st.bindLong(i+1, d.hash)
             }
 
             st.executeUpdateDelete()

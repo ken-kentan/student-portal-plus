@@ -5,8 +5,8 @@ import java.util.*
 
 
 data class Notice(
-        val id         : Int = -1,
-        val hash       : Int,     // Murmur3.hash32(createdDateStr + inCharge + category + title + detail + link)
+        val id         : Long = -1,
+        val hash       : Long,    // Murmur3.hash64(createdDateStr + inCharge + category + title + detail + link)
         val createdDate: Date,    // 掲示日
         val inCharge   : String,  // 発信課
         val category   : String,  // カテゴリ

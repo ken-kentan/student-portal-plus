@@ -5,8 +5,8 @@ import java.util.*
 
 
 data class LectureInformation(
-        val id         : Int = -1,
-        val hash       : Int,    // Murmur3.hash32(grade + semester + subject + instructor + week + period + category + detailHtml + createdDate + updatedDate)
+        val id         : Long = -1,
+        val hash       : Long,    // Murmur3.hash64(grade + semester + subject + instructor + week + period + category + detailHtml + createdDate + updatedDate)
         val grade      : String, // 学部名など
         val semester   : String, // 学期
         val subject    : String, // 授業科目名

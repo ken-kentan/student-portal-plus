@@ -29,7 +29,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         // Insert new data
         list.forEachReversedByIndex {
             st.bindNull(1)
-            st.bindLong(2, it.hash.toLong())
+            st.bindLong(2, it.hash)
             st.bindString(3, DatabaseOpenHelper.toString(it.createdDate))
             st.bindString(4, it.inCharge)
             st.bindString(5, it.category)
@@ -52,7 +52,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
 
             st = compileStatement("DELETE FROM $TABLE_NAME WHERE favorite=0 AND hash NOT IN ($args)")
             list.forEachIndexed { i, d ->
-                st.bindLong(i+1, d.hash.toLong())
+                st.bindLong(i+1, d.hash)
             }
 
             st.executeUpdateDelete()
