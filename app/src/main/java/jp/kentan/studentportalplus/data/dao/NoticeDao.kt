@@ -18,7 +18,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
     }
 
     fun getAll(): List<Notice> = database.use {
-        select(TABLE_NAME).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
+        select(TABLE_NAME).orderBy("created_date", SqlOrderDirection.DESC).orderBy("_id", SqlOrderDirection.DESC).parseList(PARSER)
     }
 
     fun get(id: Long): Notice? = database.use {
@@ -50,7 +50,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         // Delete old data
         if (list.isNotEmpty()) {
             val args = StringBuilder("?")
-            for (i in 1..list.size) {
+            for (i in 2..list.size) {
                 args.append(",?")
             }
 

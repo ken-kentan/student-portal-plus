@@ -44,7 +44,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
         // Delete old data
         if (list.isNotEmpty()) {
             val args = StringBuilder("?")
-            for (i in 1..list.size) {
+            for (i in 2..list.size) {
                 args.append(",?")
             }
 
