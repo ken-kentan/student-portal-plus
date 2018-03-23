@@ -16,6 +16,12 @@ import kotlinx.android.synthetic.main.list_small_notice.view.*
 class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int) = getItem(position).id
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.list_small_notice, parent, false)
