@@ -3,36 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/main_section" android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_menu_dashboard"
+            android:title="@string/menu_dashboard" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_timetable"
+            android:icon="@drawable/ic_menu_timetable"
+            android:title="@string/menu_timetable" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_lecture_info"
+            android:icon="@drawable/ic_menu_lecture_info"
+            android:title="@string/menu_lecture_info" />
+
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_lecture_cancel"
+            android:icon="@drawable/ic_menu_lecture_cancel"
+            android:title="@string/menu_lecture_cancel" />
+
+        <item
+            android:id="@+id/nav_notice"
+            android:icon="@drawable/ic_menu_notice"
+            android:title="@string/menu_notice" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <group android:id="@+id/map_section" >
+        <item
+            android:id="@+id/nav_campus_map"
+            android:icon="@drawable/ic_menu_campus_map"
+            android:title="@string/menu_campus_map" />
+
+        <item
+            android:id="@+id/nav_room_map"
+            android:icon="@drawable/ic_menu_room_map"
+            android:title="@string/menu_room_map" />
+    </group>
+
+    <group android:id="@+id/other_section">
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_menu_setting"
+            android:title="@string/menu_setting"
+            android:checkable="false" />
+    </group>
 
 </menu>

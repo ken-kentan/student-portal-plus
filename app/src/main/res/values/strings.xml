@@ -42,6 +42,16 @@
     <string name="name_detail">内容</string>
     <string name="name_link">リンク</string>
 
+    <!-- Menus -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_timetable">Timetable</string>
+    <string name="menu_lecture_info">Class Schedule Changes</string>
+    <string name="menu_lecture_cancel">Class Cancellations</string>
+    <string name="menu_notice">News &amp; Events</string>
+    <string name="menu_campus_map">Campus Map</string>
+    <string name="menu_room_map">Room Map</string>
+    <string name="menu_setting">Setting</string>
+
     <!-- Common actions -->
     <string name="action_close">閉じる</string>
     <string name="action_share">共有</string>
