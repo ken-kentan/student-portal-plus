@@ -4,6 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_login">Shibboleth</string>
+    <string name="title_activity_notice">NoticeActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -28,20 +29,36 @@
     <string name="action_show_all_lecture_cancel">すべての休講情報を表示</string>
     <string name="action_show_all_notice">すべての最新情報を表示</string>
 
+    <!-- Strings related to notice -->
+    <string name="action_set_favorite">お気に入りに登録しました</string>
+    <string name="action_reset_favorite">お気に入りに解除しました</string>
+
     <!-- Common names -->
     <string name="name_notice">最新情報</string>
     <string name="name_lecture_info">授業関連連絡</string>
     <string name="name_lecture_cancel">休講情報</string>
+    <string name="name_created_date">掲載日 %1$s</string>
+    <string name="name_title">タイトル</string>
+    <string name="name_detail">内容</string>
+    <string name="name_link">リンク</string>
 
     <!-- Common actions -->
     <string name="action_close">閉じる</string>
+    <string name="action_share">共有</string>
 
     <!-- Common image descriptions -->
     <string name="description_favorite">お気に入り</string>
 
+    <!-- Common share text -->
+    <string name="text_share_title">タイトル: %1$s\n</string>
+    <string name="text_share_detail">内容: %1$s\n</string>
+    <string name="text_share_link">リンク: %1$s\n</string>
+    <string name="text_share_created_date">掲載日: %1$s\n</string>
+
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>
     <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい。</string>
+    <string name="error_not_found">%1$sが見つかりませんでした</string>
 
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
@@ -52,7 +69,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_notice">NoticeActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

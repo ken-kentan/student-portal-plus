@@ -66,19 +66,19 @@ class DashboardFragment : Fragment() {
 
             override fun onClick(data: Notice) {
                 viewModel.updateNotice(data.copy(hasRead = true))
-                startActivity<NoticeActivity>("id" to data.id)
+                startActivity<NoticeActivity>("id" to data.id, "title" to data.title)
             }
         })
 
-        viewModel.getLectureInformations().observe(activity, Observer {
+        viewModel.getLectureInformations().observe(this, Observer {
             lectureInfoAdapter.submitList(it?.take(3))
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
-        viewModel.getLectureCancellations().observe(activity, Observer {
+        viewModel.getLectureCancellations().observe(this, Observer {
             lectureCancelAdapter.submitList(it?.take(3))
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
-        viewModel.getNotices().observe(activity, Observer {
+        viewModel.getNotices().observe(this, Observer {
             noticeAdapter.submitList(it?.take(3))
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
