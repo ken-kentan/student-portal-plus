@@ -25,6 +25,27 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER)
     }
 
+    fun search(keywords: String) = database.use {
+        val where = StringBuilder()
+
+        keywords.split(' ')
+                .mapNotNull {
+                    val trim = it.trim()
+                    if (trim.isNotEmpty()) trim else null
+                }
+                .forEach {
+                    where.append("title LIKE '%${it.escapeQuery()}%' AND ")
+                }
+
+        where.delete(where.length-5, where.length)
+
+        select(TABLE_NAME)
+                .whereArgs(where.toString())
+                .orderBy("created_date", SqlOrderDirection.DESC)
+                .orderBy("_id", SqlOrderDirection.DESC)
+                .parseList(PARSER)
+    }
+
     fun updateAll(list: List<Notice>) = database.use {
         beginTransaction()
 

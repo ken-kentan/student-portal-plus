@@ -67,6 +67,8 @@ class PortalRepository(context: Context) {
 
     fun getNoticeById(id: Long) = noticeDao.get(id)
 
+    fun searchNotices(keywords: String) = noticeDao.search(keywords)
+
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {
             noticeLiveData.postValue(noticeDao.getAll())

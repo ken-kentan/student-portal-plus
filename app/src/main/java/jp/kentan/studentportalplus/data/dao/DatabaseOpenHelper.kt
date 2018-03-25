@@ -115,3 +115,6 @@ fun SQLiteStatement.bindStringOrNull(index: Int, value: String?) {
         this.bindNull(index)
     }
 }
+
+fun String.escapeQuery() =
+        this.replace("'", "''").replace("%", "\$%").replace("_", "\$_")

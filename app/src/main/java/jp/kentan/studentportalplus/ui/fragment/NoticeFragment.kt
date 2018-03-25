@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.Notice
@@ -19,6 +18,7 @@ import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.AnimationHelper
 import kotlinx.android.synthetic.main.fragment_notice.*
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 
@@ -26,6 +26,8 @@ class NoticeFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var viewModel: NoticeFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_notice, container, false)
@@ -35,12 +37,14 @@ class NoticeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         AndroidSupportInjection.inject(this)
 
+        setHasOptionsMenu(true)
+
         val context  = requireContext()
         val activity = requireActivity()
 
-        val viewModel = ViewModelProvider(activity, viewModelFactory).get(NoticeFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(activity, viewModelFactory).get(NoticeFragmentViewModel::class.java)
 
-        val noticeAdapter = NoticeAdapter(context, NoticeAdapter.TYPE_NORMAL, object : NoticeAdapter.Listener{
+        val adapter = NoticeAdapter(context, NoticeAdapter.TYPE_NORMAL, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) { }
 
             override fun onClick(data: Notice) {
@@ -50,7 +54,7 @@ class NoticeFragment : Fragment() {
         })
 
         viewModel.getNotices().observe(this, Observer {
-            noticeAdapter.submitList(it)
+            adapter.submitList(it)
 
             if (it == null || it.isEmpty()) {
                 if (text.visibility == View.GONE) {
@@ -65,9 +69,40 @@ class NoticeFragment : Fragment() {
 
         text.text = getString(R.string.msg_not_found, getString(R.string.name_notice))
 
-        initRecyclerView(recycler_view, noticeAdapter)
+        initRecyclerView(recycler_view, adapter)
 
         activity.onAttachFragment(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_and_filter, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.queryHint = getString(R.string.hint_query_title)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?) = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.query = newText
+                return true
+            }
+        })
+
+        val query = viewModel.query
+        if (!query.isNullOrBlank()) {
+            searchItem.expandActionView()
+            searchView.setQuery(query, false)
+            searchView.clearFocus()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_list_filter) {
+            toast("action_list_filter")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {

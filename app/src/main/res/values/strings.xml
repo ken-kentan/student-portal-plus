@@ -56,7 +56,9 @@
 
     <!-- Common actions -->
     <string name="action_close">閉じる</string>
+    <string name="action_search">検索</string>
     <string name="action_share">共有</string>
+    <string name="action_filter">絞り込み</string>
 
     <!-- Common image descriptions -->
     <string name="description_favorite">お気に入り</string>
@@ -69,6 +71,7 @@
 
     <!-- Common messages -->
     <string name="msg_not_found">表示できる%1$sはありません</string>
+    <string name="hint_query_title">タイトルで検索&#8230;</string>
 
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>
