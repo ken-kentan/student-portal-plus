@@ -15,7 +15,8 @@ import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
-import jp.kentan.studentportalplus.util.AnimationHelper
+import jp.kentan.studentportalplus.util.animateFadeIn
+import jp.kentan.studentportalplus.util.animateFadeOut
 import kotlinx.android.synthetic.main.fragment_notice.*
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
@@ -57,13 +58,9 @@ class NoticeFragment : Fragment() {
             adapter.submitList(it)
 
             if (it == null || it.isEmpty()) {
-                if (text.visibility == View.GONE) {
-                    text.startAnimation(AnimationHelper.fadeIn(text))
-                }
+                text.animateFadeIn(context)
             } else {
-                if (text.visibility == View.VISIBLE) {
-                    text.startAnimation(AnimationHelper.fadeOut(text))
-                }
+                text.animateFadeOut(context)
             }
         })
 

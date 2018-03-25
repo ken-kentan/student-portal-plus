@@ -1,38 +1,44 @@
 package jp.kentan.studentportalplus.util
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.content.Context
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
+import jp.kentan.studentportalplus.R
 
 
-class AnimationHelper {
-
-    companion object {
-        private val FADE_IN  = AlphaAnimation(0f, 1f)
-        private val FADE_OUT = AlphaAnimation(1f, 0f)
-
-        fun fadeIn(view: View): Animation {
-            FADE_IN.duration = 180
-            FADE_IN.startOffset = 360
-
-            view.visibility = View.VISIBLE
-
-            return FADE_IN
-        }
-
-        fun fadeOut(view: View): Animation {
-            FADE_OUT.duration = 180
-            FADE_OUT.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(animation: Animation) {}
-
-                override fun onAnimationEnd(animation: Animation) {
-                    view.visibility = View.GONE
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {}
-            })
-
-            return FADE_OUT
-        }
+fun View.animateFadeIn(context: Context) {
+    if (visibility == View.VISIBLE) {
+        return
     }
+
+    val fadeIn = AnimatorInflater.loadAnimator(context, R.animator.fade_in_delay)
+
+    visibility = View.VISIBLE
+
+    fadeIn.setTarget(this)
+    fadeIn.start()
+}
+
+fun View.animateFadeOut(context: Context) {
+    if (visibility != View.VISIBLE) {
+        return
+    }
+
+    val fadeOut = AnimatorInflater.loadAnimator(context, R.animator.fade_out)
+
+    fadeOut.addListener(object : Animator.AnimatorListener{
+        override fun onAnimationRepeat(animation: Animator?) {}
+
+        override fun onAnimationEnd(animation: Animator?) {
+            visibility = View.GONE
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {}
+
+        override fun onAnimationStart(animation: Animator?) {}
+    })
+
+    fadeOut.setTarget(this)
+    fadeOut.start()
 }

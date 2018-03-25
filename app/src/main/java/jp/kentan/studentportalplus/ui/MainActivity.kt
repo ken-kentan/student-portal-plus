@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
@@ -185,7 +184,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         supportFragmentManager.beginTransaction()
 //                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out)
+                .setCustomAnimations(R.animator.fade_in_activity, R.animator.fade_out_activity, R.animator.fade_in_activity, R.animator.fade_out_activity)
                 .replace(R.id.fragment_container, fragmentMap[type])
                 .addToBackStack(null)
                 .commit()
