@@ -8,7 +8,7 @@ import jp.kentan.studentportalplus.data.component.Notice
 import org.jetbrains.anko.coroutines.experimental.bg
 
 
-class DashboardViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class DashboardFragmentViewModel(private val portalRepository: PortalRepository) : ViewModel() {
 
     fun getNotices() = portalRepository.noticeLiveData
 

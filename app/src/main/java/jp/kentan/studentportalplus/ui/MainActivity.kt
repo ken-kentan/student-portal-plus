@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -14,15 +15,30 @@ import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
+import jp.kentan.studentportalplus.ui.fragment.NoticeFragment
+import jp.kentan.studentportalplus.ui.span.CustomTitle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.delay
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    companion object {
+        enum class FragmentType{DASHBOARD, NOTICE}
+    }
+
+    private var fragmentType = FragmentType.DASHBOARD
+
+    private val fragmentMap by lazy {
+        mapOf(
+                FragmentType.DASHBOARD to DashboardFragment.instance,
+                FragmentType.NOTICE    to NoticeFragment.instance)
+    }
 
     @Inject
     lateinit var portalRepository: PortalRepository
@@ -57,9 +73,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupSwipeRefresh()
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, DashboardFragment.instance)
-        transaction.commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, DashboardFragment.instance)
+                .commit()
     }
 
     override fun onStart() {
@@ -78,7 +94,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
@@ -94,35 +109,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_dashboard -> {
+        drawer_layout.closeDrawer(GravityCompat.START)
 
-            }
-            R.id.nav_timetable -> {
+        async(UI) {
+            delay(300)
 
-            }
-            R.id.nav_lecture_info -> {
+            when (item.itemId) {
+                R.id.nav_dashboard -> { switchFragment(FragmentType.DASHBOARD) }
+                R.id.nav_timetable -> {  }
+                R.id.nav_lecture_info -> {  }
+                R.id.nav_lecture_cancel -> {  }
+                R.id.nav_notice -> { switchFragment(FragmentType.NOTICE) }
+                R.id.nav_campus_map -> {
 
-            }
-            R.id.nav_lecture_cancel -> {
+                }
+                R.id.nav_room_map -> {
 
-            }
-            R.id.nav_notice -> {
+                }
+                R.id.nav_setting -> {
 
-            }
-            R.id.nav_campus_map -> {
-
-            }
-            R.id.nav_room_map -> {
-
-            }
-            R.id.nav_setting -> {
-
+                }
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onAttachFragment(fragment: Fragment?) {
+        when (fragment) {
+            is DashboardFragment -> {
+                fragmentType = FragmentType.DASHBOARD
+
+                title = CustomTitle(this, getString(R.string.title_dashboard_fragment))
+                nav_view.menu.findItem(R.id.nav_dashboard).isChecked = true
+            }
+            is NoticeFragment -> {
+                fragmentType = FragmentType.NOTICE
+
+                title = CustomTitle(this, getString(R.string.title_notice_fragment))
+                nav_view.menu.findItem(R.id.nav_notice).isChecked = true
+            }
+        }
+
+        super.onAttachFragment(fragment)
     }
 
     private fun setupSwipeRefresh() {
@@ -145,6 +174,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 snackbar.show()
             }
         }
+    }
+
+    private fun switchFragment(type: FragmentType) {
+        if (fragmentType == type) {
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out)
+                .replace(R.id.fragment_container, fragmentMap[type])
+                .addToBackStack(null)
+                .commit()
+
+        fragmentType = type
     }
 
     private fun isFirstLaunch(): Boolean {

@@ -19,7 +19,7 @@ import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
-import jp.kentan.studentportalplus.ui.viewmodel.DashboardViewModel
+import jp.kentan.studentportalplus.ui.viewmodel.DashboardFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -43,7 +43,7 @@ class DashboardFragment : Fragment() {
         val context  = requireContext()
         val activity = requireActivity()
 
-        val viewModel = ViewModelProvider(activity, viewModelFactory).get(DashboardViewModel::class.java)
+        val viewModel = ViewModelProvider(activity, viewModelFactory).get(DashboardFragmentViewModel::class.java)
 
         val lectureInfoAdapter = LectureInformationAdapter(context, object : LectureInformationAdapter.Listener{
             override fun onClick(data: LectureInformation) {
@@ -59,7 +59,7 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        val noticeAdapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
+        val noticeAdapter = NoticeAdapter(context, NoticeAdapter.TYPE_SMALL, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
                 viewModel.updateNotice(data.copy(isFavorite = isFavorite))
             }
@@ -86,6 +86,8 @@ class DashboardFragment : Fragment() {
         initRecyclerView(lecture_info_recycler_view, lectureInfoAdapter)
         initRecyclerView(lecture_cancel_recycler_view, lectureCancelAdapter)
         initRecyclerView(notice_recycler_view, noticeAdapter)
+
+        activity.onAttachFragment(this)
     }
 
     private fun initRecyclerView(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {

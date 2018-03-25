@@ -28,7 +28,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
     fun updateAll(list: List<Notice>) = database.use {
         beginTransaction()
 
-        var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?);")
+        var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
         list.forEachReversedByIndex {
@@ -38,10 +38,11 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
             st.bindString(4, it.inCharge)
             st.bindString(5, it.category)
             st.bindString(6, it.title)
-            st.bindStringOrNull(7, it.detail)
-            st.bindStringOrNull(8, it.link)
-            st.bindLong(9, it.hasRead.toLong())
-            st.bindLong(10, it.isFavorite.toLong())
+            st.bindStringOrNull(7, it.detailText)
+            st.bindStringOrNull(8, it.detailHtml)
+            st.bindStringOrNull(9, it.link)
+            st.bindLong(10, it.hasRead.toLong())
+            st.bindLong(11, it.isFavorite.toLong())
 
             st.executeInsert()
             st.clearBindings()

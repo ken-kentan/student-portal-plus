@@ -25,11 +25,13 @@
     <string name="error_field_required">未入力です</string>
 
     <!-- Strings related to dashboard -->
+    <string name="title_dashboard_fragment">Dashboard</string>
     <string name="action_show_all_lecture_info">すべての授業関連連絡を表示</string>
     <string name="action_show_all_lecture_cancel">すべての休講情報を表示</string>
     <string name="action_show_all_notice">すべての最新情報を表示</string>
 
     <!-- Strings related to notice -->
+    <string name="title_notice_fragment">News &amp; Events</string>
     <string name="action_set_favorite">お気に入りに登録しました</string>
     <string name="action_reset_favorite">お気に入りに解除しました</string>
 
@@ -64,6 +66,9 @@
     <string name="text_share_detail">内容: %1$s\n</string>
     <string name="text_share_link">リンク: %1$s\n</string>
     <string name="text_share_created_date">掲載日: %1$s\n</string>
+
+    <!-- Common messages -->
+    <string name="msg_not_found">表示できる%1$sはありません</string>
 
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>

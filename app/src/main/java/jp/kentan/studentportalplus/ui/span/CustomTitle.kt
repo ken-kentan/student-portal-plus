@@ -14,7 +14,7 @@ import jp.kentan.studentportalplus.R
  * Custom font(Orkney) spannable string
  * @note https://www.fontsquirrel.com/fonts/orkney
  */
-class CustomTitle(val context: Context, val title: String) : SpannableString(title) {
+class CustomTitle(context: Context, title: String) : SpannableString(title) {
 
     private companion object {
         var typefaceSpan: MetricAffectingSpan? = null

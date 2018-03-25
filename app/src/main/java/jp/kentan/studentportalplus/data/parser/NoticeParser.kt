@@ -42,10 +42,13 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
                 noticeElement.html().substringBefore("<br>").trim()
             }
 
-            val detail = noticeElement.selectFirst(".notice_info")?.html()
+            val infoElement = noticeElement.selectFirst(".notice_info")
+
+            val detailText = infoElement?.text()
+            val detailHtml = infoElement?.html()
             val link = hrefElement?.attr("href")
 
-            val hashStr = createdDateStr + inCharge + category + title + detail + link
+            val hashStr = createdDateStr + inCharge + category + title + detailHtml + link
 
             resultList.add(
                     Notice(
@@ -54,7 +57,8 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
                             inCharge    = inCharge,
                             category    = category,
                             title       = title,
-                            detail      = detail,
+                            detailText  = detailText,
+                            detailHtml  = detailHtml,
                             link        = link
                     )
             )
@@ -72,10 +76,11 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
             inCharge    = columns[3] as String,
             category    = columns[4] as String,
             title       = columns[5] as String,
-            detail      = columns[6] as String?,
-            link        = columns[7] as String?,
-            hasRead     = (columns[8] as Long) == 1L,
-            isFavorite  = (columns[9] as Long) == 1L
+            detailText  = columns[6] as String?,
+            detailHtml  = columns[7] as String?,
+            link        = columns[8] as String?,
+            hasRead     = (columns[9] as Long) == 1L,
+            isFavorite  = (columns[10] as Long) == 1L
     )
 
     @Throws(Exception::class)

@@ -10,21 +10,39 @@ import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.Notice
 import jp.kentan.studentportalplus.util.toShortString
-import kotlinx.android.synthetic.main.list_small_notice.view.*
+import kotlinx.android.synthetic.main.list_notice.view.*
+//import kotlinx.android.synthetic.main.list_small_notice.view.*
 
 
-class NoticeAdapter(private val context: Context, private val listener: NoticeAdapter.Listener) :
+class NoticeAdapter(
+        private val context: Context,
+        private val viewType: Int,
+        private val listener: NoticeAdapter.Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
+
+    companion object {
+        const val TYPE_NORMAL = 0
+        const val TYPE_SMALL  = 1
+    }
 
     init {
         setHasStableIds(true)
+
+        if (viewType != TYPE_NORMAL && viewType != TYPE_SMALL) {
+            throw IllegalArgumentException("Invalid ViewType: $viewType")
+        }
     }
 
     override fun getItemId(position: Int) = getItem(position).id
 
+    override fun getItemViewType(position: Int) = viewType
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.list_small_notice, parent, false)
+
+        val layoutId = if (viewType == TYPE_NORMAL) R.layout.list_notice else R.layout.list_small_notice
+
+        val view = layoutInflater.inflate(layoutId, parent, false)
 
         return ViewHolder(view, viewType, listener)
     }
@@ -59,8 +77,13 @@ class NoticeAdapter(private val context: Context, private val listener: NoticeAd
             view.setOnClickListener {
                 listener.onClick(data)
             }
-            view.favorite_icon.setOnClickListener{
-                listener.onUpdateFavorite(data, !data.isFavorite)
+
+            if (viewType == TYPE_NORMAL) {
+                view.detail_text.text = data.detailText ?: data.link
+            } else {
+                view.favorite_icon.setOnClickListener{
+                    listener.onUpdateFavorite(data, !data.isFavorite)
+                }
             }
         }
     }

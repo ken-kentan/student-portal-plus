@@ -88,8 +88,8 @@ class NoticeActivity : AppCompatActivity() {
 
             title_text.text  = data.title
 
-            if (data.detail != null) {
-                detail_text.text = data.detail.toSpanned()
+            if (data.detailHtml != null) {
+                detail_text.text = data.detailHtml.toSpanned()
             } else {
                 detail_header.visibility = View.GONE
                 detail_text.visibility   = View.GONE
@@ -112,15 +112,20 @@ class NoticeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.action_share) {
-            val (subject, text) = viewModel.getNoticeShareText(this)
+        when (item?.itemId) {
+            R.id.action_share -> {
+                val (subject, text) = viewModel.getNoticeShareText(this)
 
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-            intent.putExtra(Intent.EXTRA_TEXT, text)
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+                intent.putExtra(Intent.EXTRA_TEXT, text)
 
-            startActivity(intent)
+                startActivity(intent)
+            }
+            android.R.id.home -> {
+                finish()
+            }
         }
 
         return super.onOptionsItemSelected(item)

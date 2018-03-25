@@ -24,8 +24,8 @@ class NoticeViewModel(private val portalRepository: PortalRepository) : ViewMode
 
         sb.append(context.getString(R.string.text_share_title, data.title))
 
-        if (data.detail != null) {
-            sb.append(context.getString(R.string.text_share_detail, data.detail))
+        if (data.detailText != null) {
+            sb.append(context.getString(R.string.text_share_detail, data.detailText))
         }
 
         if (data.link != null) {

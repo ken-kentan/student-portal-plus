@@ -44,7 +44,8 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "in_charge"    to TEXT + NOT_NULL,
                 "category"     to TEXT + NOT_NULL,
                 "title"        to TEXT + NOT_NULL,
-                "detail"       to TEXT,
+                "detail_text"  to TEXT,
+                "detail_html"  to TEXT,
                 "link"         to TEXT,
                 "read"         to INTEGER + NOT_NULL + DEFAULT("0"),
                 "favorite"     to INTEGER + NOT_NULL + DEFAULT("0"))
