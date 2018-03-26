@@ -102,21 +102,6 @@
         <item>7</item>
     </string-array>
 
-    <string-array name="posting_date_name">
-        <item>全期間</item>
-        <item>今日</item>
-        <item>今週</item>
-        <item>今月</item>
-        <item>今年</item>
-    </string-array>
-    <string-array name="posting_date_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
     <string-array name="sort_by_name">
         <item>最終更新日</item>
         <item>受講科目優先</item>

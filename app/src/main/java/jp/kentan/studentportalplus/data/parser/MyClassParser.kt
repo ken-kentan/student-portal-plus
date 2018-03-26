@@ -3,7 +3,7 @@ package jp.kentan.studentportalplus.data.parser
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.component.MyClass
+import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.util.Murmur3
 import org.jetbrains.anko.db.RowParser
 import org.jsoup.nodes.Document
@@ -71,17 +71,17 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
     }
 
     override fun parseRow(columns: Array<Any?>) = MyClass(
-            id           = columns[0] as Long,
-            hash         = columns[1] as Long,
-            week         = ClassWeekType.valueOf((columns[2] as Long).toInt()),
-            period       = (columns[3] as Long).toInt(),
+            id = columns[0] as Long,
+            hash = columns[1] as Long,
+            week = ClassWeekType.valueOf((columns[2] as Long).toInt()),
+            period = (columns[3] as Long).toInt(),
             scheduleCode = columns[4] as String,
-            credit       = (columns[5] as Long).toInt(),
-            category     = columns[6] as String,
-            subject      = columns[7] as String,
-            instructor   = columns[8] as String,
-            attend       = LectureAttendType.valueOf(columns[9] as String),
-            location     = columns[10] as String?
+            credit = (columns[5] as Long).toInt(),
+            category = columns[6] as String,
+            subject = columns[7] as String,
+            instructor = columns[8] as String,
+            attend = LectureAttendType.valueOf(columns[9] as String),
+            location = columns[10] as String?
     )
 
     private fun toMyClass(week: ClassWeekType, period: Int, scheduleCode: String, lineList: List<String>): MyClass {
@@ -93,15 +93,15 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor
 
         return MyClass(
-                hash         = Murmur3.hash64(hashStr.toByteArray()),
-                week         = week,
-                period       = period,
+                hash = Murmur3.hash64(hashStr.toByteArray()),
+                week = week,
+                period = period,
                 scheduleCode = scheduleCode,
-                credit       = credit,
-                category     = category,
-                subject      = subject,
-                instructor   = instructor,
-                attend       = LectureAttendType.PORTAL
+                credit = credit,
+                category = category,
+                subject = subject,
+                instructor = instructor,
+                attend = LectureAttendType.PORTAL
         )
     }
 }

@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.data.dao
 
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.collections.forEachReversedByIndex
@@ -8,6 +9,7 @@ import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
+import java.util.*
 
 
 class NoticeDao(private val database: DatabaseOpenHelper) {
@@ -25,19 +27,57 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER)
     }
 
-    fun search(keywords: String) = database.use {
+    fun search(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean) = database.use {
         val where = StringBuilder()
 
-        keywords.split(' ')
-                .mapNotNull {
-                    val trim = it.trim()
-                    if (trim.isNotEmpty()) trim else null
+        if (favorite) {
+            if (!unread || !read) {
+                when {
+                    unread -> where.append("(read=0 OR favorite=1)")
+                    read ->   where.append("(read=1 OR favorite=1)")
+                    else ->   where.append("favorite=1")
                 }
-                .forEach {
-                    where.append("title LIKE '%${it.escapeQuery()}%' AND ")
-                }
+            }
+        } else {
+            if (unread && read) {
+                where.append("favorite=0")
+            } else if (unread) {
+                where.append("(read=0 AND favorite=0)")
+            } else if (read) {
+                where.append("(read=1 AND favorite=0)")
+            } else {
+                where.append("(read=0 AND read=1 AND favorite=0)")
+            }
+        }
 
-        where.delete(where.length-5, where.length)
+        if (type != CreatedDateType.ALL) {
+            where.appendIfNotEmpty(" AND ")
+
+            val calendar = Calendar.getInstance()
+            when(type) {
+                CreatedDateType.WEEK  -> { calendar.set(Calendar.DAY_OF_WEEK , calendar.firstDayOfWeek) }
+                CreatedDateType.MONTH -> { calendar.set(Calendar.DAY_OF_MONTH, 1) }
+                CreatedDateType.YEAR  -> { calendar.set(Calendar.DAY_OF_YEAR , 1) }
+                else -> {}
+            }
+
+            where.append("created_date>=DATE('${DatabaseOpenHelper.toString(calendar.time)}')")
+        }
+
+        if (keywords != null) {
+            where.appendIfNotEmpty(" AND ")
+
+            keywords.split(' ')
+                    .mapNotNull {
+                        val trim = it.trim()
+                        if (trim.isNotEmpty()) trim else null
+                    }
+                    .forEach {
+                        where.append("title LIKE '%${it.escapeQuery()}%' AND ")
+                    }
+
+            where.delete(where.length-5, where.length)
+        }
 
         select(TABLE_NAME)
                 .whereArgs(where.toString())

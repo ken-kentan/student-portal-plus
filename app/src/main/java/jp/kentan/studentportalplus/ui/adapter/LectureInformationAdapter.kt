@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.LectureInformation
+import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 

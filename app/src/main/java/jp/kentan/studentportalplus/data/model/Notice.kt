@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.data.component
+package jp.kentan.studentportalplus.data.model
 
 import android.support.v7.util.DiffUtil
 import java.util.*

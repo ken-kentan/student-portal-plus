@@ -33,16 +33,22 @@
     <!-- Strings related to notice -->
     <string name="title_notice_fragment">News &amp; Events</string>
     <string name="action_set_favorite">お気に入りに登録しました</string>
-    <string name="action_reset_favorite">お気に入りに解除しました</string>
+    <string name="action_reset_favorite">お気に入りを解除しました</string>
 
     <!-- Common names -->
     <string name="name_notice">最新情報</string>
     <string name="name_lecture_info">授業関連連絡</string>
     <string name="name_lecture_cancel">休講情報</string>
-    <string name="name_created_date">掲載日 %1$s</string>
+    <string name="name_created_date">掲載日</string>
+    <string name="name_created_date_format">掲載日 %1$s</string>
     <string name="name_title">タイトル</string>
     <string name="name_detail">内容</string>
     <string name="name_link">リンク</string>
+    <string name="name_type">特徴</string>
+    <string name="name_unread">未読</string>
+    <string name="name_read">既読</string>
+    <string name="name_favorite">お気に入り</string>
+    <string name="title_filter_dialog">検索フィルタ</string>
 
     <!-- Menus -->
     <string name="menu_dashboard">Dashboard</string>
@@ -55,6 +61,8 @@
     <string name="menu_setting">Setting</string>
 
     <!-- Common actions -->
+    <string name="action_apply">適用</string>
+    <string name="action_cancel">キャンセル</string>
     <string name="action_close">閉じる</string>
     <string name="action_search">検索</string>
     <string name="action_share">共有</string>

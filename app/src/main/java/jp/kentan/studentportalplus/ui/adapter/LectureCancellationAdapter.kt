@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_small_lecture.view.*
 

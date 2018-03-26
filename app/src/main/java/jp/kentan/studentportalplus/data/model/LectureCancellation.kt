@@ -1,6 +1,7 @@
-package jp.kentan.studentportalplus.data.component
+package jp.kentan.studentportalplus.data.model
 
 import android.support.v7.util.DiffUtil
+import jp.kentan.studentportalplus.data.component.LectureAttendType
 import java.util.*
 
 

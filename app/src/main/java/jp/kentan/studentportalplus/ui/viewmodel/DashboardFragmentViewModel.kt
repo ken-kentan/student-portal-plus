@@ -2,9 +2,9 @@ package jp.kentan.studentportalplus.ui.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.LectureCancellation
-import jp.kentan.studentportalplus.data.component.LectureInformation
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.Notice
 import org.jetbrains.anko.coroutines.experimental.bg
 
 

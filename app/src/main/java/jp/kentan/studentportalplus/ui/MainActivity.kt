@@ -43,16 +43,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var portalRepository: PortalRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Launch Login activity if need
-        if (isFirstLaunch()) {
-            launchWelcomeActivity()
-            return
-        }
-
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         super.onCreate(savedInstanceState)
+
+        if (isFirstLaunch()) {
+            launchWelcomeActivity()
+            return
+        }
 
         AndroidInjection.inject(this)
 

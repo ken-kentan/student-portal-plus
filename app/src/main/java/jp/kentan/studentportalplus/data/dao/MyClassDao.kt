@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.component.MyClass
+import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select

@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.coroutines.experimental.bg
 

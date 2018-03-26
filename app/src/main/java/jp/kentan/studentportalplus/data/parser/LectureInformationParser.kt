@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.LectureInformation
+import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
 import jp.kentan.studentportalplus.util.Murmur3
 import org.jetbrains.anko.db.RowParser
@@ -45,16 +45,16 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
 
             resultList.add(
                     LectureInformation(
-                            hash        = Murmur3.hash64(hashStr.toByteArray()),
-                            grade       = grade,
-                            semester    = semester,
-                            subject     = subject,
-                            instructor  = instructor,
-                            week        = week,
-                            period      = period,
-                            category    = category,
-                            detailText  = detailText,
-                            detailHtml  = detailHtml,
+                            hash = Murmur3.hash64(hashStr.toByteArray()),
+                            grade = grade,
+                            semester = semester,
+                            subject = subject,
+                            instructor = instructor,
+                            week = week,
+                            period = period,
+                            category = category,
+                            detailText = detailText,
+                            detailHtml = detailHtml,
                             createdDate = createdDateStr.toDate(),
                             updatedDate = updatedDateStr.toDate()
                     )
@@ -67,20 +67,20 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
     }
 
     override fun parseRow(columns: Array<Any?>) = LectureInformation(
-            id          = columns[0] as Long,
-            hash        = columns[1] as Long,
-            grade       = columns[2] as String,
-            semester    = columns[3] as String,
-            subject     = columns[4] as String,
-            instructor  = columns[5] as String,
-            week        = columns[6] as String,
-            period      = columns[7] as String,
-            category    = columns[8] as String,
-            detailText  = columns[9] as String,
-            detailHtml  = columns[10] as String,
+            id = columns[0] as Long,
+            hash = columns[1] as Long,
+            grade = columns[2] as String,
+            semester = columns[3] as String,
+            subject = columns[4] as String,
+            instructor = columns[5] as String,
+            week = columns[6] as String,
+            period = columns[7] as String,
+            category = columns[8] as String,
+            detailText = columns[9] as String,
+            detailHtml = columns[10] as String,
             createdDate = DatabaseOpenHelper.toDate(columns[11] as String),
             updatedDate = DatabaseOpenHelper.toDate(columns[12] as String),
-            hasRead     = (columns[13] as Long) == 1L
+            hasRead = (columns[13] as Long) == 1L
     )
 
     @Throws(Exception::class)

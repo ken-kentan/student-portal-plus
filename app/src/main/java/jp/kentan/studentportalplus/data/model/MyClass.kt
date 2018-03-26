@@ -1,4 +1,7 @@
-package jp.kentan.studentportalplus.data.component
+package jp.kentan.studentportalplus.data.model
+
+import jp.kentan.studentportalplus.data.component.ClassWeekType
+import jp.kentan.studentportalplus.data.component.LectureAttendType
 
 
 data class MyClass(

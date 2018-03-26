@@ -10,6 +10,11 @@ import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
+import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.data.model.Notice
 
 
 class PortalRepository(context: Context) {
@@ -67,7 +72,8 @@ class PortalRepository(context: Context) {
 
     fun getNoticeById(id: Long) = noticeDao.get(id)
 
-    fun searchNotices(keywords: String) = noticeDao.search(keywords)
+    fun searchNotices(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean)
+            = noticeDao.search(keywords, type, unread, read, favorite)
 
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {

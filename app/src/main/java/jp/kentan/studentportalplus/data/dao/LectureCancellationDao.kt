@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.component.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
 import jp.kentan.studentportalplus.util.JaroWinklerDistance

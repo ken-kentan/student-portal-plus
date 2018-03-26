@@ -8,7 +8,7 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/created_date_text"
+        android:id="@+id/created_date_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/created_date_text" />
+        app:layout_constraintTop_toBottomOf="@+id/created_date_header" />
 
     <ImageView
         android:id="@+id/favorite_icon"

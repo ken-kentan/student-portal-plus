@@ -12,9 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.LectureCancellation
-import jp.kentan.studentportalplus.data.component.LectureInformation
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter

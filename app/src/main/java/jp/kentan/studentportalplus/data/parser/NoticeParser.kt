@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
 import jp.kentan.studentportalplus.util.Murmur3
 import org.jetbrains.anko.db.RowParser
@@ -52,14 +52,14 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
 
             resultList.add(
                     Notice(
-                            hash        = Murmur3.hash64(hashStr.toByteArray()),
+                            hash = Murmur3.hash64(hashStr.toByteArray()),
                             createdDate = createdDateStr.toDate(),
-                            inCharge    = inCharge,
-                            category    = category,
-                            title       = title,
-                            detailText  = detailText,
-                            detailHtml  = detailHtml,
-                            link        = link
+                            inCharge = inCharge,
+                            category = category,
+                            title = title,
+                            detailText = detailText,
+                            detailHtml = detailHtml,
+                            link = link
                     )
             )
         }
@@ -70,17 +70,17 @@ class NoticeParser : BaseParser(), RowParser<Notice> {
     }
 
     override fun parseRow(columns: Array<Any?>) = Notice(
-            id          = columns[0] as Long,
-            hash        = columns[1] as Long,
+            id = columns[0] as Long,
+            hash = columns[1] as Long,
             createdDate = DatabaseOpenHelper.toDate(columns[2] as String),
-            inCharge    = columns[3] as String,
-            category    = columns[4] as String,
-            title       = columns[5] as String,
-            detailText  = columns[6] as String?,
-            detailHtml  = columns[7] as String?,
-            link        = columns[8] as String?,
-            hasRead     = (columns[9] as Long) == 1L,
-            isFavorite  = (columns[10] as Long) == 1L
+            inCharge = columns[3] as String,
+            category = columns[4] as String,
+            title = columns[5] as String,
+            detailText = columns[6] as String?,
+            detailHtml = columns[7] as String?,
+            link = columns[8] as String?,
+            hasRead = (columns[9] as Long) == 1L,
+            isFavorite = (columns[10] as Long) == 1L
     )
 
     @Throws(Exception::class)

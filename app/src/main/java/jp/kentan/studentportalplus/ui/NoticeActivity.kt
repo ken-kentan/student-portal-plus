@@ -102,7 +102,7 @@ class NoticeActivity : AppCompatActivity() {
                 link_text.visibility   = View.GONE
             }
 
-            created_date_text.text = getString(R.string.name_created_date, data.createdDate.toShortString())
+            created_date_header.text = getString(R.string.name_created_date_format, data.createdDate.toShortString())
         }
     }
 

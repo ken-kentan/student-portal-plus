@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.Notice
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_notice.view.*
 //import kotlinx.android.synthetic.main.list_small_notice.view.*
@@ -57,7 +57,7 @@ class NoticeAdapter(
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
-            view.created_date_text.text = data.createdDate.toShortString()
+            view.created_date_header.text = data.createdDate.toShortString()
             view.subject_text.text      = data.title
 
             if (data.isFavorite) {
@@ -67,23 +67,22 @@ class NoticeAdapter(
             }
 
             if (data.hasRead) {
-                view.created_date_text.typeface = Typeface.DEFAULT
+                view.created_date_header.typeface = Typeface.DEFAULT
                 view.subject_text.typeface      = Typeface.DEFAULT
             } else {
-                view.created_date_text.typeface = Typeface.DEFAULT_BOLD
+                view.created_date_header.typeface = Typeface.DEFAULT_BOLD
                 view.subject_text.typeface      = Typeface.DEFAULT_BOLD
             }
 
             view.setOnClickListener {
                 listener.onClick(data)
             }
+            view.favorite_icon.setOnClickListener{
+                listener.onUpdateFavorite(data, !data.isFavorite)
+            }
 
             if (viewType == TYPE_NORMAL) {
                 view.detail_text.text = data.detailText ?: data.link
-            } else {
-                view.favorite_icon.setOnClickListener{
-                    listener.onUpdateFavorite(data, !data.isFavorite)
-                }
             }
         }
     }
