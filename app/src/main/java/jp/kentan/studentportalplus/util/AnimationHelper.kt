@@ -14,10 +14,10 @@ fun View.animateFadeIn(context: Context) {
 
     val fadeIn = AnimatorInflater.loadAnimator(context, R.animator.fade_in_delay)
 
-    visibility = View.VISIBLE
-
     fadeIn.setTarget(this)
     fadeIn.start()
+
+    visibility = View.VISIBLE
 }
 
 fun View.animateFadeOut(context: Context) {

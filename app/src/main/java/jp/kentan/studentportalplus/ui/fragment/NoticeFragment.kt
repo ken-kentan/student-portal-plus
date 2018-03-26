@@ -60,7 +60,8 @@ class NoticeFragment : Fragment() {
             if (it == null || it.isEmpty()) {
                 text.animateFadeIn(context)
             } else {
-                text.animateFadeOut(context)
+                text.alpha = 0f
+                text.visibility = View.GONE
             }
         })
 
