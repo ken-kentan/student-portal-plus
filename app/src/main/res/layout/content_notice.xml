@@ -9,11 +9,12 @@
     tools:showIn="@layout/activity_notice">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/notice_layout"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:padding="16dp">
+        android:alpha="0"
+        android:padding="16dp"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/title_header"
@@ -78,7 +79,7 @@
             app:layout_constraintTop_toBottomOf="@+id/link_header" />
 
         <TextView
-            android:id="@+id/created_date_header"
+            android:id="@+id/date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

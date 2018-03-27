@@ -6,5 +6,5 @@ enum class LectureAttendType {
     USER,    // ユーザー登録
     SIMILAR, // 類似
     NOT,     // 未受講
-    UNKNOWN  // 未確認
+    UNKNOWN; // 未確認
 }

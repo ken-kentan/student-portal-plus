@@ -11,7 +11,6 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.android.synthetic.main.list_notice.view.*
-//import kotlinx.android.synthetic.main.list_small_notice.view.*
 
 
 class NoticeAdapter(
@@ -57,8 +56,8 @@ class NoticeAdapter(
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
-            view.created_date_header.text = data.createdDate.toShortString()
-            view.subject_text.text      = data.title
+            view.date_text.text = data.createdDate.toShortString()
+            view.subject_text.text          = data.title
 
             if (data.isFavorite) {
                 view.favorite_icon.setImageResource(R.drawable.ic_favorite_on)
@@ -67,11 +66,11 @@ class NoticeAdapter(
             }
 
             if (data.hasRead) {
-                view.created_date_header.typeface = Typeface.DEFAULT
-                view.subject_text.typeface      = Typeface.DEFAULT
+                view.date_text.typeface = Typeface.DEFAULT
+                view.subject_text.typeface          = Typeface.DEFAULT
             } else {
-                view.created_date_header.typeface = Typeface.DEFAULT_BOLD
-                view.subject_text.typeface      = Typeface.DEFAULT_BOLD
+                view.date_text.typeface = Typeface.DEFAULT_BOLD
+                view.subject_text.typeface          = Typeface.DEFAULT_BOLD
             }
 
             view.setOnClickListener {
@@ -82,7 +81,7 @@ class NoticeAdapter(
             }
 
             if (viewType == TYPE_NORMAL) {
-                view.detail_text.text = data.detailText ?: data.link
+                view.instructor_text.text = data.detailText ?: data.link
             }
         }
     }

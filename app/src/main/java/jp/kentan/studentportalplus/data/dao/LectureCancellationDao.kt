@@ -24,7 +24,7 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
     }
 
     fun getAll(): List<LectureCancellation> = database.use {
-        val myClassList = select(MyClassDao.TABLE_NAME, "subject, attend").parseList(LECTURE_ATTEND_PARSER)
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
         val lectureCancelList = select(TABLE_NAME)
                 .orderBy("DATE(created_date)", SqlOrderDirection.DESC)
@@ -35,11 +35,11 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
             val subject = it.subject
             var attend  = LectureAttendType.NOT
 
-            myClassList.forEach {
-                if (it.first == subject) {
-                    attend = it.second
-                    return@forEach
-                } else if (STRING_DISTANCE.getDistance(it.first, subject) >= 0.8f) {
+            for (i in myClassList) {
+                if (i.first == subject) {
+                    attend = i.second
+                    break
+                } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
                     attend = LectureAttendType.SIMILAR
                 }
             }

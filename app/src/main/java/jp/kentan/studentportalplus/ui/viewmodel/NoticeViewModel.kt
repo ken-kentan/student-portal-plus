@@ -10,15 +10,15 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class NoticeViewModel(private val portalRepository: PortalRepository) : ViewModel() {
 
-    private var notice: Notice? = null
+    private var data: Notice? = null
 
-    fun getNotice(id: Long) = bg {
-        notice = portalRepository.getNoticeById(id)
-        return@bg notice
+    fun get(id: Long) = bg {
+        data = portalRepository.getNoticeById(id)
+        return@bg data
     }
 
-    fun getNoticeShareText(context: Context): Pair<String, String> {
-        val data = notice ?: return Pair("", "")
+    fun getShareText(context: Context): Pair<String, String> {
+        val data = data ?: return Pair("", "")
 
         val sb = StringBuilder()
 
@@ -37,15 +37,15 @@ class NoticeViewModel(private val portalRepository: PortalRepository) : ViewMode
         return Pair(data.title, sb.toString())
     }
 
-    fun isFavorite() = notice?.isFavorite ?: false
+    fun isFavorite() = data?.isFavorite ?: throw NullPointerException("Not found a target data")
 
     fun setFavorite(isFavorite: Boolean) {
         bg {
-            val data = notice?.copy(isFavorite = isFavorite) ?: return@bg
+            val data = data?.copy(isFavorite = isFavorite) ?: return@bg
 
             portalRepository.update(data)
 
-            notice = data
+            this.data = data
         }
     }
 }

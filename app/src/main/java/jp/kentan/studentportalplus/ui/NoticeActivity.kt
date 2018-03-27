@@ -12,6 +12,7 @@ import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import jp.kentan.studentportalplus.util.animateFadeIn
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_notice.*
@@ -57,23 +58,8 @@ class NoticeActivity : AppCompatActivity() {
 
         setTitle(title)
 
-        fab.setOnClickListener {
-            val favorite = !viewModel.isFavorite()
-            viewModel.setFavorite(favorite)
-
-            fab.setImageResource(if (favorite) R.drawable.ic_star else R.drawable.ic_star_border)
-            fab.animate()
-                    .rotation(if (favorite) START_ROTATION_TO else START_ROTATION_FROM)
-                    .setInterpolator(OvershootInterpolator())
-                    .setDuration(800)
-                    .start()
-
-            snackbar(it, if (favorite) R.string.action_set_favorite else R.string.action_reset_favorite)
-        }
-
-
         async(UI) {
-            val data = viewModel.getNotice(id).await()
+            val data = viewModel.get(id).await()
 
             if (data == null) {
                 failedLoad()
@@ -102,7 +88,24 @@ class NoticeActivity : AppCompatActivity() {
                 link_text.visibility   = View.GONE
             }
 
-            created_date_header.text = getString(R.string.name_created_date_format, data.createdDate.toShortString())
+            date_text.text = getString(R.string.text_created_date_notice, data.createdDate.toShortString())
+
+            fab.setOnClickListener {
+                val favorite = !viewModel.isFavorite()
+                viewModel.setFavorite(favorite)
+
+                fab.setImageResource(if (favorite) R.drawable.ic_star else R.drawable.ic_star_border)
+                fab.animate()
+                        .rotation(if (favorite) START_ROTATION_TO else START_ROTATION_FROM)
+                        .setInterpolator(OvershootInterpolator())
+                        .setDuration(800)
+                        .start()
+
+                snackbar(it, if (favorite) R.string.msg_set_favorite else R.string.msg_reset_favorite)
+            }
+
+            fab.animateFadeIn(this@NoticeActivity)
+            layout.animateFadeIn(this@NoticeActivity)
         }
     }
 
@@ -114,7 +117,7 @@ class NoticeActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_share -> {
-                val (subject, text) = viewModel.getNoticeShareText(this)
+                val (subject, text) = viewModel.getShareText(this)
 
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"

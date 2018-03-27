@@ -20,7 +20,7 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
     val fullDisplayName: String
 
     init {
-        fullDisplayName = displayName + if (code in 1..7) "曜日" else "";
+        fullDisplayName = displayName + if (code in 1..7) "曜日" else ""
     }
 
     companion object {
@@ -28,10 +28,20 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
 
         fun valueOf(code: Int): ClassWeekType {
             if (code in 1..9) {
-                return ENUMS[code]
+                return ENUMS[code-1]
             }
 
             throw Exception("Invalid ClassWeekType code: $code")
+        }
+
+        fun valueOfSimilar(name: String): ClassWeekType {
+            ENUMS.forEach {
+                if (name == it.displayName || name == it.fullDisplayName) {
+                    return it
+                }
+            }
+
+            throw Exception("Invalid ClassWeekType name: $name")
         }
     }
 }

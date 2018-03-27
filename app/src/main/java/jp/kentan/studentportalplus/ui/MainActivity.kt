@@ -14,6 +14,7 @@ import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
+import jp.kentan.studentportalplus.ui.fragment.LectureInformationFragment
 import jp.kentan.studentportalplus.ui.fragment.NoticeFragment
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        enum class FragmentType{DASHBOARD, NOTICE}
+        enum class FragmentType{DASHBOARD, LECTURE_INFO, NOTICE}
     }
 
     private var fragmentType = FragmentType.DASHBOARD
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val fragmentMap by lazy {
         mapOf(
                 FragmentType.DASHBOARD to DashboardFragment.instance,
-                FragmentType.NOTICE    to NoticeFragment.instance)
+                FragmentType.LECTURE_INFO to LectureInformationFragment.instance,
+                FragmentType.NOTICE to NoticeFragment.instance)
     }
 
     @Inject
@@ -115,11 +117,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             delay(300)
 
             when (item.itemId) {
-                R.id.nav_dashboard -> { switchFragment(FragmentType.DASHBOARD) }
-                R.id.nav_timetable -> {  }
-                R.id.nav_lecture_info -> {  }
+                R.id.nav_dashboard      -> { switchFragment(FragmentType.DASHBOARD) }
+                R.id.nav_timetable      -> {  }
+                R.id.nav_lecture_info   -> { switchFragment(FragmentType.LECTURE_INFO) }
                 R.id.nav_lecture_cancel -> {  }
-                R.id.nav_notice -> { switchFragment(FragmentType.NOTICE) }
+                R.id.nav_notice         -> { switchFragment(FragmentType.NOTICE) }
                 R.id.nav_campus_map -> {
 
                 }
@@ -142,6 +144,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 title = CustomTitle(this, getString(R.string.title_dashboard_fragment))
                 nav_view.menu.findItem(R.id.nav_dashboard).isChecked = true
+            }
+            is LectureInformationFragment -> {
+                fragmentType = FragmentType.LECTURE_INFO
+
+                title = CustomTitle(this, getString(R.string.title_lecture_info_fragment))
+                nav_view.menu.findItem(R.id.nav_lecture_info).isChecked = true
             }
             is NoticeFragment -> {
                 fragmentType = FragmentType.NOTICE

@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:id="@+id/created_date_header"
+        android:id="@+id/date_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/name_created_date"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="0.6"
-        app:layout_constraintStart_toEndOf="@+id/created_date_header"
+        app:layout_constraintStart_toEndOf="@+id/date_text"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

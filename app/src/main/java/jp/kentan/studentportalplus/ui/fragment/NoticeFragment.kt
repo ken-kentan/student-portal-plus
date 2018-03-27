@@ -16,13 +16,13 @@ import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.component.CreatedDateType
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
-import jp.kentan.studentportalplus.data.component.CreatedDateType
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
-import jp.kentan.studentportalplus.util.animateFadeIn
+import jp.kentan.studentportalplus.util.animateFadeInDelay
 import kotlinx.android.synthetic.main.dialog_notice_filter.view.*
 import kotlinx.android.synthetic.main.fragment_notice.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -53,20 +53,20 @@ class NoticeFragment : Fragment() {
 
         val adapter = NoticeAdapter(context, NoticeAdapter.TYPE_NORMAL, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
-                viewModel.updateNotice(data.copy(isFavorite = isFavorite))
+                viewModel.update(data.copy(isFavorite = isFavorite))
             }
 
             override fun onClick(data: Notice) {
-                viewModel.updateNotice(data.copy(hasRead = true))
+                viewModel.update(data.copy(hasRead = true))
                 startActivity<NoticeActivity>("id" to data.id, "title" to data.title)
             }
         })
 
-        viewModel.getNotices().observe(this, Observer {
+        viewModel.getResults().observe(this, Observer {
             adapter.submitList(it)
 
             if (it == null || it.isEmpty()) {
-                text.animateFadeIn(context)
+                text.animateFadeInDelay(context)
             } else {
                 text.alpha = 0f
                 text.visibility = View.GONE

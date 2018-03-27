@@ -6,17 +6,17 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.CreatedDateType
-import jp.kentan.studentportalplus.data.model.Notice
+import jp.kentan.studentportalplus.data.model.LectureInformation
 import org.jetbrains.anko.coroutines.experimental.bg
 
 
-class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
+class LectureInformationFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
     private companion object {
         val DEFAULT_FILTER = Filter(CreatedDateType.ALL, true, true, true)
     }
 
-    private val results = MediatorLiveData<List<Notice>>()
+    private val results = MediatorLiveData<List<LectureInformation>>()
     private val _query  = MutableLiveData<String>()
     private val _filter = MutableLiveData<Filter>()
 
@@ -37,7 +37,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         get() = _filter.value ?: DEFAULT_FILTER
 
     init {
-        results.addSource(repository.noticeLiveData) {
+        results.addSource(repository.lectureInformationLiveData) {
             loadFromRepository()
         }
 
@@ -50,18 +50,18 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         }
     }
 
-    fun getResults(): LiveData<List<Notice>> = results
+    fun getResults(): LiveData<List<LectureInformation>> = results
 
-    fun update(data: Notice) = bg {
+    fun update(data: LectureInformation) = bg {
         repository.update(data)
     }
 
     private fun loadFromRepository() {
         if (_query.value.isNullOrBlank() && _filter.value.isNullOrDefault()) {
-            results.value = repository.noticeLiveData.value
+            results.value = repository.lectureInformationLiveData.value
         } else{
             bg {
-                results.postValue(repository.searchNotices(query, filter.type, filter.isUnread, filter.isRead, filter.isFavorite))
+//                results.postValue(repository.searchNotices(query, filter.type, filter.isUnread, filter.isRead, filter.isFavorite))
             }
         }
     }

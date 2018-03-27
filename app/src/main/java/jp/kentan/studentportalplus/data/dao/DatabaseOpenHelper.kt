@@ -82,16 +82,16 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
 
         db.createTable(MyClassDao.TABLE_NAME, true,
                 "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-                "hash"          to INTEGER + NOT_NULL + UNIQUE,
-                "week"          to INTEGER + NOT_NULL,
-                "period"        to INTEGER + NOT_NULL,
-                "schedule_code" to TEXT + NOT_NULL,
-                "credit"        to INTEGER + NOT_NULL,
-                "category"      to TEXT + NOT_NULL,
-                "subject"       to TEXT + NOT_NULL,
-                "instructor"    to TEXT + NOT_NULL,
-                "attend"        to TEXT + NOT_NULL,
-                "location"      to TEXT)
+                "hash"           to INTEGER + NOT_NULL + UNIQUE,
+                "week"           to INTEGER + NOT_NULL,
+                "period"         to INTEGER + NOT_NULL,
+                "schedule_code"  to TEXT    + NOT_NULL,
+                "credit"         to INTEGER + NOT_NULL,
+                "category"       to TEXT    + NOT_NULL,
+                "subject"        to TEXT    + NOT_NULL,
+                "instructor"     to TEXT    + NOT_NULL,
+                "user"           to INTEGER + NOT_NULL,
+                "location"       to TEXT)
 
         Log.d(TAG, "Created tables")
     }

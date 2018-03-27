@@ -15,6 +15,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.model.Notice
+import jp.kentan.studentportalplus.ui.LectureInformationActivity
 import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
@@ -45,10 +46,10 @@ class DashboardFragment : Fragment() {
 
         val viewModel = ViewModelProvider(activity, viewModelFactory).get(DashboardFragmentViewModel::class.java)
 
-        val lectureInfoAdapter = LectureInformationAdapter(context, object : LectureInformationAdapter.Listener{
+        val lectureInfoAdapter = LectureInformationAdapter(context, LectureInformationAdapter.TYPE_SMALL, object : LectureInformationAdapter.Listener{
             override fun onClick(data: LectureInformation) {
                 viewModel.updateLectureInformation(data.copy(hasRead = true))
-                //TODO start activity
+                startActivity<LectureInformationActivity>("id" to data.id, "title" to data.subject)
             }
         })
 

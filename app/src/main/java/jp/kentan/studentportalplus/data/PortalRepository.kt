@@ -3,18 +3,18 @@ package jp.kentan.studentportalplus.data
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.*
+import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.dao.*
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
-import jp.kentan.studentportalplus.data.component.CreatedDateType
-import jp.kentan.studentportalplus.data.model.LectureCancellation
-import jp.kentan.studentportalplus.data.model.LectureInformation
-import jp.kentan.studentportalplus.data.model.MyClass
-import jp.kentan.studentportalplus.data.model.Notice
 
 
 class PortalRepository(context: Context) {
@@ -72,6 +72,8 @@ class PortalRepository(context: Context) {
 
     fun getNoticeById(id: Long) = noticeDao.get(id)
 
+    fun getLectureInformationById(id: Long) = lectureInfoDao.get(id)
+
     fun searchNotices(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean)
             = noticeDao.search(keywords, type, unread, read, favorite)
 
@@ -91,6 +93,37 @@ class PortalRepository(context: Context) {
         if (lectureCancelDao.update(data) > 0) {
             lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
         }
+    }
+
+    fun addToMyClass(data: LectureInformation): Pair<Boolean, String?> {
+        try {
+            val list = myClassParser.parse(data)
+            myClassDao.add(list)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to add my class", e)
+            return Pair(false, e.message)
+        }
+
+        myClassLiveData.postValue(myClassDao.getAll())
+        lectureInformationLiveData.postValue(lectureInfoDao.getAll())
+        lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+
+        return Pair(true, null)
+    }
+
+    fun deleteFromMyClass(data: LectureInformation): Pair<Boolean, String?> {
+        try {
+            myClassDao.delete(data.subject)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to delete my class", e)
+            return Pair(false, e.message)
+        }
+
+        myClassLiveData.postValue(myClassDao.getAll())
+        lectureInformationLiveData.postValue(lectureInfoDao.getAll())
+        lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+
+        return Pair(true, null)
     }
 
     @Throws(Exception::class)

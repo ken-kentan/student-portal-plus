@@ -31,6 +31,8 @@ fun Boolean.toInt() = if (this) 1 else 0
 
 fun Boolean.toLong() = if (this) 1L else 0L
 
+fun Char.toIntOrNull() = toString().toIntOrNull()
+
 /**
  * Convert Date to short String(yyyy/MM/dd)
  */
@@ -45,6 +47,7 @@ fun String.toSpanned(): Spanned{
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
     } else {
+        @Suppress("DEPRECATION")
         Html.fromHtml(this)
     }
 }

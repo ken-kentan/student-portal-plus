@@ -24,7 +24,7 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
     }
 
     fun getAll(): List<LectureInformation> = database.use {
-        val myClassList = select(MyClassDao.TABLE_NAME, "subject, attend").parseList(LECTURE_ATTEND_PARSER)
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
         val lectureInfoList = select(TABLE_NAME)
                 .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
@@ -35,17 +35,37 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
             val subject = it.subject
             var attend  = LectureAttendType.NOT
 
-            myClassList.forEach {
-                if (it.first == subject) {
-                    attend = it.second
-                    return@forEach
-                } else if (STRING_DISTANCE.getDistance(it.first, subject) >= 0.8f) {
+            for (i in myClassList) {
+                if (i.first == subject) {
+                    attend = i.second
+                    break
+                } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
                     attend = LectureAttendType.SIMILAR
                 }
             }
 
             it.copy(attend = attend)
         }
+    }
+
+    fun get(id: Long): LectureInformation? = database.use {
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
+
+        val data = select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER) ?: return@use null
+
+        val subject = data.subject
+        var attend  = LectureAttendType.NOT
+
+        for (i in myClassList) {
+            if (i.first == subject) {
+                attend = i.second
+                break
+            } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
+                attend = LectureAttendType.SIMILAR
+            }
+        }
+
+        data.copy(attend = attend)
     }
 
     fun updateAll(list: List<LectureInformation>) = database.use {

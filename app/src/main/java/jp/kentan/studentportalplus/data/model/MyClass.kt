@@ -1,7 +1,6 @@
 package jp.kentan.studentportalplus.data.model
 
 import jp.kentan.studentportalplus.data.component.ClassWeekType
-import jp.kentan.studentportalplus.data.component.LectureAttendType
 
 
 data class MyClass(
@@ -14,6 +13,6 @@ data class MyClass(
         val category    : String,        // カテゴリ
         val subject     : String,        // 授業科目名
         val instructor  : String,        // 担当教員名
-        val attend      : LectureAttendType,
+        val isUser      : Boolean,       // true: LectureAttendType.USER, false: LectureAttendType.PORTAL
         val location    : String? = null
 )

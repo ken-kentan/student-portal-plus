@@ -35,7 +35,11 @@
         <activity
             android:name=".ui.NoticeActivity"
             android:label="@string/title_activity_notice"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LectureInformationActivity"
+            android:label="@string/title_activity_lecture_information"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

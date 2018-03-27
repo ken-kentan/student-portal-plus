@@ -41,16 +41,16 @@ class LectureCancellationAdapter(private val context: Context, private val liste
         fun bindTo(data: LectureCancellation) {
             view.date_text.text    = data.createdDate.toShortString()
             view.subject_text.text = data.subject
-            view.detail_text.text  = data.detailText
+            view.instructor_text.text  = data.detailText
 
             if (data.hasRead) {
                 view.date_text.typeface    = Typeface.DEFAULT
                 view.subject_text.typeface = Typeface.DEFAULT
-                view.detail_text.typeface  = Typeface.DEFAULT
+                view.instructor_text.typeface  = Typeface.DEFAULT
             } else {
                 view.date_text.typeface    = Typeface.DEFAULT_BOLD
                 view.subject_text.typeface = Typeface.DEFAULT_BOLD
-                view.detail_text.typeface  = Typeface.DEFAULT_BOLD
+                view.instructor_text.typeface  = Typeface.DEFAULT_BOLD
             }
 
             view.setOnClickListener { listener.onClick(data) }

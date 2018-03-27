@@ -1,27 +1,29 @@
+@file:Suppress("DEPRECATION")
+
 package jp.kentan.studentportalplus.data.shibboleth
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.util.*
-import android.security.KeyPairGeneratorSpec
-import android.security.keystore.KeyProperties
-import android.security.keystore.KeyGenParameterSpec
 import android.os.Build
-import android.util.Base64
-import java.math.BigInteger
-import javax.security.auth.x500.X500Principal
+import android.security.KeyPairGeneratorSpec
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.text.TextUtils
+import android.util.Base64
+import android.util.Log
 import jp.kentan.studentportalplus.data.component.ShibbolethData
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.math.BigInteger
 import java.nio.charset.StandardCharsets
+import java.security.KeyPairGenerator
+import java.security.KeyStore
 import java.security.interfaces.RSAPublicKey
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
 import javax.crypto.CipherOutputStream
+import javax.security.auth.x500.X500Principal
 
 
 class ShibbolethDataProvider(private val context: Context) {
