@@ -18,14 +18,14 @@
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/instructor_text"
+        app:layout_constraintBottom_toTopOf="@+id/detail_text"
         app:layout_constraintEnd_toStartOf="@+id/date_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/instructor_text"
+        android:id="@+id/detail_text"
         android:layout_width="0dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"

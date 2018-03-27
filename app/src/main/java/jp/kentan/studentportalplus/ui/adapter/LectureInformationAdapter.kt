@@ -59,16 +59,16 @@ class LectureInformationAdapter(
         fun bindTo(data: LectureInformation) {
             view.date_text.text    = data.updatedDate.toShortString()
             view.subject_text.text = data.subject
-            view.instructor_text.text  = data.detailText
+            view.detail_text.text  = data.detailText
 
             if (data.hasRead) {
                 view.date_text.typeface    = Typeface.DEFAULT
                 view.subject_text.typeface = Typeface.DEFAULT
-                view.instructor_text.typeface  = Typeface.DEFAULT
+                view.detail_text.typeface  = Typeface.DEFAULT
             } else {
                 view.date_text.typeface    = Typeface.DEFAULT_BOLD
                 view.subject_text.typeface = Typeface.DEFAULT_BOLD
-                view.instructor_text.typeface  = Typeface.DEFAULT_BOLD
+                view.detail_text.typeface  = Typeface.DEFAULT_BOLD
             }
 
             if (viewType == TYPE_NORMAL) {
