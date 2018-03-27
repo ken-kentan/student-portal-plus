@@ -39,26 +39,20 @@ class LectureInformationViewModel(private val portalRepository: PortalRepository
     fun getAttendType() = data?.attend ?: throw NullPointerException("Not found a target data")
 
     fun setAttendByUser(isUser: Boolean) = bg {
-        try {
-            val attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
+        val attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
 
-            val data = data?.copy(attend = attend) ?: return@bg Pair(false, null)
+        val data = data?.copy(attend = attend) ?: return@bg Pair(false, null)
 
-            val result = if (isUser) {
-                portalRepository.addToMyClass(data)
-            } else {
-                portalRepository.deleteFromMyClass(data)
-            }
-
-            if (result.first) {
-                this.data = data
-            }
-
-            return@bg result
-        } catch (e: Exception) {
-            e.printStackTrace()
+        val result = if (isUser) {
+            portalRepository.addToMyClass(data)
+        } else {
+            portalRepository.deleteFromMyClass(data)
         }
 
-        Pair(false, null)
+        if (result.first) {
+            this.data = data
+        }
+
+        return@bg result
     }
 }
