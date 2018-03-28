@@ -3,7 +3,6 @@ package jp.kentan.studentportalplus.ui
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -12,9 +11,11 @@ import android.view.animation.AnticipateOvershootInterpolator
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.LectureAttendType
+import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.ui.viewmodel.LectureInformationViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.animateFadeIn
+import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_information.*
@@ -57,9 +58,10 @@ class LectureInformationActivity : AppCompatActivity() {
         setTitle(title)
 
         async(UI) {
-            val data = viewModel.get(id).await()
-
-            if (data == null) {
+            val data: LectureInformation
+            try {
+                data = viewModel.get(id).await()
+            } catch (e: Exception) {
                 failedLoad()
                 return@async
             }
@@ -106,7 +108,7 @@ class LectureInformationActivity : AppCompatActivity() {
 
                             snackbar(it, R.string.msg_register_class)
                         } else {
-                            indefiniteSnackbar(message, getString(R.string.error_add))
+                            indefiniteSnackbar(layout, message, getString(R.string.error_add), getString(R.string.action_close))
                         }
                     }
                 }
@@ -164,18 +166,12 @@ class LectureInformationActivity : AppCompatActivity() {
                             .withLayer()
                             .start()
                 } else {
-                    indefiniteSnackbar(message, getString(R.string.error_remove))
+                    indefiniteSnackbar(layout, message, getString(R.string.error_remove), getString(R.string.action_close))
                 }
             }
         }
         builder.setNegativeButton(R.string.action_no, null)
         builder.show()
-    }
-
-    private fun indefiniteSnackbar(message: String?, defaultMessage: String) {
-        val snackbar = Snackbar.make(layout, message ?: defaultMessage, Snackbar.LENGTH_INDEFINITE)
-        snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
-        snackbar.show()
     }
 
     private fun String.formatSemester() = if (this == "前" || this == "後") this + "学期" else this.hyphenToWhitespace()

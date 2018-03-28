@@ -3,8 +3,10 @@ package jp.kentan.studentportalplus.util
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.support.design.widget.Snackbar
 import android.text.Html
 import android.text.Spanned
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +27,12 @@ fun Activity.hideSoftInput() {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun indefiniteSnackbar(view: View, message: String?, defaultMessage: String, actionMessage: String) {
+    val snackbar = Snackbar.make(view, message ?: defaultMessage, Snackbar.LENGTH_INDEFINITE)
+    snackbar.setAction(actionMessage, { snackbar.dismiss() })
+    snackbar.show()
 }
 
 fun Boolean.toInt() = if (this) 1 else 0
