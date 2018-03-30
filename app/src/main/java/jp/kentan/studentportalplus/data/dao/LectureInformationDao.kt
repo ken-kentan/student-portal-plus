@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.LectureAttendType
+import jp.kentan.studentportalplus.data.component.LectureOrderType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
@@ -21,51 +22,95 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
         private val LECTURE_ATTEND_PARSER = LectureAttendParser()
 
         private val STRING_DISTANCE = JaroWinklerDistance()
+
+        private val EMPTY = listOf<LectureInformation>()
     }
 
     fun getAll(): List<LectureInformation> = database.use {
         val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
-        val lectureInfoList = select(TABLE_NAME)
+        select(TABLE_NAME)
                 .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
                 .orderBy("subject")
                 .parseList(PARSER)
-
-        return@use lectureInfoList.map {
-            val subject = it.subject
-            var attend  = LectureAttendType.NOT
-
-            for (i in myClassList) {
-                if (i.first == subject) {
-                    attend = i.second
-                    break
-                } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
-                    attend = LectureAttendType.SIMILAR
+                .map {
+                    it.copy(attend = myClassList.analyzeAttendType(it.subject))
                 }
-            }
-
-            it.copy(attend = attend)
-        }
     }
 
     fun get(id: Long): LectureInformation? = database.use {
         val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
-        val data = select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER) ?: return@use null
+        val data = select(TABLE_NAME)
+                .whereArgs("_id=$id")
+                .limit(1)
+                .parseOpt(PARSER) ?: return@use null
 
-        val subject = data.subject
-        var attend  = LectureAttendType.NOT
+        data.copy(attend = myClassList.analyzeAttendType(data.subject))
+    }
 
-        for (i in myClassList) {
-            if (i.first == subject) {
-                attend = i.second
-                break
-            } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
-                attend = LectureAttendType.SIMILAR
+    fun search(keywords: String?, orderType: LectureOrderType, isUnread: Boolean, hasRead: Boolean, isAttend: Boolean) = database.use {
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
+
+        val where = StringBuilder()
+
+        if (!isAttend) {
+            if (!isUnread && !hasRead) {
+                return@use EMPTY
+            }
+
+            if (!isUnread) {
+                where.append("read=1")
+            } else if (!hasRead) {
+                where.append("read=0")
             }
         }
 
-        data.copy(attend = attend)
+        if (keywords != null) {
+            where.appendIfNotEmpty(" AND ")
+            where.append('(')
+
+            val keywordList = keywords.split(' ')
+                    .mapNotNull {
+                        val trim = it.trim()
+                        if (trim.isNotEmpty()) trim.escapeQuery() else null
+                    }
+
+            // Subject
+            keywordList.forEach { where.append("subject LIKE '%$it%' AND ") }
+            where.delete(where.length-5, where.length)
+
+            where.append(") OR (")
+
+            // Instructor
+            keywordList.forEach { where.append("instructor LIKE '%$it%' AND ") }
+            where.delete(where.length-5, where.length)
+            where.append(") ")
+        }
+
+        val lectureInfoList = select(TABLE_NAME)
+                .whereArgs(where.toString())
+                .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
+                .orderBy("subject")
+                .parseList(PARSER)
+
+        val result = lectureInfoList.mapNotNull {
+            val type  = myClassList.analyzeAttendType(it.subject)
+            it.copy(attend = type)
+//            if (isAttend) {
+//                null
+//            } else if (!isAttend && type.isAttend()) {
+//                null
+//            } else {
+//                it.copy(attend = type)
+//            }
+        }
+
+        return@use if (orderType == LectureOrderType.ATTEND_CLASS) {
+            result.sortedBy { it.attend.isAttend() }
+        } else {
+            result
+        }
     }
 
     fun updateAll(list: List<LectureInformation>) = database.use {
@@ -119,5 +164,20 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
         update(TABLE_NAME, "read" to data.hasRead.toLong())
                 .whereArgs("_id = ${data.id}")
                 .exec()
+    }
+
+    private fun List<Pair<String, LectureAttendType>>.analyzeAttendType(subject: String): LectureAttendType {
+        var type  = LectureAttendType.NOT
+
+        for (i in this) {
+            if (i.first == subject) {
+                type = i.second
+                break
+            } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
+                type = LectureAttendType.SIMILAR
+            }
+        }
+
+        return type
     }
 }

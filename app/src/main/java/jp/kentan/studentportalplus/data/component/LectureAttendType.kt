@@ -7,4 +7,6 @@ enum class LectureAttendType {
     SIMILAR, // 類似
     NOT,     // 未受講
     UNKNOWN; // 未確認
+
+    fun isAttend() = this == PORTAL || this == USER || this == SIMILAR
 }

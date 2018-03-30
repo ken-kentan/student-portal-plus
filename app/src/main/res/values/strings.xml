@@ -63,6 +63,8 @@
     <string name="name_unread">未読</string>
     <string name="name_read">既読</string>
     <string name="name_favorite">お気に入り</string>
+    <string name="name_display_order">表示順</string>
+    <string name="name_attend_lecture">受講科目</string>
     <string name="title_filter_dialog">検索フィルタ</string>
 
     <!-- Menus -->
@@ -111,6 +113,7 @@
     <string name="msg_unregister_class">受講科目から除外しました</string>
     <string name="text_unregister_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
     <string name="hint_query_title">タイトルで検索&#8230;</string>
+    <string name="hint_query_subject_and_instructor">科目・教員名で検索&#8230;</string>
 
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>

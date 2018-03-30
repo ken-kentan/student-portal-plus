@@ -5,7 +5,7 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.component.LectureOrderType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import org.jetbrains.anko.coroutines.experimental.bg
 
@@ -13,7 +13,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 class LectureInformationFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
     private companion object {
-        val DEFAULT_FILTER = Filter(CreatedDateType.ALL, true, true, true)
+        val DEFAULT_FILTER = Filter(LectureOrderType.UPDATED_DATE, true, true, true)
     }
 
     private val results = MediatorLiveData<List<LectureInformation>>()
@@ -61,7 +61,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
             results.value = repository.lectureInformationLiveData.value
         } else{
             bg {
-//                results.postValue(repository.searchNotices(query, filter.type, filter.isUnread, filter.isRead, filter.isFavorite))
+                results.postValue(repository.searchLectureInformations(query, filter.type, filter.isUnread, filter.isRead, filter.isAttend))
             }
         }
     }
@@ -75,8 +75,8 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
     }
 
     data class Filter(
-            val type: CreatedDateType,
+            val type: LectureOrderType,
             val isUnread: Boolean,
             val isRead: Boolean,
-            val isFavorite: Boolean)
+            val isAttend: Boolean)
 }
