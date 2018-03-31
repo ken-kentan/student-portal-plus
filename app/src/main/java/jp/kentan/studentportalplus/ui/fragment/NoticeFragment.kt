@@ -91,15 +91,15 @@ class NoticeFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?) = true
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.query = newText
+                viewModel.query = viewModel.query.copy(keywords = newText)
                 return true
             }
         })
 
-        val query = viewModel.query
-        if (!query.isNullOrBlank()) {
+        val keywords = viewModel.query.keywords
+        if (!keywords.isNullOrBlank()) {
             searchItem.expandActionView()
-            searchView.setQuery(query, false)
+            searchView.setQuery(keywords, false)
             searchView.clearFocus()
         }
     }
@@ -135,21 +135,21 @@ class NoticeFragment : Fragment() {
             view.created_date_spinner.adapter =
                     ArrayAdapter<CreatedDateType>(context, android.R.layout.simple_list_item_1, CreatedDateType.values())
 
-            val filter = viewModel.filter
-            view.created_date_spinner.setSelection(filter.type.ordinal)
-            view.unread_check_box.isChecked   = filter.isUnread
-            view.read_check_box.isChecked     = filter.isRead
-            view.favorite_check_box.isChecked = filter.isFavorite
+            val query = viewModel.query
+            view.created_date_spinner.setSelection(query.type.ordinal)
+            view.unread_check_box.isChecked   = query.isUnread
+            view.read_check_box.isChecked     = query.hasRead
+            view.favorite_check_box.isChecked = query.isFavorite
 
             AlertDialog.Builder(context)
                     .setView(view)
                     .setTitle(R.string.title_filter_dialog)
                     .setPositiveButton(R.string.action_apply) { _, _ ->
-                        viewModel.filter = NoticeFragmentViewModel.Filter(
-                                view.created_date_spinner.selectedItem as CreatedDateType,
-                                view.unread_check_box.isChecked,
-                                view.read_check_box.isChecked,
-                                view.favorite_check_box.isChecked
+                        viewModel.query = viewModel.query.copy(
+                                type       = view.created_date_spinner.selectedItem as CreatedDateType,
+                                isUnread   = view.unread_check_box.isChecked,
+                                hasRead    = view.read_check_box.isChecked,
+                                isFavorite = view.favorite_check_box.isChecked
                         )
                     }
                     .setNegativeButton(R.string.action_cancel, null)

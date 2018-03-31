@@ -30,7 +30,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
         }
 
         results.addSource(_query) {
-            loadFromRepository(_query.value)
+            loadFromRepository(it)
         }
     }
 

@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.component.NoticeQuery
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
@@ -27,34 +28,34 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
         select(TABLE_NAME).whereArgs("_id=$id").limit(1).parseOpt(PARSER)
     }
 
-    fun search(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean) = database.use {
+    fun search(query: NoticeQuery) = database.use {
         val where = StringBuilder()
 
-        if (favorite) {
-            if (!unread || !read) {
+        if (query.isFavorite) {
+            if (!query.isUnread || !query.hasRead) {
                 when {
-                    unread -> where.append("(read=0 OR favorite=1)")
-                    read ->   where.append("(read=1 OR favorite=1)")
-                    else ->   where.append("favorite=1")
+                    query.isUnread -> where.append("(read=0 OR favorite=1)")
+                    query.hasRead  -> where.append("(read=1 OR favorite=1)")
+                    else -> where.append("favorite=1")
                 }
             }
         } else {
-            if (unread && read) {
+            if (query.isUnread && query.hasRead) {
                 where.append("favorite=0")
-            } else if (unread) {
+            } else if (query.isUnread) {
                 where.append("(read=0 AND favorite=0)")
-            } else if (read) {
+            } else if (query.hasRead) {
                 where.append("(read=1 AND favorite=0)")
             } else {
                 where.append("(read=0 AND read=1 AND favorite=0)")
             }
         }
 
-        if (type != CreatedDateType.ALL) {
+        if (query.type != CreatedDateType.ALL) {
             where.appendIfNotEmpty(" AND ")
 
             val calendar = Calendar.getInstance()
-            when(type) {
+            when(query.type) {
                 CreatedDateType.WEEK  -> { calendar.set(Calendar.DAY_OF_WEEK , calendar.firstDayOfWeek) }
                 CreatedDateType.MONTH -> { calendar.set(Calendar.DAY_OF_MONTH, 1) }
                 CreatedDateType.YEAR  -> { calendar.set(Calendar.DAY_OF_YEAR , 1) }
@@ -64,15 +65,10 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
             where.append("created_date>=DATE('${DatabaseOpenHelper.toString(calendar.time)}')")
         }
 
-        if (keywords != null) {
+        if (query.keywordList.isNotEmpty()) {
             where.appendIfNotEmpty(" AND ")
 
-            keywords.split(' ')
-                    .mapNotNull {
-                        val trim = it.trim()
-                        if (trim.isNotEmpty()) trim else null
-                    }
-                    .forEach {
+            query.keywordList.forEach {
                         where.append("title LIKE '%${it.escapeQuery()}%' AND ")
                     }
 

@@ -3,10 +3,7 @@ package jp.kentan.studentportalplus.data
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.CreatedDateType
-import jp.kentan.studentportalplus.data.component.LectureOrderType
-import jp.kentan.studentportalplus.data.component.LectureQuery
-import jp.kentan.studentportalplus.data.component.PortalDataType
+import jp.kentan.studentportalplus.data.component.*
 import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.data.model.LectureInformation
@@ -76,8 +73,7 @@ class PortalRepository(context: Context) {
 
     fun getLectureInformationById(id: Long) = lectureInfoDao.get(id)
 
-    fun searchNotices(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean)
-            = noticeDao.search(keywords, type, unread, read, favorite)
+    fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
     fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
 

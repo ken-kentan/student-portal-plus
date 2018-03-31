@@ -5,36 +5,24 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.CreatedDateType
+import jp.kentan.studentportalplus.data.component.NoticeQuery
+import jp.kentan.studentportalplus.data.component.isDefault
 import jp.kentan.studentportalplus.data.model.Notice
 import org.jetbrains.anko.coroutines.experimental.bg
 
 
 class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    private companion object {
-        val DEFAULT_FILTER = Filter(CreatedDateType.ALL, true, true, true)
-    }
-
     private val results = MediatorLiveData<List<Notice>>()
-    private val _query  = MutableLiveData<String>()
-    private val _filter = MutableLiveData<Filter>()
+    private val _query  = MutableLiveData<NoticeQuery>()
 
-    var query: String?
+    var query: NoticeQuery
         set(value) {
             if (value != _query.value) {
                 _query.value = value
             }
         }
-        get() = _query.value
-
-    var filter: Filter
-        set(value) {
-            if (value != _filter.value) {
-                _filter.value = value
-            }
-        }
-        get() = _filter.value ?: DEFAULT_FILTER
+        get() = _query.value ?: NoticeQuery.DEFAULT
 
     init {
         results.addSource(repository.noticeLiveData) {
@@ -42,11 +30,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         }
 
         results.addSource(_query) {
-            loadFromRepository()
-        }
-
-        results.addSource(_filter) {
-            loadFromRepository()
+            loadFromRepository(it)
         }
     }
 
@@ -56,27 +40,13 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         repository.update(data)
     }
 
-    private fun loadFromRepository() {
-        if (_query.value.isNullOrBlank() && _filter.value.isNullOrDefault()) {
+    private fun loadFromRepository(query: NoticeQuery? = null) {
+        if (query == null || query.isDefault()) {
             results.value = repository.noticeLiveData.value
         } else{
             bg {
-                results.postValue(repository.searchNotices(query, filter.type, filter.isUnread, filter.isRead, filter.isFavorite))
+                results.postValue(repository.searchNotices(query))
             }
         }
     }
-
-    private fun Filter?.isNullOrDefault(): Boolean {
-        if (this == null) {
-            return true
-        }
-
-        return this == DEFAULT_FILTER
-    }
-
-    data class Filter(
-            val type: CreatedDateType,
-            val isUnread: Boolean,
-            val isRead: Boolean,
-            val isFavorite: Boolean)
 }
