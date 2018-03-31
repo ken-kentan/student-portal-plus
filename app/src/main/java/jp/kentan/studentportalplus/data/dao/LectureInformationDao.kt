@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.component.LectureOrderType
+import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
@@ -49,42 +50,35 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
         data.copy(attend = myClassList.analyzeAttendType(data.subject))
     }
 
-    fun search(keywords: String?, orderType: LectureOrderType, isUnread: Boolean, hasRead: Boolean, isAttend: Boolean) = database.use {
+    fun search(query: LectureQuery) = database.use {
         val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
         val where = StringBuilder()
 
-        if (!isAttend) {
-            if (!isUnread && !hasRead) {
+        if (!query.isAttend) {
+            if (!query.isUnread && !query.hasRead) {
                 return@use EMPTY
-            }
-
-            if (!isUnread) {
+            } else if (!query.isUnread) {
                 where.append("read=1")
-            } else if (!hasRead) {
+            } else if (!query.hasRead) {
                 where.append("read=0")
             }
         }
 
-        if (keywords != null) {
+        if (query.keywordList.isNotEmpty()) {
             where.appendIfNotEmpty(" AND ")
             where.append('(')
 
-            val keywordList = keywords.split(' ')
-                    .mapNotNull {
-                        val trim = it.trim()
-                        if (trim.isNotEmpty()) trim.escapeQuery() else null
-                    }
-
             // Subject
-            keywordList.forEach { where.append("subject LIKE '%$it%' AND ") }
+            query.keywordList.forEach { where.append("subject LIKE '%$it%' AND ") }
             where.delete(where.length-5, where.length)
 
             where.append(") OR (")
 
             // Instructor
-            keywordList.forEach { where.append("instructor LIKE '%$it%' AND ") }
+            query.keywordList.forEach { where.append("instructor LIKE '%$it%' AND ") }
             where.delete(where.length-5, where.length)
+
             where.append(") ")
         }
 
@@ -96,18 +90,24 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
 
         val result = lectureInfoList.mapNotNull {
             val type  = myClassList.analyzeAttendType(it.subject)
-            it.copy(attend = type)
-//            if (isAttend) {
-//                null
-//            } else if (!isAttend && type.isAttend()) {
-//                null
-//            } else {
-//                it.copy(attend = type)
-//            }
+
+            if (query.isAttend && !type.isAttend()) {
+                if (!query.isUnread && !query.hasRead) {
+                    return@mapNotNull null
+                } else if (!query.hasRead && it.hasRead) {
+                    return@mapNotNull null
+                } else {
+                    it.copy(attend = type)
+                }
+            } else if (!query.isAttend && type.isAttend()) {
+                null
+            } else {
+                it.copy(attend = type)
+            }
         }
 
-        return@use if (orderType == LectureOrderType.ATTEND_CLASS) {
-            result.sortedBy { it.attend.isAttend() }
+        return@use if (query.order == LectureOrderType.ATTEND_CLASS) {
+            result.sortedBy { !it.attend.isAttend() }
         } else {
             result
         }

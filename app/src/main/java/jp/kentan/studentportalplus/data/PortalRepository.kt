@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.CreatedDateType
 import jp.kentan.studentportalplus.data.component.LectureOrderType
+import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.model.LectureCancellation
@@ -78,8 +79,7 @@ class PortalRepository(context: Context) {
     fun searchNotices(keywords: String?, type: CreatedDateType, unread: Boolean, read: Boolean, favorite: Boolean)
             = noticeDao.search(keywords, type, unread, read, favorite)
 
-    fun searchLectureInformations(keywords: String?, type: LectureOrderType, unread: Boolean, read: Boolean, attend: Boolean)
-            = lectureInfoDao.search(keywords, type, unread, read, attend)
+    fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
 
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {

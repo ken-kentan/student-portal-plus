@@ -88,15 +88,15 @@ class LectureInformationFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?) = true
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.query = newText
+                viewModel.query = viewModel.query.copy(keywords = newText)
                 return true
             }
         })
 
-        val query = viewModel.query
-        if (!query.isNullOrBlank()) {
+        val keywords = viewModel.query.keywords
+        if (!keywords.isNullOrBlank()) {
             searchItem.expandActionView()
-            searchView.setQuery(query, false)
+            searchView.setQuery(keywords, false)
             searchView.clearFocus()
         }
     }
@@ -123,30 +123,29 @@ class LectureInformationFragment : Fragment() {
             button.setTextColor(color)
         }
 
-        AsyncLayoutInflater(context).inflate(R.layout.dialog_notice_filter, null) { view, _, _ ->
-
+        AsyncLayoutInflater(context).inflate(R.layout.dialog_lecture_filter, null) { view, _, _ ->
             view.unread_check_box.setOnCheckedChangeListener(changeListener)
             view.read_check_box.setOnCheckedChangeListener(changeListener)
             view.attend_check_box.setOnCheckedChangeListener(changeListener)
 
             view.order_spinner.adapter =
-                    ArrayAdapter<LectureOrderType>(context, android.R.layout.simple_list_item_1, LectureOrderType.values())
+                    ArrayAdapter<LectureOrderType>(requireContext(), android.R.layout.simple_list_item_1, LectureOrderType.values())
 
-            val filter = viewModel.filter
-            view.order_spinner.setSelection(filter.type.ordinal)
-            view.unread_check_box.isChecked   = filter.isUnread
-            view.read_check_box.isChecked     = filter.isRead
-            view.attend_check_box.isChecked = filter.isFavorite
+            val query = viewModel.query
+            view.order_spinner.setSelection(query.order.ordinal)
+            view.unread_check_box.isChecked = query.isUnread
+            view.read_check_box.isChecked   = query.hasRead
+            view.attend_check_box.isChecked = query.isAttend
 
             AlertDialog.Builder(context)
                     .setView(view)
                     .setTitle(R.string.title_filter_dialog)
                     .setPositiveButton(R.string.action_apply) { _, _ ->
-                        viewModel.filter = LectureInformationFragmentViewModel.Filter(
-                                view.order_spinner.selectedItem as LectureOrderType,
-                                view.unread_check_box.isChecked,
-                                view.read_check_box.isChecked,
-                                view.attend_check_box.isChecked
+                        viewModel.query = viewModel.query.copy(
+                                order    = view.order_spinner.selectedItem as LectureOrderType,
+                                isUnread = view.unread_check_box.isChecked,
+                                hasRead  = view.read_check_box.isChecked,
+                                isAttend = view.attend_check_box.isChecked
                         )
                     }
                     .setNegativeButton(R.string.action_cancel, null)

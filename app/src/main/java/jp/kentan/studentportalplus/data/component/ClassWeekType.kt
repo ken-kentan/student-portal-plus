@@ -14,7 +14,7 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
     FRIDAY   (5, "金"),
     SATURDAY (6, "土"),
     SUNDAY   (7, "日"),
-    INTENSIVE(8, "集中等"),
+    INTENSIVE(8, "集中"),
     UNKNOWN  (9, "-");
 
     val fullDisplayName: String
