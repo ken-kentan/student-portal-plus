@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.data.dao
 
-import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.util.toLong
@@ -56,7 +55,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
 
                 st.executeUpdateDelete()
             } else {
-                delete(TABLE_NAME, "attend='${LectureAttendType.PORTAL.name}'")
+                delete(TABLE_NAME, "user=0")
             }
         }
     }
