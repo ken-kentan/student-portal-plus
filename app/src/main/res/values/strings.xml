@@ -105,22 +105,8 @@
     <string name="text_share_title">タイトル: %1$s\n</string>
     <string name="text_share_detail">内容: %1$s\n</string>
     <string name="text_share_link">リンク: %1$s\n</string>
-    <string name="text_share_lecture_info">
-        "授業科目: %1$s\n"
-        "担当教員: %2$s\n"
-        "曜日時限: %3$s %4$s\n"
-        "分類: %5$s\n"
-        "連絡事項: %6$s\n"
-        "初回掲載日: %7$s\n"
-    </string>
-    <string name="text_share_lecture_cancel">
-        "授業科目: %1$s\n"
-        "担当教員: %2$s\n"
-        "曜日時限: %3$s %4$s\n"
-        "休講年月日: %5$s\n"
-        "備考: %6$s\n"
-        "掲示日: %7$s\n"
-    </string>
+    <string name="text_share_lecture_info">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n分類: %5$s\n連絡事項: %6$s\n初回掲載日: %7$s\n</string>
+    <string name="text_share_lecture_cancel">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n休講年月日: %5$s\n備考: %6$s\n掲示日: %7$s\n</string>
     <string name="text_share_created_date">掲載日: %1$s\n</string>
     <string name="text_share_updated_date">最終更新日: %1$s\n</string>
 
