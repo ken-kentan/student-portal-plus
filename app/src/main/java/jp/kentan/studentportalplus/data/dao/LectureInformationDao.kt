@@ -96,9 +96,9 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
                     return@mapNotNull null
                 } else if (!query.hasRead && it.hasRead) {
                     return@mapNotNull null
-                } else {
-                    it.copy(attend = type)
                 }
+
+                it.copy(attend = type)
             } else if (!query.isAttend && type.isAttend()) {
                 null
             } else {

@@ -1,8 +1,8 @@
 package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
+import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.util.Murmur3
 import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.db.RowParser
@@ -37,7 +37,7 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             val cancelDate     = cancelDateStr.toDate()
             val week           = tdElements[5].text()
             val period         = tdElements[6].text()
-            val detailText     = cancelDate.toShortString() + ' ' +  tdElements[7].text()
+            val detailText     = cancelDate.toShortString() + " — " +  instructor
             val detailHtml     = tdElements[7].html()
             val createdDateStr = tdElements[8].text()
 

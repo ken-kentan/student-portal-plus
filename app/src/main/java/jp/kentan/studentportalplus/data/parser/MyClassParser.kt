@@ -3,7 +3,7 @@ package jp.kentan.studentportalplus.data.parser
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.Lecture
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.util.Murmur3
 import jp.kentan.studentportalplus.util.toIntOrNull
@@ -87,7 +87,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
     )
 
     @Throws(Exception::class)
-    fun parse(data: LectureInformation): List<MyClass> {
+    fun parse(data: Lecture): List<MyClass> {
         val list = mutableListOf<MyClass>()
 
         val week = ClassWeekType.valueOfSimilar(data.week)

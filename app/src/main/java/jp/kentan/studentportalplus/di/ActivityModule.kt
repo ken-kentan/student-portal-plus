@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import jp.kentan.studentportalplus.ui.LectureCancellationActivity
 import jp.kentan.studentportalplus.ui.LectureInformationActivity
 import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.NoticeActivity
@@ -14,6 +15,9 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract fun contributeLectureInformationActivity(): LectureInformationActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeLectureCancellationActivity(): LectureCancellationActivity
 
     @ContributesAndroidInjector
     abstract fun contributeNoticeActivity(): NoticeActivity

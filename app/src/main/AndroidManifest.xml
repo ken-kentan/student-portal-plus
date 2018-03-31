@@ -11,7 +11,7 @@
 
     <application
         android:name=".StudentPortalPlus"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -39,6 +39,10 @@
         <activity
             android:name=".ui.LectureInformationActivity"
             android:label="@string/title_activity_lecture_information"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LectureCancellationActivity"
+            android:label="@string/title_activity_lecture_cancellation"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -48,6 +48,17 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
         }
     }
 
+    fun get(id: Long): LectureCancellation? = database.use {
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
+
+        val data = select(TABLE_NAME)
+                .whereArgs("_id=$id")
+                .limit(1)
+                .parseOpt(PARSER) ?: return@use null
+
+        data.copy(attend = myClassList.analyzeAttendType(data.subject))
+    }
+
     fun updateAll(list: List<LectureCancellation>) = database.use {
         beginTransaction()
 
@@ -97,5 +108,20 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
         update(TABLE_NAME, "read" to data.hasRead.toLong())
                 .whereArgs("_id = ${data.id}")
                 .exec()
+    }
+
+    private fun List<Pair<String, LectureAttendType>>.analyzeAttendType(subject: String): LectureAttendType {
+        var type  = LectureAttendType.NOT
+
+        for (i in this) {
+            if (i.first == subject) {
+                type = i.second
+                break
+            } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
+                type = LectureAttendType.SIMILAR
+            }
+        }
+
+        return type
     }
 }

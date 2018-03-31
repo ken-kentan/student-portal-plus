@@ -3,12 +3,11 @@ package jp.kentan.studentportalplus.data
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.*
+import jp.kentan.studentportalplus.data.component.LectureQuery
+import jp.kentan.studentportalplus.data.component.NoticeQuery
+import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.dao.*
-import jp.kentan.studentportalplus.data.model.LectureCancellation
-import jp.kentan.studentportalplus.data.model.LectureInformation
-import jp.kentan.studentportalplus.data.model.MyClass
-import jp.kentan.studentportalplus.data.model.Notice
+import jp.kentan.studentportalplus.data.model.*
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.data.parser.MyClassParser
@@ -73,6 +72,8 @@ class PortalRepository(context: Context) {
 
     fun getLectureInformationById(id: Long) = lectureInfoDao.get(id)
 
+    fun getLectureCancellationById(id: Long) = lectureCancelDao.get(id)
+
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
     fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
@@ -95,7 +96,7 @@ class PortalRepository(context: Context) {
         }
     }
 
-    fun addToMyClass(data: LectureInformation): Pair<Boolean, String?> {
+    fun addToMyClass(data: Lecture): Pair<Boolean, String?> {
         try {
             val list = myClassParser.parse(data)
             myClassDao.add(list)
@@ -111,7 +112,7 @@ class PortalRepository(context: Context) {
         return Pair(true, null)
     }
 
-    fun deleteFromMyClass(data: LectureInformation): Pair<Boolean, String?> {
+    fun deleteFromMyClass(data: Lecture): Pair<Boolean, String?> {
         try {
             myClassDao.delete(data.subject)
         } catch (e: Exception) {

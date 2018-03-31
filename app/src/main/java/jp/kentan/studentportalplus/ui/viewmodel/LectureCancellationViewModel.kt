@@ -5,35 +5,32 @@ import android.content.Context
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.util.htmlToText
 import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.coroutines.experimental.bg
 
-class LectureInformationViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class LectureCancellationViewModel(private val portalRepository: PortalRepository) : ViewModel() {
 
-    private lateinit var data: LectureInformation
+    private lateinit var data: LectureCancellation
 
     @Throws(Exception::class)
     fun get(id: Long) = bg {
-        data = portalRepository.getLectureInformationById(id) ?: throw Exception("Unknown LectureInformation id: $id")
+        data = portalRepository.getLectureCancellationById(id) ?: throw Exception("Unknown LectureCancellation id: $id")
         return@bg data
     }
 
     fun getShareText(context: Context): Pair<String, String> {
         val sb = StringBuilder()
 
-        sb.append(context.getString(R.string.text_share_lecture_info,
+        sb.append(context.getString(R.string.text_share_lecture_cancel,
                 data.subject,
                 data.instructor,
                 data.week,
                 data.period,
-                data.category,
-                data.detailText,
+                data.cancelDate.toShortString(),
+                data.detailHtml.htmlToText(),
                 data.createdDate.toShortString()))
-
-        if (data.createdDate != data.updatedDate) {
-            sb.append(context.getString(R.string.text_share_updated_date, data.updatedDate.toShortString()))
-        }
 
         return Pair(data.subject, sb.toString())
     }

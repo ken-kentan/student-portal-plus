@@ -5,6 +5,7 @@
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_login">Shibboleth</string>
     <string name="title_activity_lecture_information">Class Schedule Changes</string>
+    <string name="title_activity_lecture_cancellation">Class Cancellations</string>
     <string name="title_activity_notice">News &amp; Events</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -38,6 +39,13 @@
     <string name="text_created_date_lecture_info">初回掲示日: %1$s</string>
     <string name="text_updated_date_lecture_info">  最終更新日: %1$s</string>
 
+    <!-- Strings related to lecture cancel -->
+    <string name="title_lecture_cancel_fragment">Class Cancellations</string>
+    <string name="name_detail_lecture_cancel">備考</string>
+    <string name="name_cancel_date">休講年月日</string>
+    <string name="text_grade_week_period">%1$s %2$s %3$s</string>
+    <string name="text_created_date_lecture_cancel">掲示日: %1$s</string>
+
     <!-- Strings related to notice -->
     <string name="title_notice_fragment">News &amp; Events</string>
     <string name="msg_set_favorite">お気に入りに登録しました</string>
@@ -58,6 +66,7 @@
     <string name="name_subject">授業科目</string>
     <string name="name_instructor">担当教員</string>
     <string name="name_semester_week_period">学期 曜日時限</string>
+    <string name="name_grade_week_period">区分 曜日時限</string>
     <string name="name_category">分類</string>
     <string name="name_type">特徴</string>
     <string name="name_unread">未読</string>
@@ -103,6 +112,14 @@
         "分類: %5$s\n"
         "連絡事項: %6$s\n"
         "初回掲載日: %7$s\n"
+    </string>
+    <string name="text_share_lecture_cancel">
+        "授業科目: %1$s\n"
+        "担当教員: %2$s\n"
+        "曜日時限: %3$s %4$s\n"
+        "休講年月日: %5$s\n"
+        "備考: %6$s\n"
+        "掲示日: %7$s\n"
     </string>
     <string name="text_share_created_date">掲載日: %1$s\n</string>
     <string name="text_share_updated_date">最終更新日: %1$s\n</string>

@@ -8,6 +8,7 @@ import android.text.Html
 import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,8 +36,6 @@ fun indefiniteSnackbar(view: View, message: String?, defaultMessage: String, act
     snackbar.show()
 }
 
-fun Boolean.toInt() = if (this) 1 else 0
-
 fun Boolean.toLong() = if (this) 1L else 0L
 
 fun Char.toIntOrNull() = toString().toIntOrNull()
@@ -59,3 +58,5 @@ fun String.toSpanned(): Spanned{
         Html.fromHtml(this)
     }
 }
+
+fun String.htmlToText() = Jsoup.parse(this).text()
