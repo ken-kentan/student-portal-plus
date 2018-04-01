@@ -168,9 +168,7 @@ class LectureCancellationActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun String.formatWeek() = this.replace("曜日", "曜").hyphenToWhitespace()
+    private fun String.formatWeek() = this.replace("曜日", "曜")
 
-    private fun String.formatPeriod() = if (this != "-") this + "限" else this
-
-    private fun String.hyphenToWhitespace() = if (this == "-") " " else this
+    private fun String.formatPeriod() = if (this != "-") this + "限" else ""
 }

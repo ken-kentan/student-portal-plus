@@ -176,9 +176,9 @@ class LectureInformationActivity : AppCompatActivity() {
 
     private fun String.formatSemester() = if (this == "前" || this == "後") this + "学期" else this.hyphenToWhitespace()
 
-    private fun String.formatWeek() = this.replace("曜日", "曜").hyphenToWhitespace()
+    private fun String.formatWeek() = this.replace("曜日", "曜")
 
-    private fun String.formatPeriod() = if (this != "-") this + "限" else this
+    private fun String.formatPeriod() = if (this != "-") this + "限" else ""
 
     private fun String.hyphenToWhitespace() = if (this == "-") " " else this
 }
