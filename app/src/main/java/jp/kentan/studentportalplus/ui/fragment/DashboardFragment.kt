@@ -73,11 +73,11 @@ class DashboardFragment : Fragment() {
         })
 
         viewModel.getLectureInformations().observe(this, Observer {
-            lectureInfoAdapter.submitList(it?.take(3))
+            lectureInfoAdapter.submitList(it?.filter { it.attend.isAttend() }?.take(3))
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
         viewModel.getLectureCancellations().observe(this, Observer {
-            lectureCancelAdapter.submitList(it?.take(3))
+            lectureCancelAdapter.submitList(it?.filter { it.attend.isAttend() }?.take(3))
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
         viewModel.getNotices().observe(this, Observer {
