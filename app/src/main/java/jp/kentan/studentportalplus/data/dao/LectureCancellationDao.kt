@@ -1,6 +1,8 @@
 package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.LectureAttendType
+import jp.kentan.studentportalplus.data.component.LectureOrderType
+import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
@@ -21,6 +23,8 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
         private val LECTURE_ATTEND_PARSER = LectureAttendParser()
 
         private val STRING_DISTANCE = JaroWinklerDistance()
+
+        private val EMPTY = listOf<LectureCancellation>()
     }
 
     fun getAll(): List<LectureCancellation> = database.use {
@@ -57,6 +61,69 @@ class LectureCancellationDao(private val database: DatabaseOpenHelper) {
                 .parseOpt(PARSER) ?: return@use null
 
         data.copy(attend = myClassList.analyzeAttendType(data.subject))
+    }
+
+    fun search(query: LectureQuery) = database.use {
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
+
+        val where = StringBuilder()
+
+        if (!query.isAttend) {
+            if (!query.isUnread && !query.hasRead) {
+                return@use EMPTY
+            } else if (!query.isUnread) {
+                where.append("read=1")
+            } else if (!query.hasRead) {
+                where.append("read=0")
+            }
+        }
+
+        if (query.keywordList.isNotEmpty()) {
+            where.appendIfNotEmpty(" AND ")
+            where.append('(')
+
+            // Subject
+            query.keywordList.forEach { where.append("subject LIKE '%$it%' AND ") }
+            where.delete(where.length-5, where.length)
+
+            where.append(") OR (")
+
+            // Instructor
+            query.keywordList.forEach { where.append("instructor LIKE '%$it%' AND ") }
+            where.delete(where.length-5, where.length)
+
+            where.append(") ")
+        }
+
+        val lectureInfoList = select(TABLE_NAME)
+                .whereArgs(where.toString())
+                .orderBy("DATE(created_date)", SqlOrderDirection.DESC)
+                .orderBy("subject")
+                .parseList(PARSER)
+
+        val result = lectureInfoList.mapNotNull {
+            val type  = myClassList.analyzeAttendType(it.subject)
+
+            if (query.isAttend && !type.isAttend()) {
+                if (!query.isUnread && !query.hasRead) {
+                    return@mapNotNull null
+                } else if (!query.hasRead && it.hasRead) {
+                    return@mapNotNull null
+                }
+
+                it.copy(attend = type)
+            } else if (!query.isAttend && type.isAttend()) {
+                null
+            } else {
+                it.copy(attend = type)
+            }
+        }
+
+        return@use if (query.order == LectureOrderType.ATTEND_CLASS) {
+            result.sortedBy { !it.attend.isAttend() }
+        } else {
+            result
+        }
     }
 
     fun updateAll(list: List<LectureCancellation>) = database.use {

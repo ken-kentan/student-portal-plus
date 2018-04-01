@@ -78,6 +78,8 @@ class PortalRepository(context: Context) {
 
     fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
 
+    fun searchLectureCancellations(query: LectureQuery) = lectureCancelDao.search(query)
+
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {
             noticeLiveData.postValue(noticeDao.getAll())

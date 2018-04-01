@@ -13,16 +13,25 @@ class ViewModelFactory(private val portalRepository: PortalRepository) : ViewMod
                 when {
                     isAssignableFrom(DashboardFragmentViewModel::class.java) ->
                         DashboardFragmentViewModel(portalRepository)
+
                     isAssignableFrom(LectureInformationFragmentViewModel::class.java) ->
                         LectureInformationFragmentViewModel(portalRepository)
+
+                    isAssignableFrom(LectureCancellationFragmentViewModel::class.java) ->
+                        LectureCancellationFragmentViewModel(portalRepository)
+
                     isAssignableFrom(NoticeFragmentViewModel::class.java) ->
                         NoticeFragmentViewModel(portalRepository)
+
                     isAssignableFrom(LectureInformationViewModel::class.java) ->
                         LectureInformationViewModel(portalRepository)
+
                     isAssignableFrom(LectureCancellationViewModel::class.java) ->
                         LectureCancellationViewModel(portalRepository)
+
                     isAssignableFrom(NoticeViewModel::class.java) ->
                         NoticeViewModel(portalRepository)
+
                     else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }
             } as T

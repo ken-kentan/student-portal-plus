@@ -15,13 +15,12 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import dagger.android.support.AndroidSupportInjection
-
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.LectureOrderType
-import jp.kentan.studentportalplus.data.model.LectureInformation
-import jp.kentan.studentportalplus.ui.LectureInformationActivity
-import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
-import jp.kentan.studentportalplus.ui.viewmodel.LectureInformationFragmentViewModel
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.ui.LectureCancellationActivity
+import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
+import jp.kentan.studentportalplus.ui.viewmodel.LectureCancellationFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.animateFadeInDelay
 import kotlinx.android.synthetic.main.dialog_lecture_filter.view.*
@@ -30,12 +29,12 @@ import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 
-class LectureInformationFragment : Fragment() {
+class LectureCancellationFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: LectureInformationFragmentViewModel
+    private lateinit var viewModel: LectureCancellationFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_lecture, container, false)
@@ -50,12 +49,12 @@ class LectureInformationFragment : Fragment() {
         val context  = requireContext()
         val activity = requireActivity()
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LectureInformationFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
 
-        val adapter = LectureInformationAdapter(context, LectureInformationAdapter.TYPE_NORMAL, object : LectureInformationAdapter.Listener{
-            override fun onClick(data: LectureInformation) {
+        val adapter = LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_NORMAL, object : LectureCancellationAdapter.Listener{
+            override fun onClick(data: LectureCancellation) {
                 viewModel.update(data.copy(hasRead = true))
-                startActivity<LectureInformationActivity>("id" to data.id, "title" to data.subject)
+                startActivity<LectureCancellationActivity>("id" to data.id, "title" to data.subject)
             }
         })
 
@@ -155,11 +154,11 @@ class LectureInformationFragment : Fragment() {
     }
 
     companion object {
-        var instance: LectureInformationFragment? = null
+        var instance: LectureCancellationFragment? = null
             private set
             get() {
                 if (field == null) {
-                    field = LectureInformationFragment()
+                    field = LectureCancellationFragment()
                 }
 
                 return field

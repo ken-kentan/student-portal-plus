@@ -14,6 +14,7 @@ import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
+import jp.kentan.studentportalplus.ui.fragment.LectureCancellationFragment
 import jp.kentan.studentportalplus.ui.fragment.LectureInformationFragment
 import jp.kentan.studentportalplus.ui.fragment.NoticeFragment
 import jp.kentan.studentportalplus.ui.span.CustomTitle
@@ -29,7 +30,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        enum class FragmentType{DASHBOARD, LECTURE_INFO, NOTICE}
+        enum class FragmentType{DASHBOARD, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
     }
 
     private var fragmentType = FragmentType.DASHBOARD
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mapOf(
                 FragmentType.DASHBOARD to DashboardFragment.instance,
                 FragmentType.LECTURE_INFO to LectureInformationFragment.instance,
+                FragmentType.LECTURE_CANCEL to LectureCancellationFragment.instance,
                 FragmentType.NOTICE to NoticeFragment.instance)
     }
 
@@ -120,7 +122,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.nav_dashboard      -> { switchFragment(FragmentType.DASHBOARD) }
                 R.id.nav_timetable      -> {  }
                 R.id.nav_lecture_info   -> { switchFragment(FragmentType.LECTURE_INFO) }
-                R.id.nav_lecture_cancel -> {  }
+                R.id.nav_lecture_cancel -> { switchFragment(FragmentType.LECTURE_CANCEL) }
                 R.id.nav_notice         -> { switchFragment(FragmentType.NOTICE) }
                 R.id.nav_campus_map -> {
 
@@ -150,6 +152,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 title = CustomTitle(this, getString(R.string.title_lecture_info_fragment))
                 nav_view.menu.findItem(R.id.nav_lecture_info).isChecked = true
+            }
+            is LectureCancellationFragment -> {
+                fragmentType = FragmentType.LECTURE_CANCEL
+
+                title = CustomTitle(this, getString(R.string.title_lecture_cancel_fragment))
+                nav_view.menu.findItem(R.id.nav_lecture_cancel).isChecked = true
             }
             is NoticeFragment -> {
                 fragmentType = FragmentType.NOTICE

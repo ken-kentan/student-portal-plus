@@ -54,7 +54,7 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        val lectureCancelAdapter =  LectureCancellationAdapter(context, object : LectureCancellationAdapter.Listener{
+        val lectureCancelAdapter =  LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_SMALL, object : LectureCancellationAdapter.Listener{
             override fun onClick(data: LectureCancellation) {
                 viewModel.updateLectureCancellation(data.copy(hasRead = true))
                 startActivity<LectureCancellationActivity>("id" to data.id, "title" to data.subject)
