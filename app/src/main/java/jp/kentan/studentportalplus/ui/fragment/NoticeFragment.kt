@@ -159,14 +159,7 @@ class NoticeFragment : Fragment() {
     }
 
     companion object {
-        var instance: NoticeFragment? = null
-            private set
-            get() {
-                if (field == null) {
-                    field = NoticeFragment()
-                }
-
-                return field
-            }
+        @JvmStatic
+        fun newInstance() = NoticeFragment()
     }
 }

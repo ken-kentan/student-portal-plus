@@ -150,15 +150,8 @@ class DashboardFragment : Fragment() {
     }
 
     companion object {
-        var instance: DashboardFragment? = null
-            private set
-            get() {
-                if (field == null) {
-                    field = DashboardFragment()
-                }
-
-                return field
-            }
+        @JvmStatic
+        fun newInstance() = DashboardFragment()
 
         private const val MAX_LIST_SIZE = 3
     }

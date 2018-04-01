@@ -34,6 +34,9 @@
     <string name="text_no_data">現在、あなたへの%1$sはありません.</string>
     <string name="text_more_item"> （他%1$d件）</string>
 
+    <!-- Strings related to timetable -->
+    <string name="title_timetable_fragment">Timetable</string>
+
     <!-- Strings related to lecture info -->
     <string name="title_lecture_info_fragment">Class Schedule</string>
     <string name="name_detail_lecture_info">連絡事項</string>

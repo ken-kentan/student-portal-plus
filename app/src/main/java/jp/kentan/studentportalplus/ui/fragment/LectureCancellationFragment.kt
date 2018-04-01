@@ -154,14 +154,7 @@ class LectureCancellationFragment : Fragment() {
     }
 
     companion object {
-        var instance: LectureCancellationFragment? = null
-            private set
-            get() {
-                if (field == null) {
-                    field = LectureCancellationFragment()
-                }
-
-                return field
-            }
+        @JvmStatic
+        fun newInstance() = LectureCancellationFragment()
     }
 }

@@ -2,16 +2,16 @@ package jp.kentan.studentportalplus.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
-import jp.kentan.studentportalplus.ui.fragment.LectureCancellationFragment
-import jp.kentan.studentportalplus.ui.fragment.LectureInformationFragment
-import jp.kentan.studentportalplus.ui.fragment.NoticeFragment
+import jp.kentan.studentportalplus.ui.fragment.*
 
 @Module
 abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDashboardFragment(): DashboardFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTimetableFragment(): TimetableFragment
 
     @ContributesAndroidInjector
     abstract fun contributeLectureInformationFragment(): LectureInformationFragment

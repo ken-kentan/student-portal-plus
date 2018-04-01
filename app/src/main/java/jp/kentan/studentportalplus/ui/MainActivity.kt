@@ -13,10 +13,7 @@ import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.ui.fragment.DashboardFragment
-import jp.kentan.studentportalplus.ui.fragment.LectureCancellationFragment
-import jp.kentan.studentportalplus.ui.fragment.LectureInformationFragment
-import jp.kentan.studentportalplus.ui.fragment.NoticeFragment
+import jp.kentan.studentportalplus.ui.fragment.*
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -29,16 +26,17 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    enum class FragmentType{DASHBOARD, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
+    enum class FragmentType{DASHBOARD, TIMETABLE, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
 
     private var fragmentType = FragmentType.DASHBOARD
 
     private val fragmentMap by lazy {
         mapOf(
-                FragmentType.DASHBOARD to DashboardFragment.instance,
-                FragmentType.LECTURE_INFO to LectureInformationFragment.instance,
-                FragmentType.LECTURE_CANCEL to LectureCancellationFragment.instance,
-                FragmentType.NOTICE to NoticeFragment.instance)
+                FragmentType.DASHBOARD to DashboardFragment.newInstance(),
+                FragmentType.TIMETABLE to TimetableFragment.newInstance(),
+                FragmentType.LECTURE_INFO to LectureInformationFragment.newInstance(),
+                FragmentType.LECTURE_CANCEL to LectureCancellationFragment.newInstance(),
+                FragmentType.NOTICE to NoticeFragment.newInstance())
     }
 
     @Inject
@@ -75,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, DashboardFragment.instance)
+                    .replace(R.id.fragment_container, DashboardFragment.newInstance())
                     .commit()
         }
     }
@@ -118,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             when (item.itemId) {
                 R.id.nav_dashboard      -> { switchFragment(FragmentType.DASHBOARD) }
-                R.id.nav_timetable      -> {  }
+                R.id.nav_timetable      -> { switchFragment(FragmentType.TIMETABLE) }
                 R.id.nav_lecture_info   -> { switchFragment(FragmentType.LECTURE_INFO) }
                 R.id.nav_lecture_cancel -> { switchFragment(FragmentType.LECTURE_CANCEL) }
                 R.id.nav_notice         -> { switchFragment(FragmentType.NOTICE) }
@@ -144,6 +142,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 title = CustomTitle(this, getString(R.string.title_dashboard_fragment))
                 nav_view.menu.findItem(R.id.nav_dashboard).isChecked = true
+            }
+            is TimetableFragment -> {
+                fragmentType = FragmentType.TIMETABLE
+
+                title = CustomTitle(this, getString(R.string.title_timetable_fragment))
+                nav_view.menu.findItem(R.id.nav_timetable).isChecked = true
             }
             is LectureInformationFragment -> {
                 fragmentType = FragmentType.LECTURE_INFO

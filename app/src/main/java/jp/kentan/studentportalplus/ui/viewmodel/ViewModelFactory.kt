@@ -14,6 +14,9 @@ class ViewModelFactory(private val portalRepository: PortalRepository) : ViewMod
                     isAssignableFrom(DashboardFragmentViewModel::class.java) ->
                         DashboardFragmentViewModel(portalRepository)
 
+                    isAssignableFrom(TimetableFragmentViewModel::class.java) ->
+                        TimetableFragmentViewModel(portalRepository)
+
                     isAssignableFrom(LectureInformationFragmentViewModel::class.java) ->
                         LectureInformationFragmentViewModel(portalRepository)
 
