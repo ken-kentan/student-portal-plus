@@ -91,6 +91,7 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "subject"        to TEXT    + NOT_NULL,
                 "instructor"     to TEXT    + NOT_NULL,
                 "user"           to INTEGER + NOT_NULL,
+                "color"          to INTEGER + NOT_NULL,
                 "location"       to TEXT)
 
         Log.d(TAG, "Created tables")

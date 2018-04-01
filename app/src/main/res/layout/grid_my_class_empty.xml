@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_button"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/timetable_grid_height"
+    android:layout_margin="1dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:visibility="visible">
+
+</android.support.constraint.ConstraintLayout>

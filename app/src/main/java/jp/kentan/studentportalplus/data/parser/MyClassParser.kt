@@ -83,7 +83,8 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
             subject      = columns[7] as String,
             instructor   = columns[8] as String,
             isUser       = (columns[9] as Long) == 1L,
-            location     = columns[10] as String?
+            color        = (columns[10] as Long).toInt(),
+            location     = columns[11] as String?
     )
 
     @Throws(Exception::class)

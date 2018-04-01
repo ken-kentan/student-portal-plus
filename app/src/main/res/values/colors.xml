@@ -15,7 +15,7 @@
 
     <!-- Material -->
     <color name="grey_50">#fafafa</color>
-    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_100">#f5f5f5</color>
     <color name="grey_200">#EEEEEE</color>
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>

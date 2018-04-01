@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.data.dao
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.util.toLong
+import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.transaction
@@ -16,12 +17,16 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
     }
 
     fun getAll(): List<MyClass> = database.use {
-        select(TABLE_NAME).orderBy("week").orderBy("period").parseList(PARSER)
+        select(TABLE_NAME)
+                .orderBy("week")
+                .orderBy("period")
+                .orderBy("user", SqlOrderDirection.DESC)
+                .parseList(PARSER)
     }
 
     fun updateAll(list: List<MyClass>) = database.use {
         transaction {
-            var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
+            var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?);")
 
             // Insert new data
             list.forEach {
@@ -35,7 +40,8 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
                 st.bindString(8, it.subject)
                 st.bindString(9, it.instructor)
                 st.bindLong(10, it.isUser.toLong())
-                st.bindStringOrNull(11, it.location)
+                st.bindLong(11, it.color.toLong())
+                st.bindStringOrNull(12, it.location)
 
                 st.executeInsert()
                 st.clearBindings()
@@ -62,7 +68,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
 
     fun add(list: List<MyClass>) = database.use {
         transaction {
-            val st = compileStatement("INSERT INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
+            val st = compileStatement("INSERT INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?);")
 
             list.forEach{
                 st.bindNull(1)
@@ -75,7 +81,8 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
                 st.bindString(8, it.subject)
                 st.bindString(9, it.instructor)
                 st.bindLong(10, it.isUser.toLong())
-                st.bindStringOrNull(11, it.location)
+                st.bindLong(11, it.color.toLong())
+                st.bindStringOrNull(12, it.location)
 
                 st.executeInsert()
                 st.clearBindings()

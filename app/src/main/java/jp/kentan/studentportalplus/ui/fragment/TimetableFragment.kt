@@ -1,15 +1,22 @@
 package jp.kentan.studentportalplus.ui.fragment
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.component.ClassWeekType
+import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.TimetableFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_timetable.*
 import javax.inject.Inject
 
 class TimetableFragment : Fragment() {
@@ -27,8 +34,28 @@ class TimetableFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         AndroidSupportInjection.inject(this)
 
+        val context  = requireContext()
         val activity = requireActivity()
 
+        viewModel = ViewModelProvider(activity, viewModelFactory).get(TimetableFragmentViewModel::class.java)
+
+        val adapter = MyClassAdapter(context, MyClassAdapter.TYPE_GRID, object : MyClassAdapter.Listener{
+            override fun onClick(data: MyClass) {
+                //TODO start activity
+            }
+            override fun onAddClick(period: Int, week: ClassWeekType) {
+                //TODO start activity
+            }
+        })
+
+        viewModel.getResults().observe(activity, Observer {
+            adapter.submitList(it)
+        })
+
+        // Initialize RecyclerViews
+        grid_recycler_view.layoutManager = GridLayoutManager(context, 5)
+        grid_recycler_view.adapter = adapter
+        grid_recycler_view.setHasFixedSize(true)
 
         activity.onAttachFragment(this)
     }

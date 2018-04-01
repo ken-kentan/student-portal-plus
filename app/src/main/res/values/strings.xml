@@ -36,6 +36,7 @@
 
     <!-- Strings related to timetable -->
     <string name="title_timetable_fragment">Timetable</string>
+    <string name="description_add">追加</string>
 
     <!-- Strings related to lecture info -->
     <string name="title_lecture_info_fragment">Class Schedule</string>
