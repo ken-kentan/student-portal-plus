@@ -49,7 +49,7 @@ class LectureCancellationFragment : Fragment() {
         val context  = requireContext()
         val activity = requireActivity()
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
 
         val adapter = LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_NORMAL, object : LectureCancellationAdapter.Listener{
             override fun onClick(data: LectureCancellation) {

@@ -17,13 +17,16 @@ import kotlinx.android.synthetic.main.list_lecture.view.*
 class LectureCancellationAdapter(
         private val context: Context,
         private val viewType: Int,
-        private val listener: Listener) :
+        private val listener: Listener,
+        private val maxItemCount: Int = -1) :
         ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK) {
 
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_SMALL  = 1
     }
+
+    private var isGoneLastSeparator = false
 
     init {
         setHasStableIds(true)
@@ -32,6 +35,16 @@ class LectureCancellationAdapter(
     override fun getItemId(position: Int) = getItem(position).id
 
     override fun getItemViewType(position: Int) = viewType
+
+    override fun submitList(list: List<LectureCancellation>?) {
+        if (maxItemCount > 0) {
+            isGoneLastSeparator = (list?.size ?: 0) <= maxItemCount
+
+            super.submitList(list?.take(maxItemCount))
+        } else {
+            super.submitList(list)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -44,6 +57,10 @@ class LectureCancellationAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (viewType == TYPE_SMALL && isGoneLastSeparator) {
+            holder.separator.visibility = if (position == itemCount-1) View.GONE else View.VISIBLE
+        }
+
         holder.bindTo(getItem(position))
     }
 
@@ -51,6 +68,8 @@ class LectureCancellationAdapter(
             private val view: View,
             private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
+
+        val separator: View = view.separator
 
         fun bindTo(data: LectureCancellation) {
             view.date_text.text    = data.createdDate.toShortString()

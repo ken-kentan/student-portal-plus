@@ -55,12 +55,12 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/description_attend"
         android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_lecture_attend_not" />
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#c0c0c0"

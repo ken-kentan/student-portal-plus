@@ -50,7 +50,7 @@ class LectureInformationFragment : Fragment() {
         val context  = requireContext()
         val activity = requireActivity()
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LectureInformationFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureInformationFragmentViewModel::class.java)
 
         val adapter = LectureInformationAdapter(context, LectureInformationAdapter.TYPE_NORMAL, object : LectureInformationAdapter.Listener{
             override fun onClick(data: LectureInformation) {

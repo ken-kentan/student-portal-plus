@@ -29,9 +29,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    companion object {
-        enum class FragmentType{DASHBOARD, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
-    }
+    enum class FragmentType{DASHBOARD, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
 
     private var fragmentType = FragmentType.DASHBOARD
 
@@ -192,7 +190,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun switchFragment(type: FragmentType) {
+    fun switchFragment(type: FragmentType) {
         if (fragmentType == type) {
             return
         }

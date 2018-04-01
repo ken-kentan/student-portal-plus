@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.list_notice.view.*
 class NoticeAdapter(
         private val context: Context,
         private val viewType: Int,
-        private val listener: NoticeAdapter.Listener) :
+        private val listener: Listener,
+        private val maxItemCount: Int = -1) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
 
     companion object {
@@ -35,6 +36,14 @@ class NoticeAdapter(
     override fun getItemId(position: Int) = getItem(position).id
 
     override fun getItemViewType(position: Int) = viewType
+
+    override fun submitList(list: List<Notice>?) {
+        if (maxItemCount > 0) {
+            super.submitList(list?.take(maxItemCount))
+        } else {
+            super.submitList(list)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)

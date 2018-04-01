@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.LectureCancellation
@@ -17,6 +18,7 @@ import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.LectureCancellationActivity
 import jp.kentan.studentportalplus.ui.LectureInformationActivity
+import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
@@ -43,7 +45,7 @@ class DashboardFragment : Fragment() {
         AndroidSupportInjection.inject(this)
 
         val context  = requireContext()
-        val activity = requireActivity()
+        val activity = requireActivity() as MainActivity
 
         val viewModel = ViewModelProvider(activity, viewModelFactory).get(DashboardFragmentViewModel::class.java)
 
@@ -52,14 +54,14 @@ class DashboardFragment : Fragment() {
                 viewModel.updateLectureInformation(data.copy(hasRead = true))
                 startActivity<LectureInformationActivity>("id" to data.id, "title" to data.subject)
             }
-        })
+        }, MAX_LIST_SIZE)
 
         val lectureCancelAdapter =  LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_SMALL, object : LectureCancellationAdapter.Listener{
             override fun onClick(data: LectureCancellation) {
                 viewModel.updateLectureCancellation(data.copy(hasRead = true))
                 startActivity<LectureCancellationActivity>("id" to data.id, "title" to data.subject)
             }
-        })
+        }, MAX_LIST_SIZE)
 
         val noticeAdapter = NoticeAdapter(context, NoticeAdapter.TYPE_SMALL, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
@@ -70,24 +72,55 @@ class DashboardFragment : Fragment() {
                 viewModel.updateNotice(data.copy(hasRead = true))
                 startActivity<NoticeActivity>("id" to data.id, "title" to data.title)
             }
-        })
+        }, MAX_LIST_SIZE)
 
         viewModel.getLectureInformations().observe(this, Observer {
-            lectureInfoAdapter.submitList(it?.filter { it.attend.isAttend() }?.take(3))
+            val list = it?.filter { it.attend.isAttend() }
+
+            updateCardView(
+                    lecture_info_header,
+                    lecture_info_text,
+                    lecture_info_button,
+                    R.string.name_lecture_info,
+                    list?.size ?: 0)
+
+            lectureInfoAdapter.submitList(list)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
         viewModel.getLectureCancellations().observe(this, Observer {
-            lectureCancelAdapter.submitList(it?.filter { it.attend.isAttend() }?.take(3))
+            val list = it?.filter { it.attend.isAttend() }
+
+            updateCardView(
+                    lecture_cancel_header,
+                    lecture_cancel_text,
+                    lecture_cancel_button,
+                    R.string.name_lecture_cancel,
+                    list?.size ?: 0)
+
+            lectureCancelAdapter.submitList(list)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
         viewModel.getNotices().observe(this, Observer {
-            noticeAdapter.submitList(it?.take(3))
+            noticeAdapter.submitList(it)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
 
         initRecyclerView(lecture_info_recycler_view, lectureInfoAdapter)
         initRecyclerView(lecture_cancel_recycler_view, lectureCancelAdapter)
         initRecyclerView(notice_recycler_view, noticeAdapter)
+
+        lecture_info_text.text = getString(R.string.text_no_data, getString(R.string.name_lecture_info))
+        lecture_cancel_text.text = getString(R.string.text_no_data, getString(R.string.name_lecture_cancel))
+
+        lecture_info_button.setOnClickListener {
+            activity.switchFragment(MainActivity.FragmentType.LECTURE_INFO)
+        }
+        lecture_cancel_button.setOnClickListener {
+            activity.switchFragment(MainActivity.FragmentType.LECTURE_CANCEL)
+        }
+        notice_button.setOnClickListener {
+            activity.switchFragment(MainActivity.FragmentType.NOTICE)
+        }
 
         activity.onAttachFragment(this)
     }
@@ -97,6 +130,23 @@ class DashboardFragment : Fragment() {
         view.adapter = adapter
         view.isNestedScrollingEnabled = false
         view.setHasFixedSize(false)
+    }
+
+    private fun updateCardView(header: TextView, text: TextView, button: TextView, titleId: Int, itemCount: Int) {
+        header.text = getString(titleId)
+
+        if (itemCount <= 0) {
+            text.visibility   = View.VISIBLE
+            button.visibility = View.GONE
+        } else if (itemCount > MAX_LIST_SIZE) {
+            header.append(getString(R.string.text_more_item, itemCount - MAX_LIST_SIZE))
+
+            text.visibility   = View.GONE
+            button.visibility = View.VISIBLE
+        } else {
+            text.visibility   = View.GONE
+            button.visibility = View.GONE
+        }
     }
 
     companion object {
@@ -109,5 +159,7 @@ class DashboardFragment : Fragment() {
 
                 return field
             }
+
+        private const val MAX_LIST_SIZE = 3
     }
 }
