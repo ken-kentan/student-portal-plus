@@ -26,7 +26,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
 
     init {
         results.addSource(repository.lectureInformationLiveData) {
-            loadFromRepository()
+            loadFromRepository(query)
         }
 
         results.addSource(_query) {
@@ -40,7 +40,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
         repository.update(data)
     }
 
-    private fun loadFromRepository(query: LectureQuery? = null) {
+    private fun loadFromRepository(query: LectureQuery?) {
         if (query == null || query.isDefault()) {
             results.value = repository.lectureInformationLiveData.value
         } else{

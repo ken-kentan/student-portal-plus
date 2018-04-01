@@ -26,7 +26,7 @@ class LectureCancellationFragmentViewModel(private val repository: PortalReposit
 
     init {
         results.addSource(repository.lectureCancellationLiveData) {
-            loadFromRepository()
+            loadFromRepository(query)
         }
 
         results.addSource(_query) {
@@ -40,7 +40,7 @@ class LectureCancellationFragmentViewModel(private val repository: PortalReposit
         repository.update(data)
     }
 
-    private fun loadFromRepository(query: LectureQuery? = null) {
+    private fun loadFromRepository(query: LectureQuery?) {
         if (query == null || query.isDefault()) {
             results.value = repository.lectureCancellationLiveData.value
         } else{

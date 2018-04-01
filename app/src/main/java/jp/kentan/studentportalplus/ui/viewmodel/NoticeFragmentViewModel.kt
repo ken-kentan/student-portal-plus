@@ -26,7 +26,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
 
     init {
         results.addSource(repository.noticeLiveData) {
-            loadFromRepository()
+            loadFromRepository(query)
         }
 
         results.addSource(_query) {
@@ -40,7 +40,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         repository.update(data)
     }
 
-    private fun loadFromRepository(query: NoticeQuery? = null) {
+    private fun loadFromRepository(query: NoticeQuery?) {
         if (query == null || query.isDefault()) {
             results.value = repository.noticeLiveData.value
         } else{
