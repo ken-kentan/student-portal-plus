@@ -69,7 +69,7 @@ class LectureCancellationFragment : Fragment() {
             }
         })
 
-        text.text = getString(R.string.msg_not_found, getString(R.string.name_lecture_info))
+        text.text = getString(R.string.msg_not_found, getString(R.string.name_lecture_cancel))
 
         initRecyclerView(recycler_view, adapter)
 

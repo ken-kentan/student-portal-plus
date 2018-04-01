@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.animateFadeIn
@@ -59,9 +60,10 @@ class NoticeActivity : AppCompatActivity() {
         setTitle(title)
 
         async(UI) {
-            val data = viewModel.get(id).await()
-
-            if (data == null) {
+            val data: Notice
+            try {
+                data = viewModel.get(id).await()
+            } catch (e: Exception) {
                 failedLoad()
                 return@async
             }

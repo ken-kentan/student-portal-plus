@@ -103,7 +103,7 @@ class PortalRepository(context: Context) {
             val list = myClassParser.parse(data)
             myClassDao.add(list)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to add my class", e)
+            Log.e(TAG, "Failed to add to MyClass", e)
             return Pair(false, e.message)
         }
 
@@ -118,7 +118,7 @@ class PortalRepository(context: Context) {
         try {
             myClassDao.delete(data.subject)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to delete my class", e)
+            Log.e(TAG, "Failed to delete from MyClass", e)
             return Pair(false, e.message)
         }
 
