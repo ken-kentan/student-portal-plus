@@ -44,6 +44,10 @@
             android:name=".ui.LectureCancellationActivity"
             android:label="@string/title_activity_lecture_cancellation"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MyClassActivity"
+            android:label="@string/title_activity_my_class"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

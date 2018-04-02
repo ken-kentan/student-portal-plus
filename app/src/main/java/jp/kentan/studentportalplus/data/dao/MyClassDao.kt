@@ -24,6 +24,13 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
                 .parseList(PARSER)
     }
 
+    fun get(id: Long): MyClass? = database.use {
+        select(TABLE_NAME)
+                .whereArgs("_id=$id")
+                .limit(1)
+                .parseOpt(PARSER)
+    }
+
     fun updateAll(list: List<MyClass>) = database.use {
         transaction {
             var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?);")

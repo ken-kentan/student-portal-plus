@@ -13,10 +13,12 @@ import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.ui.MyClassActivity
 import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.TimetableFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_timetable.*
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class TimetableFragment : Fragment() {
@@ -41,7 +43,7 @@ class TimetableFragment : Fragment() {
 
         val adapter = MyClassAdapter(context, MyClassAdapter.TYPE_GRID, object : MyClassAdapter.Listener{
             override fun onClick(data: MyClass) {
-                //TODO start activity
+                startActivity<MyClassActivity>("id" to data.id, "title" to data.subject)
             }
             override fun onAddClick(period: Int, week: ClassWeekType) {
                 //TODO start activity

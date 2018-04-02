@@ -3,10 +3,7 @@
     android:id="@+id/add_button"
     android:layout_width="match_parent"
     android:layout_height="@dimen/timetable_grid_height"
-    android:layout_margin="1dp"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:visibility="visible">
+    android:focusable="true">
 
 </android.support.constraint.ConstraintLayout>

@@ -138,7 +138,7 @@ class LectureCancellationActivity : AppCompatActivity() {
     }
 
     private fun failedLoad() {
-        toast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
+        toast(getString(R.string.error_not_found, getString(R.string.name_lecture_cancel)))
         finish()
     }
 

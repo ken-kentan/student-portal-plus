@@ -74,6 +74,8 @@ class PortalRepository(context: Context) {
 
     fun getLectureCancellationById(id: Long) = lectureCancelDao.get(id)
 
+    fun getMyClassById(id: Long) = myClassDao.get(id)
+
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
     fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)

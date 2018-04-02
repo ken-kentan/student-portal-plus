@@ -7,6 +7,7 @@
     <string name="title_activity_lecture_information">Class Schedule Changes</string>
     <string name="title_activity_lecture_cancellation">Class Cancellations</string>
     <string name="title_activity_notice">News &amp; Events</string>
+    <string name="title_activity_my_class">My Class</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -65,6 +66,7 @@
     <string name="name_notice">最新情報</string>
     <string name="name_lecture_info">授業関連連絡</string>
     <string name="name_lecture_cancel">休講情報</string>
+    <string name="name_my_class">受講科目</string>
     <string name="name_created_date">掲載日</string>
     <string name="name_title">タイトル</string>
     <string name="name_detail">内容</string>
@@ -80,6 +82,9 @@
     <string name="name_favorite">お気に入り</string>
     <string name="name_display_order">表示順</string>
     <string name="name_attend_lecture">受講科目</string>
+    <string name="name_location">場所</string>
+    <string name="name_week_period">曜日時限</string>
+    <string name="name_syllabus">シラバス</string>
     <string name="title_filter_dialog">検索フィルタ</string>
 
     <!-- Menus -->
