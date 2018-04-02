@@ -17,7 +17,7 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
     INTENSIVE(8, "集中"),
     UNKNOWN  (9, "-");
 
-    val fullDisplayName = displayName + if (code in 1..7) "曜" else ""
+    val fullDisplayName = displayName + if (code in 1..7) "曜日" else ""
 
     companion object {
         private val ENUMS = values()

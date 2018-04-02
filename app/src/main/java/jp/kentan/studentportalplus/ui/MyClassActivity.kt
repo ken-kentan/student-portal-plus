@@ -2,10 +2,8 @@ package jp.kentan.studentportalplus.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
@@ -57,7 +55,7 @@ class MyClassActivity : AppCompatActivity() {
                 fab.hide()
             } else {
                 fab.setOnClickListener {
-
+                    //TODO start activity
                 }
             }
 
@@ -65,31 +63,14 @@ class MyClassActivity : AppCompatActivity() {
             instructor_text.text  = it.instructor.format()
             location_text.text    = it.location.format()
             category_text.text    = it.category.format()
-            week_period_text.text = getString(R.string.text_week_period, it.week.fullDisplayName, it.period.formatPeriod())
+            week_period_text.text = getString(R.string.text_week_period, it.week.fullDisplayName.formatWeek(), it.period.formatPeriod())
             syllabus_text.text    = it.scheduleCode.toSyllabusUri()
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_share -> {
-                val (subject, text) = viewModel.getShareText(this)
-
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                intent.putExtra(Intent.EXTRA_TEXT, text)
-
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                finish()
-            }
+        if (item?.itemId == android.R.id.home) {
+            finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -101,6 +82,8 @@ class MyClassActivity : AppCompatActivity() {
     }
 
     private fun String?.format() = if (this.isNullOrBlank()) "未入力" else this
+
+    private fun String.formatWeek() = this.replace("曜日", "曜")
 
     private fun Int.formatPeriod() = if (this > 0) "${this}限" else ""
 
