@@ -1,5 +1,6 @@
 package jp.kentan.studentportalplus.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
@@ -8,18 +9,19 @@ import android.view.Menu
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
-import jp.kentan.studentportalplus.util.animateFadeIn
 import kotlinx.android.synthetic.main.activity_my_class.*
 import kotlinx.android.synthetic.main.content_my_class.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MyClassActivity : AppCompatActivity() {
+
+    private companion object {
+        const val SYLLABUS_URI = "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code="
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -35,41 +37,38 @@ class MyClassActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        val id    = intent.getLongExtra("id", -1)
-        val title = intent.getStringExtra("title")
-        if (id < 0 || title == null) {
+        val id = intent.getLongExtra("id", -1)
+        if (id < 0) {
             failedLoad()
             return
         }
 
-        setTitle(title)
-
-        async(UI) {
-            val data: MyClass
-
-            try {
-                data = viewModel.get(id).await()
-            } catch (e: Exception) {
+        viewModel.get(id).observe(this, Observer {
+            if (it == null) {
                 failedLoad()
-                return@async
+                return@Observer
             }
 
-            subject_text.text = data.subject
-            instructor_text.text = data.instructor
-            location_text.text = data.location
-            category_text.text = data.category
-            week_period_text.text = data.week.displayName //TODO
-            syllabus_text.text = data.scheduleCode //TODO
+            toolbar_layout.title = it.subject
+            toolbar_layout.backgroundColor = it.color
 
-            layout.animateFadeIn(this@MyClassActivity)
-        }
+            if (!it.isUser) {
+                fab.hide()
+            } else {
+                fab.setOnClickListener {
+
+                }
+            }
+
+            subject_text.text     = it.subject
+            instructor_text.text  = it.instructor.format()
+            location_text.text    = it.location.format()
+            category_text.text    = it.category.format()
+            week_period_text.text = getString(R.string.text_week_period, it.week.fullDisplayName, it.period.formatPeriod())
+            syllabus_text.text    = it.scheduleCode.toSyllabusUri()
+        })
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.share, menu)
@@ -100,4 +99,10 @@ class MyClassActivity : AppCompatActivity() {
         toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
         finish()
     }
+
+    private fun String?.format() = if (this.isNullOrBlank()) "未入力" else this
+
+    private fun Int.formatPeriod() = if (this > 0) "${this}限" else ""
+
+    private fun String.toSyllabusUri() = if (this.isBlank()) "未入力" else SYLLABUS_URI + this
 }

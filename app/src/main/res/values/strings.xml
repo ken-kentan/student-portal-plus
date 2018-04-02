@@ -59,6 +59,9 @@
     <string name="msg_reset_favorite">お気に入りを解除しました</string>
     <string name="text_created_date_notice">掲載日: %1$s</string>
 
+    <!-- Strings related to my class -->
+    <string name="text_week_period">%1$s %2$s</string>
+
     <!-- Common titles -->
     <string name="title_confirmation">確認</string>
 

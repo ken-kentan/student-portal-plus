@@ -9,12 +9,9 @@
     tools:showIn="@layout/activity_my_class">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0"
-        android:padding="16dp"
-        android:visibility="invisible">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/subject_header"
@@ -94,6 +91,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_header" />
@@ -114,6 +112,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/week_period_header" />

@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import jp.kentan.studentportalplus.data.PortalRepository
@@ -10,9 +12,29 @@ class MyClassViewModel(private val portalRepository: PortalRepository) : ViewMod
 
     private lateinit var data: MyClass
 
-    fun get(id: Long) = bg {
-        data = portalRepository.getMyClassById(id) ?: throw Exception("Unknown MyClass id: $id")
-        return@bg data
+    private var id: Long = -1
+    private val result = MediatorLiveData<MyClass>()
+
+    init {
+        result.addSource(portalRepository.myClassLiveData) {
+            bg {
+                if (id > 0) {
+                    result.postValue(portalRepository.getMyClassById(id))
+                }
+            }
+        }
+    }
+
+//    fun get(id: Long) = bg {
+//        data = portalRepository.getMyClassById(id) ?: throw Exception("Unknown MyClass id: $id")
+//        return@bg data
+//    }
+
+    fun get(id: Long): LiveData<MyClass> {
+        this.id = id
+        bg { result.postValue(portalRepository.getMyClassById(id)) }
+
+        return result
     }
 
     fun getShareText(context: Context): Pair<String, String> {
