@@ -85,6 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
+            android:requiresFadingEdge="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +100,7 @@
                     android:id="@+id/grid_recycler_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:background="@color/grey_200"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/period1_header"
@@ -120,7 +122,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period1_header"
-                    app:layout_constraintTop_toTopOf="@+id/period1_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period1_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period1_header"
@@ -147,7 +150,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period2_header"
-                    app:layout_constraintTop_toTopOf="@+id/period2_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period2_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period2_header"
@@ -177,7 +181,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period3_header"
-                    app:layout_constraintTop_toTopOf="@+id/period3_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period3_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period3_header"
@@ -207,7 +212,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period4_header"
-                    app:layout_constraintTop_toTopOf="@+id/period4_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period4_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period4_header"
@@ -237,7 +243,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period5_header"
-                    app:layout_constraintTop_toTopOf="@+id/period5_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period5_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period5_header"
@@ -267,7 +274,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period6_header"
-                    app:layout_constraintTop_toTopOf="@+id/period6_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period6_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period6_header"
@@ -297,7 +305,8 @@
                     android:textColor="@color/grey_600"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="@+id/period7_header"
-                    app:layout_constraintTop_toTopOf="@+id/period7_separator" />
+                    app:layout_constraintTop_toTopOf="@+id/period7_separator"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:id="@+id/period7_header"
