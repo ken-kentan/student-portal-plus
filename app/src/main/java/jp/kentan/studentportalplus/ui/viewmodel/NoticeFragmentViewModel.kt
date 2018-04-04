@@ -13,6 +13,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
+    private val noticeList = repository.noticeList
     private val results = MediatorLiveData<List<Notice>>()
     private val _query  = MutableLiveData<NoticeQuery>()
 
@@ -25,7 +26,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
         get() = _query.value ?: NoticeQuery.DEFAULT
 
     init {
-        results.addSource(repository.noticeLiveData) {
+        results.addSource(noticeList) {
             loadFromRepository(query)
         }
 
@@ -42,7 +43,7 @@ class NoticeFragmentViewModel(private val repository: PortalRepository) : ViewMo
 
     private fun loadFromRepository(query: NoticeQuery?) {
         if (query == null || query.isDefault()) {
-            results.value = repository.noticeLiveData.value
+            results.value = noticeList.value
         } else{
             bg {
                 results.postValue(repository.searchNotices(query))

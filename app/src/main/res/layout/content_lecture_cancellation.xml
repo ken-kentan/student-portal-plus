@@ -12,9 +12,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0"
-        android:padding="16dp"
-        android:visibility="invisible">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/subject_header"

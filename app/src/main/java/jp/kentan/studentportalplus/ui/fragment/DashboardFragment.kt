@@ -74,33 +74,29 @@ class DashboardFragment : Fragment() {
             }
         }, MAX_LIST_SIZE)
 
-        viewModel.getLectureInformations().observe(this, Observer {
-            val list = it?.filter { it.attend.isAttend() }
-
+        viewModel.getAttendLectureInformationList().observe(this, Observer {
             updateCardView(
                     lecture_info_header,
                     lecture_info_text,
                     lecture_info_button,
                     R.string.name_lecture_info,
-                    list?.size ?: 0)
+                    it?.size ?: 0)
 
-            lectureInfoAdapter.submitList(list)
+            lectureInfoAdapter.submitList(it)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
-        viewModel.getLectureCancellations().observe(this, Observer {
-            val list = it?.filter { it.attend.isAttend() }
-
+        viewModel.getAttendLectureCancellationList().observe(this, Observer {
             updateCardView(
                     lecture_cancel_header,
                     lecture_cancel_text,
                     lecture_cancel_button,
                     R.string.name_lecture_cancel,
-                    list?.size ?: 0)
+                    it?.size ?: 0)
 
-            lectureCancelAdapter.submitList(list)
+            lectureCancelAdapter.submitList(it)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })
-        viewModel.getNotices().observe(this, Observer {
+        viewModel.getNoticeList().observe(this, Observer {
             noticeAdapter.submitList(it)
             TransitionManager.beginDelayedTransition(dashboard_layout)
         })

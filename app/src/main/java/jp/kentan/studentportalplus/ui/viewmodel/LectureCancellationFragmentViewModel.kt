@@ -13,6 +13,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class LectureCancellationFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
+    private val lectureCancellationList = repository.lectureCancellationList
     private val results = MediatorLiveData<List<LectureCancellation>>()
     private val _query = MutableLiveData<LectureQuery>()
 
@@ -25,7 +26,7 @@ class LectureCancellationFragmentViewModel(private val repository: PortalReposit
         get() = _query.value ?: LectureQuery.DEFAULT
 
     init {
-        results.addSource(repository.lectureCancellationLiveData) {
+        results.addSource(lectureCancellationList) {
             loadFromRepository(query)
         }
 
@@ -42,7 +43,7 @@ class LectureCancellationFragmentViewModel(private val repository: PortalReposit
 
     private fun loadFromRepository(query: LectureQuery?) {
         if (query == null || query.isDefault()) {
-            results.value = repository.lectureCancellationLiveData.value
+            results.value = lectureCancellationList.value
         } else{
             bg {
                 results.postValue(repository.searchLectureCancellations(query))

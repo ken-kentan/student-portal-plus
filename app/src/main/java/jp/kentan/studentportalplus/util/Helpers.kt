@@ -30,8 +30,8 @@ fun Activity.hideSoftInput() {
     }
 }
 
-fun indefiniteSnackbar(view: View, message: String?, defaultMessage: String, actionMessage: String) {
-    val snackbar = Snackbar.make(view, message ?: defaultMessage, Snackbar.LENGTH_INDEFINITE)
+fun indefiniteSnackbar(view: View, message: String, actionMessage: String) {
+    val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
     snackbar.setAction(actionMessage, { snackbar.dismiss() })
     snackbar.show()
 }

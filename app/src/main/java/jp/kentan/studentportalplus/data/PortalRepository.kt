@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.data
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
@@ -33,16 +35,25 @@ class PortalRepository(context: Context) {
     private val lectureCancelDao = LectureCancellationDao(context.database)
     private val myClassDao       = MyClassDao(context.database)
 
-    val noticeLiveData              = MutableLiveData<List<Notice>>()
-    val lectureInformationLiveData  = MutableLiveData<List<LectureInformation>>()
-    val lectureCancellationLiveData = MutableLiveData<List<LectureCancellation>>()
+    private val _noticeList              = MutableLiveData<List<Notice>>()
+    private val _lectureInformationList  = MutableLiveData<List<LectureInformation>>()
+    private val _lectureCancellationList = MutableLiveData<List<LectureCancellation>>()
     val myClassLiveData             = MutableLiveData<List<MyClass>>()
+
+    val noticeList: LiveData<List<Notice>>
+        get() = copyLiveData(_noticeList)
+
+    val lectureInformationList: LiveData<List<LectureInformation>>
+        get() = copyLiveData(_lectureInformationList)
+
+    val lectureCancellationList: LiveData<List<LectureCancellation>>
+        get() = copyLiveData(_lectureCancellationList)
 
 
     fun loadFromDb() {
-        noticeLiveData.postValue(noticeDao.getAll())
-        lectureInformationLiveData.postValue(lectureInfoDao.getAll())
-        lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+        _noticeList.postValue(noticeDao.getAll())
+        _lectureInformationList.postValue(lectureInfoDao.getAll())
+        _lectureCancellationList.postValue(lectureCancelDao.getAll())
         myClassLiveData.postValue(myClassDao.getAll())
     }
 
@@ -72,7 +83,7 @@ class PortalRepository(context: Context) {
 
     fun getLectureInformationById(id: Long) = lectureInfoDao.get(id)
 
-    fun getLectureCancellationById(id: Long) = lectureCancelDao.get(id)
+    fun getLectureCancellationById(id: Long) = _lectureCancellationList.value?.find { it.id == id }
 
     fun getMyClassById(id: Long) = myClassDao.get(id)
 
@@ -84,53 +95,62 @@ class PortalRepository(context: Context) {
 
     fun update(data: Notice) {
         if (noticeDao.update(data) > 0) {
-            noticeLiveData.postValue(noticeDao.getAll())
+            _noticeList.postValue(noticeDao.getAll())
         }
     }
 
     fun update(data: LectureInformation) {
         if (lectureInfoDao.update(data) > 0) {
-            lectureInformationLiveData.postValue(lectureInfoDao.getAll())
+            _lectureInformationList.postValue(lectureInfoDao.getAll())
         }
     }
 
     fun update(data: LectureCancellation) {
         if (lectureCancelDao.update(data) > 0) {
-            lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+            _lectureCancellationList.postValue(lectureCancelDao.getAll())
         }
     }
 
-    fun addToMyClass(data: Lecture): Pair<Boolean, String?> {
+    fun addToMyClass(data: Lecture): Boolean {
         try {
             val list = myClassParser.parse(data)
             myClassDao.add(list)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to add to MyClass", e)
-            return Pair(false, e.message)
+            return false
         }
 
         myClassLiveData.postValue(myClassDao.getAll())
-        lectureInformationLiveData.postValue(lectureInfoDao.getAll())
-        lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+        _lectureInformationList.postValue(lectureInfoDao.getAll())
+        _lectureCancellationList.postValue(lectureCancelDao.getAll())
 
-        return Pair(true, null)
+        return true
     }
 
-    fun deleteFromMyClass(data: Lecture): Pair<Boolean, String?> {
+    fun deleteFromMyClass(data: Lecture): Boolean {
         try {
             myClassDao.delete(data.subject)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to delete from MyClass", e)
-            return Pair(false, e.message)
+            return false
         }
 
         myClassLiveData.postValue(myClassDao.getAll())
-        lectureInformationLiveData.postValue(lectureInfoDao.getAll())
-        lectureCancellationLiveData.postValue(lectureCancelDao.getAll())
+        _lectureInformationList.postValue(lectureInfoDao.getAll())
+        _lectureCancellationList.postValue(lectureCancelDao.getAll())
 
-        return Pair(true, null)
+        return true
     }
 
     @Throws(Exception::class)
     private fun fetchDocument(type: PortalDataType) = shibbolethClient.fetch(type.url)
+
+    /**
+     * Create new LiveData instance from source
+     */
+    private fun <T> copyLiveData(source: LiveData<T>): LiveData<T> {
+        val result = MediatorLiveData<T>()
+        result.addSource(source) {result.value = it }
+        return result
+    }
 }

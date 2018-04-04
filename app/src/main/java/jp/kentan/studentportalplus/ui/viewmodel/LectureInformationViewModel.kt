@@ -7,16 +7,15 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.util.toShortString
-import org.jetbrains.anko.coroutines.experimental.bg
 
-class LectureInformationViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class LectureInformationViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    private lateinit var data: LectureInformation
+    lateinit var data: LectureInformation
+        private set
 
     @Throws(Exception::class)
-    fun get(id: Long) = bg {
-        data = portalRepository.getLectureInformationById(id) ?: throw Exception("Unknown LectureInformation id: $id")
-        return@bg data
+    fun setId(id: Long) {
+        data = repository.lectureInformationList.value?.find { it.id == id } ?: throw Exception("Unknown LectureInformation id $id")
     }
 
     fun getShareText(context: Context): Pair<String, String> {
@@ -38,23 +37,19 @@ class LectureInformationViewModel(private val portalRepository: PortalRepository
         return Pair(data.subject, sb.toString())
     }
 
-    fun getAttendType() = data.attend
+    fun updateAttendByUser(isUser: Boolean): Boolean {
+        val data = data.copy(attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT)
 
-    fun setAttendByUser(isUser: Boolean) = bg {
-        val attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
-
-        val data = data.copy(attend = attend)
-
-        val result = if (isUser) {
-            portalRepository.addToMyClass(data)
+        val success = if (isUser) {
+            repository.addToMyClass(data)
         } else {
-            portalRepository.deleteFromMyClass(data)
+            repository.deleteFromMyClass(data)
         }
 
-        if (result.first) {
+        if (success) {
             this.data = data
         }
 
-        return@bg result
+        return success
     }
 }

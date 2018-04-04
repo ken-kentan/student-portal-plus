@@ -13,6 +13,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class LectureInformationFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
+    private val lectureInformationList = repository.lectureInformationList
     private val results = MediatorLiveData<List<LectureInformation>>()
     private val _query = MutableLiveData<LectureQuery>()
 
@@ -25,7 +26,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
         get() = _query.value ?: LectureQuery.DEFAULT
 
     init {
-        results.addSource(repository.lectureInformationLiveData) {
+        results.addSource(lectureInformationList) {
             loadFromRepository(query)
         }
 
@@ -42,7 +43,7 @@ class LectureInformationFragmentViewModel(private val repository: PortalReposito
 
     private fun loadFromRepository(query: LectureQuery?) {
         if (query == null || query.isDefault()) {
-            results.value = repository.lectureInformationLiveData.value
+            results.value = lectureInformationList.value
         } else{
             bg {
                 results.postValue(repository.searchLectureInformations(query))

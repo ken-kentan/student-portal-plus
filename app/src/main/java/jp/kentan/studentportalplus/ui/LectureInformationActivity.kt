@@ -14,7 +14,6 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.ui.viewmodel.LectureInformationViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
-import jp.kentan.studentportalplus.util.animateFadeIn
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
@@ -43,79 +42,20 @@ class LectureInformationActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
 
-    override fun onStart() {
-        super.onStart()
+        val id = intent.getLongExtra("id", 0)
 
-        val id    = intent.getLongExtra("id", -1)
-        val title = intent.getStringExtra("title")
-        if (id < 0 || title == null) {
-            failedLoad()
+        try {
+            viewModel.setId(id)
+        } catch (e: Exception) {
+            toast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
+            finish()
             return
         }
+        val data = viewModel.data
 
-        setTitle(title)
-
-        async(UI) {
-            val data: LectureInformation
-            try {
-                data = viewModel.get(id).await()
-            } catch (e: Exception) {
-                failedLoad()
-                return@async
-            }
-
-            subject_text.text = data.subject
-            instructor_text.text = data.instructor
-            semester_week_period_text.text =
-                    getString(R.string.text_semester_week_period,
-                            data.grade,
-                            data.semester.formatSemester(),
-                            data.week.formatWeek(),
-                            data.period.formatPeriod())
-            category_text.text = data.category
-            detail_text.text = data.detailHtml.toSpanned()
-            date_text.text = getString(R.string.text_created_date_lecture_info, data.createdDate.toShortString())
-
-            if (data.createdDate != data.updatedDate) {
-                date_text.append(getString(R.string.text_updated_date_lecture_info, data.updatedDate.toShortString()))
-            }
-
-            if (data.attend == LectureAttendType.PORTAL) {
-                fab.hide()
-            } else {
-                fab.rotation = if (data.attend == LectureAttendType.USER) 135f else 0f
-                fab.animateFadeIn(this@LectureInformationActivity)
-            }
-
-            fab.setOnClickListener {
-                val type = viewModel.getAttendType()
-
-                if (type == LectureAttendType.USER) {
-                    showConfirmationDialog(data.subject)
-                } else {
-                    async(UI) {
-                        val (success, message) = viewModel.setAttendByUser(true).await()
-
-                        if (success) {
-                            fab.animate()
-                                    .rotation(135f)
-                                    .setDuration(800)
-                                    .setInterpolator(AnticipateOvershootInterpolator())
-                                    .withLayer()
-                                    .start()
-
-                            snackbar(it, R.string.msg_register_class)
-                        } else {
-                            indefiniteSnackbar(layout, message, getString(R.string.error_add), getString(R.string.action_close))
-                        }
-                    }
-                }
-            }
-
-            layout.animateFadeIn(this@LectureInformationActivity)
-        }
+        bindToView(data)
+        initFab(data.attend)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -143,9 +83,54 @@ class LectureInformationActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun failedLoad() {
-        toast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
-        finish()
+    private fun bindToView(data: LectureInformation) {
+        subject_text.text = data.subject
+        instructor_text.text = data.instructor
+        semester_week_period_text.text =
+                getString(R.string.text_semester_week_period,
+                        data.grade,
+                        data.semester.formatSemester(),
+                        data.week.formatWeek(),
+                        data.period.formatPeriod())
+        category_text.text = data.category
+        detail_text.text = data.detailHtml.toSpanned()
+        date_text.text = getString(R.string.text_created_date_lecture_info, data.createdDate.toShortString())
+
+        if (data.createdDate != data.updatedDate) {
+            date_text.append(getString(R.string.text_updated_date_lecture_info, data.updatedDate.toShortString()))
+        }
+    }
+
+    private fun initFab(type: LectureAttendType) {
+        if (type == LectureAttendType.PORTAL) {
+            fab.hide()
+            return
+        }
+
+        fab.rotation = if (type == LectureAttendType.USER) 135f else 0f
+
+        fab.setOnClickListener {
+            val data = viewModel.data
+
+            if (data.attend == LectureAttendType.USER) {
+                showConfirmationDialog(data.subject)
+            } else {
+                val success = viewModel.updateAttendByUser(true)
+
+                if (success) {
+                    fab.animate()
+                            .rotation(135f)
+                            .setDuration(800)
+                            .setInterpolator(AnticipateOvershootInterpolator())
+                            .withLayer()
+                            .start()
+
+                    snackbar(it, R.string.msg_register_class)
+                } else {
+                    indefiniteSnackbar(layout, getString(R.string.error_add), getString(R.string.action_close))
+                }
+            }
+        }
     }
 
     private fun showConfirmationDialog(subject: String) {
@@ -154,7 +139,7 @@ class LectureInformationActivity : AppCompatActivity() {
         builder.setMessage(getString(R.string.text_unregister_confirm, subject).toSpanned())
         builder.setPositiveButton(R.string.action_yes) { _, _ ->
             async(UI) {
-                val (success, message) = viewModel.setAttendByUser(false).await()
+                val success = viewModel.updateAttendByUser(false)
 
                 if (success) {
                     snackbar(layout, R.string.msg_unregister_class)
@@ -166,7 +151,7 @@ class LectureInformationActivity : AppCompatActivity() {
                             .withLayer()
                             .start()
                 } else {
-                    indefiniteSnackbar(layout, message, getString(R.string.error_remove), getString(R.string.action_close))
+                    indefiniteSnackbar(layout, getString(R.string.error_remove), getString(R.string.action_close))
                 }
             }
         }

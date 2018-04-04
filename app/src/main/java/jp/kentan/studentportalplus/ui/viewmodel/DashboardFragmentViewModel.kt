@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.LectureCancellation
@@ -8,23 +10,29 @@ import jp.kentan.studentportalplus.data.model.Notice
 import org.jetbrains.anko.coroutines.experimental.bg
 
 
-class DashboardFragmentViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class DashboardFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    fun getNotices() = portalRepository.noticeLiveData
+    private companion object {
+        const val MAX_LIST_SIZE = 3
+    }
 
-    fun getLectureInformations() = portalRepository.lectureInformationLiveData
+    fun getNoticeList(): LiveData<List<Notice>> = repository.noticeList
 
-    fun getLectureCancellations() = portalRepository.lectureCancellationLiveData
+    fun getAttendLectureInformationList(): LiveData<List<LectureInformation>> =
+            Transformations.map(repository.lectureInformationList) { it.filter { it.attend.isAttend() } }
+
+    fun getAttendLectureCancellationList(): LiveData<List<LectureCancellation>> =
+            Transformations.map(repository.lectureCancellationList) { it.filter { it.attend.isAttend() } }
 
     fun updateNotice(data: Notice) = bg {
-        portalRepository.update(data)
+        repository.update(data)
     }
 
     fun updateLectureInformation(data: LectureInformation) = bg {
-        portalRepository.update(data)
+        repository.update(data)
     }
 
     fun updateLectureCancellation(data: LectureCancellation) = bg {
-        portalRepository.update(data)
+        repository.update(data)
     }
 }

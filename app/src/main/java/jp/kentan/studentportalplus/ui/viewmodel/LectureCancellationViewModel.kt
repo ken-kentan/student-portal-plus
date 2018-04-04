@@ -8,16 +8,15 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.util.htmlToText
 import jp.kentan.studentportalplus.util.toShortString
-import org.jetbrains.anko.coroutines.experimental.bg
 
-class LectureCancellationViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class LectureCancellationViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    private lateinit var data: LectureCancellation
+    lateinit var data: LectureCancellation
+        private set
 
     @Throws(Exception::class)
-    fun get(id: Long) = bg {
-        data = portalRepository.getLectureCancellationById(id) ?: throw Exception("Unknown LectureCancellation id: $id")
-        return@bg data
+    fun setId(id: Long) {
+        data = repository.lectureCancellationList.value?.find { it.id == id } ?: throw Exception("Unknown LectureCancellation id: $id")
     }
 
     fun getShareText(context: Context): Pair<String, String> {
@@ -35,23 +34,19 @@ class LectureCancellationViewModel(private val portalRepository: PortalRepositor
         return Pair(data.subject, sb.toString())
     }
 
-    fun getAttendType() = data.attend
+    fun updateAttendByUser(isUser: Boolean): Boolean {
+        val data = data.copy(attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT)
 
-    fun setAttendByUser(isUser: Boolean) = bg {
-        val attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
-
-        val data = data.copy(attend = attend)
-
-        val result = if (isUser) {
-            portalRepository.addToMyClass(data)
+        val success = if (isUser) {
+            repository.addToMyClass(data)
         } else {
-            portalRepository.deleteFromMyClass(data)
+            repository.deleteFromMyClass(data)
         }
 
-        if (result.first) {
+        if (success) {
             this.data = data
         }
 
-        return@bg result
+        return success
     }
 }
