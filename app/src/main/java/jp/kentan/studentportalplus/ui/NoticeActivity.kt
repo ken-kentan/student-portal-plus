@@ -41,8 +41,6 @@ class NoticeActivity : AppCompatActivity() {
         ViewModelProvider(this, viewModelFactory).get(NoticeViewModel::class.java)
     }
 
-    private var hasUpdate = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notice)
@@ -51,7 +49,7 @@ class NoticeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        hasUpdate = false
+        var hasUpdate = false
 
         viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
             if (data == null) {

@@ -42,8 +42,6 @@ class LectureCancellationActivity : AppCompatActivity() {
         ViewModelProvider(this, viewModelFactory).get(LectureCancellationViewModel::class.java)
     }
 
-    private var hasUpdate = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lecture_cancellation)
@@ -52,7 +50,7 @@ class LectureCancellationActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        hasUpdate = false
+        var hasUpdate = false
 
         viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
             if (data == null) {

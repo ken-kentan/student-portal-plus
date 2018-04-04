@@ -13,6 +13,7 @@ import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_my_class.*
 import kotlinx.android.synthetic.main.content_my_class.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -29,8 +30,6 @@ class MyClassActivity : AppCompatActivity() {
         ViewModelProvider(this, viewModelFactory).get(MyClassViewModel::class.java)
     }
 
-    private var hasUpdate = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_class)
@@ -39,7 +38,7 @@ class MyClassActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        hasUpdate = false
+        var hasUpdate = false
 
         viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
             if (data == null) {
@@ -63,7 +62,7 @@ class MyClassActivity : AppCompatActivity() {
             }
 
             fab.setOnClickListener {
-                //TODO start activity
+                startActivity<MyClassEditActivity>("id" to data.id)
             }
         })
     }
