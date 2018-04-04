@@ -65,8 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:alpha="0"
-        android:visibility="invisible"
         app:backgroundTint="@color/orange_a_400"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"

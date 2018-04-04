@@ -135,7 +135,8 @@
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>
     <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい。</string>
-    <string name="error_not_found">%1$sが見つかりませんでした</string>
+    <string name="error_not_found">%1$sは存在しないか、すでに消去されています</string>
+    <string name="error_update">%1$sの更新に失敗しました</string>
     <string name="error_add">追加に失敗しました</string>
     <string name="error_remove">除外に失敗しました</string>
 

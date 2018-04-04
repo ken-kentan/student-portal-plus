@@ -79,8 +79,6 @@ class PortalRepository(context: Context) {
         return Pair<Boolean, String?>(true, null)
     }
 
-    fun getNoticeById(id: Long) = noticeDao.get(id)
-
     fun getLectureInformationById(id: Long) = lectureInfoDao.get(id)
 
     fun getLectureCancellationById(id: Long) = _lectureCancellationList.value?.find { it.id == id }
@@ -93,10 +91,12 @@ class PortalRepository(context: Context) {
 
     fun searchLectureCancellations(query: LectureQuery) = lectureCancelDao.search(query)
 
-    fun update(data: Notice) {
+    fun update(data: Notice): Boolean {
         if (noticeDao.update(data) > 0) {
             _noticeList.postValue(noticeDao.getAll())
+            return true
         }
+        return false
     }
 
     fun update(data: LectureInformation) {

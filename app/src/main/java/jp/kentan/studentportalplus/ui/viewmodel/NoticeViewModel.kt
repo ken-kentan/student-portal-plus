@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import jp.kentan.studentportalplus.R
@@ -8,13 +10,13 @@ import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.coroutines.experimental.bg
 
-class NoticeViewModel(private val portalRepository: PortalRepository) : ViewModel() {
+class NoticeViewModel(private val repository: PortalRepository) : ViewModel() {
 
     private lateinit var data: Notice
 
-    fun get(id: Long) = bg {
-        data = portalRepository.getNoticeById(id) ?: throw Exception("Unknown Notice id: $id")
-        return@bg data
+    fun get(id: Long): LiveData<Notice> = Transformations.map(repository.noticeList) {
+        data = it.find { it.id == id } ?: return@map null
+        return@map data
     }
 
     fun getShareText(context: Context): Pair<String, String> {
@@ -35,15 +37,7 @@ class NoticeViewModel(private val portalRepository: PortalRepository) : ViewMode
         return Pair(data.title, sb.toString())
     }
 
-    fun isFavorite() = data.isFavorite
-
-    fun setFavorite(isFavorite: Boolean) {
-        bg {
-            val data = data.copy(isFavorite = isFavorite)
-
-            portalRepository.update(data)
-
-            this.data = data
-        }
+    fun updateFavorite(isFavorite: Boolean) = bg {
+        repository.update(data.copy(isFavorite = isFavorite))
     }
 }
