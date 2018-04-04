@@ -12,10 +12,6 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class DashboardFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    private companion object {
-        const val MAX_LIST_SIZE = 3
-    }
-
     fun getNoticeList(): LiveData<List<Notice>> = repository.noticeList
 
     fun getAttendLectureInformationList(): LiveData<List<LectureInformation>> =
