@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import jp.kentan.studentportalplus.R
@@ -8,16 +10,17 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.util.htmlToText
 import jp.kentan.studentportalplus.util.toShortString
+import org.jetbrains.anko.coroutines.experimental.bg
 
 class LectureCancellationViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    lateinit var data: LectureCancellation
-        private set
+    private lateinit var data: LectureCancellation
 
-    @Throws(Exception::class)
-    fun setId(id: Long) {
-        data = repository.lectureCancellationList.value?.find { it.id == id } ?: throw Exception("Unknown LectureCancellation id: $id")
-    }
+    fun get(id: Long): LiveData<LectureCancellation> =
+            Transformations.map(repository.lectureCancellationList) {
+                data = it.find { it.id == id } ?: return@map null
+                return@map data
+            }
 
     fun getShareText(context: Context): Pair<String, String> {
         val sb = StringBuilder()
@@ -34,19 +37,13 @@ class LectureCancellationViewModel(private val repository: PortalRepository) : V
         return Pair(data.subject, sb.toString())
     }
 
-    fun updateAttendByUser(isUser: Boolean): Boolean {
-        val data = data.copy(attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT)
+    fun updateAttendByUser(isUser: Boolean) = bg {
+        val type = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
 
-        val success = if (isUser) {
-            repository.addToMyClass(data)
+        if (isUser) {
+            repository.addToMyClass(data.copy(attend = type))
         } else {
-            repository.deleteFromMyClass(data)
+            repository.deleteFromMyClass(data.copy(attend = type))
         }
-
-        if (success) {
-            this.data = data
-        }
-
-        return success
     }
 }

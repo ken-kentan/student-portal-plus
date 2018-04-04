@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import jp.kentan.studentportalplus.R
@@ -7,15 +9,15 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.util.toShortString
+import org.jetbrains.anko.coroutines.experimental.bg
 
 class LectureInformationViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    lateinit var data: LectureInformation
-        private set
+    private lateinit var data: LectureInformation
 
-    @Throws(Exception::class)
-    fun setId(id: Long) {
-        data = repository.lectureInformationList.value?.find { it.id == id } ?: throw Exception("Unknown LectureInformation id $id")
+    fun get(id: Long): LiveData<LectureInformation> = Transformations.map(repository.lectureInformationList) {
+        data = it.find { it.id == id } ?: return@map null
+        return@map data
     }
 
     fun getShareText(context: Context): Pair<String, String> {
@@ -37,19 +39,13 @@ class LectureInformationViewModel(private val repository: PortalRepository) : Vi
         return Pair(data.subject, sb.toString())
     }
 
-    fun updateAttendByUser(isUser: Boolean): Boolean {
-        val data = data.copy(attend = if (isUser) LectureAttendType.USER else LectureAttendType.NOT)
+    fun updateAttendByUser(isUser: Boolean) = bg {
+        val type = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
 
-        val success = if (isUser) {
-            repository.addToMyClass(data)
+        if (isUser) {
+            repository.addToMyClass(data.copy(attend = type))
         } else {
-            repository.deleteFromMyClass(data)
+            repository.deleteFromMyClass(data.copy(attend = type))
         }
-
-        if (success) {
-            this.data = data
-        }
-
-        return success
     }
 }

@@ -28,8 +28,10 @@ import javax.inject.Inject
 class NoticeActivity : AppCompatActivity() {
 
     private companion object {
-        const val START_ROTATION_FROM =   0f
-        const val START_ROTATION_TO   = 144f
+        const val ROTATION_FROM =   0f
+        const val ROTATION_TO   = 144f
+        const val DURATION      = 800L
+        val INTERPOLATOR = OvershootInterpolator()
     }
 
     @Inject
@@ -48,6 +50,8 @@ class NoticeActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        hasUpdate = false
 
         viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
             if (data == null) {
@@ -71,9 +75,9 @@ class NoticeActivity : AppCompatActivity() {
                     if (success) {
                         fab.setImageResource(if (favorite) R.drawable.ic_star else R.drawable.ic_star_border)
                         fab.animate()
-                                .rotation(if (favorite) START_ROTATION_TO else START_ROTATION_FROM)
-                                .setInterpolator(OvershootInterpolator())
-                                .setDuration(800)
+                                .rotation(if (favorite) ROTATION_TO else ROTATION_FROM)
+                                .setDuration(DURATION)
+                                .setInterpolator(INTERPOLATOR)
                                 .start()
 
                         snackbar(it, if (favorite) R.string.msg_set_favorite else R.string.msg_reset_favorite)
@@ -113,7 +117,7 @@ class NoticeActivity : AppCompatActivity() {
     }
 
     private fun initView(data: Notice) {
-        fab.rotation = if (data.isFavorite) START_ROTATION_TO else START_ROTATION_FROM
+        fab.rotation = if (data.isFavorite) ROTATION_TO else ROTATION_FROM
         fab.setImageResource(if (data.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border)
 
         in_charge_text.text = data.inCharge

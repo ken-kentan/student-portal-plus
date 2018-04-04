@@ -134,11 +134,11 @@
 
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>
-    <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい。</string>
+    <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい</string>
     <string name="error_not_found">%1$sは存在しないか、すでに消去されています</string>
     <string name="error_update">%1$sの更新に失敗しました</string>
-    <string name="error_add">追加に失敗しました</string>
-    <string name="error_remove">除外に失敗しました</string>
+    <string name="error_add">%1$sへの追加に失敗しました</string>
+    <string name="error_remove">%1$sからの除外に失敗しました</string>
 
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>

@@ -1,5 +1,6 @@
 package jp.kentan.studentportalplus.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
@@ -19,11 +20,20 @@ import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_cancellation.*
 import kotlinx.android.synthetic.main.content_lecture_cancellation.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class LectureCancellationActivity : AppCompatActivity() {
+
+    private companion object {
+        const val ROTATION_FROM =   0f
+        const val ROTATION_TO   = 135f
+        const val DURATION      = 800L
+        val INTERPOLATOR = AnticipateOvershootInterpolator()
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -31,6 +41,8 @@ class LectureCancellationActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(LectureCancellationViewModel::class.java)
     }
+
+    private var hasUpdate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,19 +52,53 @@ class LectureCancellationActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val id = intent.getLongExtra("id", 0)
+        hasUpdate = false
 
-        try {
-            viewModel.setId(id)
-        } catch (e: Exception) {
-            toast(getString(R.string.error_not_found, getString(R.string.name_lecture_cancel)))
-            finish()
-            return
-        }
-        val data = viewModel.data
+        viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
+            if (data == null) {
+                toast(getString(R.string.error_not_found, getString(R.string.name_lecture_cancel)))
+                finish()
+                return@Observer
+            }
 
-        bindToView(data)
-        initFab(data.attend)
+            if (!hasUpdate) {
+                toolbar_layout.title = data.subject
+                initView(data)
+
+                hasUpdate = true
+            }
+
+            if (data.attend == LectureAttendType.PORTAL) {
+                fab.hide()
+            } else {
+                fab.show()
+            }
+
+            fab.setOnClickListener {
+                if (data.attend == LectureAttendType.USER) {
+                    showConfirmationDialog(data.subject)
+                } else {
+                    async(UI) {
+                        val success = viewModel.updateAttendByUser(true).await()
+
+                        if (success) {
+                            fab.animate()
+                                    .rotation(ROTATION_TO)
+                                    .setDuration(DURATION)
+                                    .setInterpolator(INTERPOLATOR)
+                                    .withLayer()
+                                    .start()
+
+                            snackbar(it, R.string.msg_register_class)
+                        } else {
+                            indefiniteSnackbar(layout,
+                                    getString(R.string.error_add, getString(R.string.name_attend_lecture)),
+                                    getString(R.string.action_close))
+                        }
+                    }
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,7 +126,7 @@ class LectureCancellationActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun bindToView(data: LectureCancellation) {
+    private fun initView(data: LectureCancellation) {
         toolbar_layout.title = data.subject
 
         subject_text.text    = data.subject
@@ -93,38 +139,8 @@ class LectureCancellationActivity : AppCompatActivity() {
         cancel_date_text.text = data.cancelDate.toShortString()
         detail_text.text      = data.detailHtml.toSpanned()
         date_text.text        = getString(R.string.text_created_date_lecture_cancel, data.createdDate.toShortString())
-    }
 
-    private fun initFab(type: LectureAttendType) {
-        if (type == LectureAttendType.PORTAL) {
-            fab.hide()
-            return
-        }
-
-        fab.rotation = if (type == LectureAttendType.USER) 135f else 0f
-
-        fab.setOnClickListener {
-            val data = viewModel.data
-
-            if (data.attend == LectureAttendType.USER) {
-                showConfirmationDialog(data.subject)
-            } else {
-                val success = viewModel.updateAttendByUser(true)
-
-                if (success) {
-                    fab.animate()
-                            .rotation(135f)
-                            .setDuration(800)
-                            .setInterpolator(AnticipateOvershootInterpolator())
-                            .withLayer()
-                            .start()
-
-                    snackbar(it, R.string.msg_register_class)
-                } else {
-                    indefiniteSnackbar(layout, getString(R.string.error_add), getString(R.string.action_close))
-                }
-            }
-        }
+        fab.rotation = if (data.attend == LectureAttendType.USER) ROTATION_TO else ROTATION_FROM
     }
 
     private fun showConfirmationDialog(subject: String) {
@@ -132,19 +148,23 @@ class LectureCancellationActivity : AppCompatActivity() {
         builder.setTitle(R.string.title_confirmation)
         builder.setMessage(getString(R.string.text_unregister_confirm, subject).toSpanned())
         builder.setPositiveButton(R.string.action_yes) { _, _ ->
-            val success = viewModel.updateAttendByUser(false)
+            async(UI) {
+                val success = viewModel.updateAttendByUser(false).await()
 
-            if (success) {
-                snackbar(layout, R.string.msg_unregister_class)
+                if (success) {
+                    snackbar(layout, R.string.msg_unregister_class)
 
-                fab.animate()
-                        .rotation(0f)
-                        .setDuration(800)
-                        .setInterpolator(AnticipateOvershootInterpolator())
-                        .withLayer()
-                        .start()
-            } else {
-                indefiniteSnackbar(layout, getString(R.string.error_remove), getString(R.string.action_close))
+                    fab.animate()
+                            .rotation(ROTATION_FROM)
+                            .setDuration(DURATION)
+                            .setInterpolator(INTERPOLATOR)
+                            .withLayer()
+                            .start()
+                } else {
+                    indefiniteSnackbar(layout
+                            , getString(R.string.error_remove, getString(R.string.name_attend_lecture)),
+                            getString(R.string.action_close))
+                }
             }
         }
         builder.setNegativeButton(R.string.action_no, null)
