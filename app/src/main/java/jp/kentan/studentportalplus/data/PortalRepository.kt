@@ -38,7 +38,7 @@ class PortalRepository(context: Context) {
     private val _noticeList              = MutableLiveData<List<Notice>>()
     private val _lectureInformationList  = MutableLiveData<List<LectureInformation>>()
     private val _lectureCancellationList = MutableLiveData<List<LectureCancellation>>()
-    val myClassLiveData             = MutableLiveData<List<MyClass>>()
+    private val _myClassList             = MutableLiveData<List<MyClass>>()
 
     val noticeList: LiveData<List<Notice>>
         get() = copyLiveData(_noticeList)
@@ -49,12 +49,15 @@ class PortalRepository(context: Context) {
     val lectureCancellationList: LiveData<List<LectureCancellation>>
         get() = copyLiveData(_lectureCancellationList)
 
+    val myClassList: LiveData<List<MyClass>>
+        get() = copyLiveData(_myClassList)
+
 
     fun loadFromDb() {
         _noticeList.postValue(noticeDao.getAll())
         _lectureInformationList.postValue(lectureInfoDao.getAll())
         _lectureCancellationList.postValue(lectureCancelDao.getAll())
-        myClassLiveData.postValue(myClassDao.getAll())
+        _myClassList.postValue(myClassDao.getAll())
     }
 
     fun syncWithWeb(): Pair<Boolean, String?> {
@@ -78,8 +81,6 @@ class PortalRepository(context: Context) {
 
         return Pair<Boolean, String?>(true, null)
     }
-
-    fun getMyClassById(id: Long) = myClassDao.get(id)
 
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
@@ -116,7 +117,7 @@ class PortalRepository(context: Context) {
             return false
         }
 
-        myClassLiveData.postValue(myClassDao.getAll())
+        _myClassList.postValue(myClassDao.getAll())
         _lectureInformationList.postValue(lectureInfoDao.getAll())
         _lectureCancellationList.postValue(lectureCancelDao.getAll())
 
@@ -131,7 +132,7 @@ class PortalRepository(context: Context) {
             return false
         }
 
-        myClassLiveData.postValue(myClassDao.getAll())
+        _myClassList.postValue(myClassDao.getAll())
         _lectureInformationList.postValue(lectureInfoDao.getAll())
         _lectureCancellationList.postValue(lectureCancelDao.getAll())
 

@@ -58,7 +58,7 @@ class NoticeFragment : Fragment() {
 
             override fun onClick(data: Notice) {
                 viewModel.update(data.copy(hasRead = true))
-                startActivity<NoticeActivity>("id" to data.id, "title" to data.title)
+                startActivity<NoticeActivity>("id" to data.id)
             }
         })
 

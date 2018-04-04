@@ -55,7 +55,7 @@ class LectureInformationFragment : Fragment() {
         val adapter = LectureInformationAdapter(context, LectureInformationAdapter.TYPE_NORMAL, object : LectureInformationAdapter.Listener{
             override fun onClick(data: LectureInformation) {
                 viewModel.update(data.copy(hasRead = true))
-                startActivity<LectureInformationActivity>("id" to data.id, "title" to data.subject)
+                startActivity<LectureInformationActivity>("id" to data.id)
             }
         })
 

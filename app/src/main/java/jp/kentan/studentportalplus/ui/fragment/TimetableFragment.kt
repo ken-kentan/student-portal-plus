@@ -43,7 +43,7 @@ class TimetableFragment : Fragment() {
 
         val adapter = MyClassAdapter(context, MyClassAdapter.TYPE_GRID, object : MyClassAdapter.Listener{
             override fun onClick(data: MyClass) {
-                startActivity<MyClassActivity>("id" to data.id, "title" to data.subject)
+                startActivity<MyClassActivity>("id" to data.id)
             }
             override fun onAddClick(period: Int, week: ClassWeekType) {
                 //TODO start activity

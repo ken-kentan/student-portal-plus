@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_my_class.*
@@ -28,6 +29,8 @@ class MyClassActivity : AppCompatActivity() {
         ViewModelProvider(this, viewModelFactory).get(MyClassViewModel::class.java)
     }
 
+    private var hasUpdate = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_class)
@@ -36,35 +39,32 @@ class MyClassActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val id = intent.getLongExtra("id", -1)
-        if (id < 0) {
-            failedLoad()
-            return
-        }
+        hasUpdate = false
 
-        viewModel.get(id).observe(this, Observer {
-            if (it == null) {
-                failedLoad()
+        viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
+            if (data == null) {
+                toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
+                finish()
                 return@Observer
             }
 
-            toolbar_layout.title = it.subject
-            toolbar_layout.backgroundColor = it.color
+            if (!hasUpdate) {
+                toolbar_layout.title = data.subject
+                toolbar_layout.backgroundColor = data.color
+                initView(data)
 
-            if (!it.isUser) {
-                fab.hide()
-            } else {
-                fab.setOnClickListener {
-                    //TODO start activity
-                }
+                hasUpdate = true
             }
 
-            subject_text.text     = it.subject
-            instructor_text.text  = it.instructor.format()
-            location_text.text    = it.location.format()
-            category_text.text    = it.category.format()
-            week_period_text.text = getString(R.string.text_week_period, it.week.fullDisplayName.formatWeek(), it.period.formatPeriod())
-            syllabus_text.text    = it.scheduleCode.toSyllabusUri()
+            if (!data.isUser) {
+                fab.hide()
+            } else {
+                fab.show()
+            }
+
+            fab.setOnClickListener {
+                //TODO start activity
+            }
         })
     }
 
@@ -76,9 +76,13 @@ class MyClassActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun failedLoad() {
-        toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
-        finish()
+    private fun initView(data: MyClass) {
+        subject_text.text     = data.subject
+        instructor_text.text  = data.instructor.format()
+        location_text.text    = data.location.format()
+        category_text.text    = data.category.format()
+        week_period_text.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
+        syllabus_text.text    = data.scheduleCode.toSyllabusUri()
     }
 
     private fun String?.format() = if (this.isNullOrBlank()) "未入力" else this

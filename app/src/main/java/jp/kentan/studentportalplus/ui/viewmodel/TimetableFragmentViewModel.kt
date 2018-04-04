@@ -29,7 +29,7 @@ class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
     private val results = MediatorLiveData<List<MyClass>>()
 
     init {
-        results.addSource(repository.myClassLiveData) {
+        results.addSource(repository.myClassList) {
             bg {
                 results.postValue(normalize(it))
             }

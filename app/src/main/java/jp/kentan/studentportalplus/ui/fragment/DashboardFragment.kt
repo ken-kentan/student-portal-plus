@@ -52,14 +52,14 @@ class DashboardFragment : Fragment() {
         val lectureInfoAdapter = LectureInformationAdapter(context, LectureInformationAdapter.TYPE_SMALL, object : LectureInformationAdapter.Listener{
             override fun onClick(data: LectureInformation) {
                 viewModel.updateLectureInformation(data.copy(hasRead = true))
-                startActivity<LectureInformationActivity>("id" to data.id, "title" to data.subject)
+                startActivity<LectureInformationActivity>("id" to data.id)
             }
         }, MAX_LIST_SIZE)
 
         val lectureCancelAdapter =  LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_SMALL, object : LectureCancellationAdapter.Listener{
             override fun onClick(data: LectureCancellation) {
                 viewModel.updateLectureCancellation(data.copy(hasRead = true))
-                startActivity<LectureCancellationActivity>("id" to data.id, "title" to data.subject)
+                startActivity<LectureCancellationActivity>("id" to data.id)
             }
         }, MAX_LIST_SIZE)
 
@@ -70,7 +70,7 @@ class DashboardFragment : Fragment() {
 
             override fun onClick(data: Notice) {
                 viewModel.updateNotice(data.copy(hasRead = true))
-                startActivity<NoticeActivity>("id" to data.id, "title" to data.title)
+                startActivity<NoticeActivity>("id" to data.id)
             }
         }, MAX_LIST_SIZE)
 
