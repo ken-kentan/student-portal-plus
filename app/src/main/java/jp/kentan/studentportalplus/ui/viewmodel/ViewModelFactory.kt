@@ -38,6 +38,9 @@ class ViewModelFactory(private val portalRepository: PortalRepository) : ViewMod
                     isAssignableFrom(MyClassViewModel::class.java) ->
                         MyClassViewModel(portalRepository)
 
+                    isAssignableFrom(MyClassEditViewModel::class.java) ->
+                        MyClassEditViewModel(portalRepository)
+
                     else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }
             } as T

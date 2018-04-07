@@ -19,6 +19,8 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
 
     val fullDisplayName = displayName + if (code in 1..7) "曜日" else ""
 
+    override fun toString() = fullDisplayName
+
     companion object {
         private val ENUMS = values()
 

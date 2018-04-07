@@ -21,4 +21,7 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract fun contributeMyClassActivity(): MyClassActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeMyClassEditActivity(): MyClassEditActivity
 }

@@ -52,6 +52,32 @@ class PortalRepository(context: Context) {
     val myClassList: LiveData<List<MyClass>>
         get() = copyLiveData(_myClassList)
 
+    val subjectList: LiveData<List<String>>
+        get() {
+            val result = MediatorLiveData<List<String>>()
+
+            result.addSource(_lectureInformationList) {
+                it?.let {
+                    val old = result.value?.toList() ?: emptyList()
+                    result.value = it.map { it.subject }.plus(old).distinct()
+                }
+            }
+            result.addSource(_lectureCancellationList) {
+                it?.let {
+                    val old = result.value?.toList() ?: emptyList()
+                    result.value = it.map { it.subject }.plus(old).distinct()
+                }
+            }
+            result.addSource(_myClassList) {
+                it?.let {
+                    val old = result.value?.toList() ?: emptyList()
+                    result.value = it.map { it.subject }.plus(old).distinct()
+                }
+            }
+
+            return result
+        }
+
 
     fun loadFromDb() {
         _noticeList.postValue(noticeDao.getAll())
@@ -82,6 +108,8 @@ class PortalRepository(context: Context) {
         return Pair<Boolean, String?>(true, null)
     }
 
+    fun getMyClassById(id: Long) = _myClassList.value?.find { it.id == id }
+
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
     fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
@@ -106,6 +134,30 @@ class PortalRepository(context: Context) {
         if (lectureCancelDao.update(data) > 0) {
             _lectureCancellationList.postValue(lectureCancelDao.getAll())
         }
+    }
+
+    fun update(data: MyClass): Boolean {
+        if (myClassDao.update(data) > 0) {
+            _myClassList.postValue(myClassDao.getAll())
+            return true
+        }
+        return false
+    }
+
+    fun add(data: MyClass): Boolean {
+        if (myClassDao.add(listOf(data)) > 0) {
+            _myClassList.postValue(myClassDao.getAll())
+            return true
+        }
+        return false
+    }
+
+    fun delete(subject: String): Boolean {
+        if (myClassDao.delete(subject) > 0) {
+            _myClassList.postValue(myClassDao.getAll())
+            return true
+        }
+        return false
     }
 
     fun addToMyClass(data: Lecture): Boolean {

@@ -8,6 +8,7 @@
     <string name="title_activity_lecture_cancellation">Class Cancellations</string>
     <string name="title_activity_notice">News &amp; Events</string>
     <string name="title_activity_my_class">My Class</string>
+    <string name="title_activity_my_class_edit">Edit</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -44,7 +45,7 @@
     <string name="name_detail_lecture_info">連絡事項</string>
     <string name="text_semester_week_period">%1$s %2$s %3$s %4$s</string>
     <string name="text_created_date_lecture_info">初回掲示日: %1$s</string>
-    <string name="text_updated_date_lecture_info">  最終更新日: %1$s</string>
+    <string name="text_updated_date_lecture_info">　最終更新日: %1$s</string>
 
     <!-- Strings related to lecture cancel -->
     <string name="title_lecture_cancel_fragment">Class Cancellations</string>
@@ -61,9 +62,11 @@
 
     <!-- Strings related to my class -->
     <string name="text_week_period">%1$s %2$s</string>
+    <string name="title_color_picker">色を選択</string>
 
     <!-- Common titles -->
     <string name="title_confirmation">確認</string>
+    <string name="title_delete">消去</string>
 
     <!-- Common names -->
     <string name="name_notice">最新情報</string>
@@ -87,7 +90,11 @@
     <string name="name_attend_lecture">受講科目</string>
     <string name="name_location">場所</string>
     <string name="name_week_period">曜日時限</string>
+    <string name="name_week">曜日</string>
+    <string name="name_period">時限</string>
     <string name="name_syllabus">シラバス</string>
+    <string name="name_credit">単位数</string>
+    <string name="name_schedule_code">時間割番号</string>
     <string name="title_filter_dialog">検索フィルタ</string>
 
     <!-- Menus -->
@@ -110,6 +117,8 @@
     <string name="action_filter">絞り込み</string>
     <string name="action_yes">はい</string>
     <string name="action_no">いいえ</string>
+    <string name="action_save">保存</string>
+    <string name="action_delete">消去</string>
 
     <!-- Common image descriptions -->
     <string name="description_attend">受講</string>
@@ -128,7 +137,10 @@
     <string name="msg_not_found">表示できる%1$sはありません</string>
     <string name="msg_register_class">受講科目に追加しました</string>
     <string name="msg_unregister_class">受講科目から除外しました</string>
+    <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
     <string name="text_unregister_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
+    <string name="text_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
+    <string name="text_my_class_edit_warn">正式な受講登録は大学のシステムを使用して下さい</string>
     <string name="hint_query_title">タイトルで検索&#8230;</string>
     <string name="hint_query_subject_and_instructor">科目・教員名で検索&#8230;</string>
 
@@ -139,6 +151,9 @@
     <string name="error_update">%1$sの更新に失敗しました</string>
     <string name="error_add">%1$sへの追加に失敗しました</string>
     <string name="error_remove">%1$sからの除外に失敗しました</string>
+    <string name="error_delete">消去に失敗しました</string>
+    <string name="error_invalid_credit">不正な単位数です</string>
+    <string name="error_invalid_schedule_code">不正な時間割番号です</string>
 
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>

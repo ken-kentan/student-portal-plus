@@ -5,6 +5,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.MyClass
+import org.jetbrains.anko.coroutines.experimental.bg
 
 class MyClassViewModel(private val repository: PortalRepository) : ViewModel() {
 
@@ -15,4 +16,8 @@ class MyClassViewModel(private val repository: PortalRepository) : ViewModel() {
                 data = it.find { it.id == id } ?: return@map null
                 return@map data
             }
+
+    fun delete() = bg {
+        return@bg repository.delete(data.subject)
+    }
 }

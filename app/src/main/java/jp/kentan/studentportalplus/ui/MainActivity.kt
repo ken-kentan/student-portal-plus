@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -200,8 +201,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         supportFragmentManager.beginTransaction()
-//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .setCustomAnimations(R.animator.fade_in_activity, R.animator.fade_out_activity, R.animator.fade_in_activity, R.animator.fade_out_activity)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragment_container, fragmentMap[type])
                 .addToBackStack(null)
                 .commit()
