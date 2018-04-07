@@ -6,11 +6,14 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.android.colorpicker.ColorPickerDialog
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
@@ -116,6 +119,13 @@ class MyClassEditActivity : AppCompatActivity() {
         category_edit.setText(data.category)
         credit_edit.setText(if (data.credit > 0) data.credit.toString() else "")
         schedule_code_edit.setText(data.scheduleCode)
+
+        subject_edit.setOnTextChangedListener { editor = editor.copy(subject = it) }
+        instructor_edit.setOnTextChangedListener { editor = editor.copy(instructor = it) }
+        location_edit.setOnTextChangedListener { editor = editor.copy(location = it) }
+        category_edit.setOnTextChangedListener { editor= editor.copy(category = it) }
+        credit_edit.setOnTextChangedListener { editor = editor.copy(credit = it.toIntOrNull() ?: 0) }
+        schedule_code_edit.setOnTextChangedListener { editor = editor.copy(scheduleCode = it) }
 
         viewModel.subjects.observe(this, Observer {
             it?.let { subject_edit.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, it)) }
@@ -237,6 +247,14 @@ class MyClassEditActivity : AppCompatActivity() {
                 toast(getString(R.string.error_update, getString(R.string.name_attend_lecture)))
             }
         }
+    }
+
+    private fun TextView.setOnTextChangedListener(f:(s: String)->Unit) {
+        addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { f(s.toString()) }
+        })
     }
 
     private fun String.isNotCredit(): Boolean {
