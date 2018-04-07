@@ -131,7 +131,9 @@ class MyClassEditActivity : AppCompatActivity() {
             it?.let { subject_edit.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, it)) }
         })
 
-        color_button.background.setColorFilter(data.color, PorterDuff.Mode.MULTIPLY)
+        val background = color_button.background
+        background.setColorFilter(data.color, PorterDuff.Mode.MULTIPLY)
+        color_button.background = background
         color_button.setOnClickListener {
             val dialog = ColorPickerDialog.newInstance(
                     R.string.title_color_picker,

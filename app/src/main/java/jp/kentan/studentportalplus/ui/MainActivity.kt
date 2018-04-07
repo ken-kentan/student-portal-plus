@@ -44,10 +44,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var portalRepository: PortalRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        super.onCreate(savedInstanceState)
 
         if (isFirstLaunch()) {
             launchWelcomeActivity()
@@ -137,36 +136,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
-        when (fragment) {
-            is DashboardFragment -> {
-                fragmentType = FragmentType.DASHBOARD
+        if (nav_view != null) {
+            when (fragment) {
+                is DashboardFragment -> {
+                    fragmentType = FragmentType.DASHBOARD
 
-                title = CustomTitle(this, getString(R.string.title_dashboard_fragment))
-                nav_view.menu.findItem(R.id.nav_dashboard).isChecked = true
-            }
-            is TimetableFragment -> {
-                fragmentType = FragmentType.TIMETABLE
+                    title = CustomTitle(this, getString(R.string.title_dashboard_fragment))
+                    nav_view.menu.findItem(R.id.nav_dashboard).isChecked = true
+                }
+                is TimetableFragment -> {
+                    fragmentType = FragmentType.TIMETABLE
 
-                title = CustomTitle(this, getString(R.string.title_timetable_fragment))
-                nav_view.menu.findItem(R.id.nav_timetable).isChecked = true
-            }
-            is LectureInformationFragment -> {
-                fragmentType = FragmentType.LECTURE_INFO
+                    title = CustomTitle(this, getString(R.string.title_timetable_fragment))
+                    nav_view.menu.findItem(R.id.nav_timetable).isChecked = true
+                }
+                is LectureInformationFragment -> {
+                    fragmentType = FragmentType.LECTURE_INFO
 
-                title = CustomTitle(this, getString(R.string.title_lecture_info_fragment))
-                nav_view.menu.findItem(R.id.nav_lecture_info).isChecked = true
-            }
-            is LectureCancellationFragment -> {
-                fragmentType = FragmentType.LECTURE_CANCEL
+                    title = CustomTitle(this, getString(R.string.title_lecture_info_fragment))
+                    nav_view.menu.findItem(R.id.nav_lecture_info).isChecked = true
+                }
+                is LectureCancellationFragment -> {
+                    fragmentType = FragmentType.LECTURE_CANCEL
 
-                title = CustomTitle(this, getString(R.string.title_lecture_cancel_fragment))
-                nav_view.menu.findItem(R.id.nav_lecture_cancel).isChecked = true
-            }
-            is NoticeFragment -> {
-                fragmentType = FragmentType.NOTICE
+                    title = CustomTitle(this, getString(R.string.title_lecture_cancel_fragment))
+                    nav_view.menu.findItem(R.id.nav_lecture_cancel).isChecked = true
+                }
+                is NoticeFragment -> {
+                    fragmentType = FragmentType.NOTICE
 
-                title = CustomTitle(this, getString(R.string.title_notice_fragment))
-                nav_view.menu.findItem(R.id.nav_notice).isChecked = true
+                    title = CustomTitle(this, getString(R.string.title_notice_fragment))
+                    nav_view.menu.findItem(R.id.nav_notice).isChecked = true
+                }
             }
         }
 

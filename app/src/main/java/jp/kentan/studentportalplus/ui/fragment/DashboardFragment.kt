@@ -43,6 +43,7 @@ class DashboardFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         AndroidSupportInjection.inject(this)
+        TransitionManager.endTransitions(dashboard_layout)
 
         val context  = requireContext()
         val activity = requireActivity() as MainActivity
