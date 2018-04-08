@@ -51,6 +51,8 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    implementation 'androidx.core:core-ktx:0.3'
 }
 kotlin {
     experimental {

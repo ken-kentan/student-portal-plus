@@ -95,6 +95,11 @@
     <string name="name_syllabus">シラバス</string>
     <string name="name_credit">単位数</string>
     <string name="name_schedule_code">時間割番号</string>
+    <string name="name_monday">月</string>
+    <string name="name_tuesday">火</string>
+    <string name="name_wednesday">水</string>
+    <string name="name_thursday">木</string>
+    <string name="name_friday">金</string>
     <string name="title_filter_dialog">検索フィルタ</string>
 
     <!-- Menus -->
@@ -119,6 +124,9 @@
     <string name="action_no">いいえ</string>
     <string name="action_save">保存</string>
     <string name="action_delete">消去</string>
+    <string name="action_switch_layout">レイアウト</string>
+    <string name="action_view_week">週表示</string>
+    <string name="action_view_day">受講リスト表示</string>
 
     <!-- Common image descriptions -->
     <string name="description_attend">受講</string>

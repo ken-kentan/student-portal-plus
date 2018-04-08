@@ -2,14 +2,21 @@ package jp.kentan.studentportalplus.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
 import org.jetbrains.anko.coroutines.experimental.bg
 
 
 class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
+
+    enum class LayoutType(val viewType: Int){
+        WEEK(MyClassAdapter.TYPE_GRID),
+        DAY(MyClassAdapter.TYPE_LIST)
+    }
 
     private companion object {
         val DUMMY = MyClass(
@@ -26,17 +33,32 @@ class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
                 location = null)
     }
 
+    private val source = repository.myClassList
     private val results = MediatorLiveData<List<MyClass>>()
+    private val layout = MutableLiveData<LayoutType>()
 
     init {
-        results.addSource(repository.myClassList) {
-            bg {
-                results.postValue(normalize(it))
-            }
+        results.addSource(source) {
+            layout.value?.let { loadFromRepository(it) }
+        }
+        results.addSource(layout) {
+            it?.let { loadFromRepository(it) }
         }
     }
 
     fun getResults(): LiveData<List<MyClass>> = results
+
+    fun setViewType(type: LayoutType) {
+        layout.value = type
+    }
+
+    private fun loadFromRepository(type: LayoutType) {
+        if (type == LayoutType.WEEK) {
+            bg { results.postValue(normalize(source.value)) }
+        } else {
+            results.value = source.value
+        }
+    }
 
     /**
      * Normalize MyClass list to 7*5 timetable

@@ -21,6 +21,8 @@ enum class ClassWeekType(val code: Int, val displayName: String) {
 
     override fun toString() = fullDisplayName
 
+    fun hasPeriod() = code in 1..7
+
     companion object {
         private val ENUMS = values()
 
