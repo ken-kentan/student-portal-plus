@@ -189,7 +189,7 @@ class MyClassEditActivity : AppCompatActivity() {
         }
 
         week_spinner.setSelection(data.week.ordinal)
-        period_spinner.setSelection(data.period - 1)
+        period_spinner.setSelection(if (data.period in 1..7) data.period - 1 else 0)
 
         if (!data.isUser) {
             week_spinner.isEnabled = false
