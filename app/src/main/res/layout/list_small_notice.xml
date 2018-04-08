@@ -8,19 +8,19 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/date_text"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textColor="@color/blue_grey_600"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/subject_text"
+        app:layout_constraintBottom_toTopOf="@+id/subject"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/subject_text"
+        android:id="@+id/subject"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/favorite_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_text" />
+        app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <ImageView
         android:id="@+id/favorite_icon"

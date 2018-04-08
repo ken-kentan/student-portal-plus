@@ -127,7 +127,7 @@ class TimetableFragment : Fragment() {
         }
         layoutType = type
 
-        TransitionManager.beginDelayedTransition(layout)
+        TransitionManager.beginDelayedTransition(timetable_layout)
 
         if (type == TimetableFragmentViewModel.LayoutType.WEEK) {
             grid_layout.visibility = View.VISIBLE

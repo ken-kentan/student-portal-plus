@@ -8,7 +8,7 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/date_text"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/subject_text"
+        android:id="@+id/subject"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -27,14 +27,14 @@
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/detail_text"
-        app:layout_constraintEnd_toStartOf="@+id/date_text"
+        app:layout_constraintBottom_toTopOf="@+id/detail"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/detail_text"
+        android:id="@+id/detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@+id/separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subject_text" />
+        app:layout_constraintTop_toBottomOf="@+id/subject" />
 
     <View
         android:id="@+id/separator"

@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/subject_text"
+            android:id="@+id/subject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -43,10 +43,10 @@
             android:text="@string/name_instructor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subject_text" />
+            app:layout_constraintTop_toBottomOf="@+id/subject" />
 
         <TextView
-            android:id="@+id/instructor_text"
+            android:id="@+id/instructor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -64,10 +64,10 @@
             android:text="@string/name_grade_week_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/instructor_text" />
+            app:layout_constraintTop_toBottomOf="@+id/instructor" />
 
         <TextView
-            android:id="@+id/grade_week_period_text"
+            android:id="@+id/grade_week_period"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -86,10 +86,10 @@
             android:text="@string/name_cancel_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grade_week_period_text" />
+            app:layout_constraintTop_toBottomOf="@+id/grade_week_period" />
 
         <TextView
-            android:id="@+id/cancel_date_text"
+            android:id="@+id/cancel_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -107,10 +107,10 @@
             android:text="@string/name_detail_lecture_cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cancel_date_text" />
+            app:layout_constraintTop_toBottomOf="@+id/cancel_date" />
 
         <TextView
-            android:id="@+id/detail_text"
+            android:id="@+id/detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -121,12 +121,12 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_header" />
 
         <TextView
-            android:id="@+id/date_text"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_text" />
+            app:layout_constraintTop_toBottomOf="@+id/detail" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

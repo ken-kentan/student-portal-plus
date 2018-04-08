@@ -72,18 +72,18 @@ class LectureCancellationAdapter(
         val separator: View = view.separator
 
         fun bindTo(data: LectureCancellation) {
-            view.date_text.text    = data.createdDate.toShortString()
-            view.subject_text.text = data.subject
-            view.detail_text.text  = data.detailText
+            view.date.text    = data.createdDate.toShortString()
+            view.subject.text = data.subject
+            view.detail.text  = data.detailText
 
             if (data.hasRead) {
-                view.date_text.typeface    = Typeface.DEFAULT
-                view.subject_text.typeface = Typeface.DEFAULT
-                view.detail_text.typeface  = Typeface.DEFAULT
+                view.date.typeface    = Typeface.DEFAULT
+                view.subject.typeface = Typeface.DEFAULT
+                view.detail.typeface  = Typeface.DEFAULT
             } else {
-                view.date_text.typeface    = Typeface.DEFAULT_BOLD
-                view.subject_text.typeface = Typeface.DEFAULT_BOLD
-                view.detail_text.typeface  = Typeface.DEFAULT_BOLD
+                view.date.typeface    = Typeface.DEFAULT_BOLD
+                view.subject.typeface = Typeface.DEFAULT_BOLD
+                view.detail.typeface  = Typeface.DEFAULT_BOLD
             }
 
             if (viewType == TYPE_NORMAL) {

@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:id="@+id/order_text"
+        android:id="@+id/order_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/name_display_order"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="0.6"
-        app:layout_constraintStart_toEndOf="@+id/order_text"
+        app:layout_constraintStart_toEndOf="@+id/order_header"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

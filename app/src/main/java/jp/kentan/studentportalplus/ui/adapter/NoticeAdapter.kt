@@ -65,8 +65,8 @@ class NoticeAdapter(
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
-            view.date_text.text = data.createdDate.toShortString()
-            view.subject_text.text          = data.title
+            view.date.text = data.createdDate.toShortString()
+            view.subject.text          = data.title
 
             if (data.isFavorite) {
                 view.favorite_icon.setImageResource(R.drawable.ic_favorite_on)
@@ -75,11 +75,11 @@ class NoticeAdapter(
             }
 
             if (data.hasRead) {
-                view.date_text.typeface = Typeface.DEFAULT
-                view.subject_text.typeface          = Typeface.DEFAULT
+                view.date.typeface = Typeface.DEFAULT
+                view.subject.typeface          = Typeface.DEFAULT
             } else {
-                view.date_text.typeface = Typeface.DEFAULT_BOLD
-                view.subject_text.typeface          = Typeface.DEFAULT_BOLD
+                view.date.typeface = Typeface.DEFAULT_BOLD
+                view.subject.typeface          = Typeface.DEFAULT_BOLD
             }
 
             view.setOnClickListener {
@@ -90,7 +90,7 @@ class NoticeAdapter(
             }
 
             if (viewType == TYPE_NORMAL) {
-                view.instructor_text.text = data.detailText ?: data.link
+                view.instructor.text = data.detailText ?: data.link
             }
         }
     }

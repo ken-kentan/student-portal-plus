@@ -126,20 +126,20 @@ class LectureInformationActivity : AppCompatActivity() {
     }
 
     private fun initView(data: LectureInformation) {
-        subject_text.text = data.subject
-        instructor_text.text = data.instructor
-        semester_week_period_text.text =
+        subject.text = data.subject
+        instructor.text = data.instructor
+        semester_week_period.text =
                 getString(R.string.text_semester_week_period,
                         data.grade,
                         data.semester.formatSemester(),
                         data.week.formatWeek(),
                         data.period.formatPeriod())
-        category_text.text = data.category
-        detail_text.text = data.detailHtml.toSpanned()
-        date_text.text = getString(R.string.text_created_date_lecture_info, data.createdDate.toShortString())
+        category.text = data.category
+        detail.text = data.detailHtml.toSpanned()
+        date.text = getString(R.string.text_created_date_lecture_info, data.createdDate.toShortString())
 
         if (data.createdDate != data.updatedDate) {
-            date_text.append(getString(R.string.text_updated_date_lecture_info, data.updatedDate.toShortString()))
+            date.append(getString(R.string.text_updated_date_lecture_info, data.updatedDate.toShortString()))
         }
 
         fab.rotation = if (data.attend == LectureAttendType.USER) ROTATION_TO else ROTATION_FROM

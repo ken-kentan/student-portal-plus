@@ -66,14 +66,14 @@ class NoticeFragment : Fragment() {
             adapter.submitList(it)
 
             if (it == null || it.isEmpty()) {
-                text.animateFadeInDelay(context)
+                note.animateFadeInDelay(context)
             } else {
-                text.alpha = 0f
-                text.visibility = View.GONE
+                note.alpha = 0f
+                note.visibility = View.GONE
             }
         })
 
-        text.text = getString(R.string.msg_not_found, getString(R.string.name_notice))
+        note.text = getString(R.string.msg_not_found, getString(R.string.name_notice))
 
         initRecyclerView(recycler_view, adapter)
 

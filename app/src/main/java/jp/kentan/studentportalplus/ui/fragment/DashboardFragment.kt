@@ -78,7 +78,7 @@ class DashboardFragment : Fragment() {
         viewModel.getAttendLectureInformationList().observe(this, Observer {
             updateCardView(
                     lecture_info_header,
-                    lecture_info_text,
+                    lecture_info_note,
                     lecture_info_button,
                     R.string.name_lecture_info,
                     it?.size ?: 0)
@@ -89,7 +89,7 @@ class DashboardFragment : Fragment() {
         viewModel.getAttendLectureCancellationList().observe(this, Observer {
             updateCardView(
                     lecture_cancel_header,
-                    lecture_cancel_text,
+                    lecture_cancel_note,
                     lecture_cancel_button,
                     R.string.name_lecture_cancel,
                     it?.size ?: 0)
@@ -104,10 +104,10 @@ class DashboardFragment : Fragment() {
 
         initRecyclerView(lecture_info_recycler_view, lectureInfoAdapter)
         initRecyclerView(lecture_cancel_recycler_view, lectureCancelAdapter)
-        initRecyclerView(notice_recycler_view, noticeAdapter)
+        initRecyclerView(notice_recycler_note, noticeAdapter)
 
-        lecture_info_text.text = getString(R.string.text_no_data, getString(R.string.name_lecture_info))
-        lecture_cancel_text.text = getString(R.string.text_no_data, getString(R.string.name_lecture_cancel))
+        lecture_info_note.text = getString(R.string.text_no_data, getString(R.string.name_lecture_info))
+        lecture_cancel_note.text = getString(R.string.text_no_data, getString(R.string.name_lecture_cancel))
 
         lecture_info_button.setOnClickListener {
             activity.switchFragment(MainActivity.FragmentType.LECTURE_INFO)

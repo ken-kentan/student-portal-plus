@@ -25,7 +25,7 @@
             app:toolbarId="@+id/toolbar">
 
             <TextView
-                android:id="@+id/in_charge_text"
+                android:id="@+id/in_charge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -37,7 +37,7 @@
                 app:layout_collapseMode="parallax" />
 
             <TextView
-                android:id="@+id/category_text"
+                android:id="@+id/category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

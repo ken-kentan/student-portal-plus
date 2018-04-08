@@ -94,12 +94,12 @@ class MyClassActivity : AppCompatActivity() {
     }
 
     private fun initView(data: MyClass) {
-        subject_text.text     = data.subject
-        instructor_text.text  = data.instructor.format()
-        location_text.text    = data.location.format()
-        category_text.text    = data.category.format()
-        week_period_text.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
-        syllabus_text.text    = data.scheduleCode.toSyllabusUri()
+        subject.text     = data.subject
+        instructor.text  = data.instructor.format()
+        location.text    = data.location.format()
+        category.text    = data.category.format()
+        week_period.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
+        syllabus.text    = data.scheduleCode.toSyllabusUri()
     }
 
     private fun showDeleteDialog() {
@@ -109,7 +109,7 @@ class MyClassActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_delete)
-                .setMessage(getString(R.string.text_delete_confirm, subject_text.text).toSpanned())
+                .setMessage(getString(R.string.text_delete_confirm, subject.text).toSpanned())
                 .setPositiveButton(R.string.action_yes) { _, _ ->
                     async(UI) {
                         isIgnoreUpdate = true

@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/subject_text"
+            android:id="@+id/subject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -42,10 +42,10 @@
             android:text="@string/name_instructor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subject_text" />
+            app:layout_constraintTop_toBottomOf="@+id/subject" />
 
         <TextView
-            android:id="@+id/instructor_text"
+            android:id="@+id/instructor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -63,10 +63,10 @@
             android:text="@string/name_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/instructor_text" />
+            app:layout_constraintTop_toBottomOf="@+id/instructor" />
 
         <TextView
-            android:id="@+id/location_text"
+            android:id="@+id/location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -84,10 +84,10 @@
             android:text="@string/name_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/location_text" />
+            app:layout_constraintTop_toBottomOf="@+id/location" />
 
         <TextView
-            android:id="@+id/category_text"
+            android:id="@+id/category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -105,10 +105,10 @@
             android:text="@string/name_week_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_text" />
+            app:layout_constraintTop_toBottomOf="@+id/category" />
 
         <TextView
-            android:id="@+id/week_period_text"
+            android:id="@+id/week_period"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -126,10 +126,10 @@
             android:text="@string/name_syllabus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/week_period_text" />
+            app:layout_constraintTop_toBottomOf="@+id/week_period" />
 
         <TextView
-            android:id="@+id/syllabus_text"
+            android:id="@+id/syllabus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

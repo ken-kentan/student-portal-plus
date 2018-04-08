@@ -44,7 +44,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/lecture_info_text"
+                    android:id="@+id/lecture_info_note"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -119,7 +119,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/lecture_cancel_text"
+                    android:id="@+id/lecture_cancel_note"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -196,7 +196,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/notice_recycler_view"
+                    android:id="@+id/notice_recycler_note"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -215,7 +215,7 @@
                     android:textColor="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notice_recycler_view" />
+                    app:layout_constraintTop_toBottomOf="@+id/notice_recycler_note" />
 
             </android.support.constraint.ConstraintLayout>
 

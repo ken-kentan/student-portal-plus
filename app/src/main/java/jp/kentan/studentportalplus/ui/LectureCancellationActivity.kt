@@ -127,16 +127,16 @@ class LectureCancellationActivity : AppCompatActivity() {
     private fun initView(data: LectureCancellation) {
         toolbar_layout.title = data.subject
 
-        subject_text.text    = data.subject
-        instructor_text.text = data.instructor
-        grade_week_period_text.text =
+        subject.text    = data.subject
+        instructor.text = data.instructor
+        grade_week_period.text =
                 getString(R.string.text_grade_week_period,
                         data.grade,
                         data.week.formatWeek(),
                         data.period.formatPeriod())
-        cancel_date_text.text = data.cancelDate.toShortString()
-        detail_text.text      = data.detailHtml.toSpanned()
-        date_text.text        = getString(R.string.text_created_date_lecture_cancel, data.createdDate.toShortString())
+        cancel_date.text = data.cancelDate.toShortString()
+        detail.text      = data.detailHtml.toSpanned()
+        date.text        = getString(R.string.text_created_date_lecture_cancel, data.createdDate.toShortString())
 
         fab.rotation = if (data.attend == LectureAttendType.USER) ROTATION_TO else ROTATION_FROM
     }

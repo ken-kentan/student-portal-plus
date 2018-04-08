@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.TextView
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.Notice
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.content_notice.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.design.snackbar
+import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -118,25 +120,25 @@ class NoticeActivity : AppCompatActivity() {
         fab.rotation = if (data.isFavorite) ROTATION_TO else ROTATION_FROM
         fab.setImageResource(if (data.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border)
 
-        in_charge_text.text = data.inCharge
-        category_text.text = data.category
+        in_charge.text = data.inCharge
+        category.text = data.category
 
-        title_text.text  = data.title
+        find<TextView>(R.id.title).text = data.title
 
         if (data.detailHtml != null) {
-            detail_text.text = data.detailHtml.toSpanned()
+            detail.text = data.detailHtml.toSpanned()
         } else {
             detail_header.visibility = View.GONE
-            detail_text.visibility   = View.GONE
+            detail.visibility   = View.GONE
         }
 
         if (data.link != null) {
-            link_text.text = data.link
+            link.text = data.link
         } else {
             link_header.visibility = View.GONE
-            link_text.visibility   = View.GONE
+            link.visibility   = View.GONE
         }
 
-        date_text.text = getString(R.string.text_created_date_notice, data.createdDate.toShortString())
+        date.text = getString(R.string.text_created_date_notice, data.createdDate.toShortString())
     }
 }
