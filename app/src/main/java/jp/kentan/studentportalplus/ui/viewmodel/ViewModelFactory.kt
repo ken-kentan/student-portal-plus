@@ -2,10 +2,14 @@ package jp.kentan.studentportalplus.ui.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.content.SharedPreferences
 import jp.kentan.studentportalplus.data.PortalRepository
 
 
-class ViewModelFactory(private val portalRepository: PortalRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(
+        private val sharedPreferences: SharedPreferences,
+        private val portalRepository: PortalRepository
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>) =
@@ -18,10 +22,10 @@ class ViewModelFactory(private val portalRepository: PortalRepository) : ViewMod
                         TimetableFragmentViewModel(portalRepository)
 
                     isAssignableFrom(LectureInformationFragmentViewModel::class.java) ->
-                        LectureInformationFragmentViewModel(portalRepository)
+                        LectureInformationFragmentViewModel(sharedPreferences, portalRepository)
 
                     isAssignableFrom(LectureCancellationFragmentViewModel::class.java) ->
-                        LectureCancellationFragmentViewModel(portalRepository)
+                        LectureCancellationFragmentViewModel(sharedPreferences, portalRepository)
 
                     isAssignableFrom(NoticeFragmentViewModel::class.java) ->
                         NoticeFragmentViewModel(portalRepository)

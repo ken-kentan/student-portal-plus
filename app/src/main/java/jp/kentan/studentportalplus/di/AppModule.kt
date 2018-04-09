@@ -6,17 +6,19 @@ import dagger.Module
 import dagger.Provides
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import org.jetbrains.anko.defaultSharedPreferences
 import javax.inject.Singleton
 
 
 @Module
-class AppModule(private val app: Application) {
+class AppModule(app: Application) {
 
+    private val context = app.applicationContext
     private val portalRepository = PortalRepository(app.applicationContext)
 
     @Provides
     @Singleton
-    fun provideContext(): Context = app.applicationContext
+    fun provideContext(): Context = context
 
     @Provides
     @Singleton
@@ -24,6 +26,6 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideViewModelFactory() = ViewModelFactory(portalRepository)
+    fun provideViewModelFactory() = ViewModelFactory(context.defaultSharedPreferences, portalRepository)
 
 }
