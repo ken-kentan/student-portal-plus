@@ -16,6 +16,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.ui.fragment.*
 import jp.kentan.studentportalplus.ui.span.CustomTitle
+import jp.kentan.studentportalplus.ui.widget.MapView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.coroutines.experimental.android.UI
@@ -120,15 +121,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.nav_lecture_info   -> { switchFragment(FragmentType.LECTURE_INFO) }
                 R.id.nav_lecture_cancel -> { switchFragment(FragmentType.LECTURE_CANCEL) }
                 R.id.nav_notice         -> { switchFragment(FragmentType.NOTICE) }
-                R.id.nav_campus_map -> {
-
-                }
-                R.id.nav_room_map -> {
-
-                }
-                R.id.nav_setting -> {
-
-                }
+                R.id.nav_campus_map     -> { MapView.open(this@MainActivity, MapView.Type.CAMPUS) }
+                R.id.nav_room_map       -> { MapView.open(this@MainActivity, MapView.Type.ROOM) }
+                R.id.nav_setting        -> {  }
             }
         }
 
