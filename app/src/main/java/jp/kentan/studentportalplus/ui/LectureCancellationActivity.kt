@@ -15,6 +15,7 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.ui.viewmodel.LectureCancellationViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
@@ -136,6 +137,7 @@ class LectureCancellationActivity : AppCompatActivity() {
                         data.period.formatPeriod())
         cancel_date.text = data.cancelDate.toShortString()
         detail.text      = data.detailHtml.toSpanned()
+        detail.transformationMethod = CustomTransformationMethod(this)
         date.text        = getString(R.string.text_created_date_lecture_cancel, data.createdDate.toShortString())
 
         fab.rotation = if (data.attend == LectureAttendType.USER) ROTATION_TO else ROTATION_FROM

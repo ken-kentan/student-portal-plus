@@ -15,6 +15,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
@@ -42,6 +43,8 @@ class NoticeActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(NoticeViewModel::class.java)
     }
+
+    private val customTransformationMethod = CustomTransformationMethod(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +130,7 @@ class NoticeActivity : AppCompatActivity() {
 
         if (data.detailHtml != null) {
             detail.text = data.detailHtml.toSpanned()
+            detail.transformationMethod = customTransformationMethod
         } else {
             detail_header.visibility = View.GONE
             detail.visibility   = View.GONE
@@ -134,6 +138,7 @@ class NoticeActivity : AppCompatActivity() {
 
         if (data.link != null) {
             link.text = data.link
+            link.transformationMethod = customTransformationMethod
         } else {
             link_header.visibility = View.GONE
             link.visibility   = View.GONE

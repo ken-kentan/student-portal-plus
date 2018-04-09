@@ -12,6 +12,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_my_class.*
@@ -35,6 +36,8 @@ class MyClassActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(MyClassViewModel::class.java)
     }
+
+    private val customTransformationMethod = CustomTransformationMethod(this)
 
     private var isIgnoreUpdate = false
     private var canDelete = false
@@ -100,6 +103,7 @@ class MyClassActivity : AppCompatActivity() {
         category.text    = data.category.format()
         week_period.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
         syllabus.text    = data.scheduleCode.toSyllabusUri()
+        syllabus.transformationMethod = customTransformationMethod
     }
 
     private fun showDeleteDialog() {

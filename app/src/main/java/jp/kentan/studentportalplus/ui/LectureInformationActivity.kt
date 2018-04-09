@@ -15,6 +15,7 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.ui.viewmodel.LectureInformationViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
+import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
@@ -136,6 +137,7 @@ class LectureInformationActivity : AppCompatActivity() {
                         data.period.formatPeriod())
         category.text = data.category
         detail.text = data.detailHtml.toSpanned()
+        detail.transformationMethod = CustomTransformationMethod(this)
         date.text = getString(R.string.text_created_date_lecture_info, data.createdDate.toShortString())
 
         if (data.createdDate != data.updatedDate) {
