@@ -27,12 +27,10 @@ class CustomTransformationMethod(private val context: Context) : TransformationM
                     return@forEach
                 }
 
+                val start = text.getSpanStart(span)
+                val end   = text.getSpanEnd(span)
                 text.removeSpan(span)
-                text.setSpan(
-                        CustomTabsUrlSpan(context, url),
-                        text.getSpanStart(span),
-                        text.getSpanEnd(span),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                text.setSpan(CustomTabsUrlSpan(context, url), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
             return text
         }
