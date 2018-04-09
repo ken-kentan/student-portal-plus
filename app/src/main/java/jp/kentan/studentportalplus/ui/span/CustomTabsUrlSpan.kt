@@ -16,7 +16,8 @@ class CustomTabsUrlSpan(private val context: Context, url: String) : URLSpan(url
     private val gdocsUrlStr: String = context.getString(R.string.url_gdocs)
 
     override fun onClick(widget: View?) {
-        val urlStr = if (context.defaultSharedPreferences.getBoolean("pdf_open_with_gdocs", true)) {
+        val urlStr = if (context.defaultSharedPreferences.getBoolean("pdf_open_with_gdocs", true)
+                && url.endsWith(".pdf", true)) {
             gdocsUrlStr + url
         } else {
             url

@@ -8,9 +8,9 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureCancellation
-import jp.kentan.studentportalplus.util.htmlToText
 import jp.kentan.studentportalplus.util.toShortString
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.jsoup.Jsoup
 
 class LectureCancellationViewModel(private val repository: PortalRepository) : ViewModel() {
 
@@ -31,7 +31,7 @@ class LectureCancellationViewModel(private val repository: PortalRepository) : V
                 data.week,
                 data.period,
                 data.cancelDate.toShortString(),
-                data.detailHtml.htmlToText(),
+                Jsoup.parse(data.detailHtml).text(),
                 data.createdDate.toShortString()))
 
         return Pair(data.subject, sb.toString())
