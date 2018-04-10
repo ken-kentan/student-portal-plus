@@ -32,9 +32,13 @@ class LectureCancellationFragmentViewModel(
 
     var query: LectureQuery
         set(value) {
-            if (value != _query.value) {
+            val old = _query.value
+            if (value != old) {
                 _query.value = value
-                preferences.edit { putString("lecture_cancel_order_type", value.order.name) }
+
+                if (value.order != old?.order) {
+                    preferences.edit { putString("lecture_cancel_order_type", value.order.name) }
+                }
             }
         }
         get() = _query.value ?: defaultQuery

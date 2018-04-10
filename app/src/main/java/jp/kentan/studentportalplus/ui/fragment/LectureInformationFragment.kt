@@ -14,6 +14,7 @@ import android.support.v7.widget.SearchView
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import androidx.core.view.isVisible
 import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
@@ -64,7 +65,7 @@ class LectureInformationFragment : Fragment() {
 
             if (it == null || it.isEmpty()) {
                 note.animateFadeInDelay(context)
-            } else {
+            } else if (note.isVisible) {
                 note.alpha = 0f
                 note.visibility = View.GONE
             }
@@ -83,6 +84,14 @@ class LectureInformationFragment : Fragment() {
 
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+
+        val keywords = viewModel.query.keywords
+        if (!keywords.isNullOrBlank()) {
+            searchItem.expandActionView()
+            searchView.setQuery(keywords, false)
+            searchView.clearFocus()
+        }
+
         searchView.queryHint = getString(R.string.hint_query_subject_and_instructor)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?) = true
@@ -92,13 +101,6 @@ class LectureInformationFragment : Fragment() {
                 return true
             }
         })
-
-        val keywords = viewModel.query.keywords
-        if (!keywords.isNullOrBlank()) {
-            searchItem.expandActionView()
-            searchView.setQuery(keywords, false)
-            searchView.clearFocus()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
