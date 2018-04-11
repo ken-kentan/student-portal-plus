@@ -5,7 +5,6 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.SharedPreferences
-import androidx.core.content.edit
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureOrderType
 import jp.kentan.studentportalplus.data.component.LectureQuery
@@ -32,13 +31,8 @@ class LectureInformationFragmentViewModel(
 
     var query: LectureQuery
         set(value) {
-            val old = _query.value
-            if (value != old) {
+            if (value != _query.value) {
                 _query.value = value
-
-                if (value.order != old?.order) {
-                    preferences.edit { putString("lecture_info_order_type", value.order.name) }
-                }
             }
         }
         get() = _query.value ?: defaultQuery
