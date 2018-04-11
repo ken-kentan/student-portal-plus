@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
@@ -23,18 +24,21 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.intentFor
+import javax.inject.Inject
 
 
 class LoginActivity : AppCompatActivity() {
 
-    /**
-     * Keep track of the login job to ensure we can cancel it if requested.
-     */
+    @Inject
+    lateinit var shibbolethDataProvider: ShibbolethDataProvider
+
     private var loginJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        AndroidInjection.inject(this)
 
         title = CustomTitle(this, getString(R.string.title_activity_login))
 
@@ -68,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun populateUsername() {
-        val usernameStr = ShibbolethDataProvider(this).getUsername() ?: return
+        val usernameStr = shibbolethDataProvider.getUsername() ?: return
 
         username.setText(usernameStr)
         password.requestFocus()
@@ -123,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
     private fun launchLoginJob(username: String, password: String) = launch(UI) {
         showProgress(true)
 
-        val client = ShibbolethClient(this@LoginActivity)
+        val client = ShibbolethClient(this@LoginActivity, shibbolethDataProvider)
 
         val result = bg {
             client.auth(username, password)

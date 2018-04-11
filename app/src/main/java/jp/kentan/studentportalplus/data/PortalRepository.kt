@@ -15,15 +15,16 @@ import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
+import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 
 
-class PortalRepository(context: Context) {
+class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataProvider) {
 
     private companion object {
         const val TAG = "PortalRepository"
     }
 
-    private val shibbolethClient = ShibbolethClient(context)
+    private val shibbolethClient = ShibbolethClient(context, shibbolethDataProvider)
 
     private val noticeParser        = NoticeParser()
     private val lectureInfoParser   = LectureInformationParser()

@@ -11,6 +11,9 @@ abstract class ActivityModule {
     abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector
+    abstract fun contributeLoginActivity(): LoginActivity
+
+    @ContributesAndroidInjector
     abstract fun contributeLectureInformationActivity(): LectureInformationActivity
 
     @ContributesAndroidInjector

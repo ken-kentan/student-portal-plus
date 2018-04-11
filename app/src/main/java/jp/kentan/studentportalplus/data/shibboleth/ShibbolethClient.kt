@@ -7,21 +7,21 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import okhttp3.*
-import java.util.concurrent.TimeUnit
-import okhttp3.TlsVersion
-import okhttp3.ConnectionSpec
+import org.jetbrains.anko.doFromSdk
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.security.KeyStore
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
-import okhttp3.FormBody
-import org.jetbrains.anko.doFromSdk
 
 
-class ShibbolethClient(private val context: Context) {
+class ShibbolethClient(
+        context: Context,
+        private val shibbolethDataProvider: ShibbolethDataProvider
+) {
 
     private companion object {
         const val TAG = "ShibbolethClient"
@@ -40,9 +40,8 @@ class ShibbolethClient(private val context: Context) {
         val LOGIN_FORM_PARAMS = listOf(INPUT_NAME_USERNAME, INPUT_NAME_PASSWORD)
     }
 
-    private val shibbolethDataProvider = ShibbolethDataProvider(context)
     private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
-    private var httpClient: OkHttpClient? = null
+    private val httpClient: OkHttpClient
 
     init {
         val builder = OkHttpClient.Builder()
@@ -106,19 +105,17 @@ class ShibbolethClient(private val context: Context) {
         // Clear shibboleth cache
         cookieJar.clear()
 
-        // Set auth data
-        shibbolethDataProvider.set(username, password)
-
+        val name: String
         try {
-            fetch(IDP_AUTH_URL)
+            val document = fetch(IDP_AUTH_URL, username, password)
+            name = document.selectFirst("p#user_info")?.text() ?: "unknown"
         } catch (e: Exception) {
-            shibbolethDataProvider.reset()
             Log.e(TAG, "Failed to auth", e)
             return Pair(false, e.message)
         }
 
         // Save auth data
-        shibbolethDataProvider.save()
+        shibbolethDataProvider.save(name, username, password)
 
         Log.d(TAG, "Auth success")
 
@@ -127,14 +124,20 @@ class ShibbolethClient(private val context: Context) {
 
     @Throws(Exception::class)
     fun fetch(url: String): Document {
+        val (username, password) = shibbolethDataProvider.get()
+        return fetch(url, username, password)
+    }
+
+    @Throws(Exception::class)
+    private fun fetch(url: String, username: String, password: String): Document {
         Log.d(TAG, "Fetch from $url")
 
         val request = Request.Builder()
                 .url(url)
                 .build()
 
-        val response = httpClient?.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
+        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -144,7 +147,7 @@ class ShibbolethClient(private val context: Context) {
 
         if (isRequireLogin(response)) {
             document = passLoadingSessionInformationPage(document)
-            document = passLoginPage(document)
+            document = passLoginPage(document, username, password)
             document = passSamlResponsePage(document)
         }
 
@@ -172,7 +175,7 @@ class ShibbolethClient(private val context: Context) {
                 .post(requestBody)
                 .build()
 
-        val response = httpClient?.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
@@ -186,15 +189,13 @@ class ShibbolethClient(private val context: Context) {
 
 
     @Throws(Exception::class)
-    private fun passLoginPage(document: Document): Document {
+    private fun passLoginPage(document: Document, username: String, password: String): Document {
         // Ignore if form not exist
         LOGIN_FORM_PARAMS.forEach{
             document.selectFirst("input[name=$it]") ?: return document
         }
 
         val action = document.selectFirst("form").attr("action")
-
-        val (username, password) = shibbolethDataProvider.get()
 
         val requestBody = FormBody.Builder()
                 .add(INPUT_NAME_USERNAME, username)
@@ -208,7 +209,7 @@ class ShibbolethClient(private val context: Context) {
                 .post(requestBody)
                 .build()
 
-        val response = httpClient?.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
@@ -246,7 +247,7 @@ class ShibbolethClient(private val context: Context) {
                 .post(requestBody)
                 .build()
 
-        val response = httpClient?.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
