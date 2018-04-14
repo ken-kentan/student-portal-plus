@@ -55,10 +55,11 @@ class MyClassAdapter(
         val layoutInflater = LayoutInflater.from(context)
 
         val layoutId = when (viewType) {
+            TYPE_EMPTY -> R.layout.grid_my_class_empty
             TYPE_GRID  -> R.layout.grid_my_class
             TYPE_LIST  -> R.layout.list_my_class
-            TYPE_EMPTY -> R.layout.grid_my_class_empty
-            else       -> R.layout.grid_my_class
+            TYPE_SMALL -> R.layout.list_small_my_class
+            else       -> R.layout.list_my_class
         }
 
         val view = layoutInflater.inflate(layoutId, parent, false)
@@ -67,7 +68,7 @@ class MyClassAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        holder.bindTo(getItem(position), position >= itemCount-1)
     }
 
     class ViewHolder(
@@ -75,7 +76,7 @@ class MyClassAdapter(
             private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
-        fun bindTo(data: MyClass) {
+        fun bindTo(data: MyClass, isLastItem: Boolean) {
             if (viewType == TYPE_EMPTY) {
                 view.add_button.setOnClickListener { listener.onAddClick(data.period, data.week) }
                 return
@@ -91,6 +92,12 @@ class MyClassAdapter(
                 TYPE_GRID -> {
                     view.location.text     = data.location
                     view.layout.backgroundColor = data.color
+                }
+                TYPE_SMALL -> {
+                    view.location.text = data.location
+                    view.find<View>(R.id.color_header).backgroundColor = data.color
+                    view.find<View>(R.id.separator).visibility = if (isLastItem) View.GONE else View.VISIBLE
+                    view.find<TextView>(R.id.period).text = data.period.toString()
                 }
             }
 

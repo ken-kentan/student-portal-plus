@@ -7,6 +7,7 @@ import android.content.Context
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.component.NoticeQuery
+import jp.kentan.studentportalplus.data.component.PortalDataSet
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.model.*
@@ -18,7 +19,7 @@ import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 
 
-class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataProvider) {
+class PortalRepository(private val context: Context, shibbolethDataProvider: ShibbolethDataProvider) {
 
     private companion object {
         const val TAG = "PortalRepository"
@@ -40,6 +41,7 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
     private val _lectureInformationList  = MutableLiveData<List<LectureInformation>>()
     private val _lectureCancellationList = MutableLiveData<List<LectureCancellation>>()
     private val _myClassList             = MutableLiveData<List<MyClass>>()
+    private val _portalDataSet           = MutableLiveData<PortalDataSet>()
 
     val noticeList: LiveData<List<Notice>>
         get() = copyLiveData(_noticeList)
@@ -52,6 +54,9 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
     val myClassList: LiveData<List<MyClass>>
         get() = copyLiveData(_myClassList)
+
+    val portalDataSet: LiveData<PortalDataSet>
+        get() = copyLiveData(_portalDataSet)
 
     val subjectList: LiveData<List<String>>
         get() {
@@ -81,10 +86,24 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
 
     fun loadFromDb() {
-        _noticeList.postValue(noticeDao.getAll())
-        _lectureInformationList.postValue(lectureInfoDao.getAll())
-        _lectureCancellationList.postValue(lectureCancelDao.getAll())
-        _myClassList.postValue(myClassDao.getAll())
+        val noticeList = noticeDao.getAll()
+        _noticeList.postValue(noticeList)
+
+        val lectureInfoList = lectureInfoDao.getAll()
+        _lectureInformationList.postValue(lectureInfoList)
+
+        val lectureCancelList = lectureCancelDao.getAll()
+        _lectureCancellationList.postValue(lectureCancelList)
+
+        val myClassList = myClassDao.getAll()
+        _myClassList.postValue(myClassList)
+
+        _portalDataSet.postValue(PortalDataSet(
+                noticeList        = noticeList,
+                lectureInfoList   = lectureInfoList,
+                lectureCancelList = lectureCancelList,
+                myClassList       = myClassList
+        ))
     }
 
     fun syncWithWeb(): Pair<Boolean, String?> {
@@ -100,7 +119,6 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
             myClassDao.updateAll(myCLassList)
 
             loadFromDb()
-
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
             return Pair(false, e.message)
@@ -113,13 +131,13 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 
-    fun searchLectureInformations(query: LectureQuery) = lectureInfoDao.search(query)
+    fun searchLectureInformation(query: LectureQuery) = lectureInfoDao.search(query)
 
     fun searchLectureCancellations(query: LectureQuery) = lectureCancelDao.search(query)
 
     fun update(data: Notice): Boolean {
         if (noticeDao.update(data) > 0) {
-            _noticeList.postValue(noticeDao.getAll())
+            postValues(noticeList = noticeDao.getAll())
             return true
         }
         return false
@@ -127,19 +145,19 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
     fun update(data: LectureInformation) {
         if (lectureInfoDao.update(data) > 0) {
-            _lectureInformationList.postValue(lectureInfoDao.getAll())
+            postValues(lectureInfoList = lectureInfoDao.getAll())
         }
     }
 
     fun update(data: LectureCancellation) {
         if (lectureCancelDao.update(data) > 0) {
-            _lectureCancellationList.postValue(lectureCancelDao.getAll())
+            postValues(lectureCancelList = lectureCancelDao.getAll())
         }
     }
 
     fun update(data: MyClass): Boolean {
         if (myClassDao.update(data) > 0) {
-            _myClassList.postValue(myClassDao.getAll())
+            postValues(myClassDao.getAll())
             return true
         }
         return false
@@ -147,7 +165,7 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
     fun add(data: MyClass): Boolean {
         if (myClassDao.add(listOf(data)) > 0) {
-            _myClassList.postValue(myClassDao.getAll())
+            postValues(myClassDao.getAll())
             return true
         }
         return false
@@ -155,7 +173,7 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
 
     fun delete(subject: String): Boolean {
         if (myClassDao.delete(subject) > 0) {
-            _myClassList.postValue(myClassDao.getAll())
+            postValues(myClassDao.getAll())
             return true
         }
         return false
@@ -170,9 +188,11 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
             return false
         }
 
-        _myClassList.postValue(myClassDao.getAll())
-        _lectureInformationList.postValue(lectureInfoDao.getAll())
-        _lectureCancellationList.postValue(lectureCancelDao.getAll())
+        postValues(
+                myClassDao.getAll(),
+                lectureInfoDao.getAll(),
+                lectureCancelDao.getAll()
+        )
 
         return true
     }
@@ -185,15 +205,64 @@ class PortalRepository(context: Context, shibbolethDataProvider: ShibbolethDataP
             return false
         }
 
-        _myClassList.postValue(myClassDao.getAll())
-        _lectureInformationList.postValue(lectureInfoDao.getAll())
-        _lectureCancellationList.postValue(lectureCancelDao.getAll())
+        postValues(
+                myClassDao.getAll(),
+                lectureInfoDao.getAll(),
+                lectureCancelDao.getAll()
+        )
 
         return true
     }
 
+    fun deleteAllFromDb() {
+        context.deleteDatabase(context.database.databaseName)
+
+        loadFromDb()
+    }
+
     @Throws(Exception::class)
     private fun fetchDocument(type: PortalDataType) = shibbolethClient.fetch(type.url)
+
+    private fun postValues(
+            myClassList: List<MyClass>? = null,
+            lectureInfoList: List<LectureInformation>? = null,
+            lectureCancelList: List<LectureCancellation>? = null,
+            noticeList: List<Notice>? = null
+    ) {
+        var postCount = 0
+        var set = _portalDataSet.value ?: PortalDataSet()
+
+        if (myClassList != null) {
+            postCount++
+            _myClassList.postValue(myClassList)
+
+            set = set.copy(myClassList = myClassList)
+        }
+        if (lectureInfoList != null) {
+            postCount++
+            _lectureInformationList.postValue(lectureInfoList)
+
+            set = set.copy(lectureInfoList = lectureInfoList)
+        }
+        if (lectureCancelList != null) {
+            postCount++
+            _lectureCancellationList.postValue(lectureCancelList)
+
+            set = set.copy(lectureCancelList = lectureCancelList)
+        }
+        if (noticeList != null) {
+            postCount++
+            _noticeList.postValue(noticeList)
+
+            set = set.copy(noticeList = noticeList)
+        }
+
+        if (postCount > 0) {
+            _portalDataSet.postValue(set)
+        }
+
+        Log.d(TAG, "posted $postCount lists")
+    }
 
     /**
      * Create new LiveData instance from source

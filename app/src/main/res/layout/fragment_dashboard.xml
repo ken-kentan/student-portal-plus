@@ -4,20 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_200"
+    android:animateLayoutChanges="true"
     tools:context="jp.kentan.studentportalplus.ui.fragment.DashboardFragment">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/dashboard_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/lecture_info_card_view"
-            android:layout_width="match_parent"
+            android:id="@+id/timetable_card_view"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/grey_50"
             app:cardCornerRadius="2dp"
             app:cardUseCompatPadding="true"
@@ -26,8 +28,54 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/timetable_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/timetable_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/name_timetable"
+                    android:textAllCaps="false"
+                    android:textColor="@color/grey_600"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/timetable_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/timetable_header" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/lecture_info_card_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="@color/grey_50"
+            app:cardCornerRadius="2dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timetable_card_view">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/lecture_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/lecture_info_header"
@@ -62,7 +110,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/lecture_info_recycler_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lecture_info_header" />
@@ -89,10 +138,11 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/lecture_cancel_card_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:overScrollMode="never"
             app:cardBackgroundColor="@color/grey_50"
             app:cardCornerRadius="2dp"
             app:cardUseCompatPadding="true"
@@ -101,8 +151,9 @@
             app:layout_constraintTop_toBottomOf="@+id/lecture_info_card_view">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/lecture_cancel_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/lecture_cancel_header"
@@ -137,7 +188,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/lecture_cancel_recycler_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lecture_cancel_header" />
@@ -178,8 +229,9 @@
             app:layout_constraintTop_toBottomOf="@+id/lecture_cancel_card_view">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/notice_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/notice_header"
@@ -196,9 +248,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/notice_recycler_note"
+                    android:id="@+id/notice_recycler_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notice_header" />
@@ -215,7 +268,7 @@
                     android:textColor="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notice_recycler_note" />
+                    app:layout_constraintTop_toBottomOf="@+id/notice_recycler_view" />
 
             </android.support.constraint.ConstraintLayout>
 

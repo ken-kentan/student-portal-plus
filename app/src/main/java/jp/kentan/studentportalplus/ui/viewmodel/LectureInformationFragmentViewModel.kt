@@ -58,7 +58,7 @@ class LectureInformationFragmentViewModel(
             results.value = lectureInformationList.value
         } else{
             bg {
-                results.postValue(repository.searchLectureInformations(query))
+                results.postValue(repository.searchLectureInformation(query))
             }
         }
     }

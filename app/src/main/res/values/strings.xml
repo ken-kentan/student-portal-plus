@@ -73,6 +73,7 @@
     <string name="name_lecture_info">授業関連連絡</string>
     <string name="name_lecture_cancel">休講情報</string>
     <string name="name_my_class">受講科目</string>
+    <string name="name_timetable">%1$sの時間割</string>
     <string name="name_created_date">掲載日</string>
     <string name="name_title">タイトル</string>
     <string name="name_detail">内容</string>

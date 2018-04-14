@@ -15,44 +15,21 @@ import kotlinx.android.synthetic.main.list_notice.view.*
 
 class NoticeAdapter(
         private val context: Context,
-        private val viewType: Int,
-        private val listener: Listener,
-        private val maxItemCount: Int = -1) :
+        private val listener: Listener) :
         ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
-
-    companion object {
-        const val TYPE_NORMAL = 0
-        const val TYPE_SMALL  = 1
-    }
 
     init {
         setHasStableIds(true)
-
-        if (viewType != TYPE_NORMAL && viewType != TYPE_SMALL) {
-            throw IllegalArgumentException("Invalid ViewType: $viewType")
-        }
     }
 
     override fun getItemId(position: Int) = getItem(position).id
 
-    override fun getItemViewType(position: Int) = viewType
-
-    override fun submitList(list: List<Notice>?) {
-        if (maxItemCount > 0) {
-            super.submitList(list?.take(maxItemCount))
-        } else {
-            super.submitList(list)
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
 
-        val layoutId = if (viewType == TYPE_NORMAL) R.layout.list_notice else R.layout.list_small_notice
+        val view = layoutInflater.inflate(R.layout.list_notice, parent, false)
 
-        val view = layoutInflater.inflate(layoutId, parent, false)
-
-        return ViewHolder(view, viewType, listener)
+        return ViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -61,7 +38,6 @@ class NoticeAdapter(
 
     class ViewHolder(
             private val view: View,
-            private val viewType: Int,
             private val listener: Listener) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
@@ -76,10 +52,10 @@ class NoticeAdapter(
 
             if (data.hasRead) {
                 view.date.typeface = Typeface.DEFAULT
-                view.subject.typeface          = Typeface.DEFAULT
+                view.subject.typeface = Typeface.DEFAULT
             } else {
                 view.date.typeface = Typeface.DEFAULT_BOLD
-                view.subject.typeface          = Typeface.DEFAULT_BOLD
+                view.subject.typeface = Typeface.DEFAULT_BOLD
             }
 
             view.setOnClickListener {
@@ -89,9 +65,7 @@ class NoticeAdapter(
                 listener.onUpdateFavorite(data, !data.isFavorite)
             }
 
-            if (viewType == TYPE_NORMAL) {
-                view.instructor.text = data.detailText ?: data.link
-            }
+            view.instructor.text = data.detailText ?: data.link
         }
     }
 

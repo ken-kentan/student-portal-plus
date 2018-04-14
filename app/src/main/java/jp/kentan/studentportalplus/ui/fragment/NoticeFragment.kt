@@ -52,7 +52,7 @@ class NoticeFragment : Fragment() {
 
         viewModel = ViewModelProvider(activity, viewModelFactory).get(NoticeFragmentViewModel::class.java)
 
-        val adapter = NoticeAdapter(context, NoticeAdapter.TYPE_NORMAL, object : NoticeAdapter.Listener{
+        val adapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
             override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
                 viewModel.update(data.copy(isFavorite = isFavorite))
             }

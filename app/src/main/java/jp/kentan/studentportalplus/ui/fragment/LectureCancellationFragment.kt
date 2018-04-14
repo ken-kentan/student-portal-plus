@@ -54,7 +54,7 @@ class LectureCancellationFragment : Fragment() {
 
         viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
 
-        val adapter = LectureCancellationAdapter(context, LectureCancellationAdapter.TYPE_NORMAL, object : LectureCancellationAdapter.Listener{
+        val adapter = LectureCancellationAdapter(context, object : LectureCancellationAdapter.Listener{
             override fun onClick(data: LectureCancellation) {
                 viewModel.update(data.copy(hasRead = true))
                 startActivity<LectureCancellationActivity>("id" to data.id)
