@@ -15,7 +15,6 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.core.content.edit
-import androidx.core.view.isVisible
 import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
@@ -64,7 +63,7 @@ class LectureInformationFragment : Fragment() {
 
             if (it == null || it.isEmpty()) {
                 note.animateFadeInDelay(context)
-            } else if (note.isVisible) {
+            } else {
                 note.alpha = 0f
                 note.visibility = View.GONE
             }
