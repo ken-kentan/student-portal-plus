@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.ui
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -14,10 +15,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 import jp.kentan.studentportalplus.ui.fragment.*
 import jp.kentan.studentportalplus.ui.span.CustomTitle
+import jp.kentan.studentportalplus.ui.viewmodel.MainViewModel
+import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.ui.widget.MapView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -25,7 +26,6 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
@@ -45,10 +45,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     @Inject
-    lateinit var portalRepository: PortalRepository
+    lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var shibbolethDataProvider: ShibbolethDataProvider
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +64,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         AndroidInjection.inject(this)
 
         fab.setOnClickListener { view ->
-            bg{
-                portalRepository.deleteAllFromDb()
-            }
+//            bg{
+//                portalRepository.deleteAllFromDb()
+//            }
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
-        shibbolethDataProvider.getUser().observe(this, Observer {
+        viewModel.getUser().observe(this, Observer {
             it?.let {
                 val header = nav_view.getHeaderView(0)
                 val (name, username) = it
@@ -100,13 +101,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             switchFragment(type)
         }
+
+        if (intent.getBooleanExtra("request_sync", false)) {
+            viewModel.sync()
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        bg{
-            portalRepository.loadFromDb()
-        }
+        viewModel.load()
     }
 
     override fun onBackPressed() {
@@ -180,23 +183,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupSwipeRefresh() {
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent)
         swipe_refresh_layout.setColorSchemeResources(R.color.grey_100)
-        swipe_refresh_layout.setOnRefreshListener {
-            async(UI) {
-                val result = bg {portalRepository.syncWithWeb()}
+        swipe_refresh_layout.setOnRefreshListener { viewModel.sync() }
 
-                val (success, message) = result.await()
-
-                swipe_refresh_layout.isRefreshing = false
-
-                if (success) {
-                    return@async
+        viewModel.getSyncResult().observe(this, Observer {
+            it?.let { (success, message) ->
+                if (!success) {
+                    val snackbar = Snackbar.make(fab, message ?: "null", Snackbar.LENGTH_INDEFINITE)
+                    snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
+                    snackbar.show()
                 }
-
-                val snackbar = Snackbar.make(fab, message ?: "null", Snackbar.LENGTH_INDEFINITE)
-                snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
-                snackbar.show()
             }
-        }
+        })
+
+        viewModel.isSyncing().observe(this, Observer {
+            swipe_refresh_layout.isRefreshing = it ?: false
+        })
     }
 
     fun switchFragment(type: FragmentType) {

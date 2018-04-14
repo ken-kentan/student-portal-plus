@@ -4,17 +4,22 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.SharedPreferences
 import jp.kentan.studentportalplus.data.PortalRepository
+import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 
 
 class ViewModelFactory(
         private val sharedPreferences: SharedPreferences,
-        private val portalRepository: PortalRepository
+        private val portalRepository: PortalRepository,
+        private val shibbolethDataProvider: ShibbolethDataProvider
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>) =
             with(modelClass) {
                 when {
+                    isAssignableFrom(MainViewModel::class.java) ->
+                        MainViewModel(portalRepository, shibbolethDataProvider)
+
                     isAssignableFrom(DashboardFragmentViewModel::class.java) ->
                         DashboardFragmentViewModel(portalRepository)
 

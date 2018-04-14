@@ -32,6 +32,6 @@ class AppModule(app: Application) {
 
     @Provides
     @Singleton
-    fun provideViewModelFactory() = ViewModelFactory(context.defaultSharedPreferences, portalRepository)
+    fun provideViewModelFactory() = ViewModelFactory(context.defaultSharedPreferences, portalRepository, shibbolethDataProvider)
 
 }
