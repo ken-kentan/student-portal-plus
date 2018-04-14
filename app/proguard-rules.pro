@@ -20,11 +20,22 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-assumenosideeffects public class android.util.Log {
+    public static *** v(...);
+    public static *** d(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+    public static *** wtf(...);
+}
+
 -keep class android.support.v7.widget.SearchView { *; }
 
--keep class org.jsoup.**  { *; }
+-dontwarn com.google.errorprone.annotations.**
 
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn javax.annotation.**
--dontwarn com.google.errorprone.annotations.**
+-dontwarn org.conscrypt.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
