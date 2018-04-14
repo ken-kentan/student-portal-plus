@@ -93,6 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .replace(R.id.fragment_container, DashboardFragment.newInstance())
                     .commit()
         }
+
+        if (intent.hasExtra("fragment_type")) {
+            val type = FragmentType.valueOf(intent.getStringExtra("fragment_type"))
+            intent.removeExtra("fragment_type")
+
+            switchFragment(type)
+        }
     }
 
     override fun onStart() {

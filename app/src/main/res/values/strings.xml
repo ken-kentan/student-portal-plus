@@ -64,6 +64,10 @@
     <string name="text_week_period">%1$s %2$s</string>
     <string name="title_color_picker">色を選択</string>
 
+    <!-- Strings related to shortcut -->
+    <string name="shortcut_timetable">Timetable</string>
+    <string name="shortcut_disabled_timetable">\'Timetable\'ショートカットが無効化されました</string>
+
     <!-- Common titles -->
     <string name="title_confirmation">確認</string>
     <string name="title_delete">消去</string>
