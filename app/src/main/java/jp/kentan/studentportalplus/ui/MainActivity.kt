@@ -63,14 +63,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         AndroidInjection.inject(this)
 
-        fab.setOnClickListener { view ->
-//            bg{
-//                portalRepository.deleteAllFromDb()
-//            }
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         viewModel.getUser().observe(this, Observer {
             it?.let {
                 val header = nav_view.getHeaderView(0)
@@ -188,7 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModel.getSyncResult().observe(this, Observer {
             it?.let { (success, message) ->
                 if (!success) {
-                    val snackbar = Snackbar.make(fab, message ?: "null", Snackbar.LENGTH_INDEFINITE)
+                    val snackbar = Snackbar.make(swipe_refresh_layout, message ?: "null", Snackbar.LENGTH_INDEFINITE)
                     snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
                     snackbar.show()
                 }

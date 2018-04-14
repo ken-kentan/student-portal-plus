@@ -70,8 +70,11 @@ class TimetableFragment : Fragment() {
         })
 
         viewModel.getResults().observe(this, Observer {
-            adapter.submitList(it)
             TransitionManager.beginDelayedTransition(grid_recycler_view)
+
+            note.visibility = if (it == null || it.isEmpty()) View.VISIBLE else View.GONE
+
+            adapter.submitList(it)
         })
 
         // Initialize RecyclerViews
@@ -89,12 +92,13 @@ class TimetableFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.switch_layout, menu)
+        inflater.inflate(R.menu.timetable, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.action_switch_layout) {
-            showLayoutSelectPopup()
+        when (item?.itemId) {
+            R.id.action_add -> startActivity<MyClassEditActivity>("period" to 1, "week" to ClassWeekType.MONDAY)
+            R.id.action_switch_layout -> showLayoutSelectPopup()
         }
         return super.onOptionsItemSelected(item)
     }
