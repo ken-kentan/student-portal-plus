@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.list_notice.view.*
 class DashboardNoticeAdapter(
         private val context: Context,
         private val maxItemCount: Int,
-        private val onClick: (data: Notice) -> Unit= {},
-        private val onClickFavorite: (data: Notice) -> Unit= {}
+        private val onClick: (data: Notice) -> Unit,
+        private val onClickFavorite: (data: Notice) -> Unit
 ) : RecyclerView.Adapter<DashboardNoticeAdapter.ViewHolder>() {
 
     private var currentList: List<Notice> = emptyList()

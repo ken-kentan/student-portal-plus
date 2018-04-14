@@ -16,7 +16,6 @@ import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeekType
-import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.MyClassActivity
 import jp.kentan.studentportalplus.ui.MyClassEditActivity
 import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
@@ -64,13 +63,10 @@ class TimetableFragment : Fragment() {
         viewModel = ViewModelProvider(activity, viewModelFactory).get(TimetableFragmentViewModel::class.java)
         viewModel.setViewType(layoutType)
 
-        adapter = MyClassAdapter(context, layoutType.viewType, object : MyClassAdapter.Listener{
-            override fun onClick(data: MyClass) {
-                startActivity<MyClassActivity>("id" to data.id)
-            }
-            override fun onAddClick(period: Int, week: ClassWeekType) {
-                startActivity<MyClassEditActivity>("period" to period, "week" to week)
-            }
+        adapter = MyClassAdapter(context, layoutType.viewType, {
+            startActivity<MyClassActivity>("id" to it.id)
+        }, { period: Int, week: ClassWeekType ->
+            startActivity<MyClassEditActivity>("period" to period, "week" to week)
         })
 
         viewModel.getResults().observe(this, Observer {

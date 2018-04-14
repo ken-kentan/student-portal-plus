@@ -19,7 +19,6 @@ import androidx.core.view.isVisible
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.LectureOrderType
-import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.ui.LectureCancellationActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.LectureCancellationFragmentViewModel
@@ -54,12 +53,10 @@ class LectureCancellationFragment : Fragment() {
 
         viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
 
-        val adapter = LectureCancellationAdapter(context, object : LectureCancellationAdapter.Listener{
-            override fun onClick(data: LectureCancellation) {
-                viewModel.update(data.copy(hasRead = true))
-                startActivity<LectureCancellationActivity>("id" to data.id)
-            }
-        })
+        val adapter = LectureCancellationAdapter(context) {
+            viewModel.update(it.copy(hasRead = true))
+            startActivity<LectureCancellationActivity>("id" to it.id)
+        }
 
         viewModel.getResults().observe(this, Observer {
             adapter.submitList(it)

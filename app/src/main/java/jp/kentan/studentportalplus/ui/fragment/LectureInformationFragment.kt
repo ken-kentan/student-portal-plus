@@ -20,7 +20,6 @@ import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.LectureOrderType
-import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.ui.LectureInformationActivity
 import jp.kentan.studentportalplus.ui.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.LectureInformationFragmentViewModel
@@ -55,12 +54,10 @@ class LectureInformationFragment : Fragment() {
 
         viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureInformationFragmentViewModel::class.java)
 
-        val adapter = LectureInformationAdapter(context, object : LectureInformationAdapter.Listener{
-            override fun onClick(data: LectureInformation) {
-                viewModel.update(data.copy(hasRead = true))
-                startActivity<LectureInformationActivity>("id" to data.id)
-            }
-        })
+        val adapter = LectureInformationAdapter(context) {
+            viewModel.update(it.copy(hasRead = true))
+            startActivity<LectureInformationActivity>("id" to it.id)
+        }
 
         viewModel.getResults().observe(this, Observer {
             adapter.submitList(it)

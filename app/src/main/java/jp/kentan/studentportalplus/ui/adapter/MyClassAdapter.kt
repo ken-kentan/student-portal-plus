@@ -21,26 +21,26 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 class MyClassAdapter(
         private val context: Context,
         private var viewType: Int,
-        private val listener: Listener) :
-        ListAdapter<MyClass, MyClassAdapter.ViewHolder>(MyClass.DIFF_CALLBACK) {
+        private val onClick: (data: MyClass) -> Unit,
+        private val onAddClick: (period: Int, week: ClassWeekType) -> Unit
+) : ListAdapter<MyClass, MyClassAdapter.ViewHolder>(MyClass.DIFF_CALLBACK) {
 
     companion object {
         private const val TYPE_EMPTY = -1
         const val TYPE_GRID  = 0
         const val TYPE_LIST  = 1
-        const val TYPE_SMALL = 2
     }
 
     init {
         setHasStableIds(true)
 
-        if (viewType != TYPE_GRID && viewType != TYPE_LIST && viewType != TYPE_SMALL) {
+        if (viewType != TYPE_GRID && viewType != TYPE_LIST) {
             throw IllegalArgumentException("Invalid ViewType: $viewType")
         }
     }
 
     fun setViewType(viewType: Int) {
-        if (viewType != TYPE_GRID && viewType != TYPE_LIST && viewType != TYPE_SMALL) {
+        if (viewType != TYPE_GRID && viewType != TYPE_LIST) {
             throw IllegalArgumentException("Invalid ViewType: $viewType")
         }
         this.viewType = viewType
@@ -58,27 +58,28 @@ class MyClassAdapter(
             TYPE_EMPTY -> R.layout.grid_my_class_empty
             TYPE_GRID  -> R.layout.grid_my_class
             TYPE_LIST  -> R.layout.list_my_class
-            TYPE_SMALL -> R.layout.list_small_my_class
             else       -> R.layout.list_my_class
         }
 
         val view = layoutInflater.inflate(layoutId, parent, false)
 
-        return ViewHolder(view, viewType, listener)
+        return ViewHolder(view, viewType, onClick, onAddClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(getItem(position), position >= itemCount-1)
+        holder.bindTo(getItem(position))
     }
 
     class ViewHolder(
             private val view: View,
             private val viewType: Int,
-            private val listener: Listener) : RecyclerView.ViewHolder(view) {
+            private val onClick: (data: MyClass) -> Unit,
+            private val onAddClick: (period: Int, week: ClassWeekType) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
 
-        fun bindTo(data: MyClass, isLastItem: Boolean) {
+        fun bindTo(data: MyClass) {
             if (viewType == TYPE_EMPTY) {
-                view.add_button.setOnClickListener { listener.onAddClick(data.period, data.week) }
+                view.add_button.setOnClickListener { onAddClick(data.period, data.week) }
                 return
             }
             when (viewType) {
@@ -93,20 +94,12 @@ class MyClassAdapter(
                     view.location.text     = data.location
                     view.layout.backgroundColor = data.color
                 }
-                TYPE_SMALL -> {
-                    view.location.text = data.location
-                    view.find<View>(R.id.color_header).backgroundColor = data.color
-                    view.find<View>(R.id.separator).visibility = if (isLastItem) View.GONE else View.VISIBLE
-                    view.find<TextView>(R.id.period).text = data.period.toString()
-                }
             }
 
             view.subject.text    = data.subject
             view.instructor.text = data.instructor
 
-            view.layout.onClick {
-                listener.onClick(data)
-            }
+            view.layout.onClick { onClick(data) }
         }
 
         private companion object {
@@ -118,10 +111,5 @@ class MyClassAdapter(
                 }
             }
         }
-    }
-
-    interface Listener{
-        fun onClick(data: MyClass)
-        fun onAddClick(period: Int, week: ClassWeekType)
     }
 }

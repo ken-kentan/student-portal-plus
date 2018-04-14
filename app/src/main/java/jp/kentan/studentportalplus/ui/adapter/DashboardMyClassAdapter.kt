@@ -18,7 +18,7 @@ import org.jetbrains.anko.backgroundColor
  */
 class DashboardMyClassAdapter(
         private val context: Context,
-        private val onClick: (data: MyClass) -> Unit= {}
+        private val onClick: (data: MyClass) -> Unit = {}
 ) : RecyclerView.Adapter<DashboardMyClassAdapter.ViewHolder>() {
 
     private var currentList: List<MyClass> = emptyList()
@@ -74,7 +74,7 @@ class DashboardMyClassAdapter(
             private val onClick: (data: MyClass) -> Unit
     ) : RecyclerView.ViewHolder(view) {
 
-        val separator = view.separator
+        val separator: View = view.separator
 
         fun bindTo(data: MyClass) {
             view.color_header.backgroundColor = data.color

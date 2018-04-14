@@ -15,8 +15,9 @@ import kotlinx.android.synthetic.main.list_notice.view.*
 
 class NoticeAdapter(
         private val context: Context,
-        private val listener: Listener) :
-        ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
+        private val onClick: (data: Notice) -> Unit,
+        private val onClickFavorite: (data: Notice) -> Unit
+) : ListAdapter<Notice, NoticeAdapter.ViewHolder>(Notice.DIFF_CALLBACK) {
 
     init {
         setHasStableIds(true)
@@ -29,7 +30,7 @@ class NoticeAdapter(
 
         val view = layoutInflater.inflate(R.layout.list_notice, parent, false)
 
-        return ViewHolder(view, listener)
+        return ViewHolder(view, onClick, onClickFavorite)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -38,7 +39,9 @@ class NoticeAdapter(
 
     class ViewHolder(
             private val view: View,
-            private val listener: Listener) : RecyclerView.ViewHolder(view) {
+            private val onClick: (data: Notice) -> Unit,
+            private val onClickFavorite: (data: Notice) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: Notice) {
             view.date.text = data.createdDate.toShortString()
@@ -58,19 +61,10 @@ class NoticeAdapter(
                 view.subject.typeface = Typeface.DEFAULT_BOLD
             }
 
-            view.setOnClickListener {
-                listener.onClick(data)
-            }
-            view.favorite_icon.setOnClickListener{
-                listener.onUpdateFavorite(data, !data.isFavorite)
-            }
+            view.setOnClickListener { onClick(data) }
+            view.favorite_icon.setOnClickListener{ onClickFavorite(data) }
 
             view.instructor.text = data.detailText ?: data.link
         }
-    }
-
-    interface Listener{
-        fun onUpdateFavorite(data: Notice, isFavorite: Boolean)
-        fun onClick(data: Notice)
     }
 }

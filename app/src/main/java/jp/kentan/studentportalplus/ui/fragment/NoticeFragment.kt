@@ -18,7 +18,6 @@ import androidx.core.view.isVisible
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.CreatedDateType
-import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.NoticeActivity
 import jp.kentan.studentportalplus.ui.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeFragmentViewModel
@@ -52,15 +51,11 @@ class NoticeFragment : Fragment() {
 
         viewModel = ViewModelProvider(activity, viewModelFactory).get(NoticeFragmentViewModel::class.java)
 
-        val adapter = NoticeAdapter(context, object : NoticeAdapter.Listener{
-            override fun onUpdateFavorite(data: Notice, isFavorite: Boolean) {
-                viewModel.update(data.copy(isFavorite = isFavorite))
-            }
-
-            override fun onClick(data: Notice) {
-                viewModel.update(data.copy(hasRead = true))
-                startActivity<NoticeActivity>("id" to data.id)
-            }
+        val adapter = NoticeAdapter(context, {
+            viewModel.update(it.copy(hasRead = true))
+            startActivity<NoticeActivity>("id" to it.id)
+        }, {
+            viewModel.update(it.copy(isFavorite = !it.isFavorite))
         })
 
         viewModel.getResults().observe(this, Observer {

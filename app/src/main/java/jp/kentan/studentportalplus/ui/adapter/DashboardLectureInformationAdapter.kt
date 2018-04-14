@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.list_small_lecture.view.*
 class DashboardLectureInformationAdapter(
         private val context: Context,
         private val maxItemCount: Int,
-        private val onClick: (data: LectureInformation) -> Unit= {}) :
+        private val onClick: (data: LectureInformation) -> Unit = {}) :
 RecyclerView.Adapter<DashboardLectureInformationAdapter.ViewHolder>() {
 
     private var currentList: List<LectureInformation> = emptyList()

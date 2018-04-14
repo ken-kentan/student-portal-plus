@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.list_lecture.view.*
 
 class LectureCancellationAdapter(
         private val context: Context,
-        private val listener: Listener) :
+        private val onClick: (data: LectureCancellation) -> Unit = {}) :
         ListAdapter<LectureCancellation, LectureCancellationAdapter.ViewHolder>(LectureCancellation.DIFF_CALLBACK) {
 
     init {
@@ -29,7 +29,7 @@ class LectureCancellationAdapter(
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.list_lecture, parent, false)
 
-        return ViewHolder(view, listener)
+        return ViewHolder(view, onClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -38,7 +38,7 @@ class LectureCancellationAdapter(
 
     class ViewHolder(
             private val view: View,
-            private val listener: Listener) : RecyclerView.ViewHolder(view) {
+            private val onClick: (data: LectureCancellation) -> Unit) : RecyclerView.ViewHolder(view) {
 
         fun bindTo(data: LectureCancellation) {
             view.date.text    = data.createdDate.toShortString()
@@ -67,11 +67,7 @@ class LectureCancellationAdapter(
                 }
             }
 
-            view.setOnClickListener { listener.onClick(data) }
+            view.setOnClickListener { onClick(data) }
         }
-    }
-
-    interface Listener{
-        fun onClick(data: LectureCancellation)
     }
 }
