@@ -27,6 +27,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +51,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
+
+    private var isReadyFinish = false
+    private var snackbarFinish: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,6 +112,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
+            if (fragmentType == FragmentType.DASHBOARD) {
+                if (isReadyFinish) {
+                    snackbarFinish?.dismiss()
+                    snackbarFinish = null
+
+                    finish()
+                } else {
+                    isReadyFinish = true
+
+                    val snackbar = Snackbar.make(swipe_refresh_layout, R.string.msg_back_to_exit, Snackbar.LENGTH_LONG)
+                            .addCallback(object : Snackbar.Callback() {
+                                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                    isReadyFinish = false
+                                    super.onDismissed(transientBottomBar, event)
+                                }
+                            })
+                    snackbar.show()
+
+                    snackbarFinish = snackbar
+                }
+
+                return
+            }
+
             super.onBackPressed()
         }
     }
@@ -126,7 +154,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.nav_notice         -> { switchFragment(FragmentType.NOTICE) }
                 R.id.nav_campus_map     -> { MapView.open(this@MainActivity, MapView.Type.CAMPUS) }
                 R.id.nav_room_map       -> { MapView.open(this@MainActivity, MapView.Type.ROOM) }
-                R.id.nav_setting        -> {  }
+                R.id.nav_setting        -> { startActivity<SettingsActivity>() }
             }
         }
 
