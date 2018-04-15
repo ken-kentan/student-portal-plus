@@ -45,8 +45,8 @@
         app:srcCompat="@drawable/ic_favorite_off" />
 
     <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
+        android:id="@+id/separator"
+        android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/grey_300"
         app:layout_constraintBottom_toBottomOf="parent"
