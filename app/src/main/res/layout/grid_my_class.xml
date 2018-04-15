@@ -3,17 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/timetable_grid_height"
-    android:padding="1dp">
+    android:layout_height="@dimen/timetable_grid_height">
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_300"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:background="@color/colorAccent"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:foreground="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/subject"
@@ -62,4 +76,26 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="SmallSp" />
     </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/border"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Group
+        android:id="@+id/mask_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="mask,border" />
 </android.support.constraint.ConstraintLayout>

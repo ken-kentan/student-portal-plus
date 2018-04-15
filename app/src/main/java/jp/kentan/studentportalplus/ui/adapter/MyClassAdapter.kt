@@ -12,10 +12,10 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.model.MyClass
 import kotlinx.android.synthetic.main.grid_my_class.view.*
-import kotlinx.android.synthetic.main.grid_my_class_empty.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.util.*
 
 
 class MyClassAdapter(
@@ -29,6 +29,8 @@ class MyClassAdapter(
         private const val TYPE_EMPTY = -1
         const val TYPE_GRID  = 0
         const val TYPE_LIST  = 1
+
+        private val PERIOD_MINUTES = intArrayOf(8 * 60 + 50, 10 * 60 + 30, 12 * 60 + 50, 14 * 60 + 30, 16 * 60 + 10, 17 * 60 + 50, 19 * 60 + 30)
     }
 
     init {
@@ -68,6 +70,32 @@ class MyClassAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
+
+        if (viewType == TYPE_GRID) {
+            holder.setPercent(getGuidelinePercent(position))
+        }
+    }
+
+    private fun getGuidelinePercent(position: Int): Float {
+        val week = position % 5 + 2
+        val period = position / 5
+
+        val now = Calendar.getInstance()
+        val todayWeek = now.get(Calendar.DAY_OF_WEEK)
+
+        if (week < todayWeek || todayWeek == Calendar.SUNDAY) {
+            return 1f
+        } else if (week == todayWeek) {
+            val minutes = now.get(Calendar.MINUTE) + now.get(Calendar.HOUR_OF_DAY) * 60
+
+            val diff = (minutes - PERIOD_MINUTES[period])
+
+            if (diff > 0) {
+                return Math.min(diff / 90f, 1f)
+            }
+        }
+
+        return 0f
     }
 
     class ViewHolder(
@@ -79,7 +107,7 @@ class MyClassAdapter(
 
         fun bindTo(data: MyClass) {
             if (viewType == TYPE_EMPTY) {
-                view.add_button.setOnClickListener { onAddClick(data.period, data.week) }
+                view.find<View>(R.id.add_button).setOnClickListener { onAddClick(data.period, data.week) }
                 return
             }
             when (viewType) {
@@ -100,6 +128,15 @@ class MyClassAdapter(
             view.instructor.text = data.instructor
 
             view.layout.onClick { onClick(data) }
+        }
+
+        fun setPercent(ratio: Float) {
+            if (ratio > 0f) {
+                view.guideline.setGuidelinePercent(ratio)
+                view.mask_group.visibility = View.VISIBLE
+            } else {
+                view.mask_group.visibility = View.GONE
+            }
         }
 
         private companion object {

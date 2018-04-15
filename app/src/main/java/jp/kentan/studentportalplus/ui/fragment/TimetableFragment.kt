@@ -3,14 +3,15 @@ package jp.kentan.studentportalplus.ui.fragment
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.graphics.Typeface
 import android.os.Bundle
-import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.view.*
+import android.widget.TextView
 import androidx.core.content.edit
 import dagger.android.support.AndroidSupportInjection
 
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_timetable.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.textColorResource
 import javax.inject.Inject
 
 class TimetableFragment : Fragment() {
@@ -35,6 +37,16 @@ class TimetableFragment : Fragment() {
     private lateinit var viewModel: TimetableFragmentViewModel
     private lateinit var adapter: MyClassAdapter
     private lateinit var layoutType: TimetableFragmentViewModel.LayoutType
+
+    private val weekView: Map<ClassWeekType, TextView> by lazy {
+        mapOf(
+                ClassWeekType.MONDAY to monday_header,
+                ClassWeekType.TUESDAY to tuesday_header,
+                ClassWeekType.WEDNESDAY to wednesday_header,
+                ClassWeekType.THURSDAY to thursday_header,
+                ClassWeekType.FRIDAY to friday_header
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_timetable, container, false)
@@ -70,9 +82,18 @@ class TimetableFragment : Fragment() {
         })
 
         viewModel.getResults().observe(this, Observer {
-            TransitionManager.beginDelayedTransition(grid_recycler_view)
-
             note.visibility = if (it == null || it.isEmpty()) View.VISIBLE else View.GONE
+
+            val today = viewModel.getWeek()
+            weekView.forEach { week, view ->
+                if (week == today) {
+                    view.typeface = Typeface.DEFAULT_BOLD
+                    view.textColorResource = R.color.colorAccent
+                } else {
+                    view.typeface = Typeface.DEFAULT
+                    view.textColorResource = R.color.colorPrimary
+                }
+            }
 
             adapter.submitList(it)
         })
@@ -82,6 +103,7 @@ class TimetableFragment : Fragment() {
         grid_recycler_view.adapter = adapter
         grid_recycler_view.isNestedScrollingEnabled = false
         grid_recycler_view.setHasFixedSize(true)
+        grid_recycler_view.itemAnimator = null
 
         list_recycler_view.layoutManager = LinearLayoutManager(context)
         list_recycler_view.adapter = adapter
@@ -126,8 +148,6 @@ class TimetableFragment : Fragment() {
             return
         }
         layoutType = type
-
-        TransitionManager.beginDelayedTransition(timetable_layout)
 
         if (type == TimetableFragmentViewModel.LayoutType.WEEK) {
             grid_layout.visibility = View.VISIBLE

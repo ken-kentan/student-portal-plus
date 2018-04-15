@@ -9,6 +9,7 @@ import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
 import org.jetbrains.anko.coroutines.experimental.bg
+import java.util.*
 
 
 class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
@@ -52,18 +53,30 @@ class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
         layout.value = type
     }
 
-    private fun loadFromRepository(type: LayoutType) {
-        if (type == LayoutType.WEEK) {
-            bg { results.postValue(normalize(source.value)) }
+    fun getWeek(): ClassWeekType? {
+        val intWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
+        return if (intWeek in Calendar.MONDAY..Calendar.FRIDAY) {
+            ClassWeekType.valueOf(intWeek-1)
         } else {
-            results.value = source.value
+            null
+        }
+    }
+
+    private fun loadFromRepository(type: LayoutType) {
+        val list = source.value ?: return
+
+        if (type == LayoutType.WEEK) {
+            bg { results.postValue(normalize(list)) }
+        } else {
+            results.value = list
         }
     }
 
     /**
      * Normalize MyClass list to 7*5 timetable
      */
-    private fun normalize(rawList: List<MyClass>?): List<MyClass> {
+    private fun normalize(rawList: List<MyClass>): List<MyClass> {
         val list = mutableListOf<MyClass>()
 
         // id for dummy
@@ -72,7 +85,7 @@ class TimetableFragmentViewModel(repository: PortalRepository) : ViewModel() {
         for (period in 1..7) {
             for (week in 1..5) {
                 val weekType = ClassWeekType.valueOf(week)
-                val myClass = rawList?.find { it.match(period, weekType) }
+                val myClass = rawList.find { it.match(period, weekType) }
 
                 if (myClass != null) {
                     list.add(myClass)
