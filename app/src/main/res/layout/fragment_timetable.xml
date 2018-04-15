@@ -107,7 +107,7 @@
                     android:background="@color/grey_200"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/period1_header"
+                    app:layout_constraintStart_toEndOf="@+id/period1_header"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
