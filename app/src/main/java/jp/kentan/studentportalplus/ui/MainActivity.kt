@@ -85,17 +85,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupSwipeRefresh()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, DashboardFragment.newInstance())
-                    .commit()
-        }
-
         if (intent.hasExtra("fragment_type")) {
             val type = FragmentType.valueOf(intent.getStringExtra("fragment_type"))
             intent.removeExtra("fragment_type")
 
-            switchFragment(type)
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragmentMap[type])
+                    .commit()
+        } else if (supportFragmentManager.fragments.isEmpty()) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, DashboardFragment.newInstance())
+                    .commit()
         }
 
         if (intent.getBooleanExtra("request_sync", false)) {
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            if (fragmentType == FragmentType.DASHBOARD) {
+            if (supportFragmentManager.backStackEntryCount <= 0) {
                 if (isReadyFinish) {
                     snackbarFinish?.dismiss()
                     snackbarFinish = null
