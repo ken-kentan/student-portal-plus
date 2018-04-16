@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.component.NoticeQuery
@@ -17,6 +18,7 @@ import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
+import org.jetbrains.anko.defaultSharedPreferences
 
 
 class PortalRepository(private val context: Context, shibbolethDataProvider: ShibbolethDataProvider) {
@@ -27,14 +29,16 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
 
     private val shibbolethClient = ShibbolethClient(context, shibbolethDataProvider)
 
+    private val preferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener
+
     private val noticeParser        = NoticeParser()
     private val lectureInfoParser   = LectureInformationParser()
     private val lectureCancelParser = LectureCancellationParser()
     private val myClassParser       = MyClassParser()
 
     private val noticeDao        = NoticeDao(context.database)
-    private val lectureInfoDao   = LectureInformationDao(context.database)
-    private val lectureCancelDao = LectureCancellationDao(context.database)
+    private val lectureInfoDao   : LectureInformationDao
+    private val lectureCancelDao : LectureCancellationDao
     private val myClassDao       = MyClassDao(context.database)
 
     private val _noticeList              = MutableLiveData<List<Notice>>()
@@ -85,25 +89,38 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         }
 
 
+    init {
+        // Setup with my_class_threshold
+        val threshold = context.defaultSharedPreferences.getMyClassThreshold()
+
+        lectureInfoDao = LectureInformationDao(context.database, threshold)
+        lectureCancelDao = LectureCancellationDao(context.database, threshold)
+
+        // Update if MyClassThreshold changed
+        preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
+            if (key == "my_class_threshold") {
+                val th = pref.getMyClassThreshold()
+
+                lectureInfoDao.myClassThreshold = th
+                lectureCancelDao.myClassThreshold = th
+
+                postValues(
+                        lectureInfoList = lectureInfoDao.getAll(),
+                        lectureCancelList = lectureCancelDao.getAll()
+                )
+            }
+        }
+
+        context.defaultSharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+    }
+
     fun loadFromDb() {
-        val noticeList = noticeDao.getAll()
-        _noticeList.postValue(noticeList)
-
-        val lectureInfoList = lectureInfoDao.getAll()
-        _lectureInformationList.postValue(lectureInfoList)
-
-        val lectureCancelList = lectureCancelDao.getAll()
-        _lectureCancellationList.postValue(lectureCancelList)
-
-        val myClassList = myClassDao.getAll()
-        _myClassList.postValue(myClassList)
-
-        _portalDataSet.postValue(PortalDataSet(
-                noticeList        = noticeList,
-                lectureInfoList   = lectureInfoList,
-                lectureCancelList = lectureCancelList,
-                myClassList       = myClassList
-        ))
+        postValues(
+                myClassDao.getAll(),
+                lectureInfoDao.getAll(),
+                lectureCancelDao.getAll(),
+                noticeDao.getAll()
+        )
     }
 
     fun syncWithWeb(): Pair<Boolean, String?> {
@@ -271,7 +288,11 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
      */
     private fun <T> copyLiveData(source: LiveData<T>): LiveData<T> {
         val result = MediatorLiveData<T>()
-        result.addSource(source) {result.value = it }
+        result.addSource(source) { result.value = it }
         return result
+    }
+
+    private fun SharedPreferences.getMyClassThreshold(): Float {
+        return (this.getString("my_class_threshold", "80").toIntOrNull() ?: 80) / 100f
     }
 }

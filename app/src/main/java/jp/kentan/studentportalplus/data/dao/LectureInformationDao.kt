@@ -14,7 +14,10 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 
 
-class LectureInformationDao(private val database: DatabaseOpenHelper) {
+class LectureInformationDao(
+        private val database: DatabaseOpenHelper,
+        var myClassThreshold: Float
+) {
 
     companion object {
         const val TABLE_NAME = "lecture_info"
@@ -23,8 +26,6 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
         private val LECTURE_ATTEND_PARSER = LectureAttendParser()
 
         private val STRING_DISTANCE = JaroWinklerDistance()
-
-        private val EMPTY = listOf<LectureInformation>()
     }
 
     fun getAll(): List<LectureInformation> = database.use {
@@ -57,7 +58,7 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
 
         if (!query.isAttend) {
             if (!query.isUnread && !query.hasRead) {
-                return@use EMPTY
+                return@use emptyList<LectureInformation>()
             } else if (!query.isUnread) {
                 where.append("read=1")
             } else if (!query.hasRead) {
@@ -169,11 +170,10 @@ class LectureInformationDao(private val database: DatabaseOpenHelper) {
     private fun List<Pair<String, LectureAttendType>>.analyzeAttendType(subject: String): LectureAttendType {
         var type  = LectureAttendType.NOT
 
-        for (i in this) {
-            if (i.first == subject) {
-                type = i.second
-                break
-            } else if (STRING_DISTANCE.getDistance(i.first, subject) >= 0.8f) {
+        forEach {
+            if (it.first == subject) {
+                return it.second
+            } else if (STRING_DISTANCE.getDistance(it.first, subject) >= myClassThreshold) {
                 type = LectureAttendType.SIMILAR
             }
         }
