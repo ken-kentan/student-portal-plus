@@ -3,14 +3,18 @@ package jp.kentan.studentportalplus.data.shibboleth
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.core.content.edit
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import okhttp3.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doFromSdk
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.security.KeyStore
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -19,7 +23,7 @@ import javax.net.ssl.X509TrustManager
 
 
 class ShibbolethClient(
-        context: Context,
+        private val context: Context,
         private val shibbolethDataProvider: ShibbolethDataProvider
 ) {
 
@@ -38,6 +42,8 @@ class ShibbolethClient(
 
         val SESSION_FORM_PARAMS = listOf("shib_idp_ls_supported", "_eventId_proceed")
         val LOGIN_FORM_PARAMS = listOf(INPUT_NAME_USERNAME, INPUT_NAME_PASSWORD)
+
+        val LOGIN_DATE_FORMAT = SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.JAPAN)
     }
 
     private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
@@ -149,6 +155,10 @@ class ShibbolethClient(
             document = passLoadingSessionInformationPage(document)
             document = passLoginPage(document, username, password)
             document = passSamlResponsePage(document)
+
+            context.defaultSharedPreferences.edit {
+                putString("shibboleth_last_login_date", LOGIN_DATE_FORMAT.format(Date()))
+            }
         }
 
         Log.d(TAG, "Fetched: ${document.title()}")
@@ -210,7 +220,7 @@ class ShibbolethClient(
                 .build()
 
         val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
+        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")

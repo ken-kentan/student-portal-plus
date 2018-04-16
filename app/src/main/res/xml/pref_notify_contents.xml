@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="通知の種類">
+
+        <ListPreference
+            android:key="notify_type_lecture_info"
+            android:title="授業関連連絡"
+            android:entries="@array/notify_type_lecture_name"
+            android:entryValues="@array/notify_type_lecture_values"
+            android:defaultValue="ALL">
+        </ListPreference>
+
+        <ListPreference
+            android:key="notify_type_lecture_cancel"
+            android:title="休講情報"
+            android:entries="@array/notify_type_lecture_name"
+            android:entryValues="@array/notify_type_lecture_values"
+            android:defaultValue="ALL">
+        </ListPreference>
+
+        <ListPreference
+            android:key="notify_type_notice"
+            android:title="最新情報"
+            android:entries="@array/notify_type_notice_name"
+            android:entryValues="@array/notify_type_notice_values"
+            android:defaultValue="ALL">
+        </ListPreference>
+    </PreferenceCategory>
+</PreferenceScreen>

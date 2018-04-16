@@ -214,10 +214,12 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         return true
     }
 
-    fun deleteAllFromDb() {
-        context.deleteDatabase(context.database.databaseName)
+    fun deleteAll(): Boolean {
+        val success = context.deleteDatabase(context.database.databaseName)
 
         loadFromDb()
+
+        return success
     }
 
     @Throws(Exception::class)

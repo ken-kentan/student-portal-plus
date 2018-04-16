@@ -1,13 +1,14 @@
 package jp.kentan.studentportalplus.ui
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import jp.kentan.studentportalplus.R
-import kotlinx.android.synthetic.main.activity_welcome.*
-import org.jetbrains.anko.*
 import jp.kentan.studentportalplus.ui.span.CustomTitle
+import kotlinx.android.synthetic.main.activity_welcome.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.longToast
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            startActivity(intentFor<LoginActivity>())
+            startActivity(intentFor<LoginActivity>("from_welcome" to true))
         }
     }
 

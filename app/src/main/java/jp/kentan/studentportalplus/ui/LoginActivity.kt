@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
@@ -12,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.content.edit
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
@@ -23,6 +23,7 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
@@ -33,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var shibbolethDataProvider: ShibbolethDataProvider
 
     private var loginJob: Job? = null
+    private var isLaunchMainActivity: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,8 @@ class LoginActivity : AppCompatActivity() {
         })
 
         login_button.setOnClickListener { attemptLogin() }
+
+        isLaunchMainActivity = intent.getBooleanExtra("from_welcome", false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,11 +142,14 @@ class LoginActivity : AppCompatActivity() {
         showProgress(false)
 
         if (isSuccess) {
-            val editor = PreferenceManager.getDefaultSharedPreferences(this@LoginActivity).edit()
-            editor.putBoolean("is_first", false)
-            editor.apply()
+            defaultSharedPreferences.edit {
+                putBoolean("is_first", false)
+            }
 
-            launchMainActivity()
+            if (isLaunchMainActivity) {
+                launchMainActivity()
+            }
+            finish()
         } else {
             error_text.visibility = View.VISIBLE
             error_text.text = message ?: getString(R.string.error_unknown)
@@ -150,12 +157,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun launchMainActivity() {
-        val intent = intentFor<MainActivity>("is_require_sync" to true)
+        val intent = intentFor<MainActivity>("require_sync" to true)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(intent)
-
-        finish()
     }
 
     private fun showProgress(isShow: Boolean) {

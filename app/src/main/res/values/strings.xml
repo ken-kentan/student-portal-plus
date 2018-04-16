@@ -9,6 +9,7 @@
     <string name="title_activity_notice">News &amp; Events</string>
     <string name="title_activity_my_class">My Class</string>
     <string name="title_activity_my_class_edit">Edit</string>
+    <string name="title_activity_settings">Settings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -146,16 +147,22 @@
     <string name="text_share_lecture_cancel">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n休講年月日: %5$s\n備考: %6$s\n掲示日: %7$s\n</string>
     <string name="text_share_created_date">掲載日: %1$s\n</string>
     <string name="text_share_updated_date">最終更新日: %1$s\n</string>
+    <string name="text_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
 
     <!-- Common messages -->
     <string name="msg_not_found">表示できる%1$sはありません</string>
     <string name="msg_register_class">受講科目に追加しました</string>
     <string name="msg_unregister_class">受講科目から除外しました</string>
+    <string name="msg_back_to_exit">もう一度押すとアプリを終了します</string>
+    <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
     <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
     <string name="text_unregister_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
     <string name="text_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
     <string name="text_my_class_edit_warn">正式な受講登録は大学のシステムを使用して下さい</string>
     <string name="text_my_class_empty">表示できる受講科目がありません.\nデータが未取得、または受講登録・修正期間の可能性があります.</string>
+    <string name="text_my_class_threshold1">が受講科目、</string>
+    <string name="text_my_class_threshold2">が類似科目です.</string>
+    <string name="text_my_class_threshold3">類似科目は受講科目と同様に通知されます.</string>
     <string name="hint_query_title">タイトルで検索&#8230;</string>
     <string name="hint_query_subject_and_instructor">科目・教員名で検索&#8230;</string>
 
@@ -169,6 +176,7 @@
     <string name="error_delete">消去に失敗しました</string>
     <string name="error_invalid_credit">不正な単位数です</string>
     <string name="error_invalid_schedule_code">不正な時間割番号です</string>
+    <string name="error_failed_to_sync">同期に失敗しました\nしばらく待ってから再度お試しください</string>
 
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
@@ -268,4 +276,76 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
 </resources>
