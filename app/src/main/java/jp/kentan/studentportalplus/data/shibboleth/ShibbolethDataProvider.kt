@@ -15,6 +15,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
 import jp.kentan.studentportalplus.data.component.ShibbolethData
+import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
@@ -169,10 +170,13 @@ class ShibbolethDataProvider(private val context: Context) {
             result.value = it
         }
 
-        result.value = Pair(
-                decryptString(preferences.getString(KEY_NAME,     null)) ?: "",
-                decryptString(preferences.getString(KEY_USERNAME, null)) ?: ""
-        )
+        bg {
+            result.postValue(
+                    Pair(
+                            decryptString(preferences.getString(KEY_NAME,     null)) ?: "",
+                            decryptString(preferences.getString(KEY_USERNAME, null)) ?: "")
+            )
+        }
 
         return result
     }

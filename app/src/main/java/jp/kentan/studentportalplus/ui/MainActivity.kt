@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -67,16 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         AndroidInjection.inject(this)
 
-        viewModel.getUser().observe(this, Observer {
-            it?.let {
-                val header = nav_view.getHeaderView(0)
-                val (name, username) = it
-
-                header.name.text = name
-                header.student_number.text = username
-            }
-        })
-
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
@@ -84,6 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         setupSwipeRefresh()
+        setupAccountHeader()
 
         if (intent.hasExtra("fragment_type")) {
             val type = FragmentType.valueOf(intent.getStringExtra("fragment_type"))
@@ -98,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
         }
 
-        if (intent.getBooleanExtra("request_sync", false)) {
+        if (intent.getBooleanExtra("require_sync", false)) {
             viewModel.sync()
         }
     }
@@ -206,9 +198,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         swipe_refresh_layout.setOnRefreshListener { viewModel.sync() }
 
         viewModel.getSyncResult().observe(this, Observer {
-            it?.let { (success, message) ->
+            it?.let { (success, errorMessage) ->
                 if (!success) {
-                    val snackbar = Snackbar.make(swipe_refresh_layout, message ?: "null", Snackbar.LENGTH_INDEFINITE)
+                    val message = if (defaultSharedPreferences.getBoolean("enable_detail_error", false) && errorMessage != null) {
+                        errorMessage
+                    } else {
+                        getString(R.string.error_failed_to_sync)
+                    }
+
+                    val snackbar = Snackbar.make(swipe_refresh_layout, message, Snackbar.LENGTH_INDEFINITE)
                     snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
                     snackbar.show()
                 }
@@ -217,6 +215,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         viewModel.isSyncing().observe(this, Observer {
             swipe_refresh_layout.isRefreshing = it ?: false
+        })
+    }
+
+    private fun setupAccountHeader() {
+        viewModel.getUser().observe(this@MainActivity, Observer {
+            it?.let {
+                val header = nav_view.getHeaderView(0)
+                val (name, username) = it
+
+                header.name.text = name
+                header.student_number.text = username
+            }
         })
     }
 
