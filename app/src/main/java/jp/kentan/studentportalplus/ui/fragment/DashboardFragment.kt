@@ -176,17 +176,21 @@ class DashboardFragment : Fragment() {
     private fun updateCardView(header: TextView, text: TextView, button: TextView, titleId: Int, itemCount: Int) {
         header.text = getString(titleId)
 
-        if (itemCount <= 0) {
-            text.visibility   = View.VISIBLE
-            button.visibility = View.GONE
-        } else if (itemCount > MAX_LIST_SIZE) {
-            header.append(getString(R.string.text_more_item, itemCount - MAX_LIST_SIZE))
+        when {
+            itemCount <= 0 -> {
+                text.visibility   = View.VISIBLE
+                button.visibility = View.GONE
+            }
+            itemCount > MAX_LIST_SIZE -> {
+                header.append(getString(R.string.text_more_item, itemCount - MAX_LIST_SIZE))
 
-            text.visibility   = View.GONE
-            button.visibility = View.VISIBLE
-        } else {
-            text.visibility   = View.GONE
-            button.visibility = View.GONE
+                text.visibility   = View.GONE
+                button.visibility = View.VISIBLE
+            }
+            else -> {
+                text.visibility   = View.GONE
+                button.visibility = View.GONE
+            }
         }
     }
 

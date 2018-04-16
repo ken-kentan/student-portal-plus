@@ -33,7 +33,7 @@ class DashboardNoticeAdapter(
 
     override fun getItemCount() = currentList.size
 
-    override fun getItemId(position: Int) = currentList.get(position).id
+    override fun getItemId(position: Int) = currentList[position].id
 
     fun submitList(list: List<Notice>) {
         val oldList = currentList
@@ -48,13 +48,13 @@ class DashboardNoticeAdapter(
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return Notice.DIFF_CALLBACK.areItemsTheSame(
-                        oldList.get(oldItemPosition), newList.get(newItemPosition)
+                        oldList[oldItemPosition], newList[newItemPosition]
                 )
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return Notice.DIFF_CALLBACK.areContentsTheSame(
-                        currentList.get(oldItemPosition), newList.get(newItemPosition)
+                        currentList[oldItemPosition], newList[newItemPosition]
                 )
             }
         })
@@ -72,7 +72,7 @@ class DashboardNoticeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(currentList.get(position))
+        holder.bindTo(currentList[position])
     }
 
     class ViewHolder(

@@ -16,17 +16,6 @@ import java.util.*
 
 class DashboardFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    fun getMyClassList(): LiveData<Pair<String, List<MyClass>>> =
-            Transformations.map(repository.myClassList) { toTodayTimetable(it) }
-
-    fun getAttendLectureInformationList(): LiveData<List<LectureInformation>> =
-            Transformations.map(repository.lectureInformationList) { it.filter { it.attend.isAttend() } }
-
-    fun getAttendLectureCancellationList(): LiveData<List<LectureCancellation>> =
-            Transformations.map(repository.lectureCancellationList) { it.filter { it.attend.isAttend() } }
-
-    fun getNoticeList(): LiveData<List<Notice>> = repository.noticeList
-
     fun getResults(): LiveData<PortalDataSet> = Transformations.map(repository.portalDataSet) {
         it.copy(
                 myClassList = toTodayTimetable(it.myClassList).second,

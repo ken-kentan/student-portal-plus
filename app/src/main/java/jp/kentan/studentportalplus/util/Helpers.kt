@@ -52,7 +52,7 @@ fun Date.toShortString(): String? = DATE_FORMAT.format(this)
 fun String.toSpanned(): Spanned{
     var htmlStr = this
 
-    htmlTags.forEach { pattern, span ->
+    htmlTags.forEach { (pattern, span) ->
         htmlStr = pattern.matcher(htmlStr).replaceAll(span)
     }
 

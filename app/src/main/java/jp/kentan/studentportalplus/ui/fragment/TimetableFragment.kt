@@ -38,7 +38,7 @@ class TimetableFragment : Fragment() {
     private lateinit var adapter: MyClassAdapter
     private lateinit var layoutType: TimetableFragmentViewModel.LayoutType
 
-    private val weekView: Map<ClassWeekType, TextView> by lazy {
+    private val weekViewMap: Map<ClassWeekType, TextView> by lazy {
         mapOf(
                 ClassWeekType.MONDAY to monday_header,
                 ClassWeekType.TUESDAY to tuesday_header,
@@ -85,7 +85,7 @@ class TimetableFragment : Fragment() {
             note.visibility = if (it == null || it.isEmpty()) View.VISIBLE else View.GONE
 
             val today = viewModel.getWeek()
-            weekView.forEach { week, view ->
+            weekViewMap.forEach { (week, view) ->
                 if (week == today) {
                     view.typeface = Typeface.DEFAULT_BOLD
                     view.textColorResource = R.color.colorAccent

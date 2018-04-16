@@ -9,9 +9,9 @@ data class NoticeQuery(
         val hasRead   : Boolean,
         val isFavorite: Boolean
 ) {
-    val keywordList by lazy {
+    val keywordList: List<String> by lazy {
         if (keywords == null || keywords.isEmpty()) {
-            listOf<String>()
+            emptyList()
         } else {
             keywords.split(' ')
                     .mapNotNull {
