@@ -1,13 +1,13 @@
 package jp.kentan.studentportalplus.ui.widget
 
 import android.content.Context
-import android.content.Intent
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import androidx.core.net.toUri
 import jp.kentan.studentportalplus.R
 import org.chromium.customtabsclient.shared.CustomTabsHelper
 import org.jetbrains.anko.defaultSharedPreferences
+import org.jetbrains.anko.newTask
 
 class MapView {
 
@@ -35,7 +35,7 @@ class MapView {
                     .build()
 
             customTabs.intent.`package` = CustomTabsHelper.getPackageNameToUse(context)
-            customTabs.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            customTabs.intent.newTask()
             customTabs.launchUrl(context, urlStr.toUri())
         }
     }

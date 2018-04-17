@@ -2,7 +2,6 @@ package jp.kentan.studentportalplus.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -25,6 +24,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
+import org.jetbrains.anko.share
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -103,13 +103,7 @@ class NoticeActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.action_share -> {
                 val (subject, text) = viewModel.getShareText(this)
-
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                intent.putExtra(Intent.EXTRA_TEXT, text)
-
-                startActivity(intent)
+                share(text, subject)
             }
             android.R.id.home -> {
                 finish()

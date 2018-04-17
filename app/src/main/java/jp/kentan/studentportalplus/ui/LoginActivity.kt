@@ -2,7 +2,6 @@ package jp.kentan.studentportalplus.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -22,9 +21,11 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import javax.inject.Inject
 
 
@@ -157,10 +158,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun launchMainActivity() {
-        val intent = intentFor<MainActivity>("require_sync" to true)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-        startActivity(intent)
+        startActivity(intentFor<MainActivity>("require_sync" to true).newTask().clearTask())
     }
 
     private fun showProgress(isShow: Boolean) {
