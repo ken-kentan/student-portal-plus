@@ -26,7 +26,7 @@ class SyncJobScheduler {
 
         fun schedule(context: Context) {
             val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(context))
-            val intervalSec = 30//(context.defaultSharedPreferences.getString("sync_interval", "60").toIntOrNull() ?: 60) * 60
+            val intervalSec = (context.defaultSharedPreferences.getString("sync_interval", "60").toIntOrNull() ?: 60) * 60
 
             try {
                 val job = dispatcher.newJobBuilder()
@@ -34,7 +34,7 @@ class SyncJobScheduler {
                         .setTag(SyncJobService.TAG)
                         .setRecurring(true)
                         .setLifetime(Lifetime.FOREVER)
-                        .setTrigger(Trigger.executionWindow(intervalSec, intervalSec + 10))
+                        .setTrigger(Trigger.executionWindow(intervalSec, intervalSec + 60))
                         .setReplaceCurrent(true)
                         .setConstraints(Constraint.ON_ANY_NETWORK)
                         .build()
