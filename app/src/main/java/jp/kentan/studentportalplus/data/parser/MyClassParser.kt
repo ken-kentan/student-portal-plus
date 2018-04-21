@@ -36,7 +36,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
 
             // Per period
             tdElements.forEachIndexed { index, element ->
-                val pElement = element.selectFirst("p:not(.semester_title3)") ?: return@forEachIndexed
+                val pElement = element.selectFirst("p:not([class])") ?: return@forEachIndexed
 
                 val lineList = pElement.html().split("<br>", limit = 5)
 
@@ -117,7 +117,8 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         }
 
         periodList.forEach {
-            val hashStr = week.name + it + 0 + data.subject + data.instructor
+            val isUser = (data.attend == LectureAttendType.USER)
+            val hashStr = week.name + it + 0 + data.subject + data.instructor + isUser
 
             list.add(
                     MyClass(
@@ -129,7 +130,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
                             category     = "",
                             subject      = data.subject,
                             instructor   = data.instructor,
-                            isUser       = (data.attend == LectureAttendType.USER)
+                            isUser       = isUser
                     )
             )
         }
@@ -142,8 +143,9 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         val category     = lineList[2].trim()
         val subject      = lineList[3].trim()
         val instructor   = lineList[4].trim()
+        val isUser       = false
 
-        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor
+        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor + isUser
 
         return MyClass(
                 hash = Murmur3.hash64(hashStr.toByteArray()),
@@ -154,7 +156,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
                 category = category,
                 subject = subject,
                 instructor = instructor,
-                isUser = false
+                isUser = isUser
         )
     }
 }

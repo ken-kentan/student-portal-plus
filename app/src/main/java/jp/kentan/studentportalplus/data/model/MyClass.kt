@@ -7,7 +7,7 @@ import jp.kentan.studentportalplus.data.component.ClassWeekType
 
 data class MyClass(
         val id          : Long = -1,
-        val hash        : Long,          // Murmur3.hash64(week + period + scheduleCode + credit + category + subject + instructor)
+        val hash        : Long,          // Murmur3.hash64(week + period + scheduleCode + credit + category + subject + instructor + isUser)
         val week        : ClassWeekType, // 週
         val period      : Int,           // 時限
         val scheduleCode: String,        // 時間割コード

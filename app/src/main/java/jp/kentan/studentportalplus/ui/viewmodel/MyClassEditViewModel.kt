@@ -45,7 +45,7 @@ class MyClassEditViewModel(private val repository: PortalRepository) : ViewModel
     fun save() = bg {
         editData?.let {
             val period = if (it.week.hasPeriod()) it.period else 0
-            val hashStr = it.week.name + period + it.scheduleCode + it.credit + it.category + it.subject + it.instructor
+            val hashStr = it.week.name + period + it.scheduleCode + it.credit + it.category + it.subject + it.instructor + it.isUser
             val data = it.copy(hash = Murmur3.hash64(hashStr.toByteArray()), period = period)
 
             return@bg if (data.id > 0) repository.update(data) else repository.add(data)
