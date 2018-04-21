@@ -27,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            startActivity(intentFor<LoginActivity>("from_welcome" to true))
+            startActivity(intentFor<LoginActivity>("request_launch_main_activity" to true))
         }
     }
 

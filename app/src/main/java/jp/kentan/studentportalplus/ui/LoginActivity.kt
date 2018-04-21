@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
         login_button.setOnClickListener { attemptLogin() }
 
-        isLaunchMainActivity = intent.getBooleanExtra("from_welcome", false)
+        isLaunchMainActivity = intent.getBooleanExtra("request_launch_main_activity", false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

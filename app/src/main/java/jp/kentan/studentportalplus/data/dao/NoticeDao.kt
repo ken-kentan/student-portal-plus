@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.component.CreatedDateType
 import jp.kentan.studentportalplus.data.component.NoticeQuery
+import jp.kentan.studentportalplus.data.component.NotifyContent
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.util.toLong
@@ -85,6 +86,8 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
     fun updateAll(list: List<Notice>) = database.use {
         beginTransaction()
 
+        val notifyDataList = mutableListOf<NotifyContent>()
+
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
@@ -101,7 +104,10 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
             st.bindLong(10, it.hasRead.toLong())
             st.bindLong(11, it.isFavorite.toLong())
 
-            st.executeInsert()
+            val id = st.executeInsert()
+            if (id > 0) {
+                notifyDataList.add(NotifyContent(it.title, it.detailText, id))
+            }
             st.clearBindings()
         }
 
@@ -124,6 +130,8 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
 
         setTransactionSuccessful()
         endTransaction()
+
+        return@use notifyDataList
     }
 
     fun update(data: Notice): Int = database.use {

@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.data.dao
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.component.LectureOrderType
 import jp.kentan.studentportalplus.data.component.LectureQuery
+import jp.kentan.studentportalplus.data.component.NotifyContent
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
@@ -117,6 +118,8 @@ class LectureInformationDao(
     fun updateAll(list: List<LectureInformation>) = database.use {
         beginTransaction()
 
+        val notifyDataList = mutableListOf<NotifyContent>()
+
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
         // Insert new data
@@ -136,7 +139,9 @@ class LectureInformationDao(
             st.bindString(13, DatabaseOpenHelper.toString(it.updatedDate))
             st.bindLong(14, it.hasRead.toLong())
 
-            st.executeInsert()
+            if (st.executeInsert() > 0) {
+                notifyDataList.add(NotifyContent(it.subject, it.detailText, it.hash))
+            }
             st.clearBindings()
         }
 
@@ -159,6 +164,8 @@ class LectureInformationDao(
 
         setTransactionSuccessful()
         endTransaction()
+
+        return@use notifyDataList
     }
 
     fun update(data: LectureInformation): Int = database.use {

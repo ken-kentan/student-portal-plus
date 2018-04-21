@@ -21,19 +21,19 @@
         android:title="新着通知">
 
         <SwitchPreference
-            android:key="enable_auto_fetch"
-            android:title="自動受信"
-            android:summary="一定間隔で自動的に受信(フェッチ)します"
+            android:key="enable_sync"
+            android:title="同期"
+            android:summary="一定間隔で自動的に同期(フェッチ)します"
             android:defaultValue="true">
         </SwitchPreference>
 
         <ListPreference
             android:defaultValue="60"
-            android:entries="@array/auto_fetch_interval_name"
-            android:entryValues="@array/auto_fetch_interval_values"
-            android:key="auto_fetch_interval"
+            android:entries="@array/sync_interval_name"
+            android:entryValues="@array/sync_interval_values"
+            android:key="sync_interval"
             android:summary="N時間ごと"
-            android:title="自動受信間隔" />
+            android:title="同期間隔" />
 
         <Preference
             android:key="notify_contents"

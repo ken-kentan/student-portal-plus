@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="auto_fetch_interval_name">
+    <string-array name="sync_interval_name">
         <item>30分毎</item>
         <item>1時間毎</item>
         <item>2時間毎</item>
         <item>3時間毎</item>
         <item>6時間毎</item>
     </string-array>
-    <string-array name="auto_fetch_interval_values">
+    <string-array name="sync_interval_values">
         <item>30</item>
         <item>60</item>
         <item>120</item>

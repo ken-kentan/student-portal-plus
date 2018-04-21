@@ -18,6 +18,7 @@ import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NotifyType
+import jp.kentan.studentportalplus.notification.SyncJobScheduler
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.widget.MyClassThresholdSamplePreference
 import kotlinx.coroutines.experimental.android.UI
@@ -67,7 +68,7 @@ class SettingsActivity : AppCompatActivity() {
         lateinit var portalRepository: PortalRepository
 
         private lateinit var shibbolethLastLoginDate: Preference
-        private lateinit var autoFetchInterval: ListPreference
+        private lateinit var syncInterval: ListPreference
         private lateinit var notifyContents: Preference
         private lateinit var notifyVibration: Preference
         private lateinit var notifyLed: Preference
@@ -81,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
             val screen = preferenceScreen
 
             shibbolethLastLoginDate = screen.findPreference("shibboleth_last_login_date")
-            autoFetchInterval = screen.findPreference("auto_fetch_interval") as ListPreference
+            syncInterval = screen.findPreference("sync_interval") as ListPreference
             notifyContents = screen.findPreference("notify_contents")
             notifyVibration = screen.findPreference("enable_notify_vibration")
             notifyLed = screen.findPreference("enable_notify_led")
@@ -108,9 +109,9 @@ class SettingsActivity : AppCompatActivity() {
             }
 
 
-            val enable = defaultSharedPreferences.getBoolean("enable_auto_fetch", true)
+            val enable = defaultSharedPreferences.getBoolean("enable_sync", true)
 
-            autoFetchInterval.isEnabled = enable
+            syncInterval.isEnabled = enable
             notifyContents.isEnabled = enable
             notifyVibration.isEnabled = enable
             notifyLed.isEnabled = enable
@@ -160,18 +161,24 @@ class SettingsActivity : AppCompatActivity() {
                 "shibboleth_last_login_date" -> {
                     shibbolethLastLoginDate.summary = pref.getString("shibboleth_last_login_date", "なし")
                 }
-                "enable_auto_fetch" -> {
-                    val enable = pref.getBoolean("enable_auto_fetch", true)
+                "enable_sync" -> {
+                    val enable = pref.getBoolean("enable_sync", true)
 
-                    autoFetchInterval.isEnabled = enable
+                    syncInterval.isEnabled = enable
                     notifyContents.isEnabled = enable
                     notifyVibration.isEnabled = enable
                     notifyLed.isEnabled = enable
-                }
-                "auto_fetch_interval" -> {
-                    val interval = pref.getString("auto_fetch_interval", "60").toIntOrNull() ?: 60
 
-                    autoFetchInterval.summary = if (interval >= 60) {
+                    if (enable) {
+                        SyncJobScheduler.schedule(activity)
+                    } else {
+                        SyncJobScheduler.cancel(activity)
+                    }
+                }
+                "sync_interval" -> {
+                    val interval = pref.getString("sync_interval", "60").toIntOrNull() ?: 60
+
+                    syncInterval.summary = if (interval >= 60) {
                         "${interval / 60}時間毎に更新する"
                     } else {
                         "${interval}分毎に更新する"
@@ -196,8 +203,8 @@ class SettingsActivity : AppCompatActivity() {
             screen.findPreference("shibboleth_last_login_date").summary = pref.getString("shibboleth_last_login_date", "なし")
             screen.findPreference("version").summary = BuildConfig.VERSION_NAME
 
-            val interval = pref.getString("auto_fetch_interval", "60").toIntOrNull() ?: 60
-            autoFetchInterval.summary = if (interval >= 60) {
+            val interval = pref.getString("sync_interval", "60").toIntOrNull() ?: 60
+            syncInterval.summary = if (interval >= 60) {
                 "${interval / 60}時間毎に更新する"
             } else {
                 "${interval}分毎に更新する"

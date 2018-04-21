@@ -183,7 +183,10 @@ class ShibbolethDataProvider(private val context: Context) {
 
     @Throws(Exception::class)
     fun get() = ShibbolethData(
-            username = decryptString(preferences.getString(KEY_USERNAME, null)) ?: throw ShibbolethException("Failed to decrypt username"),
-            password = decryptString(preferences.getString(KEY_PASSWORD, null)) ?: throw ShibbolethException("Failed to decrypt password")
+            username = decryptString(preferences.getString(KEY_USERNAME, null))
+                    ?: throw ShibbolethAuthenticationException("ユーザー名の復号に失敗しました"),
+            password = decryptString(preferences.getString(KEY_PASSWORD, null))
+                    ?: throw ShibbolethAuthenticationException("パスワードの復号に失敗しました")
     )
+
 }

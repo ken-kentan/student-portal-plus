@@ -236,7 +236,7 @@ class ShibbolethClient(
         // If username or password invalid
         val formErrorElem = document.selectFirst(".form-error")
         if (formErrorElem != null) {
-            throw ShibbolethException(formErrorElem.text())
+            throw ShibbolethAuthenticationException(formErrorElem.text())
         }
 
         val formElem         = document.selectFirst("form")                     ?: throw ShibbolethException("Empty saml response form")

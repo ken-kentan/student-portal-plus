@@ -6,10 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.LectureQuery
-import jp.kentan.studentportalplus.data.component.NoticeQuery
-import jp.kentan.studentportalplus.data.component.PortalDataSet
-import jp.kentan.studentportalplus.data.component.PortalDataType
+import jp.kentan.studentportalplus.data.component.*
 import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.model.*
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
@@ -125,17 +122,7 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
 
     fun syncWithWeb(): Pair<Boolean, String?> {
         try {
-            val noticeList        = noticeParser.parse(fetchDocument(PortalDataType.NOTICE))
-            val lectureInfoList   = lectureInfoParser.parse(fetchDocument(PortalDataType.LECTURE_INFORMATION))
-            val lectureCancelList = lectureCancelParser.parse(fetchDocument(PortalDataType.LECTURE_CANCELLATION))
-            val myCLassList       = myClassParser.parse(fetchDocument(PortalDataType.MY_CLASS))
-
-            noticeDao.updateAll(noticeList)
-            lectureInfoDao.updateAll(lectureInfoList)
-            lectureCancelDao.updateAll(lectureCancelList)
-            myClassDao.updateAll(myCLassList)
-
-            loadFromDb()
+            sync()
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
             return Pair(false, e.message)
@@ -144,7 +131,33 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         return Pair<Boolean, String?>(true, null)
     }
 
+    @Throws(Exception::class)
+    fun sync(): Map<PortalDataType, List<NotifyContent>> {
+        val noticeList        = noticeParser.parse(fetchDocument(PortalDataType.NOTICE))
+        val lectureInfoList   = lectureInfoParser.parse(fetchDocument(PortalDataType.LECTURE_INFORMATION))
+        val lectureCancelList = lectureCancelParser.parse(fetchDocument(PortalDataType.LECTURE_CANCELLATION))
+        val myCLassList       = myClassParser.parse(fetchDocument(PortalDataType.MY_CLASS))
+
+        myClassDao.updateAll(myCLassList)
+
+        val newNoticeList        = noticeDao.updateAll(noticeList)
+        val newLectureInfoList   = lectureInfoDao.updateAll(lectureInfoList)
+        val newLectureCancelList = lectureCancelDao.updateAll(lectureCancelList)
+
+        loadFromDb()
+
+        return mapOf(
+                PortalDataType.NOTICE to newNoticeList,
+                PortalDataType.LECTURE_INFORMATION to newLectureInfoList,
+                PortalDataType.LECTURE_CANCELLATION to newLectureCancelList
+        )
+    }
+
+    fun getNoticeById(id: Long) = _noticeList.value?.find { it.id == id } ?: noticeDao.get(id)
+
     fun getMyClassById(id: Long) = _myClassList.value?.find { it.id == id }
+
+    fun getMyClassSubjectList() = myClassDao.getSubjectList()
 
     fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
 

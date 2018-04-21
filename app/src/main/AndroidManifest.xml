@@ -66,6 +66,28 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
+
+        <service
+            android:name=".notification.SyncJobService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notification.RetryActionService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".notification.DeviceStatusReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
