@@ -17,8 +17,6 @@ import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_my_class.*
 import kotlinx.android.synthetic.main.content_my_class.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -39,7 +37,6 @@ class MyClassActivity : AppCompatActivity() {
 
     private val customTransformationMethod = CustomTransformationMethod(this)
 
-    private var isIgnoreUpdate = false
     private var canDelete = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,11 +47,7 @@ class MyClassActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
-            if (isIgnoreUpdate) {
-                return@Observer
-            }
-
+        viewModel.myClass.observe(this, Observer { data ->
             if (data == null) {
                 toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
                 finish()
@@ -65,12 +58,8 @@ class MyClassActivity : AppCompatActivity() {
             toolbar_layout.backgroundColor = data.color
             initView(data)
 
-            if (!data.isUser) {
-                fab.hide()
-            } else {
+            if (data.isUser) {
                 canDelete = true
-
-                fab.show()
                 invalidateOptionsMenu()
             }
 
@@ -78,6 +67,8 @@ class MyClassActivity : AppCompatActivity() {
                 startActivity<MyClassEditActivity>("id" to data.id)
             }
         })
+
+        viewModel.myClassId.value = intent.getLongExtra("id", 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -115,14 +106,10 @@ class MyClassActivity : AppCompatActivity() {
                 .setTitle(R.string.title_delete)
                 .setMessage(getString(R.string.text_delete_confirm, subject.text).toSpanned())
                 .setPositiveButton(R.string.action_yes) { _, _ ->
-                    async(UI) {
-                        isIgnoreUpdate = true
-
-                        val success = viewModel.delete().await()
+                    viewModel.onClickDelete { success ->
                         if (success) {
                             finish()
                         } else {
-                            isIgnoreUpdate = false
                             indefiniteSnackbar(fab, getString(R.string.error_delete), getString(R.string.action_close))
                         }
                     }

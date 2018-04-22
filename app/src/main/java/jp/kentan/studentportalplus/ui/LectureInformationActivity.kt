@@ -20,10 +20,7 @@ import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_information.*
 import kotlinx.android.synthetic.main.content_lecture_information.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.design.snackbar
-import org.jetbrains.anko.share
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -52,21 +49,15 @@ class LectureInformationActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var hasUpdate = false
-
-        viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
+        viewModel.lectureInfo.observe(this, Observer<LectureInformation> { data ->
             if (data == null) {
                 toast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
                 finish()
                 return@Observer
             }
 
-            if (!hasUpdate) {
-                toolbar_layout.title = data.subject
-                initView(data)
-
-                hasUpdate = true
-            }
+            toolbar_layout.title = data.subject
+            initView(data)
 
             if (data.attend == LectureAttendType.PORTAL) {
                 fab.hide()
@@ -75,12 +66,12 @@ class LectureInformationActivity : AppCompatActivity() {
             }
 
             fab.setOnClickListener {
-                if (data.attend == LectureAttendType.USER) {
+                val type = viewModel.getCurrentAttendType() ?: return@setOnClickListener
+
+                if (type == LectureAttendType.USER) {
                     showConfirmationDialog(data.subject)
                 } else {
-                    async(UI) {
-                        val success = viewModel.updateAttendByUser(true).await()
-
+                    viewModel.onClickAttendToUser { success ->
                         if (success) {
                             fab.animate()
                                     .rotation(ROTATION_TO)
@@ -99,6 +90,8 @@ class LectureInformationActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewModel.lectureInfoId.value = intent.getLongExtra("id", 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -108,13 +101,8 @@ class LectureInformationActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_share -> {
-                val (subject, text) = viewModel.getShareText(this)
-                share(text, subject)
-            }
-            android.R.id.home -> {
-                finish()
-            }
+            R.id.action_share -> viewModel.onClickShare(this)
+            android.R.id.home -> finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -146,9 +134,7 @@ class LectureInformationActivity : AppCompatActivity() {
         builder.setTitle(R.string.title_confirmation)
         builder.setMessage(getString(R.string.text_unregister_confirm, subject).toSpanned())
         builder.setPositiveButton(R.string.action_yes) { _, _ ->
-            async(UI) {
-                val success = viewModel.updateAttendByUser(false).await()
-
+            viewModel.onClickAttendToNot { success ->
                 if (success) {
                     snackbar(layout, R.string.msg_unregister_class)
 

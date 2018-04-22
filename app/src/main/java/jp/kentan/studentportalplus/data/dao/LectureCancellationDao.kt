@@ -150,8 +150,9 @@ class LectureCancellationDao(
             st.bindString(11, DatabaseOpenHelper.toString(it.createdDate))
             st.bindLong(12, it.hasRead.toLong())
 
-            if (st.executeInsert() > 0) {
-                notifyDataList.add(NotifyContent(it.subject, it.detailText, it.hash))
+            val id = st.executeInsert()
+            if (id > 0) {
+                notifyDataList.add(NotifyContent(it.subject, it.detailText, id))
             }
             st.clearBindings()
         }

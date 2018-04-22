@@ -16,7 +16,7 @@ import java.util.*
 
 class DashboardFragmentViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    fun getResults(): LiveData<PortalDataSet> = Transformations.map(repository.portalDataSet) {
+    val portalDataSet: LiveData<PortalDataSet> = Transformations.map(repository.portalDataSet) {
         it.copy(
                 myClassList = toTodayTimetable(it.myClassList).second,
                 lectureInfoList = it.lectureInfoList.filter { it.attend.isAttend() },
@@ -45,7 +45,7 @@ class DashboardFragmentViewModel(private val repository: PortalRepository) : Vie
             dayOfWeek++
         }
 
-        //土、日は月に
+        // 土、日は月に
         val week = if (dayOfWeek in Calendar.MONDAY..Calendar.FRIDAY) ClassWeekType.valueOf(dayOfWeek-1) else ClassWeekType.MONDAY
 
         return Pair(week.fullDisplayName, list.filter { it.week == week })

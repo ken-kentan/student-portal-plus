@@ -44,46 +44,40 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
     private val _myClassList             = MutableLiveData<List<MyClass>>()
     private val _portalDataSet           = MutableLiveData<PortalDataSet>()
 
-    val noticeList: LiveData<List<Notice>>
-        get() = copyLiveData(_noticeList)
+    val noticeList: LiveData<List<Notice>> = _noticeList
 
-    val lectureInformationList: LiveData<List<LectureInformation>>
-        get() = copyLiveData(_lectureInformationList)
+    val lectureInformationList: LiveData<List<LectureInformation>> = _lectureInformationList
 
-    val lectureCancellationList: LiveData<List<LectureCancellation>>
-        get() = copyLiveData(_lectureCancellationList)
+    val lectureCancellationList: LiveData<List<LectureCancellation>> = _lectureCancellationList
 
-    val myClassList: LiveData<List<MyClass>>
-        get() = copyLiveData(_myClassList)
+    val myClassList: LiveData<List<MyClass>> = _myClassList
 
-    val portalDataSet: LiveData<PortalDataSet>
-        get() = copyLiveData(_portalDataSet)
+    val portalDataSet: LiveData<PortalDataSet> = _portalDataSet
 
-    val subjectList: LiveData<List<String>>
-        get() {
-            val result = MediatorLiveData<List<String>>()
+    val subjectList: LiveData<List<String>> by lazy {
+        val result = MediatorLiveData<List<String>>()
 
-            result.addSource(_lectureInformationList) {
-                it?.let {
-                    val old = result.value?.toList() ?: emptyList()
-                    result.value = it.map { it.subject }.plus(old).distinct()
-                }
+        result.addSource(_lectureInformationList) {
+            it?.let {
+                val old = result.value?.toList() ?: emptyList()
+                result.value = it.map { it.subject }.plus(old).distinct()
             }
-            result.addSource(_lectureCancellationList) {
-                it?.let {
-                    val old = result.value?.toList() ?: emptyList()
-                    result.value = it.map { it.subject }.plus(old).distinct()
-                }
-            }
-            result.addSource(_myClassList) {
-                it?.let {
-                    val old = result.value?.toList() ?: emptyList()
-                    result.value = it.map { it.subject }.plus(old).distinct()
-                }
-            }
-
-            return result
         }
+        result.addSource(_lectureCancellationList) {
+            it?.let {
+                val old = result.value?.toList() ?: emptyList()
+                result.value = it.map { it.subject }.plus(old).distinct()
+            }
+        }
+        result.addSource(_myClassList) {
+            it?.let {
+                val old = result.value?.toList() ?: emptyList()
+                result.value = it.map { it.subject }.plus(old).distinct()
+            }
+        }
+
+        result
+    }
 
 
     init {
@@ -152,6 +146,10 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
                 PortalDataType.LECTURE_CANCELLATION to newLectureCancelList
         )
     }
+
+    fun getLectureInformationById(id: Long) = _lectureInformationList.value?.find { it.id == id } ?: lectureInfoDao.get(id)
+
+    fun getLectureCancellationById(id: Long) = _lectureCancellationList.value?.find { it.id == id } ?: lectureCancelDao.get(id)
 
     fun getNoticeById(id: Long) = _noticeList.value?.find { it.id == id } ?: noticeDao.get(id)
 
@@ -244,13 +242,7 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         return true
     }
 
-    fun deleteAll(): Boolean {
-        val success = context.deleteDatabase(context.database.databaseName)
-
-        loadFromDb()
-
-        return success
-    }
+    fun deleteAll(): Boolean = context.deleteDatabase(context.database.databaseName)
 
     @Throws(Exception::class)
     private fun fetchDocument(type: PortalDataType) = shibbolethClient.fetch(type.url)
@@ -289,20 +281,11 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
             set = set.copy(noticeList = noticeList)
         }
 
-        if (postCount > 0) {
+        if (postCount > 0 && _portalDataSet.value != set) {
             _portalDataSet.postValue(set)
         }
 
         Log.d(TAG, "posted $postCount lists")
-    }
-
-    /**
-     * Create new LiveData instance from source
-     */
-    private fun <T> copyLiveData(source: LiveData<T>): LiveData<T> {
-        val result = MediatorLiveData<T>()
-        result.addSource(source) { result.value = it }
-        return result
     }
 
     private fun SharedPreferences.getMyClassThreshold(): Float {

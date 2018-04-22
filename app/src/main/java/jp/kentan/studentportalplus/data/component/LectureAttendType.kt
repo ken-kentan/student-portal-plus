@@ -9,4 +9,6 @@ enum class LectureAttendType {
     UNKNOWN; // 未確認
 
     fun isAttend() = this == PORTAL || this == USER || this == SIMILAR
+
+    fun canAttend() = this == SIMILAR || this == NOT
 }

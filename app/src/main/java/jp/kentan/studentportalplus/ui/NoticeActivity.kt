@@ -20,11 +20,8 @@ import jp.kentan.studentportalplus.util.toShortString
 import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.android.synthetic.main.content_notice.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
-import org.jetbrains.anko.share
 import org.jetbrains.anko.toast
 import javax.inject.Inject
 
@@ -54,44 +51,20 @@ class NoticeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var hasUpdate = false
+        initFab()
 
-        viewModel.get(intent.getLongExtra("id", 0)).observe(this, Observer { data ->
+        viewModel.notice.observe(this, Observer { data ->
             if (data == null) {
                 toast(getString(R.string.error_not_found, getString(R.string.name_notice)))
                 finish()
                 return@Observer
             }
 
-            if (!hasUpdate) {
-                toolbar_layout.title = data.title
-                initView(data)
-
-                hasUpdate = true
-            }
-
-            fab.setOnClickListener {
-                async(UI) {
-                    val favorite = !data.isFavorite
-                    val success = viewModel.updateFavorite(favorite).await()
-
-                    if (success) {
-                        fab.setImageResource(if (favorite) R.drawable.ic_star else R.drawable.ic_star_border)
-                        fab.animate()
-                                .rotation(if (favorite) ROTATION_TO else ROTATION_FROM)
-                                .setDuration(DURATION)
-                                .setInterpolator(INTERPOLATOR)
-                                .start()
-
-                        snackbar(it, if (favorite) R.string.msg_set_favorite else R.string.msg_reset_favorite)
-                    } else {
-                        indefiniteSnackbar(it,
-                                getString(R.string.error_update, getString(R.string.name_favorite)),
-                                getString(R.string.action_close))
-                    }
-                }
-            }
+            toolbar_layout.title = data.title
+            initView(data)
         })
+
+        viewModel.noticeId.value = intent.getLongExtra("id", 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,13 +74,8 @@ class NoticeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_share -> {
-                val (subject, text) = viewModel.getShareText(this)
-                share(text, subject)
-            }
-            android.R.id.home -> {
-                finish()
-            }
+            R.id.action_share -> viewModel.onClickShare(this)
+            android.R.id.home -> finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -139,5 +107,26 @@ class NoticeActivity : AppCompatActivity() {
         }
 
         date.text = getString(R.string.text_created_date_notice, data.createdDate.toShortString())
+    }
+
+    private fun initFab() {
+        fab.setOnClickListener {
+            viewModel.onClickFavorite{ success: Boolean, favorite: Boolean ->
+                if (success) {
+                    fab.setImageResource(if (favorite) R.drawable.ic_star else R.drawable.ic_star_border)
+                    fab.animate()
+                            .rotation(if (favorite) ROTATION_TO else ROTATION_FROM)
+                            .setDuration(DURATION)
+                            .setInterpolator(INTERPOLATOR)
+                            .start()
+
+                    snackbar(it, if (favorite) R.string.msg_set_favorite else R.string.msg_reset_favorite)
+                } else {
+                    indefiniteSnackbar(it,
+                            getString(R.string.error_update, getString(R.string.name_favorite)),
+                            getString(R.string.action_close))
+                }
+            }
+        }
     }
 }

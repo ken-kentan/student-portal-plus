@@ -139,8 +139,9 @@ class LectureInformationDao(
             st.bindString(13, DatabaseOpenHelper.toString(it.updatedDate))
             st.bindLong(14, it.hasRead.toLong())
 
-            if (st.executeInsert() > 0) {
-                notifyDataList.add(NotifyContent(it.subject, it.detailText, it.hash))
+            val id = st.executeInsert()
+            if (id > 0) {
+                notifyDataList.add(NotifyContent(it.subject, it.detailText, id))
             }
             st.clearBindings()
         }

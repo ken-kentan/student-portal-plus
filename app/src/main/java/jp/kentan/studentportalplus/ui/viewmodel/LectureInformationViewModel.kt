@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
@@ -9,43 +10,70 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.util.toShortString
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.jetbrains.anko.share
 
 class LectureInformationViewModel(private val repository: PortalRepository) : ViewModel() {
 
-    private lateinit var data: LectureInformation
+    val lectureInfoId = MutableLiveData<Long>()
+    val lectureInfo: LiveData<LectureInformation> = Transformations.map(lectureInfoId) { id -> findLectureInfoById(id)}
 
-    fun get(id: Long): LiveData<LectureInformation> = Transformations.map(repository.lectureInformationList) {
-        data = it.find { it.id == id } ?: return@map null
-        return@map data
-    }
+    fun getCurrentAttendType() = findLectureInfoById(lectureInfoId.value)?.attend
 
-    fun getShareText(context: Context): Pair<String, String> {
-        val sb = StringBuilder()
+    fun onClickShare(context: Context) {
+        val data = findLectureInfoById(lectureInfoId.value) ?: return
 
-        sb.append(context.getString(R.string.text_share_lecture_info,
-                data.subject,
-                data.instructor,
-                data.week,
-                data.period,
-                data.category,
-                data.detailText,
-                data.createdDate.toShortString()))
+        val text = StringBuilder(
+                context.getString(R.string.text_share_lecture_info,
+                        data.subject,
+                        data.instructor,
+                        data.week,
+                        data.period,
+                        data.category,
+                        data.detailText,
+                        data.createdDate.toShortString()))
 
         if (data.createdDate != data.updatedDate) {
-            sb.append(context.getString(R.string.text_share_updated_date, data.updatedDate.toShortString()))
+            text.append(context.getString(R.string.text_share_updated_date, data.updatedDate.toShortString()))
         }
 
-        return Pair(data.subject, sb.toString())
+        context.share(text.toString(), data.subject)
     }
 
-    fun updateAttendByUser(isUser: Boolean) = bg {
-        val type = if (isUser) LectureAttendType.USER else LectureAttendType.NOT
+    fun onClickAttendToUser(onUpdated: (isSuccess: Boolean) -> Unit) {
+        val data = findLectureInfoById(lectureInfoId.value) ?: return
 
-        if (isUser) {
-            repository.addToMyClass(data.copy(attend = type))
+        if (!data.attend.canAttend()) {
+            return
+        }
+
+        async(UI) {
+            val success = bg { repository.addToMyClass(data.copy(attend = LectureAttendType.USER)) }.await()
+            onUpdated(success)
+        }
+    }
+
+    fun onClickAttendToNot(onUpdated: (isSuccess: Boolean) -> Unit) {
+        val data = findLectureInfoById(lectureInfoId.value) ?: return
+
+        // Allow only LectureAttendType.USER
+        if (data.attend != LectureAttendType.USER) {
+            return
+        }
+
+        async(UI) {
+            val success = bg { repository.deleteFromMyClass(data.copy(attend = LectureAttendType.NOT)) }.await()
+            onUpdated(success)
+        }
+    }
+
+    private fun findLectureInfoById(id: Long?): LectureInformation? {
+        return if (id == null || id < 1) {
+            null
         } else {
-            repository.deleteFromMyClass(data.copy(attend = type))
+            repository.getLectureInformationById(id)
         }
     }
 }
