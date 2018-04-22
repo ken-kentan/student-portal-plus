@@ -127,10 +127,6 @@ class MyClassEditActivity : AppCompatActivity() {
         credit_edit.setOnTextChangedListener { editor = editor.copy(credit = it.toIntOrNull() ?: 0) }
         schedule_code_edit.setOnTextChangedListener { editor = editor.copy(scheduleCode = it) }
 
-        viewModel.subjects.observe(this, Observer {
-            it?.let { subject_edit.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, it)) }
-        })
-
         val background = color_button.background
         background.setColorFilter(data.color, PorterDuff.Mode.MULTIPLY)
         color_button.background = background
@@ -149,7 +145,11 @@ class MyClassEditActivity : AppCompatActivity() {
             dialog.show(fragmentManager, "ColorPickerDialog")
         }
 
-        if (!data.isUser) {
+        if (data.isUser) {
+            viewModel.subjects.observe(this, Observer {
+                it?.let { subject_edit.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, it)) }
+            })
+        } else {
             subject_edit.isEnabled       = false
             instructor_edit.isEnabled    = false
             category_edit.isEnabled      = false
@@ -164,6 +164,17 @@ class MyClassEditActivity : AppCompatActivity() {
         val layout = android.R.layout.simple_list_item_1
 
         week_spinner.adapter = ArrayAdapter(this, layout, ClassWeekType.values())
+        period_spinner.adapter = ArrayAdapter(this, layout, PeriodType.values())
+
+        week_spinner.setSelection(data.week.ordinal)
+        period_spinner.setSelection(if (data.period in 1..7) data.period - 1 else 0)
+
+        if (!data.isUser) {
+            week_spinner.isEnabled   = false
+            period_spinner.isEnabled = false
+            return
+        }
+
         week_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) { }
 
@@ -175,10 +186,6 @@ class MyClassEditActivity : AppCompatActivity() {
                 period_spinner.isEnabled = enable
             }
         }
-
-        period_spinner.adapter = ArrayAdapter(this, layout, PeriodType.values())
-
-        // Set listener
         period_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) { }
 
@@ -186,14 +193,6 @@ class MyClassEditActivity : AppCompatActivity() {
                 val period = period_spinner.selectedItem as PeriodType
                 editor = editor.copy(period = period.value)
             }
-        }
-
-        week_spinner.setSelection(data.week.ordinal)
-        period_spinner.setSelection(if (data.period in 1..7) data.period - 1 else 0)
-
-        if (!data.isUser) {
-            week_spinner.isEnabled = false
-            period_spinner.isEnabled = false
         }
     }
 
