@@ -21,7 +21,7 @@ import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_information.*
 import kotlinx.android.synthetic.main.content_lecture_information.*
 import org.jetbrains.anko.design.snackbar
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 
@@ -51,7 +51,7 @@ class LectureInformationActivity : AppCompatActivity() {
 
         viewModel.lectureInfo.observe(this, Observer<LectureInformation> { data ->
             if (data == null) {
-                toast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
+                longToast(getString(R.string.error_not_found, getString(R.string.name_lecture_info)))
                 finish()
                 return@Observer
             }

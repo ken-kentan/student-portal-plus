@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.android.synthetic.main.content_notice.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 class NoticeActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class NoticeActivity : AppCompatActivity() {
 
         viewModel.notice.observe(this, Observer { data ->
             if (data == null) {
-                toast(getString(R.string.error_not_found, getString(R.string.name_notice)))
+                longToast(getString(R.string.error_not_found, getString(R.string.name_notice)))
                 finish()
                 return@Observer
             }

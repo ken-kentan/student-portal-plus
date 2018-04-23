@@ -26,7 +26,7 @@ import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_my_class_edit.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 class MyClassEditActivity : AppCompatActivity() {
@@ -62,7 +62,7 @@ class MyClassEditActivity : AppCompatActivity() {
             val data = viewModel.get(intent.getLongExtra("id", 0))
 
             if (data == null) {
-                toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
+                longToast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
                 finish()
                 return
             }
@@ -70,7 +70,7 @@ class MyClassEditActivity : AppCompatActivity() {
             initData = data
         } else {
             if (!intent.hasExtra("week") || !intent.hasExtra("period")) {
-                toast(getString(R.string.error_unknown))
+                longToast(getString(R.string.error_unknown))
                 finish()
                 return
             }
@@ -245,7 +245,7 @@ class MyClassEditActivity : AppCompatActivity() {
             if (success) {
                 super.finish()
             } else {
-                toast(getString(R.string.error_update, getString(R.string.name_attend_lecture)))
+                longToast(getString(R.string.error_update, getString(R.string.name_attend_lecture)))
             }
         }
     }

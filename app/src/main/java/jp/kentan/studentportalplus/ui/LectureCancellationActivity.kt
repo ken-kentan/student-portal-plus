@@ -21,7 +21,7 @@ import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_cancellation.*
 import kotlinx.android.synthetic.main.content_lecture_cancellation.*
 import org.jetbrains.anko.design.snackbar
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 class LectureCancellationActivity : AppCompatActivity() {
@@ -50,7 +50,7 @@ class LectureCancellationActivity : AppCompatActivity() {
 
         viewModel.lectureCancel.observe(this, Observer { data ->
             if (data == null) {
-                toast(getString(R.string.error_not_found, getString(R.string.name_lecture_cancel)))
+                longToast(getString(R.string.error_not_found, getString(R.string.name_lecture_cancel)))
                 finish()
                 return@Observer
             }

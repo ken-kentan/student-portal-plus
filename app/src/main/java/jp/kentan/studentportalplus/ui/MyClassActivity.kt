@@ -18,8 +18,8 @@ import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_my_class.*
 import kotlinx.android.synthetic.main.content_my_class.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MyClassActivity : AppCompatActivity() {
@@ -49,7 +49,7 @@ class MyClassActivity : AppCompatActivity() {
 
         viewModel.myClass.observe(this, Observer { data ->
             if (data == null) {
-                toast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
+                longToast(getString(R.string.error_not_found, getString(R.string.name_my_class)))
                 finish()
                 return@Observer
             }
