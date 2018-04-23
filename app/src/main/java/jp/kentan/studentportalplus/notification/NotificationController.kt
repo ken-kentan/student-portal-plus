@@ -15,10 +15,7 @@ import androidx.core.content.edit
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.NotifyContent
 import jp.kentan.studentportalplus.data.component.PortalDataType
-import jp.kentan.studentportalplus.ui.LectureInformationActivity
-import jp.kentan.studentportalplus.ui.LoginActivity
-import jp.kentan.studentportalplus.ui.MainActivity
-import jp.kentan.studentportalplus.ui.NoticeActivity
+import jp.kentan.studentportalplus.ui.*
 import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
@@ -162,7 +159,7 @@ class NotificationController(
     private fun NotifyContent.getIntent(type: PortalDataType, code: Int): PendingIntent? {
         val intent = when (type) {
             PortalDataType.LECTURE_INFORMATION  -> context.intentFor<LectureInformationActivity>("id" to id)
-            PortalDataType.LECTURE_CANCELLATION -> context.intentFor<LectureInformationActivity>("id" to id)
+            PortalDataType.LECTURE_CANCELLATION -> context.intentFor<LectureCancellationActivity>("id" to id)
             PortalDataType.NOTICE               -> context.intentFor<NoticeActivity>("id" to id)
             else -> return null
         }
