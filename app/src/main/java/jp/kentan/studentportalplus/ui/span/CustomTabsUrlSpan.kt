@@ -10,17 +10,23 @@ import androidx.core.net.toUri
 import jp.kentan.studentportalplus.R
 import org.chromium.customtabsclient.shared.CustomTabsHelper
 import org.jetbrains.anko.defaultSharedPreferences
+import org.jetbrains.anko.longToast
 
 class CustomTabsUrlSpan(private val context: Context, url: String) : URLSpan(url) {
 
     private val gdocsUrlStr: String = context.getString(R.string.url_gdocs)
 
     override fun onClick(widget: View?) {
-        val urlStr = if (context.defaultSharedPreferences.getBoolean("enable_pdf_open_with_gdocs", true)
-                && url.endsWith(".pdf", true)) {
-            gdocsUrlStr + url
-        } else {
-            url
+        val isPdf = url.endsWith(".pdf", true)
+        val isRequireLogin = url.startsWith("https://portal.student.kit.ac.jp", true)
+
+        var urlStr = url
+        if (context.defaultSharedPreferences.getBoolean("enable_pdf_open_with_gdocs", true) && isPdf) {
+            if (isRequireLogin) {
+                context.longToast(R.string.error_gdocs_require_login)
+            } else {
+                urlStr = gdocsUrlStr + url
+            }
         }
 
         val customTabs = CustomTabsIntent.Builder()

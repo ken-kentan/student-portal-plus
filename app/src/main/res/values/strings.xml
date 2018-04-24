@@ -177,6 +177,7 @@
     <string name="error_invalid_credit">不正な単位数です</string>
     <string name="error_invalid_schedule_code">不正な時間割番号です</string>
     <string name="error_failed_to_sync">同期に失敗しました\nしばらく待ってから再度お試しください</string>
+    <string name="error_gdocs_require_login">ログインが必要なためGoogle Docsで開けません</string>
 
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
