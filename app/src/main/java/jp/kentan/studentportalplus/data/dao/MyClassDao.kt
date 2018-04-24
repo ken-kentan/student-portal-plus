@@ -73,8 +73,6 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
                 }
 
                 st.executeUpdateDelete()
-            } else {
-                delete(TABLE_NAME, "user=0")
             }
         }
     }
