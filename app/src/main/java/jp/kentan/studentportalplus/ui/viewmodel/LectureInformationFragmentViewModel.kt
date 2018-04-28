@@ -49,10 +49,6 @@ class LectureInformationFragmentViewModel(
 
     fun getResults(): LiveData<List<LectureInformation>> = results
 
-    fun update(data: LectureInformation) = bg {
-        repository.update(data)
-    }
-
     private fun loadFromRepository(query: LectureQuery?) {
         if (query == null || query.isDefault()) {
             results.value = lectureInformationList.value

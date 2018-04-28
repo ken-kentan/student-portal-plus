@@ -73,7 +73,11 @@ class LectureInformationViewModel(private val repository: PortalRepository) : Vi
         return if (id == null || id < 1) {
             null
         } else {
-            repository.getLectureInformationById(id)
+            repository.getLectureInformationById(id)?.apply {
+                if (!this.hasRead) {
+                    bg { repository.update(this.copy(hasRead = true)) }
+                }
+            }
         }
     }
 }

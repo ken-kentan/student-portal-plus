@@ -6,8 +6,6 @@ import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.component.PortalDataSet
-import jp.kentan.studentportalplus.data.model.LectureCancellation
-import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.model.Notice
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -24,16 +22,8 @@ class DashboardFragmentViewModel(private val repository: PortalRepository) : Vie
         )
     }
 
-    fun updateLectureInformation(data: LectureInformation) = bg {
-        repository.update(data)
-    }
-
-    fun updateLectureCancellation(data: LectureCancellation) = bg {
-        repository.update(data)
-    }
-
-    fun updateNotice(data: Notice) = bg {
-        repository.update(data)
+    fun onClickNoticeFavorite(data: Notice) {
+        bg {repository.update(data.copy(isFavorite = !data.isFavorite))}
     }
 
     private fun toTodayTimetable(list: List<MyClass>): Pair<String, List<MyClass>> {

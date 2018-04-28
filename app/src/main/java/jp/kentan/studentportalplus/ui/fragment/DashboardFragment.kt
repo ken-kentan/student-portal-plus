@@ -49,20 +49,17 @@ class DashboardFragment : Fragment() {
         }
 
         val lectureInfoAdapter = DashboardLectureInformationAdapter(context , MAX_LIST_SIZE) {
-            viewModel.updateLectureInformation(it.copy(hasRead = true))
             startActivity<LectureInformationActivity>("id" to it.id)
         }
 
         val lectureCancelAdapter = DashboardLectureCancellationAdapter(context, MAX_LIST_SIZE) {
-            viewModel.updateLectureCancellation(it.copy(hasRead = true))
             startActivity<LectureCancellationActivity>("id" to it.id)
         }
 
         val noticeAdapter = DashboardNoticeAdapter(context, MAX_LIST_SIZE, onClick = {
-            viewModel.updateNotice(it.copy(hasRead = true))
             startActivity<NoticeActivity>("id" to it.id)
         }, onClickFavorite = {
-            viewModel.updateNotice(it.copy(isFavorite = !it.isFavorite))
+            viewModel.onClickNoticeFavorite(it)
         })
 
         viewModel.portalDataSet.observe(this, Observer { set ->

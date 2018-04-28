@@ -53,7 +53,6 @@ class LectureCancellationFragment : Fragment() {
         viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureCancellationFragmentViewModel::class.java)
 
         val adapter = LectureCancellationAdapter(context) {
-            viewModel.update(it.copy(hasRead = true))
             startActivity<LectureCancellationActivity>("id" to it.id)
         }
 

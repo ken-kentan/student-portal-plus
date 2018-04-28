@@ -50,7 +50,11 @@ class NoticeViewModel(private val repository: PortalRepository) : ViewModel() {
         return if (id == null || id < 1) {
             null
         } else {
-            repository.getNoticeById(id)
+            repository.getNoticeById(id)?.apply {
+                if (!this.hasRead) {
+                    bg { repository.update(this.copy(hasRead = true)) }
+                }
+            }
         }
     }
 }

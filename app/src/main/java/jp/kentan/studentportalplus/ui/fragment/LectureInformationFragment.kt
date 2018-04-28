@@ -54,7 +54,6 @@ class LectureInformationFragment : Fragment() {
         viewModel = ViewModelProvider(activity, viewModelFactory).get(LectureInformationFragmentViewModel::class.java)
 
         val adapter = LectureInformationAdapter(context) {
-            viewModel.update(it.copy(hasRead = true))
             startActivity<LectureInformationActivity>("id" to it.id)
         }
 

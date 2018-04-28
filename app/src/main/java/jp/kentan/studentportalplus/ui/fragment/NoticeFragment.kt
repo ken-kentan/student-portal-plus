@@ -51,7 +51,6 @@ class NoticeFragment : Fragment() {
         viewModel = ViewModelProvider(activity, viewModelFactory).get(NoticeFragmentViewModel::class.java)
 
         val adapter = NoticeAdapter(context, {
-            viewModel.update(it.copy(hasRead = true))
             startActivity<NoticeActivity>("id" to it.id)
         }, {
             viewModel.update(it.copy(isFavorite = !it.isFavorite))
