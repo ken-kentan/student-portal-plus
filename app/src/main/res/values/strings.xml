@@ -23,7 +23,7 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_login">Login</string>
+    <string name="action_login_en">Login</string>
     <string name="message_input_login_form">ユーザー名とパスワードを入力して下さい</string>
     <string name="error_invalid_username">無効なユーザー名です</string>
     <string name="error_invalid_password">無効なパスワード文字数です</string>
@@ -134,6 +134,7 @@
     <string name="action_switch_layout">レイアウト</string>
     <string name="action_view_week">週表示</string>
     <string name="action_view_day">受講リスト表示</string>
+    <string name="action_login">ログイン</string>
 
     <!-- Common image descriptions -->
     <string name="description_attend">受講</string>
@@ -155,6 +156,7 @@
     <string name="msg_unregister_class">受講科目から除外しました</string>
     <string name="msg_back_to_exit">もう一度押すとアプリを終了します</string>
     <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
+    <string name="msg_request_shibboleth_data">シボレスデータを更新してください</string>
     <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
     <string name="text_unregister_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
     <string name="text_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>

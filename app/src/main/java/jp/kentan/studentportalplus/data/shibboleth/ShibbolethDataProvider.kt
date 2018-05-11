@@ -98,7 +98,7 @@ class ShibbolethDataProvider(private val context: Context) {
         generator.generateKeyPair()
     }
 
-    private fun encryptString(text: String): String? {
+    private fun encryptString(text: String, enableRetry: Boolean = true): String? {
         if (text.isEmpty()) {
             Log.e(TAG, "Empty decrypt text")
             return null
@@ -120,7 +120,16 @@ class ShibbolethDataProvider(private val context: Context) {
 
             return Base64.encodeToString(bytes, Base64.DEFAULT)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to encrypt", e)
+            if (enableRetry) {
+                Log.i(TAG, "Recreate key entry", e)
+
+                keyStore.deleteEntry(KEY_ALIAS)
+                createKeyIfNeed(keyStore)
+
+                return encryptString(text, false)
+            } else {
+                Log.e(TAG, "Failed to encrypt", e)
+            }
         }
 
         return null

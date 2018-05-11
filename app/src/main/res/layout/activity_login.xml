@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_login"
+                android:text="@string/action_login_en"
                 android:textColor="@color/grey_50"
                 android:textStyle="bold"
                 android:theme="@style/FlatButton" />

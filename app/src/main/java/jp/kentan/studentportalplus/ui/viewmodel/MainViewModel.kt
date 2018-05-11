@@ -1,10 +1,11 @@
 package jp.kentan.studentportalplus.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
+import jp.kentan.studentportalplus.data.shibboleth.ShibbolethAuthenticationException
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 import org.jetbrains.anko.coroutines.experimental.bg
 
@@ -14,7 +15,12 @@ class MainViewModel(
 ) : ViewModel() {
 
     private val _isSyncing = MutableLiveData<Boolean>()
-    private val syncResult = MutableLiveData<Pair<Boolean, String?>>()
+    private val _syncResult = MutableLiveData<Pair<SyncResult, String?>>()
+
+    val isSyncing: LiveData<Boolean> = Transformations.map(_isSyncing) { it }
+    val syncResult: LiveData<Pair<SyncResult, String?>> = Transformations.map(_syncResult) { it }
+
+    enum class SyncResult { SUCCESS, AUTH_ERROR, UNKNOWN_ERROR }
 
     fun load() {
         bg { repository.loadFromDb() }
@@ -24,25 +30,17 @@ class MainViewModel(
         _isSyncing.value = true
 
         bg {
-            syncResult.postValue(repository.syncWithWeb())
-            _isSyncing.postValue(false)
+            try {
+                repository.sync()
+                _syncResult.postValue(Pair(SyncResult.SUCCESS, null))
+            } catch (e: ShibbolethAuthenticationException) {
+                _syncResult.postValue(Pair(SyncResult.AUTH_ERROR, e.message))
+            } catch (e: Exception) {
+                _syncResult.postValue(Pair(SyncResult.UNKNOWN_ERROR, e.message))
+            } finally {
+                _isSyncing.postValue(false)
+            }
         }
-    }
-
-    fun getSyncResult(): LiveData<Pair<Boolean, String?>> {
-        val result = MediatorLiveData<Pair<Boolean, String?>>()
-        result.addSource(syncResult) {
-            result.value = it
-        }
-        return result
-    }
-
-    fun isSyncing(): LiveData<Boolean> {
-        val result = MediatorLiveData<Boolean>()
-        result.addSource(_isSyncing) {
-            result.value = it
-        }
-        return result
     }
 
     fun getUser() = shibbolethDataProvider.getUser()

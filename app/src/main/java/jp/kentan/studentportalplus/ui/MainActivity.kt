@@ -21,6 +21,7 @@ import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.viewmodel.MainViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.ui.widget.MapView
+import jp.kentan.studentportalplus.util.enableDetailErrorMessage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
@@ -96,10 +97,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         SyncJobScheduler.scheduleIfNeed(this)
-    }
 
-    override fun onStart() {
-        super.onStart()
         viewModel.load()
     }
 
@@ -200,23 +198,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         swipe_refresh_layout.setColorSchemeResources(R.color.grey_100)
         swipe_refresh_layout.setOnRefreshListener { viewModel.sync() }
 
-        viewModel.getSyncResult().observe(this, Observer {
-            it?.let { (success, errorMessage) ->
-                if (!success) {
-                    val message = if (defaultSharedPreferences.getBoolean("enable_detail_error", false) && errorMessage != null) {
-                        errorMessage
+        viewModel.syncResult.observe(this, Observer {
+            val (result, message) = it ?: return@Observer
+
+            val snackbar = Snackbar.make(swipe_refresh_layout, R.string.error_unknown, Snackbar.LENGTH_INDEFINITE)
+            when (result) {
+                MainViewModel.SyncResult.AUTH_ERROR -> {
+                    if (message == null) {
+                        snackbar.setText(R.string.msg_request_shibboleth_data)
                     } else {
-                        getString(R.string.error_failed_to_sync)
+                        snackbar.setText("$message\n${getString(R.string.msg_request_shibboleth_data)}")
                     }
 
-                    val snackbar = Snackbar.make(swipe_refresh_layout, message, Snackbar.LENGTH_INDEFINITE)
-                    snackbar.setAction(getString(R.string.action_close), { snackbar.dismiss() })
-                    snackbar.show()
+                    snackbar.setAction(R.string.action_login_ja, {
+                        startActivity<LoginActivity>("request_launch_main_activity" to true)
+                    })
                 }
+                MainViewModel.SyncResult.UNKNOWN_ERROR -> {
+                    if (message != null && defaultSharedPreferences.enableDetailErrorMessage()) {
+                        snackbar.setText(message)
+                    } else {
+                        snackbar.setText(R.string.error_failed_to_sync)
+                    }
+
+                    snackbar.setAction(R.string.action_close, { snackbar.dismiss() })
+                }
+                MainViewModel.SyncResult.SUCCESS -> return@Observer
             }
+
+            snackbar.show()
         })
 
-        viewModel.isSyncing().observe(this, Observer {
+        viewModel.isSyncing.observe(this, Observer {
             swipe_refresh_layout.isRefreshing = it ?: false
         })
     }
