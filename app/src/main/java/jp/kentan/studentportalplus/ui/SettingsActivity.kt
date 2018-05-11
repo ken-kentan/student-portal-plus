@@ -127,13 +127,15 @@ class SettingsActivity : AppCompatActivity() {
                             .setTitle("ポータルデータ消去")
                             .setMessage(R.string.msg_warn_reset)
                             .setPositiveButton(R.string.action_yes) { _, _ ->
-                                async(UI) {
-                                    val success = bg { portalRepository.deleteAll() }.await()
-
-                                    if (success) {
-                                        longToast("すべてのポータルデータを消去しました")
-                                    } else {
-                                        longToast("消去に失敗しました")
+                                bg {
+                                    portalRepository.deleteAll { success ->
+                                        async(UI) {
+                                            if (success) {
+                                                longToast("すべてのポータルデータを消去しました")
+                                            } else {
+                                                longToast("消去に失敗しました")
+                                            }
+                                        }
                                     }
                                 }
                             }

@@ -15,6 +15,7 @@ import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
+import jp.kentan.studentportalplus.util.getMyClassThreshold
 import org.jetbrains.anko.defaultSharedPreferences
 
 
@@ -112,17 +113,6 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
                 lectureCancelDao.getAll(),
                 noticeDao.getAll()
         )
-    }
-
-    fun syncWithWeb(): Pair<Boolean, String?> {
-        try {
-            sync()
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to sync", e)
-            return Pair(false, e.message)
-        }
-
-        return Pair<Boolean, String?>(true, null)
     }
 
     @Throws(Exception::class)
@@ -242,7 +232,10 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         return true
     }
 
-    fun deleteAll(): Boolean = context.deleteDatabase(context.database.databaseName)
+    fun deleteAll(onDeleted: (success: Boolean) -> Unit) {
+        val success = context.deleteDatabase(context.database.databaseName)
+        onDeleted(success)
+    }
 
     @Throws(Exception::class)
     private fun fetchDocument(type: PortalDataType) = shibbolethClient.fetch(type.url)
@@ -286,9 +279,5 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
         }
 
         Log.d(TAG, "posted $postCount lists")
-    }
-
-    private fun SharedPreferences.getMyClassThreshold(): Float {
-        return (this.getString("my_class_threshold", "80").toIntOrNull() ?: 80) / 100f
     }
 }
