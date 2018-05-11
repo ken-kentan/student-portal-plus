@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         snackbar.setText("$message\n${getString(R.string.msg_request_shibboleth_data)}")
                     }
 
-                    snackbar.setAction(R.string.action_login_ja, {
+                    snackbar.setAction(R.string.action_login, {
                         startActivity<LoginActivity>("request_launch_main_activity" to true)
                     })
                 }
