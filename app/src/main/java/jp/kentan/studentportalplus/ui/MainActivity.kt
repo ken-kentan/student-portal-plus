@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -260,10 +259,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentType = type
     }
 
-    private fun isFirstLaunch(): Boolean {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        return preferences.getBoolean("is_first", true)
-    }
+    private fun isFirstLaunch() = defaultSharedPreferences.getBoolean("is_first", true)
 
     private fun launchWelcomeActivity() {
         val intent = intentFor<WelcomeActivity>()

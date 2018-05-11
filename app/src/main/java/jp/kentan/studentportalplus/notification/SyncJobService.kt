@@ -14,6 +14,7 @@ import jp.kentan.studentportalplus.data.component.NotifyType
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethAuthenticationException
 import jp.kentan.studentportalplus.util.JaroWinklerDistance
+import jp.kentan.studentportalplus.util.getMyClassThreshold
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.*
 import javax.inject.Inject
@@ -86,10 +87,6 @@ class SyncJobService : SimpleJobService() {
         defaultSharedPreferences.edit {
             putLong("last_sync_time_millis", System.currentTimeMillis())
         }
-    }
-
-    private fun SharedPreferences.getMyClassThreshold(): Float {
-        return (this.getString("my_class_threshold", "80").toIntOrNull() ?: 80) / 100f
     }
 
     private fun SharedPreferences.getNotifyType(key: String): NotifyType {
