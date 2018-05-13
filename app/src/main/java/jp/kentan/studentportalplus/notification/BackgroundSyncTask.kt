@@ -1,8 +1,8 @@
 package jp.kentan.studentportalplus.notification
 
+import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
-import androidx.work.Worker
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NotifyContent
@@ -10,37 +10,36 @@ import jp.kentan.studentportalplus.data.component.NotifyType
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.component.PortalDataType.*
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethAuthenticationException
-import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 import jp.kentan.studentportalplus.util.JaroWinklerDistance
 import jp.kentan.studentportalplus.util.enableDetailErrorMessage
 import jp.kentan.studentportalplus.util.getMyClassThreshold
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.*
 
-class SyncWorker : Worker() {
+class BackgroundSyncTask(
+        private val context: Context,
+        private val repository: PortalRepository
+) {
 
     companion object {
-        const val TAG = "SyncWorker"
         private val STRING_DISTANCE = JaroWinklerDistance()
     }
 
-    private val preferences by lazy { applicationContext.defaultSharedPreferences }
+    private val preferences = context.defaultSharedPreferences
 
-    override fun doWork(): WorkerResult {
-        if (isInMidnight() && !inputData.getBoolean("ignore_midnight", false)) {
-            Log.d(TAG, "Skipped because now is in midnight")
-            return WorkerResult.SUCCESS
+    fun run(onFinished: () -> Unit = {}) {
+        if (isInMidnight()) {
+            onFinished()
+            return
         }
 
-        val notification = NotificationController(applicationContext)
+        val notification = NotificationController(context)
         notification.cancelErrorNotification()
-
-        val repo = PortalRepository(applicationContext, ShibbolethDataProvider(applicationContext))
 
         // Sync
         try {
-            val newDataMap  = repo.sync()
-            val subjectList = repo.getMyClassSubjectList()
+            val newDataMap  = repository.sync()
+            val subjectList = repository.getMyClassSubjectList()
 
             val threshold = preferences.getMyClassThreshold()
 
@@ -55,20 +54,25 @@ class SyncWorker : Worker() {
             saveLastSyncTime()
         } catch (e: ShibbolethAuthenticationException) {
             notification.notifyError(e.message, true)
-            return WorkerResult.FAILURE
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to sync", e)
+            Log.e("BackgroundSyncTask", "Failed to sync", e)
 
             if (preferences.enableDetailErrorMessage()) {
-                notification.notifyError(e.message ?: applicationContext.getString(R.string.error_unknown))
+                notification.notifyError(e.message ?: context.getString(R.string.error_unknown))
             }
-
-            return WorkerResult.FAILURE
         }
 
-        WorkerResult.RETRY
+        onFinished()
+    }
 
-        return WorkerResult.SUCCESS
+    private fun isInMidnight(): Boolean {
+        return Calendar.getInstance(Locale.JAPAN).get(Calendar.HOUR_OF_DAY) !in 5..22
+    }
+
+    private fun saveLastSyncTime() {
+        preferences.edit {
+            putLong("last_sync_time_millis", System.currentTimeMillis())
+        }
     }
 
     private fun Map<PortalDataType, List<NotifyContent>>.getBy(type: PortalDataType, subjects: List<String> = emptyList(), threshold: Float = 0f): List<NotifyContent> {
@@ -88,16 +92,6 @@ class SyncWorker : Worker() {
                 }
             }
             NotifyType.NOT -> emptyList()
-        }
-    }
-
-    private fun isInMidnight(): Boolean {
-        return Calendar.getInstance(Locale.JAPAN).get(Calendar.HOUR_OF_DAY) !in 5..22
-    }
-
-    private fun saveLastSyncTime() {
-        preferences.edit {
-            putLong("last_sync_time_millis", System.currentTimeMillis())
         }
     }
 }

@@ -46,7 +46,6 @@ dependencies {
     implementation "com.android.support:customtabs:$support_version"
 
     // Android Jetpack
-    implementation 'android.arch.work:work-runtime:1.0.0-alpha01'
     implementation 'androidx.core:core-ktx:0.3'
 
     // Architecture Components
