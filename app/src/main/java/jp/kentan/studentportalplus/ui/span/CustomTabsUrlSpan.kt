@@ -8,7 +8,7 @@ import android.text.style.URLSpan
 import android.view.View
 import androidx.core.net.toUri
 import jp.kentan.studentportalplus.R
-import org.chromium.customtabsclient.shared.CustomTabsHelper
+import jp.kentan.studentportalplus.util.CustomTabsHelper
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.longToast
 

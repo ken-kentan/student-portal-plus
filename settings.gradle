@@ -1,1 +1,1 @@
-include ':app', ':customtabs', ':colorpicker', ':shared'
+include ':app', ':colorpicker'

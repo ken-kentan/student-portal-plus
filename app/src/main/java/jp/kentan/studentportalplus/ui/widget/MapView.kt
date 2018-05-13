@@ -5,7 +5,7 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import androidx.core.net.toUri
 import jp.kentan.studentportalplus.R
-import org.chromium.customtabsclient.shared.CustomTabsHelper
+import jp.kentan.studentportalplus.util.CustomTabsHelper
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.newTask
 
