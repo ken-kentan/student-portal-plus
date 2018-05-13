@@ -7,7 +7,6 @@ import dagger.android.support.DaggerApplication
 import jp.kentan.studentportalplus.di.ActivityModule
 import jp.kentan.studentportalplus.di.AppModule
 import jp.kentan.studentportalplus.di.FragmentModule
-import jp.kentan.studentportalplus.di.ServiceModule
 import javax.inject.Singleton
 
 
@@ -24,7 +23,6 @@ open class StudentPortalPlus : DaggerApplication() {
         (AndroidSupportInjectionModule::class),
         (AppModule::class),
         (ActivityModule::class),
-        (FragmentModule::class),
-        (ServiceModule::class)])
+        (FragmentModule::class)])
     internal interface Component : AndroidInjector<StudentPortalPlus>
 }

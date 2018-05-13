@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+        baseline file("lint-baseline.xml")
+    }
 }
 
 dependencies {
@@ -45,7 +49,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // Architecture Components
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.work:work-runtime:1.0.0-alpha01"
 
     // Google Dagger
     implementation "com.google.dagger:dagger:$dagger_version"
@@ -55,9 +61,6 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     implementation 'androidx.core:core-ktx:0.3'
-
-    // Firebase JobDispatcher
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 }
 kotlin {
     experimental {

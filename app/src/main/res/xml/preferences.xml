@@ -22,7 +22,7 @@
 
         <SwitchPreference
             android:key="enable_sync"
-            android:title="同期"
+            android:title="自動同期"
             android:summary="一定間隔で自動的に同期(フェッチ)します"
             android:defaultValue="true">
         </SwitchPreference>

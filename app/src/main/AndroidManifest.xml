@@ -16,7 +16,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,55 +38,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".ui.WelcomeActivity" />
+            android:name=".ui.LoginActivity" />
+        <activity
+            android:name=".ui.WelcomeActivity" />
         <activity
             android:name=".ui.NoticeActivity"
-            android:label="@string/title_activity_notice"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LectureInformationActivity"
-            android:label="@string/title_activity_lecture_information"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LectureCancellationActivity"
-            android:label="@string/title_activity_lecture_cancellation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MyClassActivity"
-            android:label="@string/title_activity_my_class"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MyClassEditActivity"
-            android:label="@string/title_activity_my_class_edit"
             android:theme="@style/AppTheme.LightActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:name=".ui.SettingsActivity" />
 
-        <service
-            android:name=".notification.SyncJobService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
-        </service>
         <service
             android:name=".notification.RetryActionService"
             android:enabled="true"
             android:exported="false" />
-
-        <receiver
-            android:name=".notification.DeviceStatusReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

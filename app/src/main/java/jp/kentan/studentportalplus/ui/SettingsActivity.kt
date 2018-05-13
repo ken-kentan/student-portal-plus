@@ -18,9 +18,10 @@ import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NotifyType
-import jp.kentan.studentportalplus.notification.SyncJobScheduler
+import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.widget.MyClassThresholdSamplePreference
+import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -172,19 +173,21 @@ class SettingsActivity : AppCompatActivity() {
                     notifyLed.isEnabled = enable
 
                     if (enable) {
-                        SyncJobScheduler.schedule(activity)
+                        SyncScheduler.schedule(activity)
                     } else {
-                        SyncJobScheduler.cancel(activity)
+                        SyncScheduler.cancel()
                     }
                 }
                 "sync_interval" -> {
-                    val interval = pref.getString("sync_interval", "60").toIntOrNull() ?: 60
+                    val interval = pref.getSyncIntervalMinutes()
 
                     syncInterval.summary = if (interval >= 60) {
                         "${interval / 60}時間毎に更新する"
                     } else {
                         "${interval}分毎に更新する"
                     }
+
+                    SyncScheduler.schedule(activity)
                 }
             }
         }
@@ -205,7 +208,7 @@ class SettingsActivity : AppCompatActivity() {
             screen.findPreference("shibboleth_last_login_date").summary = pref.getString("shibboleth_last_login_date", "なし")
             screen.findPreference("version").summary = BuildConfig.VERSION_NAME
 
-            val interval = pref.getString("sync_interval", "60").toIntOrNull() ?: 60
+            val interval = pref.getSyncIntervalMinutes()
             syncInterval.summary = if (interval >= 60) {
                 "${interval / 60}時間毎に更新する"
             } else {

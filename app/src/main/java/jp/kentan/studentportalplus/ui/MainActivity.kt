@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.notification.SyncJobScheduler
+import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.fragment.*
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.viewmodel.MainViewModel
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             viewModel.sync()
         }
 
-        SyncJobScheduler.scheduleIfNeed(this)
+        SyncScheduler.scheduleIfNeed(this)
 
         viewModel.load()
     }
