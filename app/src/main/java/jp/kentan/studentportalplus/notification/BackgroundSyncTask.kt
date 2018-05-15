@@ -13,6 +13,7 @@ import jp.kentan.studentportalplus.data.shibboleth.ShibbolethAuthenticationExcep
 import jp.kentan.studentportalplus.util.JaroWinklerDistance
 import jp.kentan.studentportalplus.util.enableDetailErrorMessage
 import jp.kentan.studentportalplus.util.getMyClassThreshold
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.*
 
@@ -33,36 +34,38 @@ class BackgroundSyncTask(
             return
         }
 
-        val notification = NotificationController(context)
-        notification.cancelErrorNotification()
+        bg {
+            val notification = NotificationController(context)
+            notification.cancelErrorNotification()
 
-        // Sync
-        try {
-            val newDataMap  = repository.sync()
-            val subjectList = repository.getMyClassSubjectList()
+            // Sync
+            try {
+                val newDataMap  = repository.sync()
+                val subjectList = repository.getMyClassSubjectList()
 
-            val threshold = preferences.getMyClassThreshold()
+                val threshold = preferences.getMyClassThreshold()
 
-            val lectureInfoList   = newDataMap.getBy(LECTURE_INFORMATION, subjectList, threshold)
-            val lectureCancelList = newDataMap.getBy(LECTURE_CANCELLATION, subjectList, threshold)
-            val noticeList        = newDataMap.getBy(NOTICE)
+                val lectureInfoList   = newDataMap.getBy(LECTURE_INFORMATION, subjectList, threshold)
+                val lectureCancelList = newDataMap.getBy(LECTURE_CANCELLATION, subjectList, threshold)
+                val noticeList        = newDataMap.getBy(NOTICE)
 
-            notification.notify(LECTURE_INFORMATION, lectureInfoList)
-            notification.notify(LECTURE_CANCELLATION, lectureCancelList)
-            notification.notify(NOTICE, noticeList)
+                notification.notify(LECTURE_INFORMATION, lectureInfoList)
+                notification.notify(LECTURE_CANCELLATION, lectureCancelList)
+                notification.notify(NOTICE, noticeList)
 
-            saveLastSyncTime()
-        } catch (e: ShibbolethAuthenticationException) {
-            notification.notifyError(e.message, true)
-        } catch (e: Exception) {
-            Log.e("BackgroundSyncTask", "Failed to sync", e)
+                saveLastSyncTime()
+            } catch (e: ShibbolethAuthenticationException) {
+                notification.notifyError(e.message, true)
+            } catch (e: Exception) {
+                Log.e("BackgroundSyncTask", "Failed to sync", e)
 
-            if (preferences.enableDetailErrorMessage()) {
-                notification.notifyError(e.message ?: context.getString(R.string.error_unknown))
+                if (preferences.enableDetailErrorMessage()) {
+                    notification.notifyError(e.message ?: context.getString(R.string.error_unknown))
+                }
             }
-        }
 
-        onFinished()
+            onFinished()
+        }
     }
 
     private fun isInMidnight(): Boolean {
