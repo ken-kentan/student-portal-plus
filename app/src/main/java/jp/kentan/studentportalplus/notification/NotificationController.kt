@@ -8,15 +8,16 @@ import android.app.PendingIntent.FLAG_NO_CREATE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.graphics.Typeface
+import android.graphics.Typeface.BOLD
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
-import android.text.SpannableString
 import android.text.style.StyleSpan
 import androidx.core.content.edit
+import androidx.core.text.set
+import androidx.core.text.toSpannable
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.NotifyContent
 import jp.kentan.studentportalplus.data.component.PortalDataType
@@ -235,8 +236,8 @@ class NotificationController(
     }
 
     private fun NotifyContent.toInboxStyleText(): Spannable {
-        val text = SpannableString("$title $text")
-        text.setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val text = "$title $text".toSpannable()
+        text[0..title.length] = StyleSpan(BOLD)
         return text
     }
 }

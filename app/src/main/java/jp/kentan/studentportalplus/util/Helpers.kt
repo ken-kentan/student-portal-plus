@@ -2,12 +2,11 @@ package jp.kentan.studentportalplus.util
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
 import android.support.design.widget.Snackbar
-import android.text.Html
 import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.text.parseAsHtml
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -49,26 +48,21 @@ fun Date.toShortString(): String? = DATE_FORMAT.format(this)
 /**
  * Convert String to Spanned
  */
-fun String.toSpanned(): Spanned{
-    var htmlStr = this
+fun String.htmlToSpanned(): Spanned{
+    var html = this
 
-    htmlTags.forEach { (pattern, span) ->
-        htmlStr = pattern.matcher(htmlStr).replaceAll(span)
+    HTML_TAGS.forEach { (pattern, span) ->
+        html = pattern.matcher(html).replaceAll(span)
     }
 
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(htmlStr, Html.FROM_HTML_MODE_COMPACT)
-    } else {
-        @Suppress("DEPRECATION")
-        Html.fromHtml(htmlStr)
-    }
+    return html.parseAsHtml()
 }
 
 /**
  * Support custom SPAN class
  * https://portal.student.kit.ac.jp/css/common/wb_common.css
  */
-private val htmlTags by lazy {
+private val HTML_TAGS by lazy {
     mapOf<Pattern, String>(
             Pattern.compile("<span class=\"col_red\">(.*?)</span>") to "<font color=\"#ff0000\">\$1</font>",
             Pattern.compile("<span class=\"col_green\">(.*?)</span>") to "<font color=\"#008000\">\$1</font>",

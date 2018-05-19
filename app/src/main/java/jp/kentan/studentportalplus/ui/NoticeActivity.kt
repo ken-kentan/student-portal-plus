@@ -15,9 +15,9 @@ import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.viewmodel.NoticeViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod
+import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
-import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.android.synthetic.main.content_notice.*
 import org.jetbrains.anko.design.snackbar
@@ -91,7 +91,7 @@ class NoticeActivity : AppCompatActivity() {
         find<TextView>(R.id.title).text = data.title
 
         if (data.detailHtml != null) {
-            detail.text = data.detailHtml.toSpanned()
+            detail.text = data.detailHtml.htmlToSpanned()
             detail.transformationMethod = customTransformationMethod
         } else {
             detail_header.visibility = View.GONE

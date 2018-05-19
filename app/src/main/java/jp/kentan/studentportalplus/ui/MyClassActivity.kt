@@ -13,8 +13,8 @@ import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod
+import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
-import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_my_class.*
 import kotlinx.android.synthetic.main.content_my_class.*
 import org.jetbrains.anko.backgroundColor
@@ -104,7 +104,7 @@ class MyClassActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_delete)
-                .setMessage(getString(R.string.text_delete_confirm, subject.text).toSpanned())
+                .setMessage(getString(R.string.text_delete_confirm, subject.text).htmlToSpanned())
                 .setPositiveButton(R.string.action_yes) { _, _ ->
                     viewModel.onClickDelete { success ->
                         if (success) {

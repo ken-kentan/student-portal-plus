@@ -15,9 +15,9 @@ import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.ui.viewmodel.LectureCancellationViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod
+import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import jp.kentan.studentportalplus.util.toShortString
-import jp.kentan.studentportalplus.util.toSpanned
 import kotlinx.android.synthetic.main.activity_lecture_cancellation.*
 import kotlinx.android.synthetic.main.content_lecture_cancellation.*
 import org.jetbrains.anko.design.snackbar
@@ -118,7 +118,7 @@ class LectureCancellationActivity : AppCompatActivity() {
                         data.week.formatWeek(),
                         data.period.formatPeriod())
         cancel_date.text = data.cancelDate.toShortString()
-        detail.text      = data.detailHtml.toSpanned()
+        detail.text      = data.detailHtml.htmlToSpanned()
         detail.transformationMethod = CustomTransformationMethod(this)
         date.text        = getString(R.string.text_created_date_lecture_cancel, data.createdDate.toShortString())
 
@@ -128,7 +128,7 @@ class LectureCancellationActivity : AppCompatActivity() {
     private fun showConfirmationDialog(subject: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.title_confirmation)
-        builder.setMessage(getString(R.string.text_unregister_confirm, subject).toSpanned())
+        builder.setMessage(getString(R.string.text_unregister_confirm, subject).htmlToSpanned())
         builder.setPositiveButton(R.string.action_yes) { _, _ ->
             viewModel.onClickAttendToNot { success ->
                 if (success) {
