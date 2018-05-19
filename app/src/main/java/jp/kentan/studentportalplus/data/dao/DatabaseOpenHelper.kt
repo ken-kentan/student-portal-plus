@@ -3,7 +3,12 @@ package jp.kentan.studentportalplus.data.dao
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
-import android.util.Log
+import androidx.core.database.getLong
+import androidx.core.database.getString
+import androidx.core.database.getStringOrNull
+import jp.kentan.studentportalplus.data.component.ClassWeekType
+import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.db.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,11 +18,9 @@ import java.util.*
  *
  * https://github.com/Kotlin/anko/wiki/Anko-SQLite
  */
-class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "portal_data.db", null, version = 1) {
+class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "portal_data.db", null, version = 3) {
 
     companion object {
-        private const val TAG = "DatabaseOpenHelper"
-
         private var instance: DatabaseOpenHelper? = null
 
         @Synchronized
@@ -36,7 +39,62 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+        createTablesIfNotExist(db)
+    }
 
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 2) {
+            db.transaction {
+                db.execSQL("ALTER TABLE my_class RENAME TO tmp_my_class")
+
+                db.dropTable("news", true)
+                db.dropTable("lecture_info", true)
+                db.dropTable("lecture_cancel", true)
+                db.dropTable("my_class", true)
+
+                db.execSQL("DELETE FROM sqlite_sequence")
+
+                createTablesIfNotExist(db)
+
+                db.select("tmp_my_class").exec {
+                    while (moveToNext()) {
+                        val week: ClassWeekType = getLong("day_of_week").let {
+                            return@let ClassWeekType.valueOf(it.toInt() + 1)
+                        }
+                        val period       = getLong("period").let { if (it > 0) it else 0 }
+                        val scheduleCode = getLong("timetable_number").toString()
+                        val credit       = getLong("credits")
+                        val category     = getStringOrNull("type") ?: ""
+                        val subject      = getString("subject")
+                        val isUser       = getLong("registered_by_user") == 1L
+                        val instructor   = getStringOrNull("instructor").let { it ?: return@let ""
+                            return@let if (isUser) { it } else { it.replace(' ', '　') }
+                        }
+
+                        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor + isUser
+
+                        db.insert("my_class",
+                                "_id" to null,
+                                "hash"           to Murmur3.hash64(hashStr.toByteArray()),
+                                "week"           to week.code,
+                                "period"         to period,
+                                "schedule_code"  to scheduleCode,
+                                "credit"         to credit,
+                                "category"       to category,
+                                "subject"        to subject,
+                                "instructor"     to instructor,
+                                "user"           to isUser.toLong(),
+                                "color"          to getLong("color_rgb"),
+                                "location"       to getStringOrNull("place"))
+                    }
+                }
+
+                db.dropTable("tmp_my_class")
+            }
+        }
+    }
+
+    private fun createTablesIfNotExist(db: SQLiteDatabase) {
         db.createTable(NoticeDao.TABLE_NAME, true,
                 "_id" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 "hash"         to INTEGER + NOT_NULL + UNIQUE,
@@ -93,13 +151,6 @@ class DatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, "p
                 "user"           to INTEGER + NOT_NULL,
                 "color"          to INTEGER + NOT_NULL,
                 "location"       to TEXT)
-
-        Log.d(TAG, "Created tables")
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Here you can upgrade tables, as usual
-//        db.dropTable("User", true)
     }
 }
 
