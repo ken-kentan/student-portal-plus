@@ -9,7 +9,7 @@ android {
         applicationId "jp.kentan.student_portal_plus"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
+        versionCode 21
         versionName "2.0.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,11 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':colorpicker')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // Android Support
     implementation "com.android.support:support-v4:$support_version"
@@ -70,6 +66,14 @@ dependencies {
 
     // jsoup
     implementation 'org.jsoup:jsoup:1.11.2'
+
+    // ColorPicker
+    implementation project(':colorpicker')
+
+    // for Test
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 kotlin {
     experimental {
