@@ -106,7 +106,7 @@ class NoticeDao(private val database: DatabaseOpenHelper) {
 
             val id = st.executeInsert()
             if (id > 0) {
-                notifyDataList.add(NotifyContent(it.title, it.detailText, id))
+                notifyDataList.add(NotifyContent(it.title, it.detailText ?: it.link, id))
             }
             st.clearBindings()
         }
