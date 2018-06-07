@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "jp.kentan.student_portal_plus"
+        applicationId "jp.kentan.student_portal_plus_k"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 21
@@ -36,7 +36,7 @@ dependencies {
     implementation "com.android.support:support-v4:$support_version"
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:1.1.0"
+    implementation "com.android.support.constraint:constraint-layout:1.1.1"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:support-vector-drawable:$support_version"
     implementation "com.android.support:customtabs:$support_version"
@@ -46,6 +46,9 @@ dependencies {
 
     // Architecture Components
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha02'
+    implementation 'android.arch.work:work-firebase:1.0.0-alpha02'
+
 
     // Google Dagger
     def dagger_version  = '2.16'
