@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "jp.kentan.student_portal_plus_k"
+        applicationId "jp.kentan.student_portal_plus"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 21
