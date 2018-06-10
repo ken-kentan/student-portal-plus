@@ -24,7 +24,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
     fun getSubjectList(): List<String> = database.use {
         select(TABLE_NAME)
                 .distinct()
-                .whereArgs("subject")
+                .column("subject")
                 .parseList(object : RowParser<String> {
                     override fun parseRow(columns: Array<Any?>) = columns[0] as String
                 })

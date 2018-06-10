@@ -86,12 +86,7 @@ class BackgroundSyncTask(
             NotifyType.ATTEND -> {
                 list.filter {
                     val subject = it.title
-
-                    subjects.forEach {
-                        return@filter (it == subject || STRING_DISTANCE.getDistance(it, subject) >= threshold)
-                    }
-
-                    return@filter false
+                    return@filter subjects.any { it == subject || STRING_DISTANCE.getDistance(it, subject) >= threshold }
                 }
             }
             NotifyType.NOT -> emptyList()
