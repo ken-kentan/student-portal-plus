@@ -234,6 +234,10 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
 
     fun deleteAll(onDeleted: (success: Boolean) -> Unit) {
         val success = context.deleteDatabase(context.database.databaseName)
+        if (success) {
+            postValues(emptyList(), emptyList(), emptyList(), emptyList())
+        }
+
         onDeleted(success)
     }
 
