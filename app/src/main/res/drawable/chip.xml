@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_checked="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="32dp"/>
+            <gradient
+                android:endColor="@color/chip_checked"
+                android:startColor="@color/chip_checked"/>
+        </shape>
+    </item>
+
+    <item
+        android:state_checked="false">
+        <shape android:shape="rectangle">
+            <corners
+                android:radius="32dp"/>
+            <gradient
+                android:endColor="@color/chip_unchecked"
+                android:startColor="@color/chip_unchecked"/>
+        </shape>
+    </item>
+</selector>

@@ -5,116 +5,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="jp.kentan.student_portal_plus.ui.LectureInformationActivity"
+    tools:context="jp.kentan.studentportalplus.ui.LectureInformationActivity"
     tools:showIn="@layout/activity_lecture_information">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/header_title_subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/subject_header"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_subject"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/subject"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="5dp"
-            android:text="@string/sample_subject" />
+            android:layout_marginTop="8dp"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subject_header" />
 
         <TextView
-            android:text="@string/header_title_instructor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/instructor_header"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/name_instructor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subject" />
 
         <TextView
             android:id="@+id/instructor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="5dp"
-            android:text="@string/sample_instructor" />
+            android:layout_marginTop="8dp"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instructor_header" />
 
         <TextView
-            android:text="@string/header_title_semester_and_day_and_period"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/semester_week_period_header"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/name_semester_week_period"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instructor" />
 
         <TextView
-            android:id="@+id/semester_and_day_and_period"
-            android:layout_width="wrap_content"
+            android:id="@+id/semester_week_period"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="5dp"
-            android:text="@string/sample" />
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/semester_week_period_header" />
 
         <TextView
-            android:text="@string/header_title_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/category_header"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/name_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/semester_week_period" />
 
         <TextView
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
+            android:id="@+id/category"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="5dp"
-            android:text="@string/sample" />
+            android:layout_marginTop="8dp"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category_header" />
 
         <TextView
-            android:text="@string/header_title_announce_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/detail_header"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/name_detail_lecture_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category" />
 
         <TextView
             android:id="@+id/detail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="5dp"
-            android:autoLink="email"
-            android:text="@string/sample_latest_info_detail" />
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_header" />
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="end"
-            android:text="@string/sample_date" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail" />
 
-    </LinearLayout>
-
+    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

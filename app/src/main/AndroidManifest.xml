@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jp.kentan.student_portal_plus">
+    package="jp.kentan.studentportalplus">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission
-        android:name="android.permission.VIBRATE"
-        android:maxSdkVersion="18" />
 
     <application
+        android:name=".StudentPortalPlus"
         android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -29,22 +29,21 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".ui.widget.MyTimetableShortcutActivity"
-            android:icon="@mipmap/ic_my_timetable"
-            android:label="@string/title_my_timetable">
+            android:name=".ui.widget.TimetableShortcutActivity"
+            android:icon="@mipmap/ic_timetable"
+            android:label="@string/shortcut_timetable">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.IdpLoginActivity"
-            android:label="@string/title_activity_login" />
+            android:name=".ui.LoginActivity" />
         <activity
-            android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:name=".ui.WelcomeActivity" />
         <activity
-            android:name=".ui.NewsActivity"
+            android:name=".ui.NoticeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LectureInformationActivity"
@@ -53,33 +52,25 @@
             android:name=".ui.LectureCancellationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.WelcomeActivity"
-            android:label="@string/title_activity_welcome" />
-        <activity
             android:name=".ui.MyClassActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MyClassEditActivity"
-            android:theme="@style/AppTheme.LightActionBar" />
-
-        <receiver
-            android:name=".notification.DeviceStatusReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-            </intent-filter>
-        </receiver>
+            android:theme="@style/AppTheme.LightActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.SettingsActivity" />
 
         <service
-            android:name=".notification.NotificationService"
-            android:exported="false" />
-        <service
-            android:name=".notification.NotificationJob"
+            android:name=".notification.SyncJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
+
+        <service
+            android:name=".notification.RetryActionService"
+            android:enabled="true"
+            android:exported="false" />
+        <service android:name=".notification.SyncService" />
     </application>
 
 </manifest>

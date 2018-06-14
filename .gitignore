@@ -1,20 +1,13 @@
-build
 *.iml
 .gradle
-local.properties
-.idea
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
 .DS_Store
+/build
+/captures
 .externalNativeBuild
-libs
-androidTest
-test
-*.apk
-
-Orkney-Medium.otf
 
 /captures
-/colorpicker
 /customtabs
 /shared
-
-/change_log.txt

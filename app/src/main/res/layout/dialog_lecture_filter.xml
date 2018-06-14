@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/order_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/name_display_order"
+        app:layout_constraintBottom_toBottomOf="@+id/order_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/order_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/order_spinner" />
+
+    <Spinner
+        android:id="@+id/order_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/order_header"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/type_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/name_type"
+        android:textColor="@color/grey_600"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_spinner" />
+
+    <CheckBox
+        android:id="@+id/unread_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/chip"
+        android:button="@null"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="@string/name_unread"
+        android:textColor="@color/colorPrimary"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/type_header" />
+
+    <CheckBox
+        android:id="@+id/read_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/chip"
+        android:button="@null"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="@string/name_read"
+        android:textColor="@color/colorPrimary"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/unread_check_box"
+        app:layout_constraintStart_toEndOf="@+id/unread_check_box"
+        app:layout_constraintTop_toTopOf="@+id/unread_check_box" />
+
+    <CheckBox
+        android:id="@+id/attend_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/chip"
+        android:button="@null"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="@string/name_attend_lecture"
+        app:layout_constraintBottom_toBottomOf="@+id/read_check_box"
+        app:layout_constraintStart_toEndOf="@+id/read_check_box"
+        app:layout_constraintTop_toTopOf="@+id/read_check_box" />
+</android.support.constraint.ConstraintLayout>

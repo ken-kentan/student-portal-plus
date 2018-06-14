@@ -1,0 +1,369 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/timetable_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.kentan.studentportalplus.ui.fragment.TimetableFragment"
+    tools:layout_editor_absoluteY="81dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_50"
+        android:paddingTop="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/corner"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/monday_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/monday_header" />
+
+        <TextView
+            android:id="@+id/monday_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_monday"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/tuesday_header"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/corner"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tuesday_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_tuesday"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/monday_header"
+            app:layout_constraintEnd_toStartOf="@+id/wednesday_header"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/monday_header"
+            app:layout_constraintTop_toTopOf="@+id/monday_header" />
+
+        <TextView
+            android:id="@+id/wednesday_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_wednesday"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/tuesday_header"
+            app:layout_constraintEnd_toStartOf="@+id/thursday_header"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/tuesday_header"
+            app:layout_constraintTop_toTopOf="@+id/tuesday_header" />
+
+        <TextView
+            android:id="@+id/thursday_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_thursday"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/wednesday_header"
+            app:layout_constraintEnd_toStartOf="@+id/friday_header"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/wednesday_header"
+            app:layout_constraintTop_toTopOf="@+id/wednesday_header" />
+
+        <TextView
+            android:id="@+id/friday_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/name_friday"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/thursday_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/thursday_header"
+            app:layout_constraintTop_toTopOf="@+id/thursday_header" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:requiresFadingEdge="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/monday_header">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/grid_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/period1_header"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/period1_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period1_header"
+                    app:layout_constraintTop_toTopOf="@+id/period1_header" />
+
+                <TextView
+                    android:id="@+id/period1_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8:50"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period1_header"
+                    app:layout_constraintTop_toTopOf="@+id/period1_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period1_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period2_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period2_header"
+                    app:layout_constraintTop_toTopOf="@+id/period2_header" />
+
+                <TextView
+                    android:id="@+id/period2_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:30"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period2_header"
+                    app:layout_constraintTop_toTopOf="@+id/period2_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period2_header"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period1_header"
+                    app:layout_constraintStart_toStartOf="@+id/period1_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period1_header"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period3_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period3_header"
+                    app:layout_constraintTop_toTopOf="@+id/period3_header" />
+
+                <TextView
+                    android:id="@+id/period3_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:50"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period3_header"
+                    app:layout_constraintTop_toTopOf="@+id/period3_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period3_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period2_header"
+                    app:layout_constraintStart_toStartOf="@+id/period2_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period2_header"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period4_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period4_header"
+                    app:layout_constraintTop_toTopOf="@+id/period4_header" />
+
+                <TextView
+                    android:id="@+id/period4_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14:30"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period4_header"
+                    app:layout_constraintTop_toTopOf="@+id/period4_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period4_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="4"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period3_header"
+                    app:layout_constraintStart_toStartOf="@+id/period3_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period3_header"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period5_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period5_header"
+                    app:layout_constraintTop_toTopOf="@+id/period5_header" />
+
+                <TextView
+                    android:id="@+id/period5_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16:10"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period5_header"
+                    app:layout_constraintTop_toTopOf="@+id/period5_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period5_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="5"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period4_header"
+                    app:layout_constraintStart_toStartOf="@+id/period4_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period4_header"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period6_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period6_header"
+                    app:layout_constraintTop_toTopOf="@+id/period6_header" />
+
+                <TextView
+                    android:id="@+id/period6_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="17:50"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period6_header"
+                    app:layout_constraintTop_toTopOf="@+id/period6_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period6_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="6"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period5_header"
+                    app:layout_constraintStart_toStartOf="@+id/period5_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period5_header"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/period7_separator"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    app:layout_constraintRight_toRightOf="@+id/period7_header"
+                    app:layout_constraintTop_toTopOf="@+id/period7_header" />
+
+                <TextView
+                    android:id="@+id/period7_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="19:30"
+                    android:textColor="@color/grey_600"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/period7_header"
+                    app:layout_constraintTop_toTopOf="@+id/period7_separator"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:id="@+id/period7_header"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/timetable_grid_height"
+                    android:gravity="center_vertical"
+                    android:text="7"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/period6_header"
+                    app:layout_constraintStart_toStartOf="@+id/period6_header"
+                    app:layout_constraintTop_toBottomOf="@+id/period6_header"
+                    tools:ignore="HardcodedText" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_200"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_my_class_empty"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
