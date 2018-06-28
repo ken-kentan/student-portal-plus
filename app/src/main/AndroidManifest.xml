@@ -38,10 +38,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.LoginActivity" />
-        <activity
-            android:name=".ui.WelcomeActivity" />
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.WelcomeActivity" />
         <activity
             android:name=".ui.NoticeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -58,14 +56,13 @@
             android:name=".ui.MyClassEditActivity"
             android:theme="@style/AppTheme.LightActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.WebViewActivity" />
 
         <service
             android:name=".notification.SyncJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false" />
-
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".notification.RetryActionService"
             android:enabled="true"

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.cookpad.android.licensetools'
 
 android {
     compileSdkVersion 27
@@ -46,12 +47,11 @@ dependencies {
 
     // Architecture Components
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha02'
-    implementation 'android.arch.work:work-firebase:1.0.0-alpha02'
-
+    implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha04'
+    implementation 'android.arch.work:work-firebase:1.0.0-alpha04'
 
     // Google Dagger
-    def dagger_version  = '2.16'
+    def dagger_version = '2.16'
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"

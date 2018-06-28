@@ -11,8 +11,6 @@ import android.preference.PreferenceScreen
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import android.webkit.WebSettings
-import android.webkit.WebView
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
@@ -23,10 +21,11 @@ import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.widget.MyClassThresholdSamplePreference
 import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
@@ -130,7 +129,7 @@ class SettingsActivity : AppCompatActivity() {
                             .setPositiveButton(R.string.action_yes) { _, _ ->
                                 bg {
                                     portalRepository.deleteAll { success ->
-                                        async(UI) {
+                                        launch(UI) {
                                             if (success) {
                                                 longToast("すべてのポータルデータを消去しました")
                                             } else {
@@ -150,10 +149,10 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 "terms" -> {
-                    showWebViewDialog("利用規約・プライバシーポリシー", getString(R.string.url_terms))
+                    startActivity<WebViewActivity>("title" to "Terms", "url" to getString(R.string.url_terms))
                 }
                 "oss_license" -> {
-                    showWebViewDialog("オープンソースライセンス", "file:///android_asset/licenses.html")
+                    startActivity<WebViewActivity>("title" to "Licenses", "url" to "file:///android_asset/licenses.html")
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, pref)
@@ -214,20 +213,6 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 "${interval}分毎に更新する"
             }
-        }
-
-        private fun showWebViewDialog(title: String, url: String) {
-            val webView = WebView(activity)
-            webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
-            webView.settings.setAppCacheEnabled(false)
-            webView.loadUrl(url)
-
-            AlertDialog.Builder(activity)
-                    .setTitle(title)
-                    .setView(webView)
-                    .setPositiveButton("OK", null)
-                    .setOnDismissListener { webView.destroy() }
-                    .show()
         }
     }
 
