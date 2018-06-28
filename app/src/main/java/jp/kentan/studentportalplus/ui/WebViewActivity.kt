@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.ui
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.webkit.WebSettings
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.ui.span.CustomTitle
@@ -30,5 +31,10 @@ class WebViewActivity : AppCompatActivity() {
         webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         webView.settings.setAppCacheEnabled(false)
         webView.loadUrl(url)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
+        return true
     }
 }
