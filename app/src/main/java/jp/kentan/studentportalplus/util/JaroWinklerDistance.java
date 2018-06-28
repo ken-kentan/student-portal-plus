@@ -26,7 +26,15 @@ import java.util.Arrays;
  */
 public class JaroWinklerDistance {
 
-    private float threshold = 0.7f;
+    public float getDistance(String s1, String s2) {
+        int[] mtp = matches(s1, s2);
+        float m = mtp[0];
+        if (m == 0) {
+            return 0f;
+        }
+        float j = ((m / s1.length() + m / s2.length() + (m - mtp[1]) / m)) / 3;
+        return j < 0.7D ? j : j + Math.min(0.1f, 1f / mtp[3]) * mtp[2] * (1 - j);
+    }
 
     private int[] matches(String s1, String s2) {
         String max, min;
@@ -83,34 +91,5 @@ public class JaroWinklerDistance {
             }
         }
         return new int[] { matches, transpositions / 2, prefix, max.length() };
-    }
-
-    public float getDistance(String s1, String s2) {
-        int[] mtp = matches(s1, s2);
-        float m = mtp[0];
-        if (m == 0) {
-            return 0f;
-        }
-        float j = ((m / s1.length() + m / s2.length() + (m - mtp[1]) / m)) / 3;
-        return j < threshold ? j : j + Math.min(0.1f, 1f / mtp[3]) * mtp[2]
-                * (1 - j);
-    }
-
-    /**
-     * Sets the threshold used to determine when Winkler bonus should be used.
-     * Set to a negative value to get the Jaro distance.
-     * @param threshold the new value of the threshold
-     */
-    public void setThreshold(float threshold) {
-        this.threshold = threshold;
-    }
-
-    /**
-     * Returns the current value of the threshold used for adding the Winkler bonus.
-     * The default value is 0.7.
-     * @return the current value of the threshold
-     */
-    public float getThreshold() {
-        return threshold;
     }
 }
