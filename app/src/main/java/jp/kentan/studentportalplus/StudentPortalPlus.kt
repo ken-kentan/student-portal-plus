@@ -8,15 +8,20 @@ import jp.kentan.studentportalplus.di.ActivityModule
 import jp.kentan.studentportalplus.di.AppModule
 import jp.kentan.studentportalplus.di.FragmentModule
 import jp.kentan.studentportalplus.di.ServiceModule
+import jp.kentan.studentportalplus.notification.SyncWorker
 import javax.inject.Singleton
 
 
 open class StudentPortalPlus : DaggerApplication() {
 
-    override fun applicationInjector(): AndroidInjector<StudentPortalPlus> {
-        return DaggerStudentPortalPlus_Component.builder()
+    val component: StudentPortalPlus.Component by lazy {
+        DaggerStudentPortalPlus_Component.builder()
                 .appModule(AppModule(this))
                 .build()
+    }
+
+    override fun applicationInjector(): AndroidInjector<StudentPortalPlus> {
+        return component
     }
 
     @Singleton
@@ -26,5 +31,7 @@ open class StudentPortalPlus : DaggerApplication() {
         (ActivityModule::class),
         (FragmentModule::class),
         (ServiceModule::class)])
-    internal interface Component : AndroidInjector<StudentPortalPlus>
+    interface Component : AndroidInjector<StudentPortalPlus> {
+        fun inject(syncWorker: SyncWorker)
+    }
 }

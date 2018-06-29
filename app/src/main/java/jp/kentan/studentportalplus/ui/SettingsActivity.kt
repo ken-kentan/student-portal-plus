@@ -174,7 +174,7 @@ class SettingsActivity : AppCompatActivity() {
                     if (enable) {
                         SyncScheduler.schedule(activity)
                     } else {
-                        SyncScheduler.cancel(activity)
+                        SyncScheduler.cancel()
                     }
                 }
                 "sync_interval" -> {
