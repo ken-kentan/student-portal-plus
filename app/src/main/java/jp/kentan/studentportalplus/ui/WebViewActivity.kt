@@ -28,9 +28,9 @@ class WebViewActivity : AppCompatActivity() {
 
         setTitle(CustomTitle(this, title))
 
-        webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        webView.settings.setAppCacheEnabled(false)
-        webView.loadUrl(url)
+        web_view.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        web_view.settings.setAppCacheEnabled(false)
+        web_view.loadUrl(url)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
