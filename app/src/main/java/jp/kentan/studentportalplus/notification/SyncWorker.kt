@@ -33,7 +33,7 @@ class SyncWorker : Worker() {
     private val preferences by lazy { applicationContext.defaultSharedPreferences }
 
     override fun doWork(): Result {
-        if (isInMidnight()) {
+        if (isInMidnight() && !inputData.getBoolean("ignore_midnight", false)) {
             Log.d(TAG, "Skipped because of midnight")
             return Result.SUCCESS
         }
