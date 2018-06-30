@@ -7,8 +7,8 @@ import android.webkit.WebViewClient
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import kotlinx.android.synthetic.main.activity_welcome.*
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -27,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            startActivity(intentFor<LoginActivity>("request_launch_main_activity" to true))
+            startActivity<LoginActivity>("request_launch_main_activity" to true)
         }
     }
 
@@ -53,8 +53,8 @@ class WelcomeActivity : AppCompatActivity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 view ?: return
 
-                if (!view.title.contains("")) {
-                    web_view.loadUrl("local")
+                if (!view.title.contains(getString(R.string.title_terms))) {
+                    web_view.loadUrl(getString(R.string.url_terms_local))
                 }
             }
         }

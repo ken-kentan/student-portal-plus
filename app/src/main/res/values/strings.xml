@@ -106,6 +106,7 @@
     <string name="name_thursday">木</string>
     <string name="name_friday">金</string>
     <string name="title_filter_dialog">検索フィルタ</string>
+    <string name="title_terms">Student Portal+ 利用規約・プライバシーポリシー</string>
 
     <!-- Menus -->
     <string name="menu_dashboard">Dashboard</string>
@@ -183,6 +184,7 @@
     <!-- Common urls -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
     <string name="url_terms_local">file:///android_asset/terms_and_privacy_policy.html</string>
+    <string name="url_licenses">file:///android_asset/licenses.html</string>
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>

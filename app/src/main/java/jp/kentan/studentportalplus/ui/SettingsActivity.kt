@@ -152,7 +152,7 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity<WebViewActivity>("title" to "Terms", "url" to getString(R.string.url_terms))
                 }
                 "oss_license" -> {
-                    startActivity<WebViewActivity>("title" to "Licenses", "url" to "file:///android_asset/licenses.html")
+                    startActivity<WebViewActivity>("title" to "Licenses", "url" to getString(R.string.url_licenses))
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, pref)
