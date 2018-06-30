@@ -10,7 +10,7 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.share
 
@@ -40,7 +40,7 @@ class NoticeViewModel(private val repository: PortalRepository) : ViewModel() {
         val data = findNoticeById(noticeId.value) ?: return
         val favorite = !data.isFavorite
 
-        async(UI) {
+        launch(UI) {
             val success = bg { repository.update(data.copy(isFavorite = favorite)) }.await()
             onUpdated(success, favorite)
         }

@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModel
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.MyClass
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 
 class MyClassViewModel(private val repository: PortalRepository) : ViewModel() {
@@ -31,7 +31,7 @@ class MyClassViewModel(private val repository: PortalRepository) : ViewModel() {
     fun onClickDelete(onDeleted: (isSuccess: Boolean) -> Unit) {
         val data = myClass.value ?: return
 
-        async(UI) {
+        launch(UI) {
             val success = bg { repository.delete(data.subject) }.await()
             onDeleted(success)
         }

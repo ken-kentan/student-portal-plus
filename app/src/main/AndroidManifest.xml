@@ -58,16 +58,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.WebViewActivity" />
-
-        <service
-            android:name=".notification.SyncJobService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".notification.RetryActionService"
-            android:enabled="true"
-            android:exported="false" />
-        <service android:name=".notification.SyncService" />
     </application>
 
 </manifest>

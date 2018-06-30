@@ -11,7 +11,7 @@ import jp.kentan.studentportalplus.data.component.LectureAttendType
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.util.toShortString
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.share
 
@@ -49,7 +49,7 @@ class LectureInformationViewModel(private val repository: PortalRepository) : Vi
             return
         }
 
-        async(UI) {
+        launch(UI) {
             val success = bg { repository.addToMyClass(data.copy(attend = LectureAttendType.USER)) }.await()
             onUpdated(success)
         }
@@ -63,7 +63,7 @@ class LectureInformationViewModel(private val repository: PortalRepository) : Vi
             return
         }
 
-        async(UI) {
+        launch(UI) {
             val success = bg { repository.deleteFromMyClass(data.copy(attend = LectureAttendType.NOT)) }.await()
             onUpdated(success)
         }

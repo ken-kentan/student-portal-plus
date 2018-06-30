@@ -52,7 +52,7 @@ public class Murmur3 {
     private static final int N1 = 0x52dce729;
     private static final int N2 = 0x38495ab5;
 
-    public static final int DEFAULT_SEED = 104729;
+    private static final int DEFAULT_SEED = 104729;
 
     /**
      * Murmur3 32-bit variant.
@@ -72,7 +72,7 @@ public class Murmur3 {
      * @param seed   - seed. (default 0)
      * @return - hashcode
      */
-    public static int hash32(byte[] data, int length, int seed) {
+    private static int hash32(byte[] data, int length, int seed) {
         int hash = seed;
         final int nblocks = length >> 2;
 
@@ -143,7 +143,7 @@ public class Murmur3 {
      * @param seed   - seed. (default is 0)
      * @return - hashcode
      */
-    public static long hash64(byte[] data, int offset, int length, int seed) {
+    private static long hash64(byte[] data, int offset, int length, int seed) {
         long hash = seed;
         final int nblocks = length >> 3;
 
@@ -217,7 +217,7 @@ public class Murmur3 {
      * @param seed   - seed. (default is 0)
      * @return - hashcode (2 longs)
      */
-    public static long[] hash128(byte[] data, int offset, int length, int seed) {
+    private static long[] hash128(byte[] data, int offset, int length, int seed) {
         long h1 = seed;
         long h2 = seed;
         final int nblocks = length >> 4;
@@ -333,8 +333,8 @@ public class Murmur3 {
         return h;
     }
 
-    public static class IncrementalHash32 {
-        byte[] tail = new byte[3];
+    static class IncrementalHash32 {
+        final byte[] tail = new byte[3];
         int tailLen;
         int totalLen;
         int hash;

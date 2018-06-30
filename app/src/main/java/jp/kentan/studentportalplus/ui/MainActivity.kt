@@ -25,8 +25,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawer_layout.closeDrawer(GravityCompat.START)
 
-        async(UI) {
+        launch(UI) {
             delay(300)
 
             when (item.itemId) {
@@ -209,9 +209,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         snackbar.setText("$message\n${getString(R.string.msg_request_shibboleth_data)}")
                     }
 
-                    snackbar.setAction(R.string.action_login, {
+                    snackbar.setAction(R.string.action_login) {
                         startActivity<LoginActivity>("request_launch_main_activity" to true)
-                    })
+                    }
                 }
                 MainViewModel.SyncResult.UNKNOWN_ERROR -> {
                     if (message != null && defaultSharedPreferences.enableDetailErrorMessage()) {
@@ -220,7 +220,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         snackbar.setText(R.string.error_failed_to_sync)
                     }
 
-                    snackbar.setAction(R.string.action_close, { snackbar.dismiss() })
+                    snackbar.setAction(R.string.action_close) { snackbar.dismiss() }
                 }
                 MainViewModel.SyncResult.SUCCESS -> return@Observer
             }

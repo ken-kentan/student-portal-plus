@@ -25,7 +25,7 @@ import jp.kentan.studentportalplus.ui.viewmodel.MyClassEditViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_my_class_edit.*
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
@@ -239,7 +239,7 @@ class MyClassEditActivity : AppCompatActivity() {
                 scheduleCode = scheduleCode
         )
 
-        async(UI) {
+        launch(UI) {
             val success = viewModel.save().await()
 
             if (success) {
