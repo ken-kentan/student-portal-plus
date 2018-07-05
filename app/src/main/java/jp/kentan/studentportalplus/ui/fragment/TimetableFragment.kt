@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.GridLayoutManager
@@ -93,6 +94,10 @@ class TimetableFragment : Fragment() {
                     view.typeface = Typeface.DEFAULT
                     view.textColorResource = R.color.colorPrimary
                 }
+            }
+
+            if (layoutType == TimetableFragmentViewModel.LayoutType.WEEK) {
+                TransitionManager.beginDelayedTransition(grid_layout)
             }
 
             adapter.submitList(it)
