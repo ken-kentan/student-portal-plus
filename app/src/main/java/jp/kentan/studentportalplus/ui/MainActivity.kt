@@ -2,7 +2,6 @@ package jp.kentan.studentportalplus.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -28,9 +27,7 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -270,8 +267,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun launchWelcomeActivity() {
-        val intent = intentFor<WelcomeActivity>()
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val intent = intentFor<WelcomeActivity>().newTask().clearTask()
 
         startActivity(intent)
 
