@@ -21,7 +21,7 @@
         android:title="新着通知">
 
         <SwitchPreference
-            android:key="enable_sync"
+            android:key="enabled_sync"
             android:title="自動同期"
             android:summary="一定間隔で自動的に同期(フェッチ)します"
             android:defaultValue="true">
@@ -42,14 +42,14 @@
         </Preference>
 
         <CheckBoxPreference
-            android:key="enable_notify_vibration"
+            android:key="enabled_notification_vibration"
             android:title="バイブレーション"
             android:summary="通知が届いたら振動させる"
             android:defaultValue="true">
         </CheckBoxPreference>
 
         <CheckBoxPreference
-            android:key="enable_notify_led"
+            android:key="enabled_notification_led"
             android:title="通知LED"
             android:summary="通知が届いたらLEDを点滅させる"
             android:defaultValue="true">
@@ -67,14 +67,14 @@
         </Preference>
 
         <CheckBoxPreference
-            android:key="enable_pdf_open_with_gdocs"
+            android:key="enabled_pdf_open_with_gdocs"
             android:title="PDFをGoogle Docsで開く"
             android:summary="ダウンロードせずGoogle Docsで表示します"
             android:defaultValue="true">
         </CheckBoxPreference>
 
         <CheckBoxPreference
-            android:key="enable_detail_error"
+            android:key="enabled_detail_error"
             android:title="詳細なエラーメッセージを表示"
             android:summary="エラー発生時に原因を詳細に表示します"
             android:defaultValue="false">

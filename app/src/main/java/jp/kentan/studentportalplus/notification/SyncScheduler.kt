@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.notification
 import android.content.Context
 import android.util.Log
 import androidx.work.*
+import jp.kentan.studentportalplus.util.enabledSync
 import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.concurrent.TimeUnit
@@ -13,7 +14,9 @@ class SyncScheduler {
         private const val TAG = "SyncScheduler"
 
         fun scheduleIfNeed(context: Context) {
-            enqueueUniquePeriodicWork(context, ExistingPeriodicWorkPolicy.KEEP)
+            if (context.defaultSharedPreferences.enabledSync()) {
+                enqueueUniquePeriodicWork(context, ExistingPeriodicWorkPolicy.KEEP)
+            }
         }
 
         fun schedule(context: Context) {

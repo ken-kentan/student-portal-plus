@@ -1,9 +1,7 @@
 package jp.kentan.studentportalplus.notification
 
 import android.util.Log
-import androidx.core.content.edit
 import androidx.work.Worker
-import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.StudentPortalPlus
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NotifyContent
@@ -12,9 +10,11 @@ import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.data.component.PortalDataType.*
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethAuthenticationException
 import jp.kentan.studentportalplus.util.JaroWinklerDistance
-import jp.kentan.studentportalplus.util.enableDetailErrorMessage
+import jp.kentan.studentportalplus.util.enabledDetailError
 import jp.kentan.studentportalplus.util.getMyClassThreshold
 import org.jetbrains.anko.defaultSharedPreferences
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 import javax.inject.Inject
 
@@ -22,6 +22,8 @@ class SyncWorker : Worker() {
 
     companion object {
         const val NAME = "sync_worker"
+
+        const val IGNORE_MIDNIGHT = "ignore_midnight"
 
         private const val TAG = "SyncWorker"
         private val STRING_DISTANCE = JaroWinklerDistance()
@@ -33,7 +35,7 @@ class SyncWorker : Worker() {
     private val preferences by lazy { applicationContext.defaultSharedPreferences }
 
     override fun doWork(): Result {
-        if (isInMidnight() && !inputData.getBoolean("ignore_midnight", false)) {
+        if (isInMidnight() && !inputData.getBoolean(IGNORE_MIDNIGHT, false)) {
             Log.d(TAG, "Skipped because of midnight")
             return Result.SUCCESS
         }
@@ -58,14 +60,13 @@ class SyncWorker : Worker() {
             notification.notify(LECTURE_CANCELLATION, lectureCancelList)
             notification.notify(NOTICE, noticeList)
 
-            saveLastSyncTime()
         } catch (e: ShibbolethAuthenticationException) {
             notification.notifyError(e.message, true)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to sync", e)
 
-            if (preferences.enableDetailErrorMessage()) {
-                notification.notifyError(e.message ?: applicationContext.getString(R.string.error_unknown))
+            if (preferences.enabledDetailError()) {
+                notification.notifyError(e.stackTraceToString())
             }
         }
 
@@ -74,12 +75,6 @@ class SyncWorker : Worker() {
 
     private fun isInMidnight(): Boolean {
         return Calendar.getInstance(Locale.JAPAN).get(Calendar.HOUR_OF_DAY) !in 5..22
-    }
-
-    private fun saveLastSyncTime() {
-        preferences.edit {
-            putLong("last_sync_time_millis", System.currentTimeMillis())
-        }
     }
 
     private fun Map<PortalDataType, List<NotifyContent>>.getBy(type: PortalDataType, subjects: List<String> = emptyList(), threshold: Float = 0f): List<NotifyContent> {
@@ -95,5 +90,12 @@ class SyncWorker : Worker() {
             }
             NotifyType.NOT -> emptyList()
         }
+    }
+
+    private fun Exception.stackTraceToString(): String {
+        val sw = StringWriter()
+        printStackTrace(PrintWriter(sw))
+
+        return sw.toString()
     }
 }

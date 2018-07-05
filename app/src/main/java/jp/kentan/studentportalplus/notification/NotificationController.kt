@@ -15,13 +15,16 @@ import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.style.StyleSpan
-import androidx.core.content.edit
 import androidx.core.text.set
 import androidx.core.text.toSpannable
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.NotifyContent
 import jp.kentan.studentportalplus.data.component.PortalDataType
 import jp.kentan.studentportalplus.ui.*
+import jp.kentan.studentportalplus.util.enabledNotificationLed
+import jp.kentan.studentportalplus.util.enabledNotificationVibration
+import jp.kentan.studentportalplus.util.getNotificationId
+import jp.kentan.studentportalplus.util.setNotificationId
 import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
@@ -41,7 +44,7 @@ class NotificationController(
         val CAN_USE_VECTOR_DRAWABLE      = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         val CAN_USE_NOTIFICATION_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
-        val VIBRATION_PATTERN = longArrayOf(0, 300, 300, 300)
+        val VIBRATION_PATTERN = longArrayOf(0, 500, 500, 500)
 
         val SMALL_APP_ICON = if (CAN_USE_VECTOR_DRAWABLE) R.drawable.ic_menu_dashboard else R.mipmap.ic_notification_app
         val SMALL_ICON_MAP = if (CAN_USE_VECTOR_DRAWABLE) {
@@ -67,8 +70,8 @@ class NotificationController(
 
     private val notificationManager = NotificationManagerCompat.from(context)
 
-    private val enableVibration = context.defaultSharedPreferences.getBoolean("enable_notify_vibration", true)
-    private val enableLed       = context.defaultSharedPreferences.getBoolean("enable_notify_led", true)
+    private val enabledVibration = context.defaultSharedPreferences.enabledNotificationVibration()
+    private val enabledLed       = context.defaultSharedPreferences.enabledNotificationLed()
 
     private val accentColor = ContextCompat.getColor(context, R.color.colorAccent)
     private val largeIcon by lazy { BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large) }
@@ -91,7 +94,7 @@ class NotificationController(
         }
 
         val smallIcon = SMALL_ICON_MAP[type] ?: SMALL_APP_ICON
-        var id = context.defaultSharedPreferences.getInt("notification_id", 1)
+        var id = context.defaultSharedPreferences.getNotificationId()
 
         if (CAN_USE_NOTIFICATION_SUMMARY) {
             createSummaryNotification()
@@ -112,7 +115,7 @@ class NotificationController(
             }
         } else {
             val fragmentType = FRAGMENT_TYPE_MAP[type] ?: MainActivity.FragmentType.DASHBOARD
-            val intent = context.intentFor<MainActivity>("fragment_type" to fragmentType.name).clearTop().newTask()
+            val intent = context.intentFor<MainActivity>(MainActivity.FRAGMENT_TYPE to fragmentType.name).clearTop().newTask()
             val activity = PendingIntent.getActivity(context, id, intent, FLAG_UPDATE_CURRENT)
 
             val title = if (contentList.size > 1) "${contentList.size}件の${type.displayName}" else type.displayName
@@ -133,14 +136,12 @@ class NotificationController(
             if (++id >= Int.MAX_VALUE) { id = 1 }
         }
 
-        context.defaultSharedPreferences.edit {
-            putInt("notification_id", id)
-        }
+        context.defaultSharedPreferences.setNotificationId(id)
     }
 
     fun notifyError(message: String, isRequireLogin: Boolean = false) {
         val activity = if (isRequireLogin) {
-            context.intentFor<LoginActivity>("request_launch_main_activity" to true)
+            context.intentFor<LoginActivity>(LoginActivity.LAUNCH_MAIN_ACTIVITY to true)
         } else {
             context.intentFor<MainActivity>()
         }
@@ -153,7 +154,7 @@ class NotificationController(
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setLargeIcon(largeIcon)
+                .setColor(ContextCompat.getColor(context, R.color.red_600))
                 .setSmallIcon(SMALL_APP_ICON)
                 .setSubText("同期失敗")
                 .setContentTitle(if (isRequireLogin) "再ログインが必要です" else "エラー")
@@ -161,6 +162,9 @@ class NotificationController(
                 .setContentIntent(intent)
                 .setAutoCancel(true)
 
+        if (CAN_USE_NOTIFICATION_SUMMARY) {
+
+        }
         if (CAN_USE_VECTOR_DRAWABLE) {
             builder.addAction(retryAction)
         }
@@ -174,9 +178,9 @@ class NotificationController(
 
     private fun build(builder: NotificationCompat.Builder): Notification {
         if (isFirstNotify) {
-            builder.setVibrate(if (enableVibration) VIBRATION_PATTERN else longArrayOf(0))
+            builder.setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
 
-            if (enableLed) {
+            if (enabledLed) {
                 builder.setLights(accentColor, 1000, 2000)
             }
 

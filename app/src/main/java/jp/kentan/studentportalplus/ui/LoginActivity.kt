@@ -10,13 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.core.content.edit
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.util.hideSoftInput
+import jp.kentan.studentportalplus.util.setFirstLaunch
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
@@ -31,11 +31,15 @@ import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
 
+    companion object {
+        const val LAUNCH_MAIN_ACTIVITY = "launch_main_activity"
+    }
+
     @Inject
     lateinit var shibbolethDataProvider: ShibbolethDataProvider
 
     private var loginJob: Job? = null
-    private var isLaunchMainActivity: Boolean = false
+    private var requireLaunchMainActivity: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
         login_button.setOnClickListener { attemptLogin() }
 
-        isLaunchMainActivity = intent.getBooleanExtra("request_launch_main_activity", false)
+        requireLaunchMainActivity = intent.getBooleanExtra(LAUNCH_MAIN_ACTIVITY, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -143,11 +147,9 @@ class LoginActivity : AppCompatActivity() {
         showProgress(false)
 
         if (isSuccess) {
-            defaultSharedPreferences.edit {
-                putBoolean("is_first", false)
-            }
+            defaultSharedPreferences.setFirstLaunch(false)
 
-            if (isLaunchMainActivity) {
+            if (requireLaunchMainActivity) {
                 launchMainActivity()
             }
             finish()
@@ -158,7 +160,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun launchMainActivity() {
-        startActivity(intentFor<MainActivity>("require_sync" to true).newTask().clearTask())
+        startActivity(intentFor<MainActivity>(MainActivity.REQUIRE_SYNC to true).newTask().clearTask())
     }
 
     private fun showProgress(isShow: Boolean) {

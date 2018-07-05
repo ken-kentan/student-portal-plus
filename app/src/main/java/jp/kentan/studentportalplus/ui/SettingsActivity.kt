@@ -19,6 +19,7 @@ import jp.kentan.studentportalplus.data.component.NotifyType
 import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.widget.MyClassThresholdSamplePreference
+import jp.kentan.studentportalplus.util.enabledSync
 import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -84,8 +85,8 @@ class SettingsActivity : AppCompatActivity() {
             shibbolethLastLoginDate = screen.findPreference("shibboleth_last_login_date")
             syncInterval = screen.findPreference("sync_interval") as ListPreference
             notifyContents = screen.findPreference("notify_contents")
-            notifyVibration = screen.findPreference("enable_notify_vibration")
-            notifyLed = screen.findPreference("enable_notify_led")
+            notifyVibration = screen.findPreference("enabled_notification_vibration")
+            notifyLed = screen.findPreference("enabled_notification_led")
 
             notifyContents.setOnPreferenceClickListener {
                 fragmentManager
@@ -109,12 +110,12 @@ class SettingsActivity : AppCompatActivity() {
             }
 
 
-            val enable = defaultSharedPreferences.getBoolean("enable_sync", true)
+            val enabled = defaultSharedPreferences.enabledSync()
 
-            syncInterval.isEnabled = enable
-            notifyContents.isEnabled = enable
-            notifyVibration.isEnabled = enable
-            notifyLed.isEnabled = enable
+            syncInterval.isEnabled = enabled
+            notifyContents.isEnabled = enabled
+            notifyVibration.isEnabled = enabled
+            notifyLed.isEnabled = enabled
 
             setupSummary(screen)
         }
@@ -163,8 +164,8 @@ class SettingsActivity : AppCompatActivity() {
                 "shibboleth_last_login_date" -> {
                     shibbolethLastLoginDate.summary = pref.getString("shibboleth_last_login_date", "なし")
                 }
-                "enable_sync" -> {
-                    val enable = pref.getBoolean("enable_sync", true)
+                "enabled_sync" -> {
+                    val enable = pref.getBoolean("enabled_sync", true)
 
                     syncInterval.isEnabled = enable
                     notifyContents.isEnabled = enable

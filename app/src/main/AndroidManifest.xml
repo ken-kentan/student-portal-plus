@@ -58,6 +58,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.WebViewActivity" />
+
+        <service
+            android:name=".notification.RetryActionService"
+            android:exported="false"  />
     </application>
 
 </manifest>

@@ -20,7 +20,8 @@ import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.viewmodel.MainViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.ui.widget.MapView
-import jp.kentan.studentportalplus.util.enableDetailErrorMessage
+import jp.kentan.studentportalplus.util.enabledDetailError
+import jp.kentan.studentportalplus.util.isFirstLaunch
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
@@ -33,6 +34,11 @@ import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    companion object {
+        const val REQUIRE_SYNC = "require_sync"
+        const val FRAGMENT_TYPE = "fragment_type"
+    }
 
     enum class FragmentType{DASHBOARD, TIMETABLE, LECTURE_INFO, LECTURE_CANCEL, NOTICE}
 
@@ -62,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        if (isFirstLaunch()) {
+        if (defaultSharedPreferences.isFirstLaunch()) {
             launchWelcomeActivity()
             return
         }
@@ -78,20 +84,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupSwipeRefresh()
         setupAccountHeader()
 
-        if (intent.hasExtra("fragment_type")) {
-            val type = FragmentType.valueOf(intent.getStringExtra("fragment_type"))
-            intent.removeExtra("fragment_type")
+        val fragment = when {
+            intent.hasExtra(FRAGMENT_TYPE) -> {
+                val type = FragmentType.valueOf(intent.getStringExtra(FRAGMENT_TYPE))
+                intent.removeExtra(FRAGMENT_TYPE)
 
+                fragmentMap[type]
+            }
+            supportFragmentManager.fragments.isEmpty() -> DashboardFragment.newInstance()
+            else -> null
+        }
+
+        if (fragment != null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragmentMap[type])
-                    .commit()
-        } else if (supportFragmentManager.fragments.isEmpty()) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, DashboardFragment.newInstance())
+                    .replace(R.id.fragment_container, fragment)
                     .commit()
         }
 
-        if (intent.getBooleanExtra("require_sync", false)) {
+        if (intent.getBooleanExtra(REQUIRE_SYNC, false)) {
             viewModel.sync()
         }
 
@@ -210,11 +220,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
 
                     snackbar.setAction(R.string.action_login) {
-                        startActivity<LoginActivity>("request_launch_main_activity" to true)
+                        startActivity<LoginActivity>(LoginActivity.LAUNCH_MAIN_ACTIVITY to true)
                     }
                 }
                 MainViewModel.SyncResult.UNKNOWN_ERROR -> {
-                    if (message != null && defaultSharedPreferences.enableDetailErrorMessage()) {
+                    if (message != null && defaultSharedPreferences.enabledDetailError()) {
                         snackbar.setText(message)
                     } else {
                         snackbar.setText(R.string.error_failed_to_sync)
@@ -258,8 +268,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fragmentType = type
     }
-
-    private fun isFirstLaunch() = defaultSharedPreferences.getBoolean("is_first", true)
 
     private fun launchWelcomeActivity() {
         val intent = intentFor<WelcomeActivity>()

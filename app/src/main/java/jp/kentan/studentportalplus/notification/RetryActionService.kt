@@ -13,7 +13,7 @@ class RetryActionService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val syncWorkRequest = OneTimeWorkRequest.Builder(SyncWorker::class.java)
-                .setInputData(Data.Builder().putBoolean("ignore_midnight", true).build())
+                .setInputData(Data.Builder().putBoolean(SyncWorker.IGNORE_MIDNIGHT, true).build())
                 .build()
 
         WorkManager.getInstance()?.enqueue(syncWorkRequest)
