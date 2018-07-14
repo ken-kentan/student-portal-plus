@@ -27,6 +27,8 @@ class SyncWorker : Worker() {
 
         private const val TAG = "SyncWorker"
         private val STRING_DISTANCE = JaroWinklerDistance()
+
+        private val JST = TimeZone.getTimeZone("Asia/Tokyo")
     }
 
     @Inject
@@ -74,7 +76,7 @@ class SyncWorker : Worker() {
     }
 
     private fun isInMidnight(): Boolean {
-        return Calendar.getInstance(Locale.JAPAN).get(Calendar.HOUR_OF_DAY) !in 5..22
+        return Calendar.getInstance(JST).get(Calendar.HOUR_OF_DAY) !in 5..22
     }
 
     private fun Map<PortalDataType, List<NotifyContent>>.getBy(type: PortalDataType, subjects: List<String> = emptyList(), threshold: Float = 0f): List<NotifyContent> {
