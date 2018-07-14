@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_lecture_cancellation.*
 import kotlinx.android.synthetic.main.content_lecture_cancellation.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 class LectureCancellationActivity : AppCompatActivity() {
@@ -101,7 +102,10 @@ class LectureCancellationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_share -> viewModel.onClickShare(this)
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                finish()
+                startActivity<MainActivity>()
+            }
         }
 
         return super.onOptionsItemSelected(item)
