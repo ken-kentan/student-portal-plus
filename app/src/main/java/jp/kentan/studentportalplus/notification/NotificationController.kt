@@ -162,9 +162,6 @@ class NotificationController(
                 .setContentIntent(intent)
                 .setAutoCancel(true)
 
-        if (CAN_USE_NOTIFICATION_SUMMARY) {
-
-        }
         if (CAN_USE_VECTOR_DRAWABLE) {
             builder.addAction(retryAction)
         }
