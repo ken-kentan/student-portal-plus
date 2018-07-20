@@ -16,6 +16,7 @@ import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NotifyType
+import jp.kentan.studentportalplus.notification.NotificationController
 import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.span.CustomTitle
 import jp.kentan.studentportalplus.ui.widget.MyClassThresholdSamplePreference
@@ -89,8 +90,9 @@ class SettingsActivity : AppCompatActivity() {
             notifyLed = screen.findPreference("enabled_notification_led")
 
             screen.findPreference("notification_settings")?.setOnPreferenceClickListener {
-                val intent = Intent("android.settings.APP_NOTIFICATION_SETTINGS")
+                val intent = Intent("android.settings.CHANNEL_NOTIFICATION_SETTINGS")
                 intent.putExtra("android.provider.extra.APP_PACKAGE", activity.packageName)
+                intent.putExtra("android.provider.extra.CHANNEL_ID", NotificationController.NEWLY_CHANNEL_ID)
                 startActivity(intent)
 
                 return@setOnPreferenceClickListener true

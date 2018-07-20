@@ -34,7 +34,7 @@ class NotificationController(
 ) {
 
     companion object {
-        private const val NEWLY_CHANNEL_ID = "0_newly_channel" //新着通知
+        const val NEWLY_CHANNEL_ID = "0_newly_channel" //新着通知
         private const val APP_CHANNEL_ID = "99_app_channel"
 
         private const val GROUP_KEY = "student_portal_plus"
