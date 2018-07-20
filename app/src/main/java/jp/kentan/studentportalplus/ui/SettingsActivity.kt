@@ -71,8 +71,8 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var shibbolethLastLoginDate: Preference
         private lateinit var syncInterval: ListPreference
         private lateinit var notifyContents: Preference
-        private lateinit var notifyVibration: Preference
-        private lateinit var notifyLed: Preference
+        private var notifyVibration: Preference? = null
+        private var notifyLed: Preference? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -88,6 +88,14 @@ class SettingsActivity : AppCompatActivity() {
             notifyVibration = screen.findPreference("enabled_notification_vibration")
             notifyLed = screen.findPreference("enabled_notification_led")
 
+            screen.findPreference("notification_settings")?.setOnPreferenceClickListener {
+                val intent = Intent("android.settings.APP_NOTIFICATION_SETTINGS")
+                intent.putExtra("android.provider.extra.APP_PACKAGE", activity.packageName)
+                startActivity(intent)
+
+                return@setOnPreferenceClickListener true
+            }
+
             notifyContents.setOnPreferenceClickListener {
                 fragmentManager
                         .beginTransaction()
@@ -98,6 +106,7 @@ class SettingsActivity : AppCompatActivity() {
 
                 return@setOnPreferenceClickListener true
             }
+
             screen.findPreference("my_class_threshold").setOnPreferenceClickListener {
                 fragmentManager
                         .beginTransaction()
@@ -114,8 +123,8 @@ class SettingsActivity : AppCompatActivity() {
 
             syncInterval.isEnabled = enabled
             notifyContents.isEnabled = enabled
-            notifyVibration.isEnabled = enabled
-            notifyLed.isEnabled = enabled
+            notifyVibration?.isEnabled = enabled
+            notifyLed?.isEnabled = enabled
 
             setupSummary(screen)
         }
@@ -169,8 +178,8 @@ class SettingsActivity : AppCompatActivity() {
 
                     syncInterval.isEnabled = enable
                     notifyContents.isEnabled = enable
-                    notifyVibration.isEnabled = enable
-                    notifyLed.isEnabled = enable
+                    notifyVibration?.isEnabled = enable
+                    notifyLed?.isEnabled = enable
 
                     if (enable) {
                         SyncScheduler.schedule(activity)

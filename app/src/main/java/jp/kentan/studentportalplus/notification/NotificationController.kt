@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_NO_CREATE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -34,20 +33,23 @@ class NotificationController(
         private val context: Context
 ) {
 
-    private companion object {
-        const val CHANNEL_ID = "channel"
-        const val GROUP_KEY = "student_portal_plus"
-        const val SUMMARY_NOTIFICATION_ID =  0
-        const val ERROR_NOTIFICATION_ID   = -1
-        const val INBOX_LINE_LIMIT        = 4
+    companion object {
+        private const val NEWLY_CHANNEL_ID = "0_newly_channel" //新着通知
+        private const val APP_CHANNEL_ID = "99_app_channel"
 
-        val CAN_USE_VECTOR_DRAWABLE      = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        val CAN_USE_NOTIFICATION_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+        private const val GROUP_KEY = "student_portal_plus"
+        private const val SUMMARY_NOTIFICATION_ID =  0
+        private const val ERROR_NOTIFICATION_ID   = -1
+        private const val INBOX_LINE_LIMIT        =  4
 
-        val VIBRATION_PATTERN = longArrayOf(0, 500, 500, 500)
+        private val CAN_USE_VECTOR_DRAWABLE      = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        private val CAN_USE_NOTIFICATION_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+        private val CAN_USE_NOTIFICATION_CHANNEL = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
-        val SMALL_APP_ICON = if (CAN_USE_VECTOR_DRAWABLE) R.drawable.ic_menu_dashboard else R.mipmap.ic_notification_app
-        val SMALL_ICON_MAP = if (CAN_USE_VECTOR_DRAWABLE) {
+        private val VIBRATION_PATTERN = longArrayOf(0, 300, 300, 300)
+
+        private val SMALL_APP_ICON = if (CAN_USE_VECTOR_DRAWABLE) R.drawable.ic_menu_dashboard else R.mipmap.ic_notification_app
+        private val SMALL_ICON_MAP = if (CAN_USE_VECTOR_DRAWABLE) {
             mapOf(
                     PortalDataType.LECTURE_INFORMATION  to R.drawable.ic_menu_lecture_info,
                     PortalDataType.LECTURE_CANCELLATION to R.drawable.ic_menu_lecture_cancel,
@@ -61,11 +63,25 @@ class NotificationController(
             )
         }
 
-        val FRAGMENT_TYPE_MAP by lazy { mapOf(
-                PortalDataType.LECTURE_INFORMATION  to MainActivity.FragmentType.LECTURE_INFO,
-                PortalDataType.LECTURE_CANCELLATION to MainActivity.FragmentType.LECTURE_CANCEL,
-                PortalDataType.NOTICE               to MainActivity.FragmentType.NOTICE
-        ) }
+        fun setupChannel(context: Context) {
+            if (!CAN_USE_NOTIFICATION_CHANNEL) { return }
+
+            val color = ContextCompat.getColor(context, R.color.colorAccent)
+
+            val newlyChannel = NotificationChannel(NEWLY_CHANNEL_ID, "新着通知", NotificationManager.IMPORTANCE_DEFAULT)
+            newlyChannel.enableLights(true)
+            newlyChannel.lightColor = color
+            newlyChannel.vibrationPattern = VIBRATION_PATTERN
+            newlyChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+
+            val appChannel = NotificationChannel(APP_CHANNEL_ID, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW)
+            appChannel.enableLights(true)
+            appChannel.lightColor = color
+            appChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+
+            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannels(listOf(newlyChannel, appChannel))
+        }
     }
 
     private val notificationManager = NotificationManagerCompat.from(context)
@@ -78,15 +94,6 @@ class NotificationController(
 
     private var isFirstNotify = true
 
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID, "新着通知", NotificationManager.IMPORTANCE_DEFAULT)
-            channel.setShowBadge(true)
-
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
-        }
-    }
 
     fun notify(type: PortalDataType, contentList: List<NotifyContent>) {
         if (contentList.isEmpty()) {
@@ -100,27 +107,26 @@ class NotificationController(
             createSummaryNotification()
 
             contentList.forEach {
-                val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setSmallIcon(smallIcon)
                         .setGroup(GROUP_KEY)
+                        .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
+                        .setGroupSummary(false)
                         .setSubText(type.displayName)
                         .setContentTitle(it.title)
                         .setContentText(it.text)
                         .setContentIntent(it.createIntent(type, id))
+                        .setAutoCancel(true)
 
-                notificationManager.notify(id, build(builder))
+                notificationManager.notify(id, builder.build())
 
                 if (++id >= Int.MAX_VALUE) { id = 1 }
             }
         } else {
-            val fragmentType = FRAGMENT_TYPE_MAP[type] ?: MainActivity.FragmentType.DASHBOARD
-            val intent = context.intentFor<MainActivity>(MainActivity.FRAGMENT_TYPE to fragmentType.name).clearTop().newTask()
-            val activity = PendingIntent.getActivity(context, id, intent, FLAG_UPDATE_CURRENT)
-
             val title = if (contentList.size > 1) "${contentList.size}件の${type.displayName}" else type.displayName
 
-            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setLargeIcon(largeIcon)
@@ -128,14 +134,24 @@ class NotificationController(
                     .setColor(accentColor)
                     .setContentTitle(title)
                     .setContentText(contentList.first().toInboxStyleText())
-                    .setContentIntent(activity)
+                    .setContentIntent(type.createIntent(id))
                     .setStyle(contentList.createInboxStyle(type))
+                    .setAutoCancel(true)
 
-            notificationManager.notify(id, build(builder))
+            if (isFirstNotify) {
+                builder.setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
+
+                if (enabledLed) {
+                    builder.setLights(accentColor, 1000, 2000)
+                }
+            }
+
+            notificationManager.notify(id, builder.build())
 
             if (++id >= Int.MAX_VALUE) { id = 1 }
         }
 
+        isFirstNotify = false
         context.defaultSharedPreferences.setNotificationId(id)
     }
 
@@ -147,10 +163,7 @@ class NotificationController(
         }
         val intent = PendingIntent.getActivity(context, ERROR_NOTIFICATION_ID, activity, FLAG_UPDATE_CURRENT)
 
-        val retryService = PendingIntent.getService(context, ERROR_NOTIFICATION_ID, context.intentFor<RetryActionService>(), FLAG_UPDATE_CURRENT)
-        val retryAction = NotificationCompat.Action.Builder(R.drawable.ic_refresh, "再試行", retryService).build()
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, APP_CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -163,6 +176,9 @@ class NotificationController(
                 .setAutoCancel(true)
 
         if (CAN_USE_VECTOR_DRAWABLE) {
+            val retryService = PendingIntent.getService(context, ERROR_NOTIFICATION_ID, context.intentFor<RetryActionService>(), FLAG_UPDATE_CURRENT)
+            val retryAction = NotificationCompat.Action.Builder(R.drawable.ic_refresh, "再試行", retryService).build()
+
             builder.addAction(retryAction)
         }
 
@@ -173,40 +189,27 @@ class NotificationController(
         notificationManager.cancel(ERROR_NOTIFICATION_ID)
     }
 
-    private fun build(builder: NotificationCompat.Builder): Notification {
-        if (isFirstNotify) {
-            builder.setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
-
-            if (enabledLed) {
-                builder.setLights(accentColor, 1000, 2000)
-            }
-
-            isFirstNotify = false
-        }
-
-        builder.setAutoCancel(true)
-
-        return builder.build()
-    }
-
     private fun createSummaryNotification() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isFirstNotify) {
             return
         }
 
-        val intent = PendingIntent.getActivity(context, SUMMARY_NOTIFICATION_ID, context.intentFor<MainActivity>(), FLAG_NO_CREATE)
-
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+        val summary = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(SMALL_APP_ICON)
                 .setColor(accentColor)
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
-                .setContentIntent(intent)
+                .setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
+                .setLights(accentColor, 1000, 2000)
+                .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
-                .build()
 
-        notificationManager.notify(SUMMARY_NOTIFICATION_ID, notification)
+        if (enabledLed) {
+            summary.setLights(accentColor, 1000, 2000)
+        }
+
+        notificationManager.notify(SUMMARY_NOTIFICATION_ID, summary.build())
     }
 
     private fun NotifyContent.createIntent(type: PortalDataType, code: Int): PendingIntent? {
@@ -218,6 +221,19 @@ class NotificationController(
         }
 
         return PendingIntent.getActivity(context, code, intent.clearTop().newTask(), FLAG_UPDATE_CURRENT)
+    }
+
+    private fun PortalDataType.createIntent(id: Int): PendingIntent {
+        val fragmentType = when (this) {
+            PortalDataType.NOTICE               -> MainActivity.FragmentType.NOTICE
+            PortalDataType.LECTURE_INFORMATION  -> MainActivity.FragmentType.LECTURE_INFO
+            PortalDataType.LECTURE_CANCELLATION -> MainActivity.FragmentType.LECTURE_CANCEL
+            PortalDataType.MY_CLASS             -> MainActivity.FragmentType.DASHBOARD // not support
+        }
+
+        val intent = context.intentFor<MainActivity>(MainActivity.FRAGMENT_TYPE to fragmentType.name).clearTop().newTask()
+
+        return PendingIntent.getActivity(context, id, intent, FLAG_UPDATE_CURRENT)
     }
 
     private fun List<NotifyContent>.createInboxStyle(type: PortalDataType): NotificationCompat.InboxStyle {
