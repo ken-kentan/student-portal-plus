@@ -159,15 +159,15 @@ class ShibbolethDataProvider(private val context: Context) {
         return null
     }
 
-    fun save(name: String, username: String, password: String) {
+    fun save(name: String, data: ShibbolethData) {
         preferences.edit {
             putString(KEY_NAME    , encryptString(name))
-            putString(KEY_USERNAME, encryptString(username))
-            putString(KEY_PASSWORD, encryptString(password))
+            putString(KEY_USERNAME, encryptString(data.username))
+            putString(KEY_PASSWORD, encryptString(data.password))
         }
 
         // may be call in background thread
-        userLiveData.postValue(Pair(name, username))
+        userLiveData.postValue(Pair(name, data.username))
     }
 
     fun getUsername() = decryptString(preferences.getString(KEY_USERNAME, null))

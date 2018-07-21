@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import jp.kentan.studentportalplus.data.component.ShibbolethData
 import okhttp3.*
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doFromSdk
@@ -112,8 +113,9 @@ class ShibbolethClient(
         cookieJar.clear()
 
         val name: String
+        val shibbolethData = ShibbolethData(username, password)
         try {
-            val document = fetch(IDP_AUTH_URL, username, password)
+            val document = fetch(IDP_AUTH_URL, shibbolethData)
             name = document.selectFirst("p#user_info")?.text() ?: "unknown"
         } catch (e: Exception) {
             Log.e(TAG, "Failed to auth", e)
@@ -121,7 +123,7 @@ class ShibbolethClient(
         }
 
         // Save auth data
-        shibbolethDataProvider.save(name, username, password)
+        shibbolethDataProvider.save(name, shibbolethData)
 
         Log.d(TAG, "Auth success")
 
@@ -129,13 +131,10 @@ class ShibbolethClient(
     }
 
     @Throws(Exception::class)
-    fun fetch(url: String): Document {
-        val (username, password) = shibbolethDataProvider.get()
-        return fetch(url, username, password)
-    }
+    fun fetch(url: String) = fetch(url, null)
 
     @Throws(Exception::class)
-    private fun fetch(url: String, username: String, password: String): Document {
+    private fun fetch(url: String, shibbolethData: ShibbolethData?): Document {
         Log.d(TAG, "Fetch from $url")
 
         val request = Request.Builder()
@@ -152,6 +151,8 @@ class ShibbolethClient(
         var document = Jsoup.parse(body.string())
 
         if (isRequireLogin(response)) {
+            val (username, password) = shibbolethData ?: shibbolethDataProvider.get()
+
             document = passLoadingSessionInformationPage(document)
             document = passLoginPage(document, username, password)
             document = passSamlResponsePage(document)
@@ -186,7 +187,7 @@ class ShibbolethClient(
                 .build()
 
         val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
+        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
