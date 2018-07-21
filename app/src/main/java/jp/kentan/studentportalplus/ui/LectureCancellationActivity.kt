@@ -37,7 +37,7 @@ class LectureCancellationActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy {
+    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(LectureCancellationViewModel::class.java)
     }
 

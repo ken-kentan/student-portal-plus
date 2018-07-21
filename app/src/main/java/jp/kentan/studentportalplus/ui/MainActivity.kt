@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var fragmentType = FragmentType.DASHBOARD
 
-    private val fragmentMap by lazy {
+    private val fragmentMap by lazy(LazyThreadSafetyMode.NONE) {
         mapOf(
                 FragmentType.DASHBOARD to DashboardFragment.newInstance(),
                 FragmentType.TIMETABLE to TimetableFragment.newInstance(),
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy {
+    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
 

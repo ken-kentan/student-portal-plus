@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 open class StudentPortalPlus : DaggerApplication() {
 
-    val component: StudentPortalPlus.Component by lazy {
+    val component: StudentPortalPlus.Component by lazy(LazyThreadSafetyMode.NONE) {
         DaggerStudentPortalPlus_Component.builder()
                 .appModule(AppModule(this))
                 .build()

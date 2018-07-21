@@ -37,4 +37,21 @@ class WebViewActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+    override fun onPause() {
+        web_view.onPause()
+        web_view.pauseTimers()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        web_view.resumeTimers()
+        web_view.onResume()
+    }
+
+    override fun onDestroy() {
+        web_view.destroy()
+        super.onDestroy()
+    }
 }

@@ -90,7 +90,7 @@ class NotificationController(
     private val enabledLed       = context.defaultSharedPreferences.enabledNotificationLed()
 
     private val accentColor = ContextCompat.getColor(context, R.color.colorAccent)
-    private val largeIcon by lazy { BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large) }
+    private val largeIcon by lazy(LazyThreadSafetyMode.NONE) { BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large) }
 
     private var isFirstNotify = true
 
