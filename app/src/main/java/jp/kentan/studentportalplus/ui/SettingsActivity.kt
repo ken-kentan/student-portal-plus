@@ -46,6 +46,8 @@ class SettingsActivity : AppCompatActivity() {
                     .add(android.R.id.content, PreferencesFragment())
                     .commit()
         }
+
+        NotificationController.setupChannel(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

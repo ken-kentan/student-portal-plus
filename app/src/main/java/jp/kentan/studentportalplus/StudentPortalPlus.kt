@@ -24,12 +24,6 @@ open class StudentPortalPlus : DaggerApplication() {
         return component
     }
 
-    override fun onCreate() {
-        super.onCreate()
-
-        NotificationController.setupChannel(this)
-    }
-
     @Singleton
     @dagger.Component(modules = [
         (AndroidSupportInjectionModule::class),

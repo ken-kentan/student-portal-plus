@@ -16,8 +16,6 @@ import android.util.Log
 import androidx.core.content.edit
 import jp.kentan.studentportalplus.data.component.ShibbolethData
 import org.jetbrains.anko.coroutines.experimental.bg
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import java.security.KeyPairGenerator
@@ -25,8 +23,6 @@ import java.security.KeyStore
 import java.security.interfaces.RSAPublicKey
 import java.util.*
 import javax.crypto.Cipher
-import javax.crypto.CipherInputStream
-import javax.crypto.CipherOutputStream
 import javax.security.auth.x500.X500Principal
 
 
@@ -111,12 +107,7 @@ class ShibbolethDataProvider(private val context: Context) {
             val cipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER)
             cipher.init(Cipher.ENCRYPT_MODE, publicKey)
 
-            val outputStream = ByteArrayOutputStream()
-            val cipherOutputStream = CipherOutputStream(outputStream, cipher)
-            cipherOutputStream.write(text.toByteArray(StandardCharsets.UTF_8))
-            cipherOutputStream.close()
-
-            val bytes = outputStream.toByteArray()
+            val bytes = cipher.doFinal(text.toByteArray(StandardCharsets.UTF_8))
 
             return Base64.encodeToString(bytes, Base64.DEFAULT)
         } catch (e: Exception) {
@@ -147,11 +138,9 @@ class ShibbolethDataProvider(private val context: Context) {
             val cipher = Cipher.getInstance(CIPHER_TYPE)
             cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
 
-            val cipherInputStream = CipherInputStream(ByteArrayInputStream(Base64.decode(text, Base64.DEFAULT)), cipher)
+            val bytes = cipher.doFinal(Base64.decode(text, Base64.DEFAULT))
 
-            val bytes = cipherInputStream.readBytes()
-
-            return String(bytes, 0, bytes.size, StandardCharsets.UTF_8)
+            return String(bytes, StandardCharsets.UTF_8)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to decrypt", e)
         }

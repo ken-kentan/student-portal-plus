@@ -95,6 +95,10 @@ class NotificationController(
     private var isFirstNotify = true
 
 
+    init {
+        setupChannel(context)
+    }
+
     fun notify(type: PortalDataType, contentList: List<NotifyContent>) {
         if (contentList.isEmpty()) {
             return
