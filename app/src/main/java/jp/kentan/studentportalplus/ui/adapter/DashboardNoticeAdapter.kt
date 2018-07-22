@@ -25,7 +25,6 @@ class DashboardNoticeAdapter(
 ) : RecyclerView.Adapter<DashboardNoticeAdapter.ViewHolder>() {
 
     private var currentList: List<Notice> = emptyList()
-    private var isOverMaxItemCount: Boolean = false
 
     init {
         setHasStableIds(true)
@@ -38,8 +37,6 @@ class DashboardNoticeAdapter(
     fun submitList(list: List<Notice>) {
         val oldList = currentList
         val newList = list.take(maxItemCount)
-
-        isOverMaxItemCount = list.size > maxItemCount
 
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int { return oldList.size }

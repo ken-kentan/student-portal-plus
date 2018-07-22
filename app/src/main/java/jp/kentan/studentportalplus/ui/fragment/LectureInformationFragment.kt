@@ -14,7 +14,6 @@ import android.support.v7.widget.SearchView
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
-import androidx.core.content.edit
 import dagger.android.support.AndroidSupportInjection
 
 import jp.kentan.studentportalplus.R
@@ -26,7 +25,6 @@ import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.animateFadeInDelay
 import kotlinx.android.synthetic.main.dialog_lecture_filter.view.*
 import kotlinx.android.synthetic.main.fragment_lecture.*
-import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
@@ -148,8 +146,6 @@ class LectureInformationFragment : Fragment() {
                                 hasRead  = view.read_check_box.isChecked,
                                 isAttend = view.attend_check_box.isChecked
                         )
-
-                        defaultSharedPreferences.edit { putString("lecture_info_order_type", order.name) }
                     }
                     .setNegativeButton(R.string.action_cancel, null)
                     .create()
