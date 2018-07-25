@@ -48,7 +48,7 @@ dependencies {
     // Architecture Components
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 
-    implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha04'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.0-alpha05'
 
     // Google Dagger
     def dagger_version = '2.16'

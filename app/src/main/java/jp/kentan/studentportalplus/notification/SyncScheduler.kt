@@ -26,11 +26,6 @@ class SyncScheduler {
         private fun enqueueUniquePeriodicWork(context: Context, workPolicy: ExistingPeriodicWorkPolicy) {
             val intervalMinutes = context.defaultSharedPreferences.getSyncIntervalMinutes()
 
-            val workManager = WorkManager.getInstance() ?: let {
-                Log.w(TAG, "Failed to get WorkManager instance.")
-                return
-            }
-
             val constraints = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build()
@@ -39,15 +34,24 @@ class SyncScheduler {
                     .setConstraints(constraints)
                     .build()
 
-            workManager.enqueueUniquePeriodicWork(SyncWorker.NAME, workPolicy, syncWorkRequest)
+            try {
+                val workManager = WorkManager.getInstance()
+                workManager.enqueueUniquePeriodicWork(SyncWorker.NAME, workPolicy, syncWorkRequest)
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, "Failed to enqueue SyncWorker", e)
+            }
         }
 
         fun cancel() {
-            val workManager = WorkManager.getInstance() ?: return
+            try {
+                val workManager = WorkManager.getInstance()
+                workManager.cancelUniqueWork(SyncWorker.NAME)
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, "Failed to cancel SyncWorker", e)
+                return
+            }
 
-            workManager.cancelUniqueWork(SyncWorker.NAME)
-
-            Log.d(TAG, "Sync cancelled")
+            Log.d(TAG, "Cancelled SyncWorker")
         }
     }
 }
