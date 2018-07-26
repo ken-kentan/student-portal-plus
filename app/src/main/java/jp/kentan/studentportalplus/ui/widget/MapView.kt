@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat
 import androidx.core.net.toUri
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.util.CustomTabsHelper
+import jp.kentan.studentportalplus.util.enabledPdfOpenWithGdocs
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.newTask
 
@@ -20,8 +21,8 @@ class MapView {
                     context.getString(R.string.url_campus_map)
                 }
                 Type.ROOM -> {
-                    if (context.defaultSharedPreferences.getBoolean("pdf_open_with_gdocs", true)) {
-                        context.getString(R.string.url_gdocs) + context.getString(R.string.url_room_map)
+                    if (context.defaultSharedPreferences.enabledPdfOpenWithGdocs()) {
+                        context.getString(R.string.url_gdocs, context.getString(R.string.url_room_map))
                     } else {
                         context.getString(R.string.url_room_map)
                     }
