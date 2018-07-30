@@ -9,7 +9,7 @@ import androidx.core.content.edit
 
 fun SharedPreferences.enabledDetailError() = getBoolean("enabled_detail_error", false)
 
-fun SharedPreferences.enabledPdfOpenWithGdocs() = getBoolean("enabled_pdf_open_with_gdocs", false)
+fun SharedPreferences.enabledPdfOpenWithGdocs() = getBoolean("enabled_pdf_open_with_gdocs", true)
 
 fun SharedPreferences.isFirstLaunch() = getBoolean("is_first_launch", true)
 
