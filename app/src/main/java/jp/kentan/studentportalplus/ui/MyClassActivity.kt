@@ -2,6 +2,9 @@ package jp.kentan.studentportalplus.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -9,14 +12,12 @@ import android.view.Menu
 import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.databinding.ActivityMyClassBinding
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
-import kotlinx.android.synthetic.main.activity_my_class.*
-import kotlinx.android.synthetic.main.content_my_class.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
@@ -24,12 +25,22 @@ import javax.inject.Inject
 
 class MyClassActivity : AppCompatActivity() {
 
-    private companion object {
-        const val SYLLABUS_URI = "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code="
+    companion object {
+        private const val SYLLABUS_URI = "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code="
+
+        private const val EXTRA_DATA_ID = "id"
+
+        fun createIntent(context: Context, id: Long): Intent {
+            return Intent(context, MyClassActivity::class.java).apply {
+                putExtra(EXTRA_DATA_ID, id)
+            }
+        }
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var binding: ActivityMyClassBinding
 
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(MyClassViewModel::class.java)
@@ -37,14 +48,14 @@ class MyClassActivity : AppCompatActivity() {
 
     private val customTransformationMethod = CustomTransformationMethod(this)
 
-    private var canDelete = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_class)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_my_class)
+
         AndroidInjection.inject(this)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel.myClass.observe(this, Observer { data ->
@@ -54,25 +65,33 @@ class MyClassActivity : AppCompatActivity() {
                 return@Observer
             }
 
-            toolbar_layout.title = data.subject
-            toolbar_layout.backgroundColor = data.color
-            initView(data)
-
-            if (data.isUser) {
-                canDelete = true
-                invalidateOptionsMenu()
+            binding.toolbarLayout.apply {
+                title = data.subject
+                backgroundColor = data.color
             }
 
-            fab.setOnClickListener {
+            binding.content.apply {
+                subject.text    = data.subject
+                instructor.text = data.instructor.format()
+                location.text   = data.location.format()
+                category.text   = data.category.format()
+                weekPeriod.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
+                syllabus.text   = data.scheduleCode.toSyllabusUri()
+                syllabus.transformationMethod = customTransformationMethod
+            }
+
+            binding.fab.setOnClickListener {
                 startActivity<MyClassEditActivity>("id" to data.id)
             }
+
+            invalidateOptionsMenu()
         })
 
-        viewModel.myClassId.value = intent.getLongExtra("id", 0)
+        viewModel.myClassId.value = intent.getLongExtra(EXTRA_DATA_ID, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (canDelete) {
+        if (viewModel.canDelete) {
             menuInflater.inflate(R.menu.delete, menu)
         }
         return super.onCreateOptionsMenu(menu)
@@ -87,30 +106,20 @@ class MyClassActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initView(data: MyClass) {
-        subject.text     = data.subject
-        instructor.text  = data.instructor.format()
-        location.text    = data.location.format()
-        category.text    = data.category.format()
-        week_period.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
-        syllabus.text    = data.scheduleCode.toSyllabusUri()
-        syllabus.transformationMethod = customTransformationMethod
-    }
-
     private fun showDeleteDialog() {
-        if (!canDelete) {
+        if (!viewModel.canDelete) {
             return
         }
 
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_delete)
-                .setMessage(getString(R.string.text_delete_confirm, subject.text).htmlToSpanned())
+                .setMessage(getString(R.string.text_delete_confirm, viewModel.subject).htmlToSpanned())
                 .setPositiveButton(R.string.action_yes) { _, _ ->
-                    viewModel.onClickDelete { success ->
+                    viewModel.delete { success ->
                         if (success) {
                             finish()
                         } else {
-                            indefiniteSnackbar(fab, getString(R.string.error_delete), getString(R.string.action_close))
+                            indefiniteSnackbar(binding.fab, getString(R.string.error_delete), getString(R.string.action_close))
                         }
                     }
                 }

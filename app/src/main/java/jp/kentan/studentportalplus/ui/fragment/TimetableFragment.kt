@@ -77,7 +77,8 @@ class TimetableFragment : Fragment() {
         viewModel.setViewType(layoutType)
 
         adapter = MyClassAdapter(context, layoutType.viewType, {
-            startActivity<MyClassActivity>("id" to it.id)
+            val intent = MyClassActivity.createIntent(requireContext(), it.id)
+            startActivity(intent)
         }, { period: Int, week: ClassWeekType ->
             startActivity<MyClassEditActivity>("period" to period, "week" to week)
         })

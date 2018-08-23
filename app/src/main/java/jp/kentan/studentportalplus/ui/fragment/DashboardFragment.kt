@@ -45,7 +45,8 @@ class DashboardFragment : Fragment() {
         val viewModel = ViewModelProvider(activity, viewModelFactory).get(DashboardFragmentViewModel::class.java)
 
         val myClassAdapter = DashboardMyClassAdapter(context) {
-            startActivity<MyClassActivity>("id" to it.id)
+            val intent = MyClassActivity.createIntent(requireContext(), it.id)
+            startActivity(intent)
         }
 
         val lectureInfoAdapter = DashboardLectureInformationAdapter(context , MAX_LIST_SIZE) {

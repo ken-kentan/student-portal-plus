@@ -27,6 +27,9 @@ android {
         disable 'GoogleAppIndexingWarning'
         baseline file("lint-baseline.xml")
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -41,6 +44,9 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:support-vector-drawable:$support_version"
     implementation "com.android.support:customtabs:$support_version"
+
+    // DataBinding
+    kapt 'com.android.databinding:compiler:3.1.4'
 
     // Android Jetpack
     implementation 'androidx.core:core-ktx:0.3'

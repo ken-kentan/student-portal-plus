@@ -28,7 +28,13 @@ class MyClassViewModel(private val repository: PortalRepository) : ViewModel() {
         return@lazy result
     }
 
-    fun onClickDelete(onDeleted: (isSuccess: Boolean) -> Unit) {
+    val subject: String
+        get() = myClass.value?.subject ?: ""
+
+    val canDelete: Boolean
+        get() = myClass.value?.isUser == true
+
+    fun delete(onDeleted: (isSuccess: Boolean) -> Unit) {
         val data = myClass.value ?: return
 
         launch(UI) {
