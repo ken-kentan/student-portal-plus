@@ -12,7 +12,7 @@ import org.jetbrains.anko.newTask
 
 class MapView {
 
-    enum class Type {CAMPUS, ROOM }
+    enum class Type {CAMPUS, ROOM}
 
     companion object {
         fun open(context: Context, type: Type) {
@@ -35,9 +35,11 @@ class MapView {
                     .setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .build()
 
-            customTabs.intent.`package` = CustomTabsHelper.getPackageNameToUse(context)
-            customTabs.intent.newTask()
-            customTabs.launchUrl(context, urlStr.toUri())
+            customTabs.run {
+                intent.`package` = CustomTabsHelper.getPackageNameToUse(context)
+                intent.newTask()
+                launchUrl(context, urlStr.toUri())
+            }
         }
     }
 }
