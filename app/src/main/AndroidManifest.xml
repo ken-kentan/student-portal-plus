@@ -58,7 +58,7 @@
             android:theme="@style/AppTheme.LightActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.SettingsActivity" />
-        <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".ui.WebActivity" />
 
         <service
             android:name=".notification.RetryActionService"

@@ -27,7 +27,6 @@ import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 
@@ -157,16 +156,17 @@ class SettingsActivity : AppCompatActivity() {
                             .show()
                 }
                 "share" -> {
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.type = "text/plain"
-                    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app))
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app))
+                    }
                     startActivity(intent)
                 }
                 "terms" -> {
-                    startActivity<WebViewActivity>("title" to "Terms", "url" to getString(R.string.url_terms))
+                    startActivity(WebActivity.createIntent(activity, "Terms", getString(R.string.url_terms)))
                 }
                 "oss_license" -> {
-                    startActivity<WebViewActivity>("title" to "Licenses", "url" to getString(R.string.url_licenses))
+                    startActivity(WebActivity.createIntent(activity, "Licenses", getString(R.string.url_licenses)))
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, pref)
