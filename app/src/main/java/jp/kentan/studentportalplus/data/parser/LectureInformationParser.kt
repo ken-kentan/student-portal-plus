@@ -80,7 +80,7 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
             detailHtml = columns[10] as String,
             createdDate = DatabaseOpenHelper.toDate(columns[11] as String),
             updatedDate = DatabaseOpenHelper.toDate(columns[12] as String),
-            hasRead = (columns[13] as Long) == 1L
+            isRead = (columns[13] as Long) == 1L
     )
 
     @Throws(Exception::class)

@@ -69,8 +69,8 @@ class LectureCancellationViewModel(private val repository: PortalRepository) : V
             null
         } else {
             repository.getLectureCancellationById(id)?.apply {
-                if (!this.hasRead) {
-                    bg { repository.update(this.copy(hasRead = true)) }
+                if (!this.isRead) {
+                    bg { repository.update(this.copy(isRead = true)) }
                 }
             }
         }

@@ -109,7 +109,7 @@ class LectureCancellationDao(
             if (query.isAttend && !type.isAttend()) {
                 if (!query.isUnread && !query.hasRead) {
                     return@mapNotNull null
-                } else if (!query.hasRead && it.hasRead) {
+                } else if (!query.hasRead && it.isRead) {
                     return@mapNotNull null
                 }
 
@@ -148,7 +148,7 @@ class LectureCancellationDao(
             st.bindString(9, it.detailText)
             st.bindString(10, it.detailHtml)
             st.bindString(11, DatabaseOpenHelper.toString(it.createdDate))
-            st.bindLong(12, it.hasRead.toLong())
+            st.bindLong(12, it.isRead.toLong())
 
             val id = st.executeInsert()
             if (id > 0) {
@@ -181,7 +181,7 @@ class LectureCancellationDao(
     }
 
     fun update(data: LectureCancellation): Int = database.use {
-        update(TABLE_NAME, "read" to data.hasRead.toLong())
+        update(TABLE_NAME, "read" to data.isRead.toLong())
                 .whereArgs("_id = ${data.id}")
                 .exec()
     }

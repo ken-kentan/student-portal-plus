@@ -86,7 +86,7 @@ RecyclerView.Adapter<DashboardLectureInformationAdapter.ViewHolder>() {
             view.subject.text = data.subject
             view.detail.text  = data.detailText
 
-            if (data.hasRead) {
+            if (data.isRead) {
                 view.date.typeface    = Typeface.DEFAULT
                 view.subject.typeface = Typeface.DEFAULT
                 view.detail.typeface  = Typeface.DEFAULT

@@ -8,19 +8,19 @@
 
     <include
         android:id="@+id/lecture1"
-        layout="@layout/list_lecture" />
+        layout="@layout/item_lecture" />
 
     <include
         android:id="@+id/lecture2"
-        layout="@layout/list_lecture" />
+        layout="@layout/item_lecture" />
 
     <include
         android:id="@+id/lecture3"
-        layout="@layout/list_lecture" />
+        layout="@layout/item_lecture" />
 
     <include
         android:id="@+id/lecture4"
-        layout="@layout/list_lecture" />
+        layout="@layout/item_lecture" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

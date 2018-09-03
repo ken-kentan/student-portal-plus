@@ -50,7 +50,10 @@ fun Char.toIntOrNull() = toString().toIntOrNull()
  */
 private val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 
+@Deprecated("use Date.formatToYearMonthDay()")
 fun Date.toShortString(): String? = DATE_FORMAT.format(this)
+
+fun Date.formatToYearMonthDay(): String = DATE_FORMAT.format(this)
 
 /**
  * Convert String to Spanned

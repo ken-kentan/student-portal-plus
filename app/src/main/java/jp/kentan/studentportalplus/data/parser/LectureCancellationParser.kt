@@ -76,7 +76,7 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             detailText = columns[8] as String,
             detailHtml = columns[9] as String,
             createdDate = DatabaseOpenHelper.toDate(columns[10] as String),
-            hasRead = (columns[11] as Long) == 1L
+            isRead = (columns[11] as Long) == 1L
     )
 
     @Throws(Exception::class)

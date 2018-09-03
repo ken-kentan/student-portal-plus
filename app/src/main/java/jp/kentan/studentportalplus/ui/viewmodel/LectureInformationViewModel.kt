@@ -74,8 +74,8 @@ class LectureInformationViewModel(private val repository: PortalRepository) : Vi
             null
         } else {
             repository.getLectureInformationById(id)?.apply {
-                if (!this.hasRead) {
-                    bg { repository.update(this.copy(hasRead = true)) }
+                if (!this.isRead) {
+                    bg { repository.update(this.copy(isRead = true)) }
                 }
             }
         }
