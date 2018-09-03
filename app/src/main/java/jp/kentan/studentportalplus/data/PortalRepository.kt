@@ -56,28 +56,31 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
     val portalDataSet: LiveData<PortalDataSet> = _portalDataSet
 
     val subjectList: LiveData<List<String>> by lazy {
-        val result = MediatorLiveData<List<String>>()
+        return@lazy MediatorLiveData<List<String>>().apply {
+            addSource(_lectureInformationList) { list ->
+                if (list != null) {
+                    value = list.map { it.subject }
+                            .plus(value.orEmpty())
+                            .distinct()
+                }
+            }
 
-        result.addSource(_lectureInformationList) {
-            it?.let {
-                val old = result.value?.toList() ?: emptyList()
-                result.value = it.map { it.subject }.plus(old).distinct()
+            addSource(_lectureCancellationList) { list ->
+                if (list != null) {
+                    value = list.map { it.subject }
+                            .plus(value.orEmpty())
+                            .distinct()
+                }
             }
-        }
-        result.addSource(_lectureCancellationList) {
-            it?.let {
-                val old = result.value?.toList() ?: emptyList()
-                result.value = it.map { it.subject }.plus(old).distinct()
-            }
-        }
-        result.addSource(_myClassList) {
-            it?.let {
-                val old = result.value?.toList() ?: emptyList()
-                result.value = it.map { it.subject }.plus(old).distinct()
-            }
-        }
 
-        result
+            addSource(_myClassList) { list ->
+                if (list != null) {
+                    value = list.map { it.subject }
+                            .plus(value.orEmpty())
+                            .distinct()
+                }
+            }
+        }
     }
 
 

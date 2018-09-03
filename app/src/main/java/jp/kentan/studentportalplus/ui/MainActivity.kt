@@ -217,7 +217,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
 
                     snackbar.setAction(R.string.action_login) {
-                        startActivity<LoginActivity>(LoginActivity.LAUNCH_MAIN_ACTIVITY to true)
+                        startActivity(LoginActivity.createIntent(this, shouldLaunchMainActivity = true))
                     }
                 }
                 MainViewModel.SyncResult.UNKNOWN_ERROR -> {

@@ -161,7 +161,7 @@ class NotificationController(
 
     fun notifyError(message: String, isRequireLogin: Boolean = false) {
         val activity = if (isRequireLogin) {
-            context.intentFor<LoginActivity>(LoginActivity.LAUNCH_MAIN_ACTIVITY to true)
+            LoginActivity.createIntent(context, shouldLaunchMainActivity = true)
         } else {
             context.intentFor<MainActivity>()
         }

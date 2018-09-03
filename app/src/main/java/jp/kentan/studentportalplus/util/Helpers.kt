@@ -7,6 +7,7 @@ import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.text.parseAsHtml
+import jp.kentan.studentportalplus.ui.span.CustomTitle
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -27,6 +28,12 @@ fun Activity.hideSoftInput() {
         e.printStackTrace()
     }
 }
+
+var Activity.customTitle: String
+    set(title) {
+        setTitle(CustomTitle(this, title))
+    }
+    get() = title.toString()
 
 fun indefiniteSnackbar(view: View, message: String, actionMessage: String) {
     val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)

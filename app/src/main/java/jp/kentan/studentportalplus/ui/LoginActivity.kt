@@ -2,6 +2,8 @@ package jp.kentan.studentportalplus.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -14,7 +16,7 @@ import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
-import jp.kentan.studentportalplus.ui.span.CustomTitle
+import jp.kentan.studentportalplus.util.customTitle
 import jp.kentan.studentportalplus.util.hideSoftInput
 import jp.kentan.studentportalplus.util.setFirstLaunch
 import kotlinx.android.synthetic.main.activity_login.*
@@ -32,14 +34,19 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
 
     companion object {
-        const val LAUNCH_MAIN_ACTIVITY = "launch_main_activity"
+        private const val EXTRA_SHOULD_LAUNCH_MAIN_ACTIVITY = "should_launch_main_activity"
+
+        fun createIntent(context: Context, shouldLaunchMainActivity: Boolean = false)
+                = Intent(context, LoginActivity::class.java).apply {
+            putExtra(EXTRA_SHOULD_LAUNCH_MAIN_ACTIVITY, shouldLaunchMainActivity)
+        }
     }
 
     @Inject
     lateinit var shibbolethDataProvider: ShibbolethDataProvider
 
     private var loginJob: Job? = null
-    private var requireLaunchMainActivity: Boolean = false
+    private var shouldLaunchMainActivity: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
 
         AndroidInjection.inject(this)
 
-        title = CustomTitle(this, getString(R.string.title_activity_login))
+        customTitle = getString(R.string.title_activity_login)
 
         // Set up the login form.
         populateUsername()
@@ -61,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
         login_button.setOnClickListener { attemptLogin() }
 
-        requireLaunchMainActivity = intent.getBooleanExtra(LAUNCH_MAIN_ACTIVITY, false)
+        shouldLaunchMainActivity = intent.getBooleanExtra(EXTRA_SHOULD_LAUNCH_MAIN_ACTIVITY, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -149,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
         if (isSuccess) {
             defaultSharedPreferences.setFirstLaunch(false)
 
-            if (requireLaunchMainActivity) {
+            if (shouldLaunchMainActivity) {
                 launchMainActivity()
             }
             finish()

@@ -5,10 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.ui.span.CustomTitle
+import jp.kentan.studentportalplus.util.customTitle
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.startActivity
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -17,7 +16,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-        title = CustomTitle(this, getString(R.string.title_activity_welcome))
+        customTitle = getString(R.string.title_activity_welcome)
 
         setupWebView()
 
@@ -27,7 +26,7 @@ class WelcomeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            startActivity<LoginActivity>(LoginActivity.LAUNCH_MAIN_ACTIVITY to true)
+            startActivity(LoginActivity.createIntent(this, shouldLaunchMainActivity = true))
         }
     }
 
