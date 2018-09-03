@@ -18,7 +18,6 @@ import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
-import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -26,8 +25,6 @@ import javax.inject.Inject
 class MyClassActivity : AppCompatActivity() {
 
     companion object {
-        private const val SYLLABUS_URI = "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code="
-
         private const val EXTRA_DATA_ID = "id"
 
         fun createIntent(context: Context, id: Long): Intent {
@@ -65,29 +62,16 @@ class MyClassActivity : AppCompatActivity() {
                 return@Observer
             }
 
-            binding.toolbarLayout.apply {
-                title = data.subject
-                backgroundColor = data.color
-            }
-
-            binding.content.apply {
-                subject.text    = data.subject
-                instructor.text = data.instructor.format()
-                location.text   = data.location.format()
-                category.text   = data.category.format()
-                weekPeriod.text = getString(R.string.text_week_period, data.week.fullDisplayName.formatWeek(), data.period.formatPeriod())
-                syllabus.text   = data.scheduleCode.toSyllabusUri()
-                syllabus.transformationMethod = customTransformationMethod
-            }
-
-            binding.fab.setOnClickListener {
+            binding.myClass = data
+            binding.setOnEditClickListener {
                 startActivity<MyClassEditActivity>("id" to data.id)
             }
+            binding.content.syllabus.transformationMethod = customTransformationMethod
 
             invalidateOptionsMenu()
         })
 
-        viewModel.myClassId.value = intent.getLongExtra(EXTRA_DATA_ID, 0)
+        viewModel.setId(intent.getLongExtra(EXTRA_DATA_ID, 0))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -126,12 +110,4 @@ class MyClassActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.action_no, null)
                 .show()
     }
-
-    private fun String?.format() = if (this.isNullOrBlank()) "未入力" else this
-
-    private fun String.formatWeek() = this.replace("曜日", "曜")
-
-    private fun Int.formatPeriod() = if (this > 0) "${this}限" else ""
-
-    private fun String.toSyllabusUri() = if (this.isBlank()) "未入力" else SYLLABUS_URI + this
 }
