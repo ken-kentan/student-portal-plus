@@ -3,30 +3,76 @@ package jp.kentan.studentportalplus.ui.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
+import android.databinding.ObservableInt
+import android.databinding.adapters.AdapterViewBindingAdapter
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.trimOrEmpty
 import org.jetbrains.anko.coroutines.experimental.bg
 
-class MyClassEditViewModel(private val repository: PortalRepository) : ViewModel() {
+class MyClassEditViewModel(
+        private val repository: PortalRepository
+) : ViewModel() {
+
+    enum class Mode(val title: String) {
+        EDIT("Edit"),
+        ADD("Add")
+    }
 
     val subjects: LiveData<List<String>> = Transformations.map(repository.subjectList) { it.sorted() }
 
-    private lateinit var data: MyClass
-    private var editData: MyClass? = null
+    val weekEntries = ClassWeekType.values().map { it.fullDisplayName }
+    val periodEntries = (1..7).map { "${it}限" }
 
-    fun get(id: Long): MyClass? {
-        editData?.let { return it }
+    val isUser = ObservableBoolean()
+    val enabledPeriod = ObservableBoolean()
 
-        data = repository.getMyClassById(id) ?: return null
-        return data
+    val color = ObservableInt()
+
+    val subject = ObservableField<String>()
+    val instructor = ObservableField<String>()
+    val location = ObservableField<String>()
+    val week = ObservableInt()
+    val period = ObservableInt()
+    val category = ObservableField<String>()
+    val credit = ObservableField<String>()
+    val scheduleCode = ObservableField<String>()
+
+    val onWeekItemSelected = AdapterViewBindingAdapter.OnItemSelected { _, _, position: Int, _ ->
+        val week = ClassWeekType.values().getOrNull(position) ?: ClassWeekType.UNKNOWN
+        val enabled = (week != ClassWeekType.INTENSIVE) && (week != ClassWeekType.UNKNOWN)
+
+        enabledPeriod.set(isUser.get() && enabled)
     }
 
-    fun create(week: ClassWeekType, period: Int): MyClass {
-        editData?.let { return it }
+    private val weekType: ClassWeekType
+        get() = ClassWeekType.values().getOrNull(week.get()) ?: ClassWeekType.UNKNOWN
 
-        data = MyClass(
+    private lateinit var originalData: MyClass
+
+    @Throws(Exception::class)
+    fun startEdit(id: Long) {
+        if (::originalData.isInitialized) {
+            return
+        }
+
+        val data = repository.getMyClassById(id) ?:
+                throw IllegalStateException("data_ not found")
+
+        originalData = data
+        setData(data)
+    }
+
+    fun startAdd(week: ClassWeekType, period: Int) {
+        if (::originalData.isInitialized) {
+            return
+        }
+
+        val data = MyClass(
                 hash = 0,
                 week = week,
                 period = period,
@@ -37,44 +83,67 @@ class MyClassEditViewModel(private val repository: PortalRepository) : ViewModel
                 instructor = "",
                 isUser = true
         )
-        return data
+
+        originalData = data
+        setData(data)
     }
 
-    fun getEditData() = editData ?: data
+    private fun setData(data: MyClass) {
+        isUser.set(data.isUser)
+        enabledPeriod.set(data.isUser)
+        color.set(data.color)
+        subject.set(data.subject)
+        instructor.set(data.instructor)
+        location.set(data.location)
+        week.set(data.week.ordinal)
+        period.set(if (data.period in 1..7) data.period - 1 else 0)
+        category.set(data.category)
+        credit.set(data.credit.toString())
+        scheduleCode.set(data.scheduleCode)
+    }
 
     fun save() = bg {
-        editData?.let {
-            val period = if (it.week.hasPeriod()) it.period else 0
-            val hashStr = it.week.name + period + it.scheduleCode + it.credit + it.category + it.subject + it.instructor + it.isUser
-            val data = it.copy(hash = Murmur3.hash64(hashStr.toByteArray()), period = period)
+        val subject = subject.get().trimOrEmpty()
+        val instructor = instructor.get().trimOrEmpty()
+        val location = location.get().trimOrEmpty()
+        val week = weekType
+        val period = if (week.hasPeriod()) period.get() + 1 else 0
+        val category = category.get().trimOrEmpty()
+        val creditStr = credit.get().trimOrEmpty()
+        val scheduleCode = scheduleCode.get().trimOrEmpty()
 
-            return@bg if (data.id > 0) repository.update(data) else repository.add(data)
-        }
-        return@bg false
+        val credit = creditStr.toIntOrNull() ?: 0
+        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor + isUser.get()
+
+        val data = originalData.copy(
+                hash = Murmur3.hash64(hashStr.toByteArray()),
+                subject = subject,
+                instructor = instructor,
+                location = location,
+                week = week,
+                period = period,
+                category = category,
+                credit = creditStr.toIntOrNull() ?: 0,
+                scheduleCode = scheduleCode,
+                color = color.get()
+        )
+
+        return@bg if (data.id > 0) repository.update(data) else repository.add(data)
     }
 
-    /**
-     * Store edit data (not update)
-     */
-    fun edit(data: MyClass) {
-        editData = data
-    }
 
     fun hasEdit(): Boolean {
-        val edit = editData ?: return false
+        val data = originalData
+        val period = period.get() + 1
 
-        if (edit.color != data.color) {
-            return true
-        }
-
-        return  (edit.week != data.week) ||
-                (data.week.hasPeriod() && (edit.period != data.period)) ||
-                (edit.scheduleCode != data.scheduleCode) ||
-                (edit.credit != data.credit) ||
-                (edit.category != data.category) ||
-                (edit.subject != data.subject) ||
-                (edit.instructor != data.instructor) ||
-                (edit.color != data.color) ||
-                (edit.location != data.location)
+        return (color.get() != data.color) ||
+                (subject.get() != data.subject) ||
+                (instructor.get() != data.instructor) ||
+                (location.get() != data.location) ||
+                (weekType != data.week) ||
+                (data.week.hasPeriod() && (period != data.period)) ||
+                (category.get() != data.category) ||
+                (credit.get() != data.credit.toString()) ||
+                (scheduleCode.get() != data.scheduleCode)
     }
 }

@@ -19,7 +19,6 @@ import jp.kentan.studentportalplus.util.CustomTransformationMethod
 import jp.kentan.studentportalplus.util.htmlToSpanned
 import jp.kentan.studentportalplus.util.indefiniteSnackbar
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 class MyClassActivity : AppCompatActivity() {
@@ -37,11 +36,11 @@ class MyClassActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var binding: ActivityMyClassBinding
-
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, viewModelFactory).get(MyClassViewModel::class.java)
     }
+
+    private lateinit var binding: ActivityMyClassBinding
 
     private val customTransformationMethod = CustomTransformationMethod(this)
 
@@ -64,7 +63,7 @@ class MyClassActivity : AppCompatActivity() {
 
             binding.myClass = data
             binding.setOnEditClickListener {
-                startActivity<MyClassEditActivity>("id" to data.id)
+                startActivity(MyClassEditActivity.createIntent(this, data.id))
             }
             binding.content.syllabus.transformationMethod = customTransformationMethod
 

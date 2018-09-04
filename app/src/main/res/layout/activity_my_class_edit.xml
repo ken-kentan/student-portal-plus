@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="jp.kentan.studentportalplus.ui.viewmodel.MyClassEditViewModel" />
+    </data>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,6 +25,7 @@
             android:id="@+id/color_button"
             android:layout_width="96dp"
             android:layout_height="96dp"
+            backgroundColor="@{viewModel.color}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,9 +44,12 @@
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
                 android:hint="@string/name_subject"
+                android:text="@={viewModel.subject}"
+                android:enabled="@{viewModel.isUser}"
+                adapterEntities="@{viewModel.isUser ? viewModel.subjects : null}"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/instructor_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -54,9 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_instructor"
+                android:text="@={viewModel.instructor}"
+                android:enabled="@{viewModel.isUser}"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/location_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -74,9 +89,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_location"
+                android:text="@={viewModel.location}"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/category_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -95,6 +111,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:entries="@{viewModel.weekEntries}"
+            android:selectedItemPosition="@={viewModel.week}"
+            android:onItemSelected="@{viewModel.onWeekItemSelected}"
+            android:enabled="@{viewModel.isUser}"
             app:layout_constraintEnd_toStartOf="@+id/period_spinner"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="0.6"
@@ -105,6 +125,9 @@
             android:id="@+id/period_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:entries="@{viewModel.periodEntries}"
+            android:selectedItemPosition="@={viewModel.period}"
+            android:enabled="@{viewModel.enabledPeriod}"
             app:layout_constraintBottom_toBottomOf="@+id/week_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -128,9 +151,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_category"
+                android:text="@={viewModel.category}"
+                android:enabled="@{viewModel.isUser}"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/credit_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -150,9 +175,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_credit"
+                android:text="@={viewModel.credit}"
+                android:enabled="@{viewModel.isUser}"
                 android:imeOptions="actionNext"
                 android:inputType="numberSigned"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/schedule_code_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -170,9 +197,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_schedule_code"
+                android:text="@{viewModel.scheduleCode}"
+                android:enabled="@{viewModel.isUser}"
                 android:imeOptions="actionNext"
                 android:inputType="numberSigned"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:nextFocusForward="@id/subject_edit" />
         </android.support.design.widget.TextInputLayout>
 
@@ -189,3 +218,4 @@
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
+</layout>

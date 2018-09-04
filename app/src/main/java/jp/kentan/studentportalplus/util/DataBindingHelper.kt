@@ -1,9 +1,10 @@
 package jp.kentan.studentportalplus.util
 
 import android.databinding.BindingAdapter
+import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.data.component.LectureAttendType
@@ -48,6 +49,23 @@ fun setWeekPeriodText(textView: TextView, weekType: ClassWeekType, period: Int) 
 @BindingAdapter("syllabus")
 fun setSyllabusText(textView: TextView, syllabus: String) {
     textView.text = if (syllabus.isBlank()) "未入力" else "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code=$syllabus"
+}
+
+@BindingAdapter("credit")
+fun setCreditText(textView: TextView, credit: Int) {
+    textView.text = if (credit > 0) credit.toString() else ""
+}
+
+@BindingAdapter("backgroundColor")
+fun setBackgroundColor(button: Button, color: Int) {
+    button.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+}
+
+@BindingAdapter("adapterEntities")
+fun setAdapterEntities(view: AutoCompleteTextView, list: List<String>?) {
+    if (list != null) {
+        view.setAdapter(ArrayAdapter(view.context, android.R.layout.simple_list_item_1, list))
+    }
 }
 
 private fun Int.formatPeriod() = if (this > 0) "${this}限" else ""
