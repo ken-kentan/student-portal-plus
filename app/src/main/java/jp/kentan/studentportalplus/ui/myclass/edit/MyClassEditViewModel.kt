@@ -131,7 +131,7 @@ class MyClassEditViewModel(
                 hash = Murmur3.hash64(hashStr.toByteArray()),
                 subject = subject,
                 instructor = instructor,
-                location = location,
+                location = if (location.isNotBlank()) location else null,
                 week = week,
                 period = period,
                 category = category,
