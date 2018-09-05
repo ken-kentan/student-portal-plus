@@ -54,7 +54,7 @@
             android:name=".ui.MyClassActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.MyClassEditActivity"
+            android:name=".ui.myclass.edit.MyClassEditActivity"
             android:theme="@style/AppTheme.LightActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.SettingsActivity" />

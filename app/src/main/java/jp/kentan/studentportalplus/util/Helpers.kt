@@ -45,8 +45,6 @@ fun Boolean.toLong() = if (this) 1L else 0L
 
 fun Char.toIntOrNull() = toString().toIntOrNull()
 
-fun String?.trimOrEmpty() = this?.trim() ?: ""
-
 /**
  * Convert Date to short String(yyyy/MM/dd)
  */

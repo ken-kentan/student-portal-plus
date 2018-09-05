@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.di
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import jp.kentan.studentportalplus.ui.*
+import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity
 
 @Module
 abstract class ActivityModule {

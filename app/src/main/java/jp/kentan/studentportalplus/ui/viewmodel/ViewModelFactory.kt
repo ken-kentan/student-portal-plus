@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.SharedPreferences
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
+import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditViewModel
 
 
 class ViewModelFactory(

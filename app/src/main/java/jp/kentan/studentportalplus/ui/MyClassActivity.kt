@@ -13,6 +13,7 @@ import android.view.MenuItem
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMyClassBinding
+import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity
 import jp.kentan.studentportalplus.ui.viewmodel.MyClassViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import jp.kentan.studentportalplus.util.CustomTransformationMethod

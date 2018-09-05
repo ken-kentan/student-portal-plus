@@ -15,12 +15,11 @@ import android.view.*
 import android.widget.TextView
 import androidx.core.content.edit
 import dagger.android.support.AndroidSupportInjection
-
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeekType
 import jp.kentan.studentportalplus.ui.MyClassActivity
-import jp.kentan.studentportalplus.ui.MyClassEditActivity
 import jp.kentan.studentportalplus.ui.adapter.MyClassAdapter
+import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity
 import jp.kentan.studentportalplus.ui.viewmodel.TimetableFragmentViewModel
 import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_timetable.*
