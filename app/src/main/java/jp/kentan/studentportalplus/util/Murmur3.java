@@ -18,6 +18,8 @@
 
 package jp.kentan.studentportalplus.util;
 
+import kotlin.text.Charsets;
+
 /**
  * Murmur3 is successor to Murmur2 fast non-crytographic hash algorithms.
  *
@@ -129,6 +131,10 @@ public class Murmur3 {
      */
     public static long hash64(byte[] data) {
         return hash64(data, 0, data.length, DEFAULT_SEED);
+    }
+
+    public static long hash64(String data) {
+        return hash64(data.getBytes(Charsets.UTF_8));
     }
 
     public static long hash64(byte[] data, int offset, int length) {

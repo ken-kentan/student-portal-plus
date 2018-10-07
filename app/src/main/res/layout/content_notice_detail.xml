@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.notice.detail.NoticeDetailActivity"
+    tools:showIn="@layout/activity_notice_detail">
+
+    <data>
+        <variable
+            name="data"
+            type="jp.kentan.studentportalplus.data.model.Notice" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/title_header"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/name_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textIsSelectable="true"
+                android:text="@{data.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_header"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/detail_header"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/name_detail"
+                app:isVisible="@{data.detailHtml != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <jp.kentan.studentportalplus.view.widget.CustomTabsTextView
+                android:id="@+id/detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoLink="all"
+                android:textIsSelectable="true"
+                app:html="@{data.detailHtml}"
+                app:isVisible="@{data.detailHtml != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_header"
+                tools:text="Detail" />
+
+            <TextView
+                android:id="@+id/link_header"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/name_link"
+                app:isVisible="@{data.link != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail" />
+
+            <jp.kentan.studentportalplus.view.widget.CustomTabsTextView
+                android:id="@+id/link"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoLink="all"
+                app:html="@{data.link}"
+                app:isVisible="@{data.link != null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/link_header"
+                tools:text="Link" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:noticeDate="@{data}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/link"
+                tools:text="2018/01/01" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

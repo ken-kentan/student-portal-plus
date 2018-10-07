@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="jp.kentan.studentportalplus">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,27 +11,56 @@
         android:name=".StudentPortalPlus"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:name=".ui.main.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".ui.widget.TimetableShortcutActivity"
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:label="@string/title_activity_welcome" />
+        <activity
+            android:name=".ui.notice.detail.NoticeDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.lectureinfo.detail.LectureInfoDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.lecturecancel.detail.LectureCancelDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.myclass.detail.MyClassDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.myclass.edit.MyClassEditActivity"
+            android:theme="@style/AppTheme.Light"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.setting.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ui.web.WebActivity" />
+
+        <activity
+            android:name=".ui.shortcut.TimetableShortcutActivity"
             android:icon="@mipmap/ic_timetable"
             android:label="@string/shortcut_timetable">
             <intent-filter>
@@ -39,30 +69,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.WelcomeActivity" />
-        <activity
-            android:name=".ui.NoticeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.LectureInformationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.LectureCancellationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.MyClassActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.myclass.edit.MyClassEditActivity"
-            android:theme="@style/AppTheme.LightActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.SettingsActivity" />
-        <activity android:name=".ui.WebActivity" />
 
         <service
-            android:name=".notification.RetryActionService"
-            android:exported="false"  />
+            android:name=".notification.RetryActionService" />
 
         <receiver
             android:name=".notification.DeviceStatusReceiver"

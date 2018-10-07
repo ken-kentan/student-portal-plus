@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Theme & Accent -->
+
+    <!-- Theme -->
     <color name="colorPrimary">#2d333d</color>
     <color name="colorPrimaryDark">#1e2128</color>
     <color name="colorPrimaryLight">#9299a1</color>
@@ -9,11 +10,8 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
 
-    <!-- Chip -->
-    <color name="chip_unchecked">@color/grey_300</color>
-    <color name="chip_unchecked_text">@color/grey_900</color>
-    <color name="chip_checked">@color/colorAccent</color>
-    <color name="chip_checked_text">@color/grey_50</color>
+    <!-- https://material.io/design/iconography/system-icons.html#color -->
+    <color name="icon">#8A000000</color>
 
     <!-- Material -->
     <color name="grey_50">#fafafa</color>
@@ -32,5 +30,4 @@
     <color name="orange_a_400">#ff9100</color>
 
     <color name="red_600">#e53935</color>
-
 </resources>

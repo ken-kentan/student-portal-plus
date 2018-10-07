@@ -1,10 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+    </style>
+
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/grey_100</item>
+        <item name="colorPrimaryDark">@color/grey_300</item>
+        <item name="actionBarTheme">@style/AppTheme.Light.AppBarOverlay</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -12,18 +20,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.LightActionBar" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" >
+        <item name="fontFamily">@font/orkney</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <!-- Custom Button -->
-    <style name="FlatButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/colorAccentDark</item>
-        <item name="colorButtonNormal">@color/colorAccent</item>
+    <style name="AppTheme.Light.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" >
+        <item name="fontFamily">@font/orkney</item>
     </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
 </resources>

@@ -5,14 +5,14 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/action_search"
-        android:orderInCategory="1"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:orderInCategory="100"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
 
     <item
-        android:id="@+id/action_list_filter"
-        android:icon="@drawable/ic_menu_filter_list"
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_menu_filter"
         android:title="@string/action_filter"
-        android:orderInCategory="2"
+        android:orderInCategory="101"
         app:showAsAction="always"/>
 </menu>

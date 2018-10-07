@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.myclass.detail.MyClassDetailActivity"
+    tools:showIn="@layout/activity_my_class_detail">
 
     <data>
+        <import type="android.text.TextUtils"/>
         <variable
-            name="myClass"
+            name="data"
             type="jp.kentan.studentportalplus.data.model.MyClass" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="jp.kentan.studentportalplus.ui.MyClassActivity"
-        tools:showIn="@layout/activity_my_class">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                android:text="@{myClass.subject}"
+                android:text="@{data.subject}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subject_header" />
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                text="@{myClass.instructor}"
+                android:text="@{TextUtils.isEmpty(data.instructor) ? `未入力` : data.instructor}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/instructor_header" />
@@ -82,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                text="@{myClass.location}"
+                android:text="@{data.location ?? `未入力`}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/location_header" />
@@ -104,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                text="@{myClass.category}"
+                android:text="@{TextUtils.isEmpty(data.category) ? `未入力` : data.category}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_header" />
@@ -126,8 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                week="@{myClass.week}"
-                period="@{myClass.period}"
+                app:myClassWeekPeriod="@{data}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/week_period_header" />
@@ -143,16 +143,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/week_period" />
 
-            <TextView
+            <jp.kentan.studentportalplus.view.widget.CustomTabsTextView
                 android:id="@+id/syllabus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:autoLink="web"
-                syllabus="@{myClass.scheduleCode}"
+                app:syllabus="@{data.scheduleCode}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/syllabus_header" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -1,12 +1,16 @@
 package jp.kentan.studentportalplus.data
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import jp.kentan.studentportalplus.data.component.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import jp.kentan.studentportalplus.data.component.LectureQuery
+import jp.kentan.studentportalplus.data.component.NoticeQuery
+import jp.kentan.studentportalplus.data.component.PortalData
+import jp.kentan.studentportalplus.data.component.PortalDataSet
 import jp.kentan.studentportalplus.data.dao.*
 import jp.kentan.studentportalplus.data.model.*
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
@@ -15,198 +19,321 @@ import jp.kentan.studentportalplus.data.parser.MyClassParser
 import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
-import jp.kentan.studentportalplus.util.getMyClassThreshold
+import jp.kentan.studentportalplus.util.getSimilarSubjectThresholdFloat
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.defaultSharedPreferences
 
+class PortalRepository(
+        private val context: Context,
+        shibbolethDataProvider: ShibbolethDataProvider
+) {
+    private val client = ShibbolethClient(context, shibbolethDataProvider)
 
-class PortalRepository(private val context: Context, shibbolethDataProvider: ShibbolethDataProvider) {
+    private val similarSubjectThresholdListener: SharedPreferences.OnSharedPreferenceChangeListener
 
-    private companion object {
-        const val TAG = "PortalRepository"
-    }
-
-    private val shibbolethClient = ShibbolethClient(context, shibbolethDataProvider)
-
-    private val preferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener
-
-    private val noticeParser        = NoticeParser()
-    private val lectureInfoParser   = LectureInformationParser()
+    private val noticeParser = NoticeParser()
+    private val lectureInfoParser = LectureInformationParser()
     private val lectureCancelParser = LectureCancellationParser()
-    private val myClassParser       = MyClassParser()
+    private val myClassParser = MyClassParser()
 
-    private val noticeDao        = NoticeDao(context.database)
-    private val lectureInfoDao   : LectureInformationDao
-    private val lectureCancelDao : LectureCancellationDao
-    private val myClassDao       = MyClassDao(context.database)
+    private val noticeDao = NoticeDao(context.database)
+    private val lectureInfoDao: LectureInformationDao
+    private val lectureCancelDao: LectureCancellationDao
+    private val myClassDao = MyClassDao(context.database)
 
-    private val _noticeList              = MutableLiveData<List<Notice>>()
-    private val _lectureInformationList  = MutableLiveData<List<LectureInformation>>()
-    private val _lectureCancellationList = MutableLiveData<List<LectureCancellation>>()
-    private val _myClassList             = MutableLiveData<List<MyClass>>()
-    private val _portalDataSet           = MutableLiveData<PortalDataSet>()
+    private val _portalDataSet = MutableLiveData<PortalDataSet>()
+    private val noticeList = MutableLiveData<List<Notice>>()
+    private val lectureInfoList = MutableLiveData<List<LectureInformation>>()
+    private val lectureCancelList = MutableLiveData<List<LectureCancellation>>()
+    private val _myClassList = MutableLiveData<List<MyClass>>()
 
-    val noticeList: LiveData<List<Notice>> = _noticeList
+    val portalDataSet: LiveData<PortalDataSet>
+        get() = _portalDataSet
 
-    val lectureInformationList: LiveData<List<LectureInformation>> = _lectureInformationList
-
-    val lectureCancellationList: LiveData<List<LectureCancellation>> = _lectureCancellationList
-
-    val myClassList: LiveData<List<MyClass>> = _myClassList
-
-    val portalDataSet: LiveData<PortalDataSet> = _portalDataSet
+    val myClassList: LiveData<List<MyClass>>
+        get() = _myClassList
 
     val subjectList: LiveData<List<String>> by lazy {
         return@lazy MediatorLiveData<List<String>>().apply {
-            addSource(_lectureInformationList) { list ->
-                if (list != null) {
-                    value = list.map { it.subject }
-                            .plus(value.orEmpty())
-                            .distinct()
-                }
+            addSource(lectureInfoList) { list ->
+                value = list.asSequence()
+                        .map { it.subject }
+                        .plus(value.orEmpty())
+                        .distinct().toList()
             }
 
-            addSource(_lectureCancellationList) { list ->
-                if (list != null) {
-                    value = list.map { it.subject }
-                            .plus(value.orEmpty())
-                            .distinct()
-                }
+            addSource(lectureCancelList) { list ->
+                value = list.asSequence()
+                        .map { it.subject }
+                        .plus(value.orEmpty())
+                        .distinct().toList()
             }
 
             addSource(_myClassList) { list ->
-                if (list != null) {
-                    value = list.map { it.subject }
-                            .plus(value.orEmpty())
-                            .distinct()
-                }
+                value = list.asSequence()
+                        .map { it.subject }
+                        .plus(value.orEmpty())
+                        .distinct().toList()
             }
         }
     }
 
-
     init {
-        // Setup with my_class_threshold
-        val threshold = context.defaultSharedPreferences.getMyClassThreshold()
+        val threshold = context.defaultSharedPreferences.getSimilarSubjectThresholdFloat()
 
         lectureInfoDao = LectureInformationDao(context.database, threshold)
         lectureCancelDao = LectureCancellationDao(context.database, threshold)
 
-        // Update if MyClassThreshold changed
-        preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
-            if (key == "my_class_threshold") {
-                val th = pref.getMyClassThreshold()
+        similarSubjectThresholdListener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
+            if (key == "similar_subject_threshold") {
+                val th = pref.getSimilarSubjectThresholdFloat()
 
-                lectureInfoDao.myClassThreshold = th
-                lectureCancelDao.myClassThreshold = th
+                lectureInfoDao.similarThreshold = th
+                lectureCancelDao.similarThreshold = th
 
-                postValues(
-                        lectureInfoList = lectureInfoDao.getAll(),
-                        lectureCancelList = lectureCancelDao.getAll()
+                GlobalScope.launch {
+                    postValues(
+                            lectureInfoList = lectureInfoDao.getAll(),
+                            lectureCancelList = lectureCancelDao.getAll()
+                    )
+                }
+            }
+        }
+
+        context.defaultSharedPreferences.registerOnSharedPreferenceChangeListener(similarSubjectThresholdListener)
+    }
+
+    @Throws(Exception::class)
+    fun sync() = GlobalScope.async {
+        val noticeList = noticeParser.parse(PortalData.NOTICE.fetchDocument())
+        val lectureInfoList = lectureInfoParser.parse(PortalData.LECTURE_INFO.fetchDocument())
+        val lectureCancelList = lectureCancelParser.parse(PortalData.LECTURE_CANCEL.fetchDocument())
+        val myClassList = myClassParser.parse(PortalData.MY_CLASS.fetchDocument())
+
+        myClassDao.updateAll(myClassList)
+
+        val updatedNoticeList = noticeDao.updateAll(noticeList)
+        val updatedLectureInfoList = lectureInfoDao.updateAll(lectureInfoList)
+        val updatedLectureCancelList = lectureCancelDao.updateAll(lectureCancelList)
+
+        loadFromDb().await()
+
+        return@async mapOf(
+                PortalData.NOTICE to updatedNoticeList,
+                PortalData.LECTURE_INFO to updatedLectureInfoList,
+                PortalData.LECTURE_CANCEL to updatedLectureCancelList
+        )
+    }
+
+    fun loadFromDb() = GlobalScope.async {
+        postValues(
+                noticeList = noticeDao.getAll(),
+                lectureInfoList = lectureInfoDao.getAll(),
+                lectureCancelList = lectureCancelDao.getAll(),
+                myClassList = myClassDao.getAll()
+        )
+    }
+
+    fun getNoticeList(query: NoticeQuery): LiveData<List<Notice>> {
+        val result = MediatorLiveData<List<Notice>>()
+
+        result.addSource(noticeList) { list ->
+            GlobalScope.launch {
+                result.postValue(
+                        list.filter { notice ->
+                            if (query.isUnread && notice.isRead) {
+                                return@filter false
+                            }
+                            if (query.isRead && !notice.isRead) {
+                                return@filter false
+                            }
+                            if (query.isFavorite && !notice.isFavorite) {
+                                return@filter false
+                            }
+                            if (query.dateRange != NoticeQuery.DateRange.ALL) {
+                                return@filter notice.createdDate.time >= query.dateRange.time
+                            }
+                            if (query.keywordList.isNotEmpty()) {
+                                return@filter query.keywordList.any { notice.title.contains(it, true) }
+                            }
+
+                            return@filter true
+                        }
                 )
             }
         }
 
-        context.defaultSharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+        return result
     }
 
-    fun loadFromDb() {
-        postValues(
-                myClassDao.getAll(),
-                lectureInfoDao.getAll(),
-                lectureCancelDao.getAll(),
-                noticeDao.getAll()
-        )
+    fun getLectureInfoList(query: LectureQuery): LiveData<List<LectureInformation>> {
+        val result = MediatorLiveData<List<LectureInformation>>()
+
+        result.addSource(lectureInfoList) { list ->
+            GlobalScope.launch {
+                val filtered = list.filter { lecture ->
+                    if (query.isUnread && lecture.isRead) {
+                        return@filter false
+                    }
+                    if (query.isRead && !lecture.isRead) {
+                        return@filter false
+                    }
+                    if (query.isAttend && !lecture.attend.isAttend()) {
+                        return@filter false
+                    }
+                    if (query.keywordList.isNotEmpty()) {
+                        return@filter query.keywordList.any {
+                            lecture.subject.contains(it, true) || lecture.instructor.contains(it, true)
+                        }
+                    }
+
+                    return@filter true
+                }
+
+                result.postValue(
+                        if (query.order == LectureQuery.Order.ATTEND_CLASS) {
+                            filtered.sortedBy { !it.attend.isAttend() }
+                        } else {
+                            filtered
+                        }
+                )
+            }
+        }
+
+        return result
     }
 
-    @Throws(Exception::class)
-    fun sync(): Map<PortalDataType, List<NotifyContent>> {
-        val noticeList        = noticeParser.parse(fetchDocument(PortalDataType.NOTICE))
-        val lectureInfoList   = lectureInfoParser.parse(fetchDocument(PortalDataType.LECTURE_INFORMATION))
-        val lectureCancelList = lectureCancelParser.parse(fetchDocument(PortalDataType.LECTURE_CANCELLATION))
-        val myCLassList       = myClassParser.parse(fetchDocument(PortalDataType.MY_CLASS))
+    fun getLectureCancelList(query: LectureQuery): LiveData<List<LectureCancellation>> {
+        val result = MediatorLiveData<List<LectureCancellation>>()
 
-        myClassDao.updateAll(myCLassList)
+        result.addSource(lectureCancelList) { list ->
+            GlobalScope.launch {
+                val filtered = list.filter { lecture ->
+                    if (query.isUnread && lecture.isRead) {
+                        return@filter false
+                    }
+                    if (query.isRead && !lecture.isRead) {
+                        return@filter false
+                    }
+                    if (query.isAttend && !lecture.attend.isAttend()) {
+                        return@filter false
+                    }
+                    if (query.keywordList.isNotEmpty()) {
+                        return@filter query.keywordList.any {
+                            lecture.subject.contains(it, true) || lecture.instructor.contains(it, true)
+                        }
+                    }
 
-        val newNoticeList        = noticeDao.updateAll(noticeList)
-        val newLectureInfoList   = lectureInfoDao.updateAll(lectureInfoList)
-        val newLectureCancelList = lectureCancelDao.updateAll(lectureCancelList)
+                    return@filter true
+                }
 
-        loadFromDb()
+                result.postValue(
+                        if (query.order == LectureQuery.Order.ATTEND_CLASS) {
+                            filtered.sortedBy { !it.attend.isAttend() }
+                        } else {
+                            filtered
+                        }
+                )
+            }
+        }
 
-        return mapOf(
-                PortalDataType.NOTICE to newNoticeList,
-                PortalDataType.LECTURE_INFORMATION to newLectureInfoList,
-                PortalDataType.LECTURE_CANCELLATION to newLectureCancelList
-        )
+        return result
     }
-
-    fun getLectureInformationById(id: Long) = _lectureInformationList.value?.find { it.id == id } ?: lectureInfoDao.get(id)
-
-    fun getLectureCancellationById(id: Long) = _lectureCancellationList.value?.find { it.id == id } ?: lectureCancelDao.get(id)
-
-    fun getNoticeById(id: Long) = _noticeList.value?.find { it.id == id } ?: noticeDao.get(id)
-
-    fun getMyClassById(id: Long) = _myClassList.value?.find { it.id == id }
 
     fun getMyClassSubjectList() = myClassDao.getSubjectList()
 
-    fun searchNotices(query: NoticeQuery) = noticeDao.search(query)
+    fun getNotice(id: Long): LiveData<Notice> = Transformations.map(noticeList) { list ->
+        list.find { it.id == id }
+    }
 
-    fun searchLectureInformation(query: LectureQuery) = lectureInfoDao.search(query)
+    fun getLectureInfo(id: Long): LiveData<LectureInformation> = Transformations.map(lectureInfoList) { list ->
+        list.find { it.id == id }
+    }
 
-    fun searchLectureCancellations(query: LectureQuery) = lectureCancelDao.search(query)
+    fun getLectureCancel(id: Long): LiveData<LectureCancellation> = Transformations.map(lectureCancelList) { list ->
+        list.find { it.id == id }
+    }
 
-    fun update(data: Notice): Boolean {
+    fun getMyClass(id: Long, isAllowNullOnlyFirst: Boolean = false): LiveData<MyClass> {
+        val result = MediatorLiveData<MyClass>()
+
+        var isFirst = true
+
+        result.addSource(_myClassList) { list ->
+            val data = list.find { it.id == id }
+
+            if (!isAllowNullOnlyFirst || isFirst || data != null) {
+                result.value = data
+            }
+
+            isFirst = false
+        }
+
+        return result
+    }
+
+    fun getMyClassWithSync(id: Long) = _myClassList.value?.find { it.id == id }
+
+    fun updateNotice(data: Notice) = GlobalScope.async {
         if (noticeDao.update(data) > 0) {
             postValues(noticeList = noticeDao.getAll())
-            return true
+            return@async true
         }
-        return false
+
+        return@async false
     }
 
-    fun update(data: LectureInformation) {
+    fun updateLectureInfo(data: LectureInformation) = GlobalScope.async {
         if (lectureInfoDao.update(data) > 0) {
             postValues(lectureInfoList = lectureInfoDao.getAll())
+            return@async true
         }
+
+        return@async false
     }
 
-    fun update(data: LectureCancellation) {
+    fun updateLectureCancel(data: LectureCancellation) = GlobalScope.async {
         if (lectureCancelDao.update(data) > 0) {
             postValues(lectureCancelList = lectureCancelDao.getAll())
+            return@async true
         }
+
+        return@async false
     }
 
-    fun update(data: MyClass): Boolean {
+    fun updateMyClass(data: MyClass) = GlobalScope.async {
         if (myClassDao.update(data) > 0) {
-            postValues(myClassDao.getAll())
-            return true
+            postValues(
+                    myClassDao.getAll(),
+                    lectureInfoDao.getAll(),
+                    lectureCancelDao.getAll())
+            return@async true
         }
-        return false
+
+        return@async false
     }
 
-    fun add(data: MyClass): Boolean {
-        if (myClassDao.add(listOf(data)) > 0) {
-            postValues(myClassDao.getAll())
-            return true
+    fun addMyClass(data: MyClass) = GlobalScope.async {
+        if (myClassDao.insert(listOf(data)) > 0) {
+            postValues(
+                    myClassDao.getAll(),
+                    lectureInfoDao.getAll(),
+                    lectureCancelDao.getAll())
+            return@async true
         }
-        return false
+
+        return@async false
     }
 
-    fun delete(subject: String): Boolean {
-        if (myClassDao.delete(subject) > 0) {
-            postValues(myClassDao.getAll())
-            return true
-        }
-        return false
-    }
-
-    fun addToMyClass(data: Lecture): Boolean {
+    fun addToMyClass(data: Lecture) = GlobalScope.async {
         try {
             val list = myClassParser.parse(data)
-            myClassDao.add(list)
+            myClassDao.insert(list)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to add to MyClass", e)
-            return false
+            Log.e("PortalRepository", "Failed to add to MyClass", e)
+            return@async false
         }
 
         postValues(
@@ -215,15 +342,15 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
                 lectureCancelDao.getAll()
         )
 
-        return true
+        return@async true
     }
 
-    fun deleteFromMyClass(data: Lecture): Boolean {
+    fun deleteFromMyClass(subject: String) = GlobalScope.async {
         try {
-            myClassDao.delete(data.subject)
+            myClassDao.delete(subject)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to delete from MyClass", e)
-            return false
+            Log.e("PortalRepository", "Failed to delete from MyClass", e)
+            return@async false
         }
 
         postValues(
@@ -232,20 +359,18 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
                 lectureCancelDao.getAll()
         )
 
-        return true
+        return@async true
     }
 
-    fun deleteAll(onDeleted: (success: Boolean) -> Unit) {
-        val success = context.deleteDatabase(context.database.databaseName)
-        if (success) {
+    fun deleteAll() = GlobalScope.async {
+        val isSuccess = context.deleteDatabase(context.database.databaseName)
+
+        if (isSuccess) {
             postValues(emptyList(), emptyList(), emptyList(), emptyList())
         }
 
-        onDeleted(success)
+        return@async isSuccess
     }
-
-    @Throws(Exception::class)
-    private fun fetchDocument(type: PortalDataType) = shibbolethClient.fetch(type.url)
 
     private fun postValues(
             myClassList: List<MyClass>? = null,
@@ -258,25 +383,25 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
 
         if (myClassList != null) {
             postCount++
-            _myClassList.postValue(myClassList)
+            this._myClassList.postValue(myClassList)
 
             set = set.copy(myClassList = myClassList)
         }
         if (lectureInfoList != null) {
             postCount++
-            _lectureInformationList.postValue(lectureInfoList)
+            this.lectureInfoList.postValue(lectureInfoList)
 
             set = set.copy(lectureInfoList = lectureInfoList)
         }
         if (lectureCancelList != null) {
             postCount++
-            _lectureCancellationList.postValue(lectureCancelList)
+            this.lectureCancelList.postValue(lectureCancelList)
 
             set = set.copy(lectureCancelList = lectureCancelList)
         }
         if (noticeList != null) {
             postCount++
-            _noticeList.postValue(noticeList)
+            this.noticeList.postValue(noticeList)
 
             set = set.copy(noticeList = noticeList)
         }
@@ -285,6 +410,8 @@ class PortalRepository(private val context: Context, shibbolethDataProvider: Shi
             _portalDataSet.postValue(set)
         }
 
-        Log.d(TAG, "posted $postCount lists")
+        Log.d("PortalRepository", "posted $postCount lists")
     }
+
+    private fun PortalData.fetchDocument() = client.fetch(url)
 }

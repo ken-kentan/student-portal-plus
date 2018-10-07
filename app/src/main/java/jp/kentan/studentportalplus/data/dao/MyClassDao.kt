@@ -2,15 +2,15 @@ package jp.kentan.studentportalplus.data.dao
 
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.parser.MyClassParser
-import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.db.*
 
-
-class MyClassDao(private val database: DatabaseOpenHelper) {
+class MyClassDao(
+        private val database: DatabaseOpenHelper
+) : BaseDao() {
 
     companion object {
         const val TABLE_NAME = "my_class"
-        private val PARSER = MyClassParser()
+        val PARSER = MyClassParser()
     }
 
     fun getAll(): List<MyClass> = database.use {
@@ -30,11 +30,21 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
                 })
     }
 
-    fun get(id: Long): MyClass? = database.use {
-        select(TABLE_NAME)
-                .whereArgs("_id=$id")
-                .limit(1)
-                .parseOpt(PARSER)
+    fun update(data: MyClass) = database.use {
+        update(TABLE_NAME,
+                "hash"          to data.hash,
+                "week"          to data.week.code,
+                "period"        to data.period,
+                "schedule_code" to data.scheduleCode,
+                "credit"        to data.credit,
+                "category"      to data.category,
+                "subject"       to data.subject,
+                "instructor"    to data.instructor,
+                "user"          to data.isUser,
+                "color"         to data.color,
+                "location"      to data.location)
+                .whereArgs("_id=${data.id}")
+                .exec()
     }
 
     fun updateAll(list: List<MyClass>) = database.use {
@@ -77,24 +87,7 @@ class MyClassDao(private val database: DatabaseOpenHelper) {
         }
     }
 
-    fun update(data: MyClass) = database.use {
-        update(TABLE_NAME,
-                "hash"           to data.hash,
-                "week"           to data.week.code,
-                "period"         to data.period,
-                "schedule_code"  to data.scheduleCode,
-                "credit"         to data.credit,
-                "category"       to data.category,
-                "subject"        to data.subject,
-                "instructor"     to data.instructor,
-                "user"           to data.isUser,
-                "color"          to data.color,
-                "location"       to data.location)
-                .whereArgs("_id=${data.id}")
-                .exec()
-    }
-
-    fun add(list: List<MyClass>) = database.use {
+    fun insert(list: List<MyClass>) = database.use {
         var count = 0
 
         transaction {

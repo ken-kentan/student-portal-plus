@@ -2,9 +2,6 @@
 
 package jp.kentan.studentportalplus.data.shibboleth
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -14,19 +11,23 @@ import android.security.keystore.KeyProperties
 import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
-import jp.kentan.studentportalplus.data.component.ShibbolethData
-import org.jetbrains.anko.coroutines.experimental.bg
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import jp.kentan.studentportalplus.data.model.User
+import kotlinx.coroutines.experimental.launch
 import java.math.BigInteger
-import java.nio.charset.StandardCharsets
+import java.nio.charset.Charset
 import java.security.KeyPairGenerator
 import java.security.KeyStore
-import java.security.interfaces.RSAPublicKey
 import java.util.*
 import javax.crypto.Cipher
 import javax.security.auth.x500.X500Principal
 
 
-class ShibbolethDataProvider(private val context: Context) {
+class ShibbolethDataProvider(
+        private val context: Context
+) {
 
     private companion object {
         const val TAG = "ShibbolethDataProvider"
@@ -38,10 +39,12 @@ class ShibbolethDataProvider(private val context: Context) {
         const val KEY_NAME     = "name"
         const val KEY_USERNAME = "username"
         const val KEY_PASSWORD = "password"
+
+        val UTF_8: Charset = Charset.forName("UTF-8")
     }
 
     private val preferences: SharedPreferences = context.getSharedPreferences("shibboleth", Context.MODE_PRIVATE)
-    private val userLiveData = MutableLiveData<Pair<String, String>>() // (name, username)
+    private val userLiveData = MutableLiveData<User>()
     private lateinit var keyStore: KeyStore
 
     init {
@@ -94,20 +97,19 @@ class ShibbolethDataProvider(private val context: Context) {
         generator.generateKeyPair()
     }
 
-    private fun encryptString(text: String, enableRetry: Boolean = true): String? {
+    private fun encrypt(text: String, enableRetry: Boolean = true): String? {
         if (text.isEmpty()) {
             Log.e(TAG, "Empty decrypt text")
             return null
         }
 
         try {
-            val privateKeyEntry = keyStore.getEntry(KEY_ALIAS, null) as KeyStore.PrivateKeyEntry
-            val publicKey = privateKeyEntry.certificate.publicKey as RSAPublicKey
+            val publicKey = keyStore.getCertificate(KEY_ALIAS).publicKey
 
             val cipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER)
             cipher.init(Cipher.ENCRYPT_MODE, publicKey)
 
-            val bytes = cipher.doFinal(text.toByteArray(StandardCharsets.UTF_8))
+            val bytes = cipher.doFinal(text.toByteArray(UTF_8))
 
             return Base64.encodeToString(bytes, Base64.DEFAULT)
         } catch (e: Exception) {
@@ -117,7 +119,7 @@ class ShibbolethDataProvider(private val context: Context) {
                 keyStore.deleteEntry(KEY_ALIAS)
                 createKeyIfNeed(keyStore)
 
-                return encryptString(text, false)
+                return encrypt(text, false)
             } else {
                 Log.e(TAG, "Failed to encrypt", e)
             }
@@ -126,21 +128,21 @@ class ShibbolethDataProvider(private val context: Context) {
         return null
     }
 
-    private fun decryptString(text: String?): String? {
+    private fun decrypt(text: String?): String? {
         if (text.isNullOrEmpty()) {
             Log.e(TAG, "Empty encrypt text")
             return null
         }
 
         try {
-            val privateKeyEntry = keyStore.getEntry(KEY_ALIAS, null) as KeyStore.PrivateKeyEntry
+            val privateKey = keyStore.getKey(KEY_ALIAS, null)
 
             val cipher = Cipher.getInstance(CIPHER_TYPE)
-            cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
+            cipher.init(Cipher.DECRYPT_MODE, privateKey)
 
             val bytes = cipher.doFinal(Base64.decode(text, Base64.DEFAULT))
 
-            return String(bytes, StandardCharsets.UTF_8)
+            return String(bytes, UTF_8)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to decrypt", e)
         }
@@ -150,40 +152,40 @@ class ShibbolethDataProvider(private val context: Context) {
 
     fun save(name: String, data: ShibbolethData) {
         preferences.edit {
-            putString(KEY_NAME    , encryptString(name))
-            putString(KEY_USERNAME, encryptString(data.username))
-            putString(KEY_PASSWORD, encryptString(data.password))
+            putString(KEY_NAME    , encrypt(name))
+            putString(KEY_USERNAME, encrypt(data.username))
+            putString(KEY_PASSWORD, encrypt(data.password))
         }
 
         // may be call in background thread
-        userLiveData.postValue(Pair(name, data.username))
+        userLiveData.postValue(User(name, data.username))
     }
 
-    fun getUsername() = decryptString(preferences.getString(KEY_USERNAME, null))
+    fun getUsername() = decrypt(preferences.getString(KEY_USERNAME, null))
 
-    fun getUser(): LiveData<Pair<String, String>> {
-        val result = MediatorLiveData<Pair<String, String>>()
+    fun getUser(): LiveData<User> {
+        val result = MediatorLiveData<User>()
 
         result.addSource(userLiveData) {
             result.value = it
         }
 
-        bg {
+        launch {
             result.postValue(
-                    Pair(
-                            decryptString(preferences.getString(KEY_NAME,     null)) ?: "",
-                            decryptString(preferences.getString(KEY_USERNAME, null)) ?: "")
+                    User(
+                            name = decrypt(preferences.getString(KEY_NAME, null)) ?: "",
+                            username = decrypt(preferences.getString(KEY_USERNAME, null)) ?: "")
             )
         }
 
         return result
     }
 
-    @Throws(Exception::class)
+    @Throws(ShibbolethAuthenticationException::class)
     fun get() = ShibbolethData(
-            username = decryptString(preferences.getString(KEY_USERNAME, null))
+            username = decrypt(preferences.getString(KEY_USERNAME, null))
                     ?: throw ShibbolethAuthenticationException("ユーザー名の復号に失敗しました"),
-            password = decryptString(preferences.getString(KEY_PASSWORD, null))
+            password = decrypt(preferences.getString(KEY_PASSWORD, null))
                     ?: throw ShibbolethAuthenticationException("パスワードの復号に失敗しました")
     )
 

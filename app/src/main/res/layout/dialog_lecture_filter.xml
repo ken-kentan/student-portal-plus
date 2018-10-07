@@ -1,95 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:layout_editor_absoluteY="81dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/order_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/name_display_order"
-        app:layout_constraintBottom_toBottomOf="@+id/order_spinner"
-        app:layout_constraintEnd_toStartOf="@+id/order_spinner"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/order_spinner" />
+    <data>
+        <variable
+            name="query"
+            type="jp.kentan.studentportalplus.data.component.LectureQuery" />
+    </data>
 
-    <Spinner
-        android:id="@+id/order_spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="0.6"
-        app:layout_constraintStart_toEndOf="@+id/order_header"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/type_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/name_type"
-        android:textColor="@color/grey_600"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_spinner" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-    <CheckBox
-        android:id="@+id/unread_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/chip"
-        android:button="@null"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:text="@string/name_unread"
-        android:textColor="@color/colorPrimary"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type_header" />
+            <TextView
+                android:id="@+id/order_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/name_display_order"
+                app:layout_constraintBottom_toBottomOf="@+id/order_spinner"
+                app:layout_constraintEnd_toStartOf="@+id/order_spinner"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_spinner" />
 
-    <CheckBox
-        android:id="@+id/read_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/chip"
-        android:button="@null"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:text="@string/name_read"
-        android:textColor="@color/colorPrimary"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/unread_check_box"
-        app:layout_constraintStart_toEndOf="@+id/unread_check_box"
-        app:layout_constraintTop_toTopOf="@+id/unread_check_box" />
+            <Spinner
+                android:id="@+id/order_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:selectedItemPosition="@{query.order.ordinal}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.6"
+                app:layout_constraintStart_toEndOf="@+id/order_header"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/attend_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/chip"
-        android:button="@null"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:text="@string/name_attend_lecture"
-        app:layout_constraintBottom_toBottomOf="@+id/read_check_box"
-        app:layout_constraintStart_toEndOf="@+id/read_check_box"
-        app:layout_constraintTop_toTopOf="@+id/read_check_box" />
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/type_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/name_type"
+                android:textColor="@color/grey_600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_spinner" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacingHorizontal="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/type_header">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/unread_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_unread"
+                    android:checked="@{query.unread}" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/read_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_read"
+                    android:checked="@{query.read}"  />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/attend_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_attend_lecture"
+                    android:checked="@{query.attend}"  />
+
+            </com.google.android.material.chip.ChipGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

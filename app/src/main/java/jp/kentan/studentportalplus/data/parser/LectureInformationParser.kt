@@ -2,8 +2,6 @@ package jp.kentan.studentportalplus.data.parser
 
 import android.util.Log
 import jp.kentan.studentportalplus.data.model.LectureInformation
-import jp.kentan.studentportalplus.data.dao.DatabaseOpenHelper
-import jp.kentan.studentportalplus.util.Murmur3
 import org.jetbrains.anko.db.RowParser
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
@@ -13,55 +11,45 @@ import java.util.*
 class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
 
     private companion object {
-        const val TAG = "LectureInfoParser"
         val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
     }
 
     @Throws(Exception::class)
-    override fun parse(document: Document): List<LectureInformation> {
-        val resultList = mutableListOf<LectureInformation>()
-
-        val trElements = document.select("tr[class~=gen_tbl1_(odd|even)]")
-
-        trElements.forEach{
+    fun parse(document: Document): List<LectureInformation> {
+        val resultList = document.select("tr[class~=gen_tbl1_(odd|even)]").mapNotNull {
             val tdElements = it.select("td")
             if (tdElements.size < 11) {
-                return@forEach
+                return@mapNotNull null
             }
 
-            val grade          = tdElements[1].text()
-            val semester       = tdElements[2].text()
-            val subject        = tdElements[3].text()
-            val instructor     = tdElements[4].text()
-            val week           = tdElements[5].text()
-            val period         = tdElements[6].text()
-            val category       = tdElements[7].text()
-            val detailText     = tdElements[8].text()
-            val detailHtml     = tdElements[8].html()
+            val grade = tdElements[1].text()
+            val semester = tdElements[2].text()
+            val subject = tdElements[3].text()
+            val instructor = tdElements[4].text()
+            val week = tdElements[5].text()
+            val period = tdElements[6].text()
+            val category = tdElements[7].text()
+            val detailText = tdElements[8].text()
+            val detailHtml = tdElements[8].html()
             val createdDateStr = tdElements[9].text()
             val updatedDateStr = tdElements[10].text()
 
-            val hashStr = grade + semester + subject + instructor + week + period + category + detailHtml + createdDateStr + updatedDateStr
-
-            resultList.add(
-                    LectureInformation(
-                            hash = Murmur3.hash64(hashStr.toByteArray()),
-                            grade = grade,
-                            semester = semester,
-                            subject = subject,
-                            instructor = instructor,
-                            week = week,
-                            period = period,
-                            category = category,
-                            detailText = detailText,
-                            detailHtml = detailHtml,
-                            createdDate = createdDateStr.toDate(),
-                            updatedDate = updatedDateStr.toDate()
-                    )
+            return@mapNotNull LectureInformation(
+                    grade = grade,
+                    semester = semester,
+                    subject = subject,
+                    instructor = instructor,
+                    week = week,
+                    period = period,
+                    category = category,
+                    detailText = detailText,
+                    detailHtml = detailHtml,
+                    createdDate = createdDateStr.toDate(),
+                    updatedDate = updatedDateStr.toDate()
             )
         }
 
-        Log.d(TAG, "Parsed ${resultList.size} LectureInformation")
+        Log.d("LectureInfoParser", "Parsed ${resultList.size} LectureInformation")
 
         return resultList
     }
@@ -78,8 +66,8 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
             category = columns[8] as String,
             detailText = columns[9] as String,
             detailHtml = columns[10] as String,
-            createdDate = DatabaseOpenHelper.toDate(columns[11] as String),
-            updatedDate = DatabaseOpenHelper.toDate(columns[12] as String),
+            createdDate = Date(columns[11] as Long),
+            updatedDate = Date(columns[12] as Long),
             isRead = (columns[13] as Long) == 1L
     )
 

@@ -1,16 +1,13 @@
 package jp.kentan.studentportalplus.data.parser
 
-import jp.kentan.studentportalplus.data.component.LectureAttendType
+import jp.kentan.studentportalplus.data.component.LectureAttend
 import org.jetbrains.anko.db.RowParser
 
 
-class LectureAttendParser : RowParser<Pair<String, LectureAttendType>> {
+class LectureAttendParser : RowParser<Pair<String, LectureAttend>> {
 
-    override fun parseRow(columns: Array<Any?>): Pair<String, LectureAttendType> {
-        return if (columns[1] is Long) {
-            Pair(columns[0] as String, if ((columns[1] as Long) == 1L) LectureAttendType.USER else LectureAttendType.PORTAL)
-        } else {
-            Pair(columns[0] as String, LectureAttendType.valueOf(columns[1] as String))
-        }
+    override fun parseRow(columns: Array<Any?>): Pair<String, LectureAttend> {
+        return Pair(columns[0] as String, if ((columns[1] as Long) == 1L) LectureAttend.USER else LectureAttend.PORTAL)
     }
+
 }

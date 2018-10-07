@@ -1,29 +1,56 @@
 package jp.kentan.studentportalplus.util
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import jp.kentan.studentportalplus.data.component.PortalData
+import jp.kentan.studentportalplus.notification.NotificationType
+import org.jetbrains.anko.defaultSharedPreferences
+import java.util.*
 
-/**
- * SharedPreferencesHelper
- */
+fun SharedPreferences.isAuthenticatedUser() = getBoolean("is_authenticated_user", false)
 
-fun SharedPreferences.enabledDetailError() = getBoolean("enabled_detail_error", false)
+fun SharedPreferences.isEnabledDetailError() = getBoolean("is_enabled_detail_error", false)
 
-fun SharedPreferences.enabledPdfOpenWithGdocs() = getBoolean("enabled_pdf_open_with_gdocs", true)
+fun SharedPreferences.isEnabledPdfOpenWithGdocs() = getBoolean("is_enabled_pdf_open_with_gdocs", true)
 
-fun SharedPreferences.isFirstLaunch() = getBoolean("is_first_launch", true)
+fun SharedPreferences.isGridTimetableLayout() = getBoolean("is_grid_timetable_layout", true)
 
-fun SharedPreferences.setFirstLaunch(isFirst: Boolean) = edit { putBoolean("is_first_launch", isFirst) }
+fun SharedPreferences.isEnabledSync() = getBoolean("is_enabled_sync", true)
 
-fun SharedPreferences.enabledSync() = getBoolean("enabled_sync", true)
+fun SharedPreferences.isEnabledNotificationVibration() = getBoolean("is_enabled_notification_vibration", true)
 
-fun SharedPreferences.getMyClassThreshold() = (getString("my_class_threshold", "80").toIntOrNull() ?: 80) / 100f
+fun SharedPreferences.isEnabledNotificationLed() = getBoolean("is_enabled_notification_led", true)
 
-fun SharedPreferences.getSyncIntervalMinutes() = getString("sync_interval", "60").toLongOrNull() ?: 60L
+fun SharedPreferences.getShibbolethLastLoginDate() = getLong("shibboleth_last_login_date", -1)
 
-// For notification
-fun SharedPreferences.enabledNotificationVibration() = getBoolean("enabled_notification_vibration", true)
-fun SharedPreferences.enabledNotificationLed() = getBoolean("enabled_notification_led", true)
+fun SharedPreferences.getSyncIntervalMinutes() = getString("sync_interval_minutes", "60")?.toLongOrNull() ?: 60L
+
+fun SharedPreferences.getSimilarSubjectThreshold() = getString("similar_subject_threshold", "80")?.toIntOrNull() ?: 80
+
+fun SharedPreferences.getSimilarSubjectThresholdFloat() = getSimilarSubjectThreshold() / 100f
 
 fun SharedPreferences.getNotificationId() = getInt("notification_id", 1)
+
+fun SharedPreferences.getNotificationType(type: PortalData): NotificationType {
+    val key = when (type) {
+        PortalData.NOTICE -> "notification_type_notice"
+        PortalData.LECTURE_INFO -> "notification_type_lecture_info"
+        PortalData.LECTURE_CANCEL -> "notification_type_lecture_cancel"
+        PortalData.MY_CLASS -> "notification_type_my_class"
+    }
+
+    return NotificationType.valueOf(getString(key, null) ?: NotificationType.ALL.name)
+}
+
+fun SharedPreferences.setAuthenticatedUser(isAuthenticated: Boolean) = edit { putBoolean("is_authenticated_user", isAuthenticated) }
+
+fun SharedPreferences.setGridTimetableLayout(isGrid: Boolean) = edit { putBoolean("is_grid_timetable_layout", isGrid) }
+
 fun SharedPreferences.setNotificationId(id: Int) = edit { putInt("notification_id", id) }
+
+fun Context.updateShibbolethLastLoginDate() {
+    defaultSharedPreferences.edit {
+        putLong("shibboleth_last_login_date", Date().time)
+    }
+}

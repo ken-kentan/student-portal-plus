@@ -3,55 +3,59 @@ package jp.kentan.studentportalplus.notification
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import jp.kentan.studentportalplus.util.enabledSync
 import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
+import jp.kentan.studentportalplus.util.isEnabledSync
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.concurrent.TimeUnit
 
+class SyncScheduler(
+        private val context: Context
+) {
 
-class SyncScheduler {
     companion object {
         private const val TAG = "SyncScheduler"
+    }
 
-        fun scheduleIfNeed(context: Context) {
-            if (context.defaultSharedPreferences.enabledSync()) {
-                enqueueUniquePeriodicWork(context, ExistingPeriodicWorkPolicy.KEEP)
-            }
+    fun scheduleIfNeeded() {
+        if (context.defaultSharedPreferences.isEnabledSync()) {
+            enqueueUniquePeriodicWork(ExistingPeriodicWorkPolicy.KEEP)
+        }
+    }
+
+    fun schedule() {
+        enqueueUniquePeriodicWork(ExistingPeriodicWorkPolicy.REPLACE)
+    }
+
+    fun cancel() {
+        try {
+            WorkManager.getInstance()
+                    .cancelUniqueWork(SyncWorker.NAME)
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Failed to cancel SyncWorker", e)
+            return
         }
 
-        fun schedule(context: Context) {
-            enqueueUniquePeriodicWork(context, ExistingPeriodicWorkPolicy.REPLACE)
-        }
+        Log.d(TAG, "Cancelled a unique SyncWorker")
+    }
 
-        private fun enqueueUniquePeriodicWork(context: Context, workPolicy: ExistingPeriodicWorkPolicy) {
-            val intervalMinutes = context.defaultSharedPreferences.getSyncIntervalMinutes()
+    private fun enqueueUniquePeriodicWork(workPolicy: ExistingPeriodicWorkPolicy) {
+        val intervalMinutes = context.defaultSharedPreferences.getSyncIntervalMinutes()
 
-            val constraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
+        val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
 
-            val syncWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(intervalMinutes, TimeUnit.MINUTES, intervalMinutes / 2, TimeUnit.MINUTES)
-                    .setConstraints(constraints)
-                    .build()
+        val syncWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(intervalMinutes, TimeUnit.MINUTES, intervalMinutes / 2, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
 
-            try {
-                val workManager = WorkManager.getInstance()
-                workManager.enqueueUniquePeriodicWork(SyncWorker.NAME, workPolicy, syncWorkRequest)
-            } catch (e: IllegalStateException) {
-                Log.e(TAG, "Failed to enqueue SyncWorker", e)
-            }
-        }
+        try {
+            WorkManager.getInstance()
+                    .enqueueUniquePeriodicWork(SyncWorker.NAME, workPolicy, syncWorkRequest)
 
-        fun cancel() {
-            try {
-                val workManager = WorkManager.getInstance()
-                workManager.cancelUniqueWork(SyncWorker.NAME)
-            } catch (e: IllegalStateException) {
-                Log.e(TAG, "Failed to cancel SyncWorker", e)
-                return
-            }
-
-            Log.d(TAG, "Cancelled SyncWorker")
+            Log.d(TAG, "Enqueued a unique SyncWorker")
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Failed to enqueue SyncWorker", e)
         }
     }
 }
