@@ -15,6 +15,7 @@ import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
+import jp.kentan.studentportalplus.notification.NotificationController
 import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.web.WebActivity
 import jp.kentan.studentportalplus.util.formatYearMonthDayHms
@@ -70,7 +71,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
             findPreference("notification_settings")?.setOnPreferenceClickListener {
                 val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
                     putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
-                    putExtra(Settings.EXTRA_CHANNEL_ID, "NotificationController.NEWLY_CHANNEL_ID")
+                    putExtra(Settings.EXTRA_CHANNEL_ID, NotificationController.NEWLY_CHANNEL_ID)
                 }
                 startActivity(intent)
 
