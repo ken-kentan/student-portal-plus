@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_pref_login">
             <intent
                 android:action="android.intent.action.MAIN"
-                android:targetPackage="jp.kentan.student_portal_plus_dev"
+                android:targetPackage="@string/app_package"
                 android:targetClass="jp.kentan.studentportalplus.ui.login.LoginActivity" />
         </androidx.preference.Preference>
 
