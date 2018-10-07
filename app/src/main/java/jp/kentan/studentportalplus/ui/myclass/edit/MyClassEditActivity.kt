@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.colorpicker.ColorPickerDialog
 import dagger.android.AndroidInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.component.ClassColor
 import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.databinding.ActivityMyClassEditBinding
 import jp.kentan.studentportalplus.ui.ViewModelFactory
@@ -97,6 +99,19 @@ class MyClassEditActivity : AppCompatActivity() {
         })
 
         finishActivity.observe(activity, Observer { super.finish() })
+
+        @Suppress("DEPRECATION")
+        showColorPickerDialog.observe(activity, Observer { listener ->
+            val dialog = ColorPickerDialog.newInstance(
+                    R.string.title_color_picker,
+                    ClassColor.ALL,
+                    viewModel.color.get(),
+                    4,
+                    ClassColor.size)
+
+            dialog.setOnColorSelectedListener(listener)
+            dialog.show(fragmentManager, "ColorPickerDialog")
+        })
 
         showFinishConfirmDialog.observe(activity, Observer {
             AlertDialog.Builder(activity)

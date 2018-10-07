@@ -52,6 +52,7 @@
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.onColorClick()}"
                 app:backgroundColor="@{viewModel.color}"
                 app:icon="@drawable/ic_palette"
                 app:iconGravity="textStart"

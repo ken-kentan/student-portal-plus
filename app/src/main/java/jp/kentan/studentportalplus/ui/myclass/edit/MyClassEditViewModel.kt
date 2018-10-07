@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.android.colorpicker.ColorPickerSwatch
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeek
@@ -19,7 +20,7 @@ import kotlinx.coroutines.experimental.launch
 
 class MyClassEditViewModel(
         private val portalRepository: PortalRepository
-) : ViewModel() {
+) : ViewModel(), ColorPickerSwatch.OnColorSelectedListener {
 
     val title = MutableLiveData<Int>()
 
@@ -46,6 +47,7 @@ class MyClassEditViewModel(
     val isEnabledErrorScheduleCode = SingleLiveData<Boolean>()
 
     val finishActivity = SingleLiveData<Unit>()
+    val showColorPickerDialog = SingleLiveData<ColorPickerSwatch.OnColorSelectedListener>()
     val showFinishConfirmDialog = SingleLiveData<Unit>()
     val validation = SingleLiveData<ValidationResult>()
     val errorSaveFailed = SingleLiveData<Unit>()
@@ -104,6 +106,14 @@ class MyClassEditViewModel(
 
         setData(data)
         originalData = data
+    }
+
+    fun onColorClick() {
+        showColorPickerDialog.value = this
+    }
+
+    override fun onColorSelected(selectedColor: Int) {
+        color.set(selectedColor)
     }
 
     fun onClickSave() {
