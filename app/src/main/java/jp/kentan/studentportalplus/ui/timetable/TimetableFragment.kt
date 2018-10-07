@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.transition.TransitionManager
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.component.ClassWeek
@@ -107,9 +106,6 @@ class TimetableFragment : Fragment() {
         })
 
         myClassList.observe(fragment, Observer { list ->
-            if (adapter.isGridLayout) {
-                TransitionManager.beginDelayedTransition(binding.gridRecyclerView)
-            }
             adapter.updateCalender()
             adapter.submitList(list)
         })
