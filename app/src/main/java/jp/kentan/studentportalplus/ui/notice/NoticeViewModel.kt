@@ -14,7 +14,10 @@ class NoticeViewModel(
 ) : ViewModel() {
 
     var query = NoticeQuery()
-        private set
+        private set(value) {
+            field = value
+            queryLiveData .value = query
+        }
 
     private val queryLiveData = MutableLiveData<NoticeQuery>()
 
@@ -37,8 +40,6 @@ class NoticeViewModel(
 
     fun onQueryTextChange(text: String?) {
         query = query.copy(keyword = text)
-
-        queryLiveData .value = query
     }
 
     fun onFilterApplyClick(
@@ -53,7 +54,5 @@ class NoticeViewModel(
                 isRead = isRead,
                 isFavorite = isFavorite
         )
-
-        queryLiveData .value = query
     }
 }

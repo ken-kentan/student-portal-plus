@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,8 +23,6 @@ import jp.kentan.studentportalplus.ui.main.FragmentType
 import jp.kentan.studentportalplus.ui.main.MainViewModel
 import jp.kentan.studentportalplus.ui.myclass.detail.MyClassDetailActivity
 import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity
-import jp.kentan.studentportalplus.util.setGridTimetableLayout
-import org.jetbrains.anko.defaultSharedPreferences
 import javax.inject.Inject
 
 class TimetableFragment : Fragment() {
@@ -100,14 +99,14 @@ class TimetableFragment : Fragment() {
 
         // Should call before adapter::submitList
         isGridLayout.observe(fragment, Observer { isGrid ->
-            requireActivity().defaultSharedPreferences.setGridTimetableLayout(isGrid)
-
             adapter.isGridLayout = isGrid
         })
 
         myClassList.observe(fragment, Observer { list ->
             adapter.updateCalender()
             adapter.submitList(list)
+
+            binding.note.isVisible = !adapter.isGridLayout && list.isEmpty()
         })
 
         dayOfWeek.observe(fragment, Observer { updateWeekHeaders(it) })

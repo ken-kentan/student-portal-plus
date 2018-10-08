@@ -7,12 +7,13 @@ import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.SingleLiveData
 import jp.kentan.studentportalplus.util.isGridTimetableLayout
+import jp.kentan.studentportalplus.util.setGridTimetableLayout
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import java.util.*
 
 class TimetableViewModel(
-        preferences: SharedPreferences,
+        private val preferences: SharedPreferences,
         private val portalRepository: PortalRepository
 ) : ViewModel() {
 
@@ -77,12 +78,14 @@ class TimetableViewModel(
     fun onWeekLayoutClick() {
         if (isGridLayout.value != true) {
             isGridLayout.value = true
+            preferences.setGridTimetableLayout(true)
         }
     }
 
     fun onListLayoutClick() {
         if (isGridLayout.value != false) {
             isGridLayout.value = false
+            preferences.setGridTimetableLayout(false)
         }
     }
 

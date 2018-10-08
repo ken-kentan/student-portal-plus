@@ -156,6 +156,7 @@
     <string name="text_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
     <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
     <string name="text_my_class_edit_warn">正式な受講登録は大学のシステムを使用して下さい</string>
+    <string name="text_empty_data">表示できる%1$sはありません</string>
     <string name="hint_query_title">タイトルで検索&#8230;</string>
     <string name="hint_query_subject_and_instructor">科目・教員名で検索&#8230;</string>
 

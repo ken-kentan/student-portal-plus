@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +20,7 @@ import jp.kentan.studentportalplus.ui.ViewModelFactory
 import jp.kentan.studentportalplus.ui.main.FragmentType
 import jp.kentan.studentportalplus.ui.main.MainViewModel
 import jp.kentan.studentportalplus.ui.notice.detail.NoticeDetailActivity
+import jp.kentan.studentportalplus.util.animateFadeInDelay
 import javax.inject.Inject
 
 class NoticeFragment : Fragment() {
@@ -55,6 +57,7 @@ class NoticeFragment : Fragment() {
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        binding.note.text = getString(R.string.text_empty_data, getString(R.string.name_notice))
 
         viewModel.subscribe(adapter)
 
@@ -124,7 +127,18 @@ class NoticeFragment : Fragment() {
     private fun NoticeViewModel.subscribe(adapter: NoticeAdapter) {
         val fragment = this@NoticeFragment
 
-        noticeList.observe(fragment, Observer { adapter.submitList(it) })
+        noticeList.observe(fragment, Observer { list ->
+            adapter.submitList(list)
+
+            if (list.isEmpty()) {
+                binding.note.animateFadeInDelay(requireContext())
+            } else {
+                binding.note.apply {
+                    alpha = 0f
+                    isVisible = false
+                }
+            }
+        })
         startDetailActivity.observe(fragment, Observer { id ->
             startActivity(NoticeDetailActivity.createIntent(requireContext(), id))
         })
