@@ -8,7 +8,7 @@
         android:shortcutDisabledMessage="@string/shortcut_disabled_timetable">
         <intent
             android:action="android.intent.action.MAIN"
-            android:targetPackage="jp.kentan.student_portal_plus_dev"
+            android:targetPackage="jp.kentan.student_portal_plus"
             android:targetClass="jp.kentan.studentportalplus.ui.main.MainActivity" >
             <extra android:name="FRAGMENT" android:value="TIMETABLE" />
         </intent>
