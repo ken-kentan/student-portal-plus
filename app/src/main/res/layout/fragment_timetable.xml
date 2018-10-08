@@ -349,7 +349,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/grey_200"
-            app:isVisible="@{safeUnbox(!viewModel.isGridLayout)}"
+            app:isVisible="@{!safeUnbox(viewModel.isGridLayout)}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
