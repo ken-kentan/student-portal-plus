@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.util
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.component.PortalData
 import jp.kentan.studentportalplus.notification.NotificationType
 import org.jetbrains.anko.defaultSharedPreferences
@@ -23,6 +24,12 @@ fun SharedPreferences.isEnabledNotificationVibration() = getBoolean("is_enabled_
 fun SharedPreferences.isEnabledNotificationLed() = getBoolean("is_enabled_notification_led", true)
 
 fun SharedPreferences.getShibbolethLastLoginDate() = getLong("shibboleth_last_login_date", -1)
+
+fun SharedPreferences.getLectureInfoOrder() =
+        LectureQuery.Order.values()[getInt("lecture_info_order", 0)]
+
+fun SharedPreferences.getLectureCancelOrder() =
+        LectureQuery.Order.values()[getInt("lecture_cancel_order", 0)]
 
 fun SharedPreferences.getSyncIntervalMinutes() = getString("sync_interval_minutes", "60")?.toLongOrNull() ?: 60L
 
@@ -46,6 +53,10 @@ fun SharedPreferences.getNotificationType(type: PortalData): NotificationType {
 fun SharedPreferences.setAuthenticatedUser(isAuthenticated: Boolean) = edit { putBoolean("is_authenticated_user", isAuthenticated) }
 
 fun SharedPreferences.setGridTimetableLayout(isGrid: Boolean) = edit { putBoolean("is_grid_timetable_layout", isGrid) }
+
+fun SharedPreferences.setLectureInfoOrder(order: LectureQuery.Order) = edit { putInt("lecture_info_order", order.ordinal) }
+
+fun SharedPreferences.setLectureCancelOrder(order: LectureQuery.Order) = edit { putInt("lecture_cancel_order", order.ordinal) }
 
 fun SharedPreferences.setNotificationId(id: Int) = edit { putInt("notification_id", id) }
 

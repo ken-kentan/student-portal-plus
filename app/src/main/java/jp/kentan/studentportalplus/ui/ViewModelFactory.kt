@@ -38,9 +38,9 @@ class ViewModelFactory(
                     isAssignableFrom(TimetableViewModel::class.java) ->
                         TimetableViewModel(context.defaultSharedPreferences, portalRepository)
                     isAssignableFrom(LectureInfoViewModel::class.java) ->
-                        LectureInfoViewModel(portalRepository)
+                        LectureInfoViewModel(context.defaultSharedPreferences, portalRepository)
                     isAssignableFrom(LectureCancelViewModel::class.java) ->
-                        LectureCancelViewModel(portalRepository)
+                        LectureCancelViewModel(context.defaultSharedPreferences, portalRepository)
                     isAssignableFrom(NoticeViewModel::class.java) ->
                         NoticeViewModel(portalRepository)
                     isAssignableFrom(LectureInfoDetailViewModel::class.java) ->
