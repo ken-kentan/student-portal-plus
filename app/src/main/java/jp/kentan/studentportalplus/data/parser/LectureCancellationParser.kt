@@ -10,12 +10,10 @@ import java.util.*
 
 class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
 
-    private companion object {
-        val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
-    }
-
     @Throws(Exception::class)
     fun parse(document: Document): List<LectureCancellation> {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
+
         val resultList = document.select("tr[class~=gen_tbl1_(odd|even)]").mapNotNull {
             val tdElements = it.select("td")
             if (tdElements.size < 9) {
@@ -26,7 +24,7 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             val subject = tdElements[2].text()
             val instructor = tdElements[3].text()
             val cancelDateStr = tdElements[4].text()
-            val cancelDate = cancelDateStr.toDate()
+            val cancelDate = dateFormat.parse(cancelDateStr)
             val week = tdElements[5].text()
             val period = tdElements[6].text()
             val detailText = cancelDate.formatYearMonthDay() + " — " + instructor
@@ -42,7 +40,7 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
                     period = period,
                     detailText = detailText,
                     detailHtml = detailHtml,
-                    createdDate = createdDateStr.toDate()
+                    createdDate = dateFormat.parse(createdDateStr)
             )
         }
 
@@ -65,11 +63,4 @@ class LectureCancellationParser : BaseParser(), RowParser<LectureCancellation> {
             createdDate = Date(columns[10] as Long),
             isRead = (columns[11] as Long) == 1L
     )
-
-    @Throws(Exception::class)
-    private fun String.toDate(): Date = try {
-        DATE_FORMAT.parse(this)
-    } catch (e: Exception) {
-        throw ParseException("Failed to parse String($this) to Date")
-    }
 }

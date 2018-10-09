@@ -10,12 +10,10 @@ import java.util.*
 
 class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
 
-    private companion object {
-        val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
-    }
-
     @Throws(Exception::class)
     fun parse(document: Document): List<LectureInformation> {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
+
         val resultList = document.select("tr[class~=gen_tbl1_(odd|even)]").mapNotNull {
             val tdElements = it.select("td")
             if (tdElements.size < 11) {
@@ -44,8 +42,8 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
                     category = category,
                     detailText = detailText,
                     detailHtml = detailHtml,
-                    createdDate = createdDateStr.toDate(),
-                    updatedDate = updatedDateStr.toDate()
+                    createdDate = dateFormat.parse(createdDateStr),
+                    updatedDate = dateFormat.parse(updatedDateStr)
             )
         }
 
@@ -70,11 +68,4 @@ class LectureInformationParser : BaseParser(), RowParser<LectureInformation> {
             updatedDate = Date(columns[12] as Long),
             isRead = (columns[13] as Long) == 1L
     )
-
-    @Throws(Exception::class)
-    private fun String.toDate(): Date = try {
-        DATE_FORMAT.parse(this)
-    } catch (e: Exception) {
-        throw ParseException("Failed to parse String($this) to Date")
-    }
 }

@@ -9,13 +9,10 @@ import java.util.*
 
 class NoticeParser : RowParser<Notice> {
 
-    private companion object {
-        const val TAG = "NoticeParser"
-        val DATE_FORMAT = SimpleDateFormat("yyyy.MM.dd", Locale.JAPAN)
-    }
-
     @Throws(Exception::class)
     fun parse(document: Document): List<Notice> {
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.JAPAN)
+
         val resultList = document.select("dl").mapNotNull {
             val ddElements = it.select("dd")
             if (ddElements.size < 4) {
@@ -42,7 +39,7 @@ class NoticeParser : RowParser<Notice> {
             val link = hrefElement?.attr("href")
 
             return@mapNotNull Notice(
-                    createdDate = createdDateStr.toDate(),
+                    createdDate = dateFormat.parse(createdDateStr),
                     inCharge = inCharge,
                     category = category,
                     title = title,
@@ -52,7 +49,7 @@ class NoticeParser : RowParser<Notice> {
             )
         }
 
-        Log.d(TAG, "Parsed ${resultList.size} Notice")
+        Log.d("NoticeParser", "Parsed ${resultList.size} Notice")
 
         return resultList
     }
@@ -70,11 +67,4 @@ class NoticeParser : RowParser<Notice> {
             isRead = (columns[9] as Long) == 1L,
             isFavorite = (columns[10] as Long) == 1L
     )
-
-    @Throws(Exception::class)
-    private fun String.toDate(): Date = try {
-        DATE_FORMAT.parse(this)
-    } catch (e: Exception) {
-        throw ParseException("Failed to parse String($this) to Date")
-    }
 }
