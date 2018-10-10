@@ -25,13 +25,6 @@ class NoticeDao(
                 .parseList(PARSER)
     }
 
-    fun get(id: Long): Notice? = database.use {
-        select(TABLE_NAME)
-                .whereArgs("_id=$id")
-                .limit(1)
-                .parseOpt(PARSER)
-    }
-
     fun update(data: Notice): Int = database.use {
         update(TABLE_NAME, "favorite" to data.isFavorite.toLong(), "read" to data.isRead.toLong())
                 .whereArgs("_id = ${data.id}")
