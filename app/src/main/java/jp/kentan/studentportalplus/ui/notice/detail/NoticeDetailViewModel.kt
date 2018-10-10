@@ -42,7 +42,9 @@ class NoticeDetailViewModel(
         idLiveData.value = id
     }
 
-    fun onFavoriteClick(data: Notice) {
+    fun onFavoriteClick(data: Notice?) {
+        data ?: return
+
         GlobalScope.launch {
             val isFavorite = !data.isFavorite
             val isSuccess = portalRepository.updateNotice(data.copy(isFavorite = isFavorite)).await()

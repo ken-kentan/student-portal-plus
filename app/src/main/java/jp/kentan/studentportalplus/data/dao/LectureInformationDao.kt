@@ -35,6 +35,16 @@ class LectureInformationDao(
                 .map { it.copy(attend = myClassList.calcLectureAttend(it.subject)) }
     }
 
+    fun get(id: Long): LectureInformation? = database.use {
+        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
+
+        return@use select(TABLE_NAME)
+                .whereArgs("_id=$id")
+                .limit(1)
+                .parseOpt(PARSER)
+                .let { it?.copy(attend = myClassList.calcLectureAttend(it.subject)) }
+    }
+
     fun update(data: LectureInformation): Int = database.use {
         update(TABLE_NAME, "read" to data.isRead.toLong())
                 .whereArgs("_id = ${data.id}")

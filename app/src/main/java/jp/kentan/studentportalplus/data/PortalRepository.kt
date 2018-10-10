@@ -244,16 +244,34 @@ class PortalRepository(
 
     fun getMyClassSubjectList() = myClassDao.getSubjectList()
 
-    fun getNotice(id: Long): LiveData<Notice> = Transformations.map(noticeList) { list ->
-        list.find { it.id == id }
+    fun getNotice(id: Long): LiveData<Notice> {
+        if (noticeList.value == null) {
+            noticeList.postValue(emptyList())
+        }
+
+        return Transformations.map(noticeList) { list ->
+            list.find { it.id == id } ?: noticeDao.get(id)
+        }
     }
 
-    fun getLectureInfo(id: Long): LiveData<LectureInformation> = Transformations.map(lectureInfoList) { list ->
-        list.find { it.id == id }
+    fun getLectureInfo(id: Long): LiveData<LectureInformation> {
+        if (lectureInfoList.value == null) {
+            lectureInfoList.postValue(emptyList())
+        }
+
+        return Transformations.map(lectureInfoList) { list ->
+            list.find { it.id == id } ?: lectureInfoDao.get(id)
+        }
     }
 
-    fun getLectureCancel(id: Long): LiveData<LectureCancellation> = Transformations.map(lectureCancelList) { list ->
-        list.find { it.id == id }
+    fun getLectureCancel(id: Long): LiveData<LectureCancellation> {
+        if (lectureCancelList.value == null) {
+            lectureCancelList.postValue(emptyList())
+        }
+
+        return Transformations.map(lectureCancelList) { list ->
+            list.find { it.id == id } ?: lectureCancelDao.get(id)
+        }
     }
 
     fun getMyClass(id: Long, isAllowNullOnlyFirst: Boolean = false): LiveData<MyClass> {

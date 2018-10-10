@@ -44,7 +44,9 @@ class LectureInfoDetailViewModel(
         idLiveData.value = id
     }
 
-    fun onAttendClick(data: LectureInformation) {
+    fun onAttendClick(data: LectureInformation?) {
+        data ?: return
+
         if (data.attend.canAttend()) {
             GlobalScope.launch {
                 val isSuccess = portalRepository.addToMyClass(data.copy(attend = LectureAttend.USER)).await()
