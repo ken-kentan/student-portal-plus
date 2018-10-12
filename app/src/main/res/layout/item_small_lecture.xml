@@ -61,7 +61,6 @@
             android:textColor="@color/grey_600"
             android:textSize="13sp"
             android:text="@{data.detail}"
-            app:bold="@{!data.isRead}"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
