@@ -39,8 +39,3 @@
 -dontwarn androidx.work.**
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-
-# Related https://issuetracker.google.com/issues/116296569
--keepclassmembers class * extends androidx.work.Worker {
-    public <init>(android.content.Context,androidx.work.WorkerParameters);
-}
