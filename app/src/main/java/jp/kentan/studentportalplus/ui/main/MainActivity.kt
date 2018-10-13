@@ -94,6 +94,8 @@ class MainActivity : AppCompatActivity() {
         val fragment = when {
             intent.hasExtra(EXTRA_FRAGMENT) -> {
                 val name = intent.getStringExtra(EXTRA_FRAGMENT)
+                intent = intent.apply { removeExtra(EXTRA_FRAGMENT) }
+
                 fragmentMap[FragmentType.valueOf(name)]
             }
             supportFragmentManager.fragments.isEmpty() -> DashboardFragment.newInstance()
