@@ -27,7 +27,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/date_range_spinner"
                 app:layout_constraintEnd_toStartOf="@+id/date_range_spinner"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="0.4"
+                app:layout_constraintHorizontal_weight="0.35"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/date_range_spinner" />
 
@@ -38,7 +38,7 @@
                 android:selectedItemPosition="@{query.dateRange.ordinal}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="0.6"
+                app:layout_constraintHorizontal_weight="0.65"
                 app:layout_constraintStart_toEndOf="@+id/date_header"
                 app:layout_constraintTop_toTopOf="parent" />
 
