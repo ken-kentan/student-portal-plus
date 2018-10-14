@@ -36,7 +36,7 @@
             android:summary="@string/pref_summary_sync_interval"
             android:entries="@array/sync_interval_name"
             android:entryValues="@array/sync_interval_values"
-            android:defaultValue="60" />
+            android:defaultValue="120" />
 
         <androidx.preference.Preference
             android:key="notification_type"

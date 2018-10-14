@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +21,6 @@ import jp.kentan.studentportalplus.notification.SyncScheduler
 import jp.kentan.studentportalplus.ui.web.WebActivity
 import jp.kentan.studentportalplus.util.formatYearMonthDayHms
 import jp.kentan.studentportalplus.util.getShibbolethLastLoginDate
-import jp.kentan.studentportalplus.util.getSyncIntervalMinutes
 import jp.kentan.studentportalplus.util.isEnabledSync
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
@@ -38,7 +38,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
     private val syncScheduler by lazy(LazyThreadSafetyMode.NONE) { SyncScheduler(requireContext()) }
 
     private lateinit var shibbolethLastLoginDate: Preference
-    private lateinit var syncInterval: Preference
+    private lateinit var syncInterval: ListPreference
     private lateinit var notificationType: Preference
     private var isEnabledNotificationVibration: Preference? = null
     private var isEnabledNotificationLed: Preference? = null
@@ -49,13 +49,23 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
         AndroidSupportInjection.inject(this)
 
         shibbolethLastLoginDate = findPreference("shibboleth_last_login_date")
-        syncInterval = findPreference("sync_interval_minutes")
+        syncInterval = findPreference("sync_interval_minutes") as ListPreference
         notificationType = findPreference("notification_type")
         isEnabledNotificationVibration = findPreference("is_enabled_notification_vibration")
         isEnabledNotificationLed = findPreference("is_enabled_notification_led")
 
         val isEnabledSync = requireContext().defaultSharedPreferences.isEnabledSync()
         setEnabledSync(isEnabledSync)
+
+        syncInterval.setOnPreferenceChangeListener { preference, newValue ->
+            val listPreference = preference as ListPreference
+            val index = listPreference.findIndexOfValue(newValue.toString())
+
+            listPreference.summary = getString(R.string.pref_summary_sync_interval,
+                    listPreference.entries[index])
+
+            return@setOnPreferenceChangeListener true
+        }
 
         notificationType.setOnPreferenceClickListener {
             commitFragment(NotificationTypePreferenceFragment())
@@ -97,11 +107,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
                     syncScheduler.cancel()
                 }
             }
-            "sync_interval_minutes" -> {
-                syncInterval.summary = getString(R.string.pref_summary_sync_interval,
-                        preferences.getSyncIntervalMinutes() / 60)
-                syncScheduler.schedule()
-            }
+            "sync_interval_minutes" -> syncScheduler.schedule()
         }
     }
 
@@ -146,8 +152,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
         val pref = requireContext().defaultSharedPreferences
 
         shibbolethLastLoginDate.summary = pref.getFormatShibbolethLastLoginDate()
-        syncInterval.summary = getString(R.string.pref_summary_sync_interval,
-                pref.getSyncIntervalMinutes() / 60)
+        syncInterval.summary = getString(R.string.pref_summary_sync_interval, syncInterval.entry)
         findPreference("version").summary = BuildConfig.VERSION_NAME
     }
 

@@ -31,7 +31,7 @@ fun SharedPreferences.getLectureInfoOrder() =
 fun SharedPreferences.getLectureCancelOrder() =
         LectureQuery.Order.values()[getInt("lecture_cancel_order", 0)]
 
-fun SharedPreferences.getSyncIntervalMinutes() = getString("sync_interval_minutes", "60")?.toLongOrNull() ?: 60L
+fun SharedPreferences.getSyncIntervalMinutes() = getString("sync_interval_minutes", "120")?.toLongOrNull() ?: 120L
 
 fun SharedPreferences.getSimilarSubjectThreshold() = getString("similar_subject_threshold", "80")?.toIntOrNull() ?: 80
 

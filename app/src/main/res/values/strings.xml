@@ -200,7 +200,7 @@
     <string name="pref_title_sync">自動同期</string>
     <string name="pref_summary_sync">一定間隔で自動的に同期(フェッチ)します</string>
     <string name="pref_title_sync_interval">同期間隔</string>
-    <string name="pref_summary_sync_interval">%1$d時間ごと</string>
+    <string name="pref_summary_sync_interval">%1$sごと</string>
     <string name="pref_title_notification_type">通知の種類</string>
     <string name="pref_summary_notification_type">通知内容をカスタマイズします</string>
     <string name="pref_title_vibration">バイブレーション</string>
