@@ -4,34 +4,37 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Typeface.BOLD
+import android.graphics.Typeface
 import android.os.Build
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
-import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.style.StyleSpan
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpannable
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.NotifyContent
-import jp.kentan.studentportalplus.data.component.PortalDataType
-import jp.kentan.studentportalplus.ui.*
-import jp.kentan.studentportalplus.util.enabledNotificationLed
-import jp.kentan.studentportalplus.util.enabledNotificationVibration
+import jp.kentan.studentportalplus.data.component.PortalContent
+import jp.kentan.studentportalplus.data.component.PortalData
+import jp.kentan.studentportalplus.ui.lecturecancel.detail.LectureCancelDetailActivity
+import jp.kentan.studentportalplus.ui.lectureinfo.detail.LectureInfoDetailActivity
+import jp.kentan.studentportalplus.ui.login.LoginActivity
+import jp.kentan.studentportalplus.ui.main.FragmentType
+import jp.kentan.studentportalplus.ui.main.MainActivity
+import jp.kentan.studentportalplus.ui.notice.detail.NoticeDetailActivity
 import jp.kentan.studentportalplus.util.getNotificationId
+import jp.kentan.studentportalplus.util.isEnabledNotificationLed
+import jp.kentan.studentportalplus.util.isEnabledNotificationVibration
 import jp.kentan.studentportalplus.util.setNotificationId
-import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 
-class NotificationController(
-        private val context: Context
-) {
+class NotificationController(context: Context): ContextWrapper(context) {
 
     companion object {
         const val NEWLY_CHANNEL_ID = "0_newly_channel" //新着通知
@@ -42,42 +45,44 @@ class NotificationController(
         private const val ERROR_NOTIFICATION_ID   = -1
         private const val INBOX_LINE_LIMIT        =  4
 
-        private val CAN_USE_VECTOR_DRAWABLE      = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        private val CAN_USE_NOTIFICATION_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-        private val CAN_USE_NOTIFICATION_CHANNEL = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+        private val CAN_USE_VECTOR_DRAWABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        private val CAN_USE_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
         private val VIBRATION_PATTERN = longArrayOf(0, 300, 300, 300)
 
         private val SMALL_APP_ICON = if (CAN_USE_VECTOR_DRAWABLE) R.drawable.ic_menu_dashboard else R.mipmap.ic_notification_app
         private val SMALL_ICON_MAP = if (CAN_USE_VECTOR_DRAWABLE) {
             mapOf(
-                    PortalDataType.LECTURE_INFORMATION  to R.drawable.ic_menu_lecture_info,
-                    PortalDataType.LECTURE_CANCELLATION to R.drawable.ic_menu_lecture_cancel,
-                    PortalDataType.NOTICE               to R.drawable.ic_menu_notice
+                    PortalData.LECTURE_INFO to R.drawable.ic_menu_lecture_info,
+                    PortalData.LECTURE_CANCEL to R.drawable.ic_menu_lecture_cancel,
+                    PortalData.NOTICE to R.drawable.ic_menu_notice
             )
         } else {
             mapOf(
-                    PortalDataType.LECTURE_INFORMATION  to R.mipmap.ic_notification_lecture_info,
-                    PortalDataType.LECTURE_CANCELLATION to R.mipmap.ic_notification_lecture_cancel,
-                    PortalDataType.NOTICE               to R.mipmap.ic_notification_notice
+                    PortalData.LECTURE_INFO to R.mipmap.ic_notification_lecture_info,
+                    PortalData.LECTURE_CANCEL to R.mipmap.ic_notification_lecture_cancel,
+                    PortalData.NOTICE to R.mipmap.ic_notification_notice
             )
         }
 
+
         fun setupChannel(context: Context) {
-            if (!CAN_USE_NOTIFICATION_CHANNEL) { return }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { return }
 
             val color = ContextCompat.getColor(context, R.color.colorAccent)
 
-            val newlyChannel = NotificationChannel(NEWLY_CHANNEL_ID, "新着通知", NotificationManager.IMPORTANCE_DEFAULT)
-            newlyChannel.enableLights(true)
-            newlyChannel.lightColor = color
-            newlyChannel.vibrationPattern = VIBRATION_PATTERN
-            newlyChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val newlyChannel = NotificationChannel(NEWLY_CHANNEL_ID, context.getString(R.string.name_newly_channel), NotificationManager.IMPORTANCE_DEFAULT).apply {
+                enableLights(true)
+                lightColor = color
+                vibrationPattern = VIBRATION_PATTERN
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            }
 
-            val appChannel = NotificationChannel(APP_CHANNEL_ID, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW)
-            appChannel.enableLights(true)
-            appChannel.lightColor = color
-            appChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val appChannel = NotificationChannel(APP_CHANNEL_ID, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW).apply {
+                enableLights(true)
+                lightColor = color
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            }
 
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannels(listOf(newlyChannel, appChannel))
@@ -86,8 +91,8 @@ class NotificationController(
 
     private val notificationManager = NotificationManagerCompat.from(context)
 
-    private val enabledVibration = context.defaultSharedPreferences.enabledNotificationVibration()
-    private val enabledLed       = context.defaultSharedPreferences.enabledNotificationLed()
+    private val isEnabledVibration = context.defaultSharedPreferences.isEnabledNotificationVibration()
+    private val isEnabledLed = context.defaultSharedPreferences.isEnabledNotificationLed()
 
     private val accentColor = ContextCompat.getColor(context, R.color.colorAccent)
     private val largeIcon by lazy(LazyThreadSafetyMode.NONE) { BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large) }
@@ -99,25 +104,27 @@ class NotificationController(
         setupChannel(context)
     }
 
-    fun notify(type: PortalDataType, contentList: List<NotifyContent>) {
+    fun notify(type: PortalData, contentList: List<PortalContent>) {
         if (contentList.isEmpty()) {
             return
         }
 
         val smallIcon = SMALL_ICON_MAP[type] ?: SMALL_APP_ICON
-        var id = context.defaultSharedPreferences.getNotificationId()
+        val name = getString(type.nameResId)
+        var id = defaultSharedPreferences.getNotificationId()
 
-        if (CAN_USE_NOTIFICATION_SUMMARY) {
+        if (CAN_USE_SUMMARY) {
             createSummaryNotification()
 
+            val builder = NotificationCompat.Builder(applicationContext, NEWLY_CHANNEL_ID)
+
             contentList.forEach {
-                val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setSmallIcon(smallIcon)
                         .setGroup(GROUP_KEY)
                         .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                         .setGroupSummary(false)
-                        .setSubText(type.displayName)
+                        .setSubText(name)
                         .setContentTitle(it.title)
                         .setContentText(it.text)
                         .setContentIntent(it.createIntent(type, id))
@@ -128,9 +135,9 @@ class NotificationController(
                 if (++id >= Int.MAX_VALUE) { id = 1 }
             }
         } else {
-            val title = if (contentList.size > 1) "${contentList.size}件の${type.displayName}" else type.displayName
+            val title = if (contentList.size > 1) getString(R.string.title_content_inbox, contentList.size, name) else name
 
-            val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
+            val builder = NotificationCompat.Builder(applicationContext, NEWLY_CHANNEL_ID)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setLargeIcon(largeIcon)
@@ -143,9 +150,9 @@ class NotificationController(
                     .setAutoCancel(true)
 
             if (isFirstNotify) {
-                builder.setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
+                builder.setVibrate(if (isEnabledVibration) VIBRATION_PATTERN else longArrayOf(0))
 
-                if (enabledLed) {
+                if (isEnabledLed) {
                     builder.setLights(accentColor, 1000, 2000)
                 }
             }
@@ -156,32 +163,36 @@ class NotificationController(
         }
 
         isFirstNotify = false
-        context.defaultSharedPreferences.setNotificationId(id)
+        defaultSharedPreferences.setNotificationId(id)
     }
 
     fun notifyError(message: String, isRequireLogin: Boolean = false) {
-        val activity = if (isRequireLogin) {
-            LoginActivity.createIntent(context, shouldLaunchMainActivity = true)
+        val intent = if (isRequireLogin) {
+            LoginActivity.createIntent(this, true)
         } else {
-            context.intentFor<MainActivity>()
+            MainActivity.createIntent(this)
         }
-        val intent = PendingIntent.getActivity(context, ERROR_NOTIFICATION_ID, activity, FLAG_UPDATE_CURRENT)
 
-        val builder = NotificationCompat.Builder(context, APP_CHANNEL_ID)
+        val pendingIntent = PendingIntent.getActivity(this, ERROR_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val builder = NotificationCompat.Builder(applicationContext, APP_CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setColor(ContextCompat.getColor(context, R.color.red_600))
+                .setColor(ContextCompat.getColor(this, R.color.red_600))
                 .setSmallIcon(SMALL_APP_ICON)
-                .setSubText("同期失敗")
-                .setContentTitle(if (isRequireLogin) "再ログインが必要です" else "エラー")
+                .setSubText(getString(R.string.sub_text_sync_error))
+                .setContentTitle(getString(if (isRequireLogin) R.string.title_require_login else R.string.title_error))
                 .setContentText(message)
-                .setContentIntent(intent)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
 
         if (CAN_USE_VECTOR_DRAWABLE) {
-            val retryService = PendingIntent.getService(context, ERROR_NOTIFICATION_ID, context.intentFor<RetryActionService>(), FLAG_UPDATE_CURRENT)
-            val retryAction = NotificationCompat.Action.Builder(R.drawable.ic_refresh, "再試行", retryService).build()
+            val retryService = PendingIntent.getService(this,
+                    ERROR_NOTIFICATION_ID,
+                    Intent(this, RetryActionService::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT)
+            val retryAction = NotificationCompat.Action.Builder(R.drawable.ic_retry, getString(R.string.name_retry), retryService).build()
 
             builder.addAction(retryAction)
         }
@@ -194,55 +205,57 @@ class NotificationController(
     }
 
     private fun createSummaryNotification() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isFirstNotify) {
+        if (!CAN_USE_SUMMARY || !isFirstNotify) {
             return
         }
 
-        val summary = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(applicationContext, NEWLY_CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(SMALL_APP_ICON)
                 .setColor(accentColor)
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
-                .setVibrate(if (enabledVibration) VIBRATION_PATTERN else longArrayOf(0))
-                .setLights(accentColor, 1000, 2000)
+                .setVibrate(if (isEnabledVibration) VIBRATION_PATTERN else longArrayOf(0))
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
 
-        if (enabledLed) {
-            summary.setLights(accentColor, 1000, 2000)
+        if (isEnabledLed) {
+            builder.setLights(accentColor, 1000, 2000)
         }
 
-        notificationManager.notify(SUMMARY_NOTIFICATION_ID, summary.build())
+        notificationManager.notify(SUMMARY_NOTIFICATION_ID, builder.build())
     }
 
-    private fun NotifyContent.createIntent(type: PortalDataType, code: Int): PendingIntent? {
+    private fun PortalContent.createIntent(type: PortalData, code: Int): PendingIntent? {
+        val context = this@NotificationController
+
         val intent = when (type) {
-            PortalDataType.LECTURE_INFORMATION  -> context.intentFor<LectureInformationActivity>("id" to id)
-            PortalDataType.LECTURE_CANCELLATION -> context.intentFor<LectureCancellationActivity>("id" to id)
-            PortalDataType.NOTICE               -> context.intentFor<NoticeActivity>("id" to id)
+            PortalData.LECTURE_INFO -> LectureInfoDetailActivity.createIntent(context, id)
+            PortalData.LECTURE_CANCEL -> LectureCancelDetailActivity.createIntent(context, id)
+            PortalData.NOTICE -> NoticeDetailActivity.createIntent(context, id)
             else -> return null
         }
 
-        return PendingIntent.getActivity(context, code, intent.clearTop().newTask(), FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, code, intent.clearTask().newTask(), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private fun PortalDataType.createIntent(id: Int): PendingIntent {
-        val fragmentType = when (this) {
-            PortalDataType.NOTICE               -> MainActivity.FragmentType.NOTICE
-            PortalDataType.LECTURE_INFORMATION  -> MainActivity.FragmentType.LECTURE_INFO
-            PortalDataType.LECTURE_CANCELLATION -> MainActivity.FragmentType.LECTURE_CANCEL
-            PortalDataType.MY_CLASS             -> MainActivity.FragmentType.DASHBOARD // not support
+    private fun PortalData.createIntent(id: Int): PendingIntent {
+        val context = this@NotificationController
+
+        val fragment = when (this) {
+            PortalData.NOTICE -> FragmentType.NOTICE
+            PortalData.LECTURE_INFO -> FragmentType.LECTURE_INFO
+            PortalData.LECTURE_CANCEL -> FragmentType.LECTURE_CANCEL
+            PortalData.MY_CLASS -> FragmentType.DASHBOARD // not support
         }
 
-        val intent = context.intentFor<MainActivity>(MainActivity.FRAGMENT_TYPE to fragmentType.name).clearTop().newTask()
-
-        return PendingIntent.getActivity(context, id, intent, FLAG_UPDATE_CURRENT)
+        val intent = MainActivity.createIntent(context, fragment = fragment)
+        return PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private fun List<NotifyContent>.createInboxStyle(type: PortalDataType): NotificationCompat.InboxStyle {
+    private fun List<PortalContent>.createInboxStyle(type: PortalData): NotificationCompat.InboxStyle {
         val inboxStyle = NotificationCompat.InboxStyle()
-                .setBigContentTitle(type.displayName)
+                .setBigContentTitle(getString(type.nameResId))
 
         take(INBOX_LINE_LIMIT).forEach {
             inboxStyle.addLine(it.toInboxStyleText())
@@ -250,15 +263,15 @@ class NotificationController(
 
         val moreContentSize = size - INBOX_LINE_LIMIT
         if (moreContentSize > 0) {
-            inboxStyle.setSummaryText("他${moreContentSize}件")
+            inboxStyle.setSummaryText(getString(R.string.summary_text_inbox, moreContentSize))
         }
 
         return inboxStyle
     }
 
-    private fun NotifyContent.toInboxStyleText(): Spannable {
+    private fun PortalContent.toInboxStyleText(): Spannable {
         val text = "$title $text".toSpannable()
-        text[0..title.length] = StyleSpan(BOLD)
+        text[0..title.length] = StyleSpan(Typeface.BOLD)
         return text
     }
 }

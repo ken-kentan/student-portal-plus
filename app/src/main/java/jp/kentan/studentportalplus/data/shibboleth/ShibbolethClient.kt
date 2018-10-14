@@ -3,25 +3,19 @@ package jp.kentan.studentportalplus.data.shibboleth
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import androidx.core.content.edit
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import jp.kentan.studentportalplus.data.component.ShibbolethData
+import jp.kentan.studentportalplus.util.updateShibbolethLastLoginDate
 import okhttp3.*
-import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.doFromSdk
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.security.KeyStore
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
-
 
 class ShibbolethClient(
         private val context: Context,
@@ -43,12 +37,10 @@ class ShibbolethClient(
 
         val SESSION_FORM_PARAMS = listOf("shib_idp_ls_supported", "_eventId_proceed")
         val LOGIN_FORM_PARAMS = listOf(INPUT_NAME_USERNAME, INPUT_NAME_PASSWORD)
-
-        val LOGIN_DATE_FORMAT = SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.JAPAN)
     }
 
     private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
-    private val httpClient: OkHttpClient
+    private val client: OkHttpClient
 
     init {
         val builder = OkHttpClient.Builder()
@@ -61,13 +53,13 @@ class ShibbolethClient(
 
         enableTls12(builder)
 
-        val spec = setupConnectionSpec()
+        val spec = createConnectionSpec()
         builder.connectionSpecs(spec)
 
-        httpClient = builder.build()
+        client = builder.build()
     }
 
-    private fun setupConnectionSpec(): List<ConnectionSpec> {
+    private fun createConnectionSpec(): List<ConnectionSpec> {
         val spec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(TlsVersion.TLS_1_2)
                 .allEnabledCipherSuites()
@@ -81,7 +73,7 @@ class ShibbolethClient(
     }
 
     private fun enableTls12(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-        doFromSdk(Build.VERSION_CODES.KITKAT_WATCH) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             return builder
         }
 
@@ -141,8 +133,8 @@ class ShibbolethClient(
                 .url(url)
                 .build()
 
-        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
+        val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val body     = response.body()                    ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -157,9 +149,7 @@ class ShibbolethClient(
             document = passLoginPage(document, username, password)
             document = passSamlResponsePage(document)
 
-            context.defaultSharedPreferences.edit {
-                putString("shibboleth_last_login_date", LOGIN_DATE_FORMAT.format(Date()))
-            }
+            context.updateShibbolethLastLoginDate()
         }
 
         Log.d(TAG, "Fetched: ${document.title()}")
@@ -186,7 +176,7 @@ class ShibbolethClient(
                 .post(requestBody)
                 .build()
 
-        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
@@ -220,7 +210,7 @@ class ShibbolethClient(
                 .post(requestBody)
                 .build()
 
-        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
@@ -258,7 +248,7 @@ class ShibbolethClient(
                 .post(requestBody)
                 .build()
 
-        val response = httpClient.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
+        val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
         val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {

@@ -2,8 +2,12 @@ package jp.kentan.studentportalplus.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import jp.kentan.studentportalplus.ui.SettingsActivity
-import jp.kentan.studentportalplus.ui.fragment.*
+import jp.kentan.studentportalplus.ui.dashboard.DashboardFragment
+import jp.kentan.studentportalplus.ui.lecturecancel.LectureCancelFragment
+import jp.kentan.studentportalplus.ui.lectureinfo.LectureInfoFragment
+import jp.kentan.studentportalplus.ui.notice.NoticeFragment
+import jp.kentan.studentportalplus.ui.setting.GeneralPreferenceFragment
+import jp.kentan.studentportalplus.ui.timetable.TimetableFragment
 
 @Module
 abstract class FragmentModule {
@@ -15,14 +19,15 @@ abstract class FragmentModule {
     abstract fun contributeTimetableFragment(): TimetableFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeLectureInformationFragment(): LectureInformationFragment
+    abstract fun contributeLectureInfoFragment(): LectureInfoFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeLectureCancellationFragment(): LectureCancellationFragment
+    abstract fun contributeLectureCancelFragment(): LectureCancelFragment
 
     @ContributesAndroidInjector
     abstract fun contributeNoticeFragment(): NoticeFragment
 
     @ContributesAndroidInjector
-    abstract fun contributePreferencesFragment(): SettingsActivity.PreferencesFragment
+    abstract fun contributeGeneralPreferenceFragment(): GeneralPreferenceFragment
+
 }

@@ -1,15 +1,17 @@
 package jp.kentan.studentportalplus.data.model
 
-import jp.kentan.studentportalplus.data.component.LectureAttendType
-import java.util.Date
+import jp.kentan.studentportalplus.data.component.LectureAttend
+import java.util.*
 
 abstract class Lecture(
-        open val subject   : String,
-        open val instructor: String,
-        open val week      : String,
-        open val period    : String,
-        open val detail    : String,
-        open val date      : Date,
-        open val isRead    : Boolean,
-        open val attend    : LectureAttendType
-)
+        open val detail: String,
+        open val date: Date
+) {
+    abstract val id: Long
+    abstract val subject: String
+    abstract val instructor: String
+    abstract val week: String
+    abstract val period: String
+    abstract val isRead: Boolean
+    abstract val attend: LectureAttend
+}

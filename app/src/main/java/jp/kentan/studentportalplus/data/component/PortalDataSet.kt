@@ -6,8 +6,8 @@ import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.model.Notice
 
 data class PortalDataSet(
-        val myClassList: List<MyClass> = emptyList(),
         val lectureInfoList: List<LectureInformation> = emptyList(),
         val lectureCancelList: List<LectureCancellation> = emptyList(),
-        val noticeList: List<Notice> = emptyList()
+        val noticeList: List<Notice> = emptyList(),
+        val myClassList: List<MyClass> = emptyList()
 )

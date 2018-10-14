@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_shibboleth">
+
+        <androidx.preference.Preference
+            android:title="@string/pref_title_login"
+            android:summary="@string/pref_summary_login"
+            android:icon="@drawable/ic_pref_login">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="jp.kentan.student_portal_plus"
+                android:targetClass="jp.kentan.studentportalplus.ui.login.LoginActivity" />
+        </androidx.preference.Preference>
+
+        <androidx.preference.Preference
+            android:key="shibboleth_last_login_date"
+            android:title="@string/pref_title_last_login_date" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_notification">
+
+        <androidx.preference.SwitchPreference
+            android:key="is_enabled_sync"
+            android:title="@string/pref_title_sync"
+            android:summary="@string/pref_summary_sync"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_pref_sync" />
+
+        <androidx.preference.ListPreference
+            android:key="sync_interval_minutes"
+            android:title="@string/pref_title_sync_interval"
+            android:summary="@string/pref_summary_sync_interval"
+            android:entries="@array/sync_interval_name"
+            android:entryValues="@array/sync_interval_values"
+            android:defaultValue="120" />
+
+        <androidx.preference.Preference
+            android:key="notification_type"
+            android:title="@string/pref_title_notification_type"
+            android:summary="@string/pref_summary_notification_type" />
+
+        <androidx.preference.Preference
+            android:key="notification_settings"
+            android:title="@string/pref_title_notification_settings"
+            android:summary="@string/pref_summary_notification_settings" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_portal">
+
+        <androidx.preference.Preference
+            android:key="similar_subject_threshold"
+            android:title="@string/pref_title_similar_subject_threshold"
+            android:summary="@string/pref_summary_similar_subject_threshold"
+            android:icon="@drawable/ic_pref_similar_subject" />
+
+        <androidx.preference.CheckBoxPreference
+            android:key="is_enabled_pdf_open_with_gdocs"
+            android:title="@string/pref_title_pdf_gdocs"
+            android:summary="@string/pref_summary_pdf_gdocs"
+            android:defaultValue="true" />
+
+        <androidx.preference.CheckBoxPreference
+            android:key="is_enabled_detail_error"
+            android:title="@string/pref_title_detail_error"
+            android:summary="@string/pref_summary_detail_error"
+            android:defaultValue="false" />
+
+        <androidx.preference.Preference
+            android:key="reset"
+            android:title="@string/pref_title_reset"
+            android:summary="@string/pref_summary_reset" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_about">
+
+        <androidx.preference.Preference
+            android:key="version"
+            android:title="@string/pref_title_version"
+            android:icon="@drawable/ic_pref_info" />
+
+        <androidx.preference.Preference
+            android:key="share"
+            android:title="@string/pref_title_share"
+            android:summary="@string/pref_summary_share" />
+
+        <androidx.preference.Preference
+            android:title="@string/pref_title_developer"
+            android:summary="@string/pref_summary_developer" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://ken.kentan.jp/about/" />
+        </androidx.preference.Preference>
+
+        <androidx.preference.Preference
+            android:key="terms"
+            android:title="@string/pref_title_terms"
+            android:summary="@string/pref_summary_terms">
+        </androidx.preference.Preference>
+
+        <androidx.preference.Preference
+            android:key="license"
+            android:title="@string/pref_title_license"
+            android:summary="@string/pref_summary_license" />
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

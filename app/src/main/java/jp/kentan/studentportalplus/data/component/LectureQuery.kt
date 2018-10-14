@@ -1,29 +1,32 @@
 package jp.kentan.studentportalplus.data.component
 
-import jp.kentan.studentportalplus.data.dao.escapeQuery
 
 data class LectureQuery(
-        val keywords: String?,
-        val order   : LectureOrderType,
-        val isUnread: Boolean,
-        val hasRead : Boolean,
-        val isAttend: Boolean
+        val keyword: String? = null,
+        val order: Order = Order.UPDATED_DATE,
+        val isUnread: Boolean = false,
+        val isRead: Boolean = false,
+        val isAttend: Boolean = false
 ) {
+
     val keywordList: List<String> by lazy {
-        if (keywords == null || keywords.isEmpty()) {
+        if (keyword == null || keyword.isBlank()) {
             emptyList()
         } else {
-            keywords.split(' ')
+            keyword.split(' ')
                     .mapNotNull {
                         val trim = it.trim()
-                        if (trim.isNotEmpty()) trim.escapeQuery() else null
+                        if (trim.isNotBlank()) trim else null
                     }
         }
     }
 
-    companion object {
-        val DEFAULT = LectureQuery(null, LectureOrderType.UPDATED_DATE, true, true, true)
+    enum class Order(
+            private val displayName: String
+    ) {
+        UPDATED_DATE("最終更新日"),
+        ATTEND_CLASS("受講科目優先");
+
+        override fun toString() = displayName
     }
 }
-
-fun LectureQuery.isDefault() = (this == LectureQuery.DEFAULT)

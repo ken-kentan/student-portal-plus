@@ -1,76 +1,17 @@
 <resources>
     <string name="app_name">Student Portal+</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_welcome">Welcome</string>
-    <string name="title_activity_login">Shibboleth</string>
-    <string name="title_activity_lecture_information">Class Schedule Changes</string>
-    <string name="title_activity_lecture_cancellation">Class Cancellations</string>
-    <string name="title_activity_notice">News &amp; Events</string>
-    <string name="title_activity_my_class">My Class</string>
-    <string name="title_activity_my_class_edit">Edit</string>
-    <string name="title_activity_settings">Settings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
-    <!-- Strings related to welcome -->
-    <string name="description_header">ヘッダ画像</string>
-    <string name="agree_to_terms">上記の利用規約に同意します</string>
-    <string name="action_shibboleth_auth">シボレス認証</string>
-    <string name="error_not_agree_to_terms">利用するには利用規約に同意して下さい</string>
+    <string name="title_activity_login">Shibboleth</string>
+    <string name="title_activity_welcome">Welcome</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_username">Username</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_login_en">Login</string>
-    <string name="message_input_login_form">ユーザー名とパスワードを入力して下さい</string>
-    <string name="error_invalid_username">無効なユーザー名です</string>
-    <string name="error_invalid_password">無効なパスワード文字数です</string>
-    <string name="error_field_required">未入力です</string>
-
-    <!-- Strings related to dashboard -->
-    <string name="title_dashboard_fragment">Dashboard</string>
-    <string name="action_show_all_lecture_info">すべての授業関連連絡を表示</string>
-    <string name="action_show_all_lecture_cancel">すべての休講情報を表示</string>
-    <string name="action_show_all_notice">すべての最新情報を表示</string>
-    <string name="text_no_data">現在、あなたへの%1$sはありません.</string>
-    <string name="text_more_item"> （他%1$d件）</string>
-
-    <!-- Strings related to timetable -->
-    <string name="title_timetable_fragment">Timetable</string>
-    <string name="description_add">追加</string>
-
-    <!-- Strings related to lecture info -->
-    <string name="title_lecture_info_fragment">Class Schedule</string>
-    <string name="name_detail_lecture_info">連絡事項</string>
-    <string name="text_semester_week_period">%1$s %2$s %3$s %4$s</string>
-    <string name="text_created_date_lecture_info">初回掲示日: %1$s</string>
-    <string name="text_updated_date_lecture_info">　最終更新日: %1$s</string>
-
-    <!-- Strings related to lecture cancel -->
-    <string name="title_lecture_cancel_fragment">Class Cancellations</string>
-    <string name="name_detail_lecture_cancel">備考</string>
-    <string name="name_cancel_date">休講年月日</string>
-    <string name="text_grade_week_period">%1$s %2$s %3$s</string>
-    <string name="text_created_date_lecture_cancel">掲示日: %1$s</string>
-
-    <!-- Strings related to notice -->
-    <string name="title_notice_fragment">News &amp; Events</string>
-    <string name="msg_set_favorite">お気に入りに登録しました</string>
-    <string name="msg_reset_favorite">お気に入りを解除しました</string>
-    <string name="text_created_date_notice">掲載日: %1$s</string>
-
-    <!-- Strings related to my class -->
-    <string name="text_week_period">%1$s %2$s</string>
-    <string name="title_color_picker">色を選択</string>
-
-    <!-- Strings related to shortcut -->
-    <string name="shortcut_timetable">Timetable</string>
-    <string name="shortcut_disabled_timetable">\'Timetable\'ショートカットが無効化されました</string>
-
-    <!-- Common titles -->
-    <string name="title_confirmation">確認</string>
-    <string name="title_delete">消去</string>
+    <string name="title_filter_dialog">検索フィルタ</string>
+    <string name="title_terms">Student Portal+ 利用規約・プライバシーポリシー</string>
 
     <!-- Common names -->
     <string name="name_notice">最新情報</string>
@@ -105,8 +46,64 @@
     <string name="name_wednesday">水</string>
     <string name="name_thursday">木</string>
     <string name="name_friday">金</string>
-    <string name="title_filter_dialog">検索フィルタ</string>
-    <string name="title_terms">Student Portal+ 利用規約・プライバシーポリシー</string>
+
+    <!-- Strings related to dashboard -->
+    <string name="title_fragment_dashboard">Dashboard</string>
+    <string name="action_show_all_lecture_info">すべての授業関連連絡を表示</string>
+    <string name="action_show_all_lecture_cancel">すべての休講情報を表示</string>
+    <string name="action_show_all_notice">すべての最新情報を表示</string>
+    <string name="text_empty_lecture_info">現在、あなたへの授業関連連絡はありません.</string>
+    <string name="text_empty_lecture_cancel">現在、あなたへの休講情報はありません.</string>
+    <string name="text_lecture_info_more">授業関連連絡（他%1$d件）</string>
+    <string name="text_lecture_cancel_more">休講情報（他%1$d件）</string>
+    <string name="text_more_item"> （他%1$d件）</string>
+
+    <!-- Strings related to timetable -->
+    <string name="title_fragment_timetable">Timetable</string>
+    <string name="text_my_class_empty">表示できる受講科目がありません.\nデータが未取得、または受講登録・修正期間の可能性があります.</string>
+
+    <!-- Strings related to lecture info -->
+    <string name="title_fragment_lecture_info">Class Schedule</string>
+    <string name="name_lecture_info_detail">連絡事項</string>
+    <string name="text_semester_week_period">%1$s %2$s %3$s %4$s</string>
+    <string name="text_lecture_info_created_date">初回掲示日: %1$s</string>
+    <string name="text_lecture_info_updated_date">\n最終更新日: %1$s</string>
+
+    <!-- Strings related to lecture cancel -->
+    <string name="title_fragment_lecture_cancel">Class Cancellations</string>
+    <string name="name_lecture_cancel_detail">備考</string>
+    <string name="name_cancel_date">休講年月日</string>
+    <string name="text_grade_week_period">%1$s %2$s %3$s</string>
+    <string name="text_lecture_cancel_created_date">掲示日: %1$s</string>
+
+    <!-- Strings related to notice -->
+    <string name="title_fragment_notice">News &amp; Events</string>
+    <string name="msg_set_favorite">お気に入りに登録しました</string>
+    <string name="msg_reset_favorite">お気に入りを解除しました</string>
+    <string name="text_created_date">掲載日: %1$s</string>
+
+    <!-- Strings related to my class -->
+    <string name="title_my_class_edit">Edit</string>
+    <string name="title_my_class_add">Add</string>
+    <string name="text_my_class_week_period">%1$s %2$s</string>
+    <string name="title_color_picker">色を選択</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Login</string>
+
+    <!-- Strings related to login -->
+    <string name="login_form_info">ユーザー名とパスワードを入力して下さい</string>
+    <string name="error_field_required">未入力です</string>
+    <string name="error_invalid_username">無効なユーザー名です</string>
+    <string name="error_invalid_password">無効なパスワード文字数です</string>
+
+    <string name="button_shibboleth">シボレス認証</string>
+    <string name="agree_to_terms">上記の利用規約に同意します</string>
+
+    <!-- Common titles -->
+    <string name="title_confirm">確認</string>
+    <string name="title_delete">消去</string>
 
     <!-- Menus -->
     <string name="menu_dashboard">Dashboard</string>
@@ -135,44 +132,39 @@
     <string name="action_view_week">週表示</string>
     <string name="action_view_day">受講リスト表示</string>
     <string name="action_login">ログイン</string>
-
-    <!-- Common image descriptions -->
-    <string name="description_attend">受講</string>
-    <string name="description_favorite">お気に入り</string>
+    <string name="action_settings">設定</string>
 
     <!-- Common share text -->
-    <string name="text_share_title">タイトル: %1$s\n</string>
-    <string name="text_share_detail">内容: %1$s\n</string>
-    <string name="text_share_link">リンク: %1$s\n</string>
-    <string name="text_share_lecture_info">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n分類: %5$s\n連絡事項: %6$s\n初回掲載日: %7$s\n</string>
-    <string name="text_share_lecture_cancel">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n休講年月日: %5$s\n備考: %6$s\n掲示日: %7$s\n</string>
-    <string name="text_share_created_date">掲載日: %1$s\n</string>
-    <string name="text_share_updated_date">最終更新日: %1$s\n</string>
-    <string name="text_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
+    <string name="share_title">タイトル: %1$s\n</string>
+    <string name="share_detail">内容: %1$s\n</string>
+    <string name="share_link">リンク: %1$s\n</string>
+    <string name="share_lecture_info">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n分類: %5$s\n連絡事項: %6$s\n初回掲載日: %7$s\n</string>
+    <string name="share_lecture_cancel">授業科目: %1$s\n担当教員: %2$s\n曜日時限: %3$s %4$s\n休講年月日: %5$s\n備考: %6$s\n掲示日: %7$s\n</string>
+    <string name="share_created_date">掲載日: %1$s\n</string>
+    <string name="share_updated_date">最終更新日: %1$s\n</string>
+    <string name="share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
 
-    <!-- Common messages -->
+    <!-- Common message -->
     <string name="msg_not_found">表示できる%1$sはありません</string>
     <string name="msg_register_class">受講科目に追加しました</string>
     <string name="msg_unregister_class">受講科目から除外しました</string>
     <string name="msg_back_to_exit">もう一度押すとアプリを終了します</string>
-    <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
     <string name="msg_request_shibboleth_data">シボレスデータを更新してください</string>
-    <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
+    <string name="msg_warn_reset">すべてのポータルデータを消去しますか？\n受講科目、お気に入りを含むすべてのポータルデータが消去されます。</string>
+    <string name="msg_delete_all">すべてのポータルデータを消去しました</string>
     <string name="text_unregister_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
     <string name="text_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
+    <string name="text_discard_confirm">編集中の内容を破棄しますか？</string>
     <string name="text_my_class_edit_warn">正式な受講登録は大学のシステムを使用して下さい</string>
-    <string name="text_my_class_empty">表示できる受講科目がありません.\nデータが未取得、または受講登録・修正期間の可能性があります.</string>
-    <string name="text_my_class_threshold1">が受講科目、</string>
-    <string name="text_my_class_threshold2">が類似科目です.</string>
-    <string name="text_my_class_threshold3">類似科目は受講科目と同様に通知されます.</string>
+    <string name="text_empty_data">表示できる%1$sはありません</string>
     <string name="hint_query_title">タイトルで検索&#8230;</string>
     <string name="hint_query_subject_and_instructor">科目・教員名で検索&#8230;</string>
 
     <!-- Common errors -->
     <string name="error_unknown">不明なエラーです</string>
     <string name="error_sync">同期に失敗しました。時間をおいて再試行して下さい</string>
-    <string name="error_not_found">%1$sは存在しないか、すでに消去されています</string>
-    <string name="error_update">%1$sの更新に失敗しました</string>
+    <string name="error_not_found">存在しないか, すでに消去されています</string>
+    <string name="error_update">更新に失敗しました</string>
     <string name="error_add">%1$sへの追加に失敗しました</string>
     <string name="error_remove">%1$sからの除外に失敗しました</string>
     <string name="error_delete">消去に失敗しました</string>
@@ -189,167 +181,70 @@
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
+    <!-- Common image descriptions -->
+    <string name="description_attend">受講</string>
+    <string name="description_favorite">お気に入り</string>
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
+    <!-- Strings related to shortcut -->
+    <string name="shortcut_timetable">Timetable</string>
+    <string name="shortcut_disabled_timetable">\'Timetable\'ショートカットが無効化されました</string>
 
     <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_category_shibboleth">シボレス</string>
+    <string name="pref_title_login">再ログイン</string>
+    <string name="pref_summary_login">ユーザー名とパスワードを更新します</string>
+    <string name="pref_title_last_login_date">最終ログイン日時</string>
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="pref_category_notification">新着通知</string>
+    <string name="pref_title_sync">自動同期</string>
+    <string name="pref_summary_sync">一定間隔で自動的に同期(フェッチ)します</string>
+    <string name="pref_title_sync_interval">同期間隔</string>
+    <string name="pref_summary_sync_interval">%1$sごと</string>
+    <string name="pref_title_notification_type">通知の種類</string>
+    <string name="pref_summary_notification_type">通知内容をカスタマイズします</string>
+    <string name="pref_title_vibration">バイブレーション</string>
+    <string name="pref_summary_vibration">通知が届いたら振動させる</string>
+    <string name="pref_title_led">通知LED</string>
+    <string name="pref_summary_led">通知が届いたらLEDを点滅させる</string>
+    <string name="pref_title_notification_settings">通知設定</string>
+    <string name="pref_summary_notification_settings">通知設定を変更</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
+    <string name="pref_category_portal">ポータルデータ</string>
+    <string name="pref_title_similar_subject_threshold">類似科目の設定</string>
+    <string name="pref_summary_similar_subject_threshold">類似科目名のしきい値を変更します</string>
+    <string name="pref_title_similar_threshold">類似科目名のしきい値</string>
+    <string name="pref_title_sample">サンプル</string>
+    <string name="pref_title_pdf_gdocs">PDFをGoogle Docsで開く</string>
+    <string name="pref_summary_pdf_gdocs">ダウンロードせずGoogle Docsで表示します</string>
+    <string name="pref_title_detail_error">詳細なエラーメッセージを表示</string>
+    <string name="pref_summary_detail_error">エラー発生時に原因を詳細に表示します</string>
+    <string name="pref_title_reset">リセット</string>
+    <string name="pref_summary_reset">取得したデータを消去します</string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_category_about">概要</string>
+    <string name="pref_title_version">バージョン</string>
+    <string name="pref_title_share">友達にシェア</string>
+    <string name="pref_summary_share">このアプリを友達に教える</string>
+    <string name="pref_title_developer">開発元</string>
+    <string name="pref_summary_developer">K² Studio.</string>
+    <string name="pref_title_terms">利用規約・プライバシーポリシー</string>
+    <string name="pref_summary_terms">利用規約およびプライバシーポリシーの詳細</string>
+    <string name="pref_title_license">オープンソースライセンス</string>
+    <string name="pref_summary_license">オープンソースソフトウェアに関するライセンスの詳細</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
+    <string name="text_similar_subject1">が受講科目、</string>
+    <string name="text_similar_subject2">が類似科目です.</string>
+    <string name="text_similar_subject3">類似科目は受講科目と同様に通知されます.</string>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
+    <!-- Strings related to Notification -->
+    <string name="name_newly_channel">新着通知</string>
+    <string name="name_retry">再試行</string>
+    <string name="sub_text_sync_error">同期失敗</string>
+    <string name="title_require_login">再ログインが必要です</string>
+    <string name="title_error">エラー</string>
+    <string name="title_content_inbox">%1$d件の%2$s</string>
+    <string name="summary_text_inbox">他%1$d件</string>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 </resources>

@@ -1,71 +1,174 @@
 package jp.kentan.studentportalplus.util
 
-import android.databinding.BindingAdapter
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.view.View
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
+import androidx.core.view.isVisible
+import androidx.databinding.BindingAdapter
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationView
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.ClassWeekType
-import jp.kentan.studentportalplus.data.component.LectureAttendType
+import jp.kentan.studentportalplus.data.component.LectureAttend
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.data.model.Notice
 import java.util.*
 
-@BindingAdapter("text")
-fun setText(textView: TextView, text: String?) {
-    textView.text = if (text.isNullOrBlank()) "未入力" else text
-}
 
-@BindingAdapter("isRead")
-fun setIsRead(textView: TextView, isRead: Boolean) {
-    textView.typeface = if (isRead) Typeface.DEFAULT else Typeface.DEFAULT_BOLD
-}
-
-@BindingAdapter("attend")
-fun setAttendType(imageView: ImageView, attendType: LectureAttendType) {
-    val resourceId = when (attendType) {
-        LectureAttendType.PORTAL, LectureAttendType.USER -> R.drawable.ic_lecture_attend
-        LectureAttendType.SIMILAR -> R.drawable.ic_lecture_attend_similar
-        else -> R.drawable.ic_lecture_attend_not
-    }
-
-    imageView.setImageResource(resourceId)
+@BindingAdapter("isVisible")
+fun setIsVisible(view: View, isVisible: Boolean) {
+    view.isVisible = isVisible
 }
 
 @BindingAdapter("date")
-fun setDateText(textView: TextView, date: Date) {
-    textView.text = date.formatToYearMonthDay()
+fun setDate(view: TextView, date: Date?) {
+    view.text = date?.formatYearMonthDay()
 }
 
-@BindingAdapter("week", "period", requireAll = true)
-fun setWeekPeriodText(textView: TextView, weekType: ClassWeekType, period: Int) {
-    textView.apply {
-        text = context.getString(
-                R.string.text_week_period,
-                weekType.fullDisplayName.replace("曜日", "曜"),
-                period.formatPeriod())
+@BindingAdapter("noticeDate")
+fun setNoticeDate(view: TextView, data: Notice?) {
+    view.text = if (data != null ) {
+        view.context.getString(R.string.text_created_date, data.createdDate.formatYearMonthDay())
+    } else {
+        null
     }
 }
 
+@BindingAdapter("lectureInfoDate")
+fun setLectureInfoDate(view: TextView, data: LectureInformation?) {
+    data ?: run {
+        view.text = null
+        return
+    }
+
+    val context = view.context
+
+    view.text = context.getString(R.string.text_lecture_info_created_date, data.createdDate.formatYearMonthDay())
+
+    if (data.createdDate != data.updatedDate) {
+        view.append(context.getString(R.string.text_lecture_info_updated_date, data.updatedDate.formatYearMonthDay()))
+    }
+}
+
+@BindingAdapter("lectureCancelDate")
+fun setLectureCancelDate(view: TextView, data: LectureCancellation?) {
+    view.text = if (data != null ) {
+        view.context.getString(R.string.text_lecture_cancel_created_date, data.createdDate.formatYearMonthDay())
+    } else {
+        null
+    }
+}
+
+@BindingAdapter("myClassWeekPeriod")
+fun setMyClassWeekPeriod(view: TextView, data: MyClass?) {
+    data ?: run {
+        view.text = null
+        return
+    }
+
+    val period: String = data.period.let {
+        if (it > 0) "${it}限" else ""
+    }
+
+    view.text = view.context.getString(
+            R.string.text_my_class_week_period,
+            data.week.fullDisplayName.replace("曜日", "曜"),
+            period)
+}
+
+@BindingAdapter("myClassDayPeriod")
+fun setMyClassDayPeriod(view: TextView, data: MyClass?) {
+    data ?: run {
+        view.text = null
+        return
+    }
+
+    view.text = if (data.week.hasPeriod()) data.week.displayName + data.period else data.week.displayName
+}
+
+@BindingAdapter("lectureInfoWeekPeriod")
+fun setLectureInfoWeekPeriod(view: TextView, data: LectureInformation?) {
+    data ?: run {
+        view.text = null
+        return
+    }
+
+    val semester: String = data.semester.let {
+        if (arrayOf("前", "後", "春", "秋").contains(it)) { "${it}学期" } else { it }
+    }
+    val period: String = data.period.let {
+        if (it != "-") "${it}限" else ""
+    }
+
+    view.text = view.context.getString(
+            R.string.text_semester_week_period,
+            data.grade,
+            semester,
+            data.week.replace("曜日", "曜"),
+            period)
+}
+
+@BindingAdapter("lectureCancelWeekPeriod")
+fun setLectureCancelWeekPeriod(view: TextView, data: LectureCancellation?) {
+    data ?: run {
+        view.text = null
+        return
+    }
+
+    val period: String = data.period.let {
+        if (it != "-") "${it}限" else ""
+    }
+
+    view.text = view.context.getString(
+            R.string.text_grade_week_period,
+            data.grade,
+            data.week.replace("曜日", "曜"),
+            period)
+}
+
 @BindingAdapter("syllabus")
-fun setSyllabusText(textView: TextView, syllabus: String) {
-    textView.text = if (syllabus.isBlank()) "未入力" else "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code=$syllabus"
+fun setSyllabusText(view: TextView, scheduleCode: String?) {
+    view.text = if (scheduleCode.isNullOrBlank()) "未入力" else "http://www.syllabus.kit.ac.jp/?c=detail&schedule_code=$scheduleCode"
 }
 
-@BindingAdapter("credit")
-fun setCreditText(textView: TextView, credit: Int) {
-    textView.text = if (credit > 0) credit.toString() else ""
+@BindingAdapter("bold")
+fun setBold(view: TextView, isBold: Boolean) {
+    if (isBold) {
+        view.setTypeface(null, Typeface.BOLD)
+    } else {
+        view.setTypeface(null, Typeface.NORMAL)
+    }
 }
 
-@BindingAdapter("backgroundColor")
-fun setBackgroundColor(button: Button, color: Int) {
-    button.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
-}
-
-@BindingAdapter("adapterEntities")
-fun setAdapterEntities(view: AutoCompleteTextView, list: List<String>?) {
+@BindingAdapter("entities")
+fun setAdapterEntities(view: AppCompatAutoCompleteTextView, list: List<String>?) {
     if (list != null) {
         view.setAdapter(ArrayAdapter(view.context, android.R.layout.simple_list_item_1, list))
     }
 }
 
-private fun Int.formatPeriod() = if (this > 0) "${this}限" else ""
+@BindingAdapter("attend")
+fun setAttendType(view: ImageView, attendType: LectureAttend) {
+    val resourceId = when (attendType) {
+        LectureAttend.PORTAL, LectureAttend.USER -> R.drawable.ic_lecture_attend
+        LectureAttend.SIMILAR -> R.drawable.ic_lecture_attend_similar
+        else -> R.drawable.ic_lecture_attend_not
+    }
+
+    view.setImageResource(resourceId)
+}
+
+@BindingAdapter("onNavigationItemSelected")
+fun setOnNavigationItemSelected(view: NavigationView, listener: NavigationView.OnNavigationItemSelectedListener?) {
+    view.setNavigationItemSelectedListener(listener)
+}
+
+@BindingAdapter("backgroundColor")
+fun setBackgroundColor(button: MaterialButton, color: Int) {
+    button.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+}

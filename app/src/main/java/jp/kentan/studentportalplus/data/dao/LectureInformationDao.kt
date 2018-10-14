@@ -1,24 +1,20 @@
 package jp.kentan.studentportalplus.data.dao
 
-import jp.kentan.studentportalplus.data.component.LectureAttendType
-import jp.kentan.studentportalplus.data.component.LectureOrderType
-import jp.kentan.studentportalplus.data.component.LectureQuery
-import jp.kentan.studentportalplus.data.component.NotifyContent
+import jp.kentan.studentportalplus.data.component.LectureAttend
+import jp.kentan.studentportalplus.data.component.PortalContent
 import jp.kentan.studentportalplus.data.model.LectureInformation
 import jp.kentan.studentportalplus.data.parser.LectureAttendParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.util.JaroWinklerDistance
-import jp.kentan.studentportalplus.util.toLong
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 
-
 class LectureInformationDao(
         private val database: DatabaseOpenHelper,
-        var myClassThreshold: Float
-) {
+        var similarThreshold: Float
+) : BaseDao() {
 
     companion object {
         const val TABLE_NAME = "lecture_info"
@@ -33,92 +29,22 @@ class LectureInformationDao(
         val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
 
         select(TABLE_NAME)
-                .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
+                .orderBy("updated_date", SqlOrderDirection.DESC)
                 .orderBy("subject")
                 .parseList(PARSER)
-                .map {
-                    it.copy(attend = myClassList.analyzeAttendType(it.subject))
-                }
+                .map { it.copy(attend = myClassList.calcLectureAttend(it.subject)) }
     }
 
-    fun get(id: Long): LectureInformation? = database.use {
-        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
-
-        val data = select(TABLE_NAME)
-                .whereArgs("_id=$id")
-                .limit(1)
-                .parseOpt(PARSER) ?: return@use null
-
-        data.copy(attend = myClassList.analyzeAttendType(data.subject))
-    }
-
-    fun search(query: LectureQuery) = database.use {
-        val myClassList = select(MyClassDao.TABLE_NAME, "subject, user").parseList(LECTURE_ATTEND_PARSER)
-
-        val where = StringBuilder()
-
-        if (!query.isAttend) {
-            if (!query.isUnread && !query.hasRead) {
-                return@use emptyList<LectureInformation>()
-            } else if (!query.isUnread) {
-                where.append("read=1")
-            } else if (!query.hasRead) {
-                where.append("read=0")
-            }
-        }
-
-        if (query.keywordList.isNotEmpty()) {
-            where.appendIfNotEmpty(" AND ")
-            where.append('(')
-
-            // Subject
-            query.keywordList.forEach { where.append("subject LIKE '%$it%' AND ") }
-            where.delete(where.length-5, where.length)
-
-            where.append(") OR (")
-
-            // Instructor
-            query.keywordList.forEach { where.append("instructor LIKE '%$it%' AND ") }
-            where.delete(where.length-5, where.length)
-
-            where.append(") ")
-        }
-
-        val lectureInfoList = select(TABLE_NAME)
-                .whereArgs(where.toString())
-                .orderBy("DATE(updated_date)", SqlOrderDirection.DESC)
-                .orderBy("subject")
-                .parseList(PARSER)
-
-        val result = lectureInfoList.mapNotNull {
-            val type  = myClassList.analyzeAttendType(it.subject)
-
-            if (query.isAttend && !type.isAttend()) {
-                if (!query.isUnread && !query.hasRead) {
-                    return@mapNotNull null
-                } else if (!query.hasRead && it.isRead) {
-                    return@mapNotNull null
-                }
-
-                it.copy(attend = type)
-            } else if (!query.isAttend && type.isAttend()) {
-                null
-            } else {
-                it.copy(attend = type)
-            }
-        }
-
-        return@use if (query.order == LectureOrderType.ATTEND_CLASS) {
-            result.sortedBy { !it.attend.isAttend() }
-        } else {
-            result
-        }
+    fun update(data: LectureInformation): Int = database.use {
+        update(TABLE_NAME, "read" to data.isRead.toLong())
+                .whereArgs("_id = ${data.id}")
+                .exec()
     }
 
     fun updateAll(list: List<LectureInformation>) = database.use {
         beginTransaction()
 
-        val notifyDataList = mutableListOf<NotifyContent>()
+        val updatedContentList = mutableListOf<PortalContent>()
 
         var st = compileStatement("INSERT OR IGNORE INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
@@ -135,13 +61,13 @@ class LectureInformationDao(
             st.bindString(9, it.category)
             st.bindString(10, it.detailText)
             st.bindString(11, it.detailHtml)
-            st.bindString(12, DatabaseOpenHelper.toString(it.createdDate))
-            st.bindString(13, DatabaseOpenHelper.toString(it.updatedDate))
+            st.bindLong(12, it.createdDate.time)
+            st.bindLong(13, it.updatedDate.time)
             st.bindLong(14, it.isRead.toLong())
 
             val id = st.executeInsert()
             if (id > 0) {
-                notifyDataList.add(NotifyContent(it.subject, it.detailText, id))
+                updatedContentList.add(PortalContent(id, it.subject, it.detailText))
             }
             st.clearBindings()
         }
@@ -166,26 +92,20 @@ class LectureInformationDao(
         setTransactionSuccessful()
         endTransaction()
 
-        return@use notifyDataList
+        return@use updatedContentList
     }
 
-    fun update(data: LectureInformation): Int = database.use {
-        update(TABLE_NAME, "read" to data.isRead.toLong())
-                .whereArgs("_id = ${data.id}")
-                .exec()
-    }
-
-    private fun List<Pair<String, LectureAttendType>>.analyzeAttendType(subject: String): LectureAttendType {
-        var type  = LectureAttendType.NOT
-
-        forEach {
-            if (it.first == subject) {
-                return it.second
-            } else if (STRING_DISTANCE.getDistance(it.first, subject) >= myClassThreshold) {
-                type = LectureAttendType.SIMILAR
-            }
+    private fun List<Pair<String, LectureAttend>>.calcLectureAttend(subject: String): LectureAttend {
+        // If match subject
+        firstOrNull { it.first == subject }?.run {
+            return second
         }
 
-        return type
+        // If similar
+        if (any { STRING_DISTANCE.getDistance(it.first, subject) >= similarThreshold }) {
+            return LectureAttend.SIMILAR
+        }
+
+        return LectureAttend.NOT
     }
 }

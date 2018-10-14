@@ -5,33 +5,33 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import jp.kentan.studentportalplus.data.PortalRepository
+import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
-import jp.kentan.studentportalplus.ui.viewmodel.ViewModelFactory
-import org.jetbrains.anko.defaultSharedPreferences
+import jp.kentan.studentportalplus.ui.ViewModelFactory
 import javax.inject.Singleton
 
-
 @Module
-class AppModule(app: Application) {
+class AppModule(
+        private val app: Application
+) {
 
-    private val context = app.applicationContext
-    private val shibbolethDataProvider = ShibbolethDataProvider(context)
-    private val portalRepository = PortalRepository(app.applicationContext, shibbolethDataProvider)
-
-    @Provides
-    @Singleton
-    fun provideContext(): Context = context
+    private val shibbolethDataProvider = ShibbolethDataProvider(app)
+    private val portalRepository = PortalRepository(app, shibbolethDataProvider)
+    private val userRepository = UserRepository(shibbolethDataProvider)
 
     @Provides
     @Singleton
-    fun provideShibbolethDataProvider() = shibbolethDataProvider
+    fun provideContext(): Context = app
 
     @Provides
     @Singleton
-    fun providePortalRepository() = portalRepository
+    fun providePortalRepository(): PortalRepository = portalRepository
 
     @Provides
     @Singleton
-    fun provideViewModelFactory() = ViewModelFactory(context.defaultSharedPreferences, portalRepository, shibbolethDataProvider)
+    fun provideUserRepository(): UserRepository = userRepository
 
+    @Provides
+    @Singleton
+    fun provideViewModelFactory() = ViewModelFactory(app, portalRepository, userRepository, shibbolethDataProvider)
 }

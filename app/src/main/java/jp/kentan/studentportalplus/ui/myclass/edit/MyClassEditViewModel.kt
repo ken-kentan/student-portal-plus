@@ -1,41 +1,31 @@
 package jp.kentan.studentportalplus.ui.myclass.edit
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.databinding.ObservableInt
-import android.databinding.adapters.AdapterViewBindingAdapter
+import androidx.databinding.Observable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.databinding.adapters.AdapterViewBindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.android.colorpicker.ColorPickerSwatch
+import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.ClassWeekType
+import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.data.model.MyClass
-import jp.kentan.studentportalplus.util.Murmur3
-import kotlinx.coroutines.experimental.android.UI
+import jp.kentan.studentportalplus.ui.SingleLiveData
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.coroutines.experimental.bg
 
 class MyClassEditViewModel(
-        private val repository: PortalRepository
-) : ViewModel() {
+        private val portalRepository: PortalRepository
+) : ViewModel(), ColorPickerSwatch.OnColorSelectedListener {
 
-    enum class Mode(val title: String) {
-        EDIT("Edit"),
-        ADD("Add")
-    }
-
-    val subjects: LiveData<List<String>> = Transformations.map(repository.subjectList) { it.sorted() }
-
-    val weekEntries = ClassWeekType.values().map { it.fullDisplayName }
-    val periodEntries = (1..7).map { "${it}限" }
-
-    val isUser = ObservableBoolean()
-    val enabledPeriod = ObservableBoolean()
-
-    val color = ObservableInt()
+    val title = MutableLiveData<Int>()
 
     val subject = ObservableField<String>()
+    val color = ObservableInt()
     val instructor = ObservableField<String>()
     val location = ObservableField<String>()
     val week = ObservableInt()
@@ -44,95 +34,117 @@ class MyClassEditViewModel(
     val credit = ObservableField<String>()
     val scheduleCode = ObservableField<String>()
 
-    val onWeekItemSelected = AdapterViewBindingAdapter.OnItemSelected { _, _, position: Int, _ ->
-        val week = ClassWeekType.values().getOrNull(position) ?: ClassWeekType.UNKNOWN
-        val enabled = (week != ClassWeekType.INTENSIVE) && (week != ClassWeekType.UNKNOWN)
+    val subjects: LiveData<List<String>> = Transformations.map(portalRepository.subjectList) { it.sorted() }
 
-        enabledPeriod.set(isUser.get() && enabled)
+    val weekEntries = ClassWeek.values().map { it.fullDisplayName }
+    val periodEntries = (1..7).map { "${it}限" }
+
+    val isUserMode = ObservableBoolean(true)
+    val isEnabledPeriod = ObservableBoolean(true)
+
+    val isEnabledErrorSubject = SingleLiveData<Boolean>()
+    val isEnabledErrorCredit = SingleLiveData<Boolean>()
+    val isEnabledErrorScheduleCode = SingleLiveData<Boolean>()
+
+    val finishActivity = SingleLiveData<Unit>()
+    val showColorPickerDialog = SingleLiveData<ColorPickerSwatch.OnColorSelectedListener>()
+    val showFinishConfirmDialog = SingleLiveData<Unit>()
+    val validation = SingleLiveData<ValidationResult>()
+    val errorSaveFailed = SingleLiveData<Unit>()
+    val errorNotFound = SingleLiveData<Unit>()
+
+    val onWeekItemSelected = AdapterViewBindingAdapter.OnItemSelected { _, _, position: Int, _ ->
+        val week = ClassWeek.values()[position]
+        val isDisabled = week == ClassWeek.INTENSIVE || week == ClassWeek.UNKNOWN
+
+        isEnabledPeriod.set(isUserMode.get() && !isDisabled)
     }
 
-    var navigator: MyClassEditNavigator? = null
-
-    private val weekType: ClassWeekType
-        get() = ClassWeekType.values().getOrNull(week.get()) ?: ClassWeekType.UNKNOWN
-
+    private var isInitialized = false
+    private var isUpdateMode = true
     private lateinit var originalData: MyClass
 
-    @Throws(Exception::class)
-    fun startEdit(id: Long) {
-        if (::originalData.isInitialized) {
-            return
-        }
-
-        val data = repository.getMyClassById(id) ?:
-                throw IllegalStateException("data_ not found")
-
-        originalData = data
-        setData(data)
+    init {
+        subject.setErrorCancelCallback(isEnabledErrorSubject)
+        credit.setErrorCancelCallback(isEnabledErrorCredit)
+        scheduleCode.setErrorCancelCallback(isEnabledErrorScheduleCode)
     }
 
-    fun startAdd(week: ClassWeekType, period: Int) {
-        if (::originalData.isInitialized) {
+    fun onActivityCreated(id: Long) {
+        isUpdateMode = true
+        title.value = R.string.title_my_class_edit
+
+        if (isInitialized) { return }
+        isInitialized = true
+
+        val data = portalRepository.getMyClassWithSync(id) ?: let {
+            errorNotFound.value = Unit
             return
         }
 
+        setData(data)
+        originalData = data
+    }
+
+    fun onActivityCreated(week: ClassWeek, period: Int) {
+        isUpdateMode = false
+        title.value = R.string.title_my_class_add
+
+        if (isInitialized) { return }
+        isInitialized = true
+
         val data = MyClass(
-                hash = 0,
                 week = week,
                 period = period,
                 scheduleCode = "",
-                credit = 2,
+                credit = 0,
                 category = "",
                 subject = "",
                 instructor = "",
                 isUser = true
         )
 
-        originalData = data
         setData(data)
+        originalData = data
     }
 
-    private fun setData(data: MyClass) {
-        isUser.set(data.isUser)
-        enabledPeriod.set(data.isUser)
-        color.set(data.color)
-        subject.set(data.subject)
-        instructor.set(data.instructor)
-        location.set(data.location)
-        week.set(data.week.ordinal)
-        period.set(if (data.period in 1..7) data.period - 1 else 0)
-        category.set(data.category)
-        credit.set(data.credit.toString())
-        scheduleCode.set(data.scheduleCode)
+    fun onColorClick() {
+        showColorPickerDialog.value = this
     }
 
-    fun save() {
+    override fun onColorSelected(selectedColor: Int) {
+        color.set(selectedColor)
+    }
+
+    fun onClickSave() {
         val subject = subject.get().trimOrEmpty()
-        val instructor = instructor.get().trimOrEmpty()
-        val location = location.get().trimOrEmpty()
-        val week = weekType
-        val period = if (week.hasPeriod()) period.get() + 1 else 0
-        val category = category.get().trimOrEmpty()
         val credit = credit.get().trimOrEmpty().toIntOrNull() ?: 0
         val scheduleCode = scheduleCode.get().trimOrEmpty()
 
+        // Validation
         val isErrorSubject = subject.isBlank()
-        val isErrorCredit = credit !in 1..10
+        val isErrorCredit = credit !in 0..10
         val isErrorScheduleCode = scheduleCode.isNotScheduleCode()
 
         if (isErrorSubject || isErrorCredit || isErrorScheduleCode) {
-            navigator?.onErrorValidation(isErrorSubject, isErrorCredit, isErrorScheduleCode)
+            validation.value = ValidationResult(isErrorSubject, isErrorCredit, isErrorScheduleCode)
             return
         }
 
-        val hashStr = week.name + period + scheduleCode + credit + category + subject + instructor + isUser.get()
 
-        val data = originalData.copy(
-                hash = Murmur3.hash64(hashStr.toByteArray()),
+        val instructor = instructor.get().trimOrEmpty()
+        val location = location.get().trimOrNull()
+        val weekType = ClassWeek.values()[week.get()]
+        val period = if (weekType.hasPeriod()) period.get() + 1 else 0
+        val category = category.get().trimOrEmpty()
+
+        val data = MyClass(
+                id = originalData.id,
+                isUser = isUserMode.get(),
                 subject = subject,
                 instructor = instructor,
-                location = if (location.isNotBlank()) location else null,
-                week = week,
+                location = location,
+                week = weekType,
                 period = period,
                 category = category,
                 credit = credit,
@@ -140,43 +152,73 @@ class MyClassEditViewModel(
                 color = color.get()
         )
 
-        launch(UI) {
-            val success = bg {
-                if (data.id > 0) repository.update(data) else repository.add(data)
-            }.await()
+        GlobalScope.launch {
 
-            navigator?.onMyClassSaved(success)
+            val isSuccess = if (isUpdateMode) {
+                portalRepository.updateMyClass(data).await()
+            } else {
+                portalRepository.addMyClass(data).await()
+            }
+
+            if (isSuccess) {
+                finishActivity.postValue(Unit)
+            } else {
+                errorSaveFailed.postValue(Unit)
+            }
         }
     }
 
-    fun hasEdit(): Boolean {
+    fun onFinish() {
         val data = originalData
-        val location = if (location.get().isNullOrEmpty()) null else location.get()
+        val dataLocation = data.run { location ?: "" }
+        val dataCredit: String? = data.run { if (credit > 0) credit.toString() else "" }
+
         val period = period.get() + 1
 
-        return (color.get() != data.color) ||
-                (subject.get() != data.subject) ||
-                (instructor.get() != data.instructor) ||
-                (location != data.location) ||
-                (weekType != data.week) ||
-                (data.week.hasPeriod() && (period != data.period)) ||
-                (category.get() != data.category) ||
-                (credit.get() != data.credit.toString()) ||
-                (scheduleCode.get() != data.scheduleCode)
+        val canFinish = (color.get() == data.color) &&
+                (subject.get() == data.subject) &&
+                (instructor.get() == data.instructor) &&
+                (location.get() == dataLocation) &&
+                (week.get() == data.week.ordinal) &&
+                ((period == data.period || !data.week.hasPeriod())) &&
+                (category.get() == data.category) &&
+                (credit.get() == dataCredit) &&
+                (scheduleCode.get() == data.scheduleCode)
+
+        if (canFinish) {
+            finishActivity.value = Unit
+        } else {
+            showFinishConfirmDialog.value = Unit
+        }
     }
 
-    fun onClickColorButton() {
-        navigator?.openColorPickerDialog(ColorPickerSwatch.OnColorSelectedListener { selectedColor ->
-            color.set(selectedColor)
+    private fun setData(data: MyClass) {
+        isUserMode.set(data.isUser)
+
+        subject.set(data.subject)
+        color.set(data.color)
+        instructor.set(data.instructor)
+        location.set(data.location ?: "")
+        week.set(data.week.ordinal)
+        period.set(if (data.period in 1..7) data.period - 1 else 0)
+        category.set(data.category)
+        credit.set(if (data.credit > 0) data.credit.toString() else "")
+        scheduleCode.set(data.scheduleCode)
+    }
+
+    private fun ObservableField<String>.setErrorCancelCallback(error: SingleLiveData<Boolean>) {
+        addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) { error.value = false }
         })
     }
 
-    override fun onCleared() {
-        navigator = null
-        super.onCleared()
-    }
-
     private fun String?.trimOrEmpty(): String = this?.trim() ?: ""
+
+    private fun String?.trimOrNull(): String? {
+        val trim = this?.trim()
+
+        return if (trim.isNullOrEmpty()) null else trim
+    }
 
     private fun String.isNotScheduleCode(): Boolean {
         val code = toIntOrNull() ?: return !isEmpty()
