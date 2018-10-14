@@ -62,12 +62,14 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+  skip: true
 - artifact: androidx.interpolator:interpolator:+
   name: Android Support Library Interpolators
   copyrightHolder: The Android Open Source Project
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+  skip: true
 
 
 - artifact: androidx.vectordrawable:vectordrawable:+
@@ -82,6 +84,7 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+  skip: true
 
 
 - artifact: androidx.annotation:annotation:+
@@ -158,11 +161,13 @@
   copyrightHolder: The Android Open Source Project
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  skip: true
 - artifact: androidx.databinding:databinding-adapters:+
   name: databinding-adapters
   copyrightHolder: The Android Open Source Project
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  skip: true
 
 
 - artifact: androidx.arch.core:core-common:+
