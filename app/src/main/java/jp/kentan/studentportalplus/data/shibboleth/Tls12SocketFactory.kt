@@ -14,7 +14,7 @@ import javax.net.ssl.SSLSocketFactory
  * @link https://developer.android.com/reference/javax/net/ssl/SSLSocket.html
  * @see SSLSocketFactory
  */
-class Tls12SocketFactory(private val delegate: SSLSocketFactory ) : SSLSocketFactory() {
+class Tls12SocketFactory(private val delegate: SSLSocketFactory) : SSLSocketFactory() {
 
     private companion object {
         val TLS_V12_ONLY = arrayOf("TLSv1.2")

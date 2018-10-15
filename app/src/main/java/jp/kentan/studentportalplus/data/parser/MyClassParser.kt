@@ -17,7 +17,7 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         var weekCode = 0
 
         // Timetable (Per week)
-        document.select("table#enroll_data_tbl tr[class~=gen_tbl1_(odd|even)]").forEach{
+        document.select("table#enroll_data_tbl tr[class~=gen_tbl1_(odd|even)]").forEach {
             val tdElements = it.select("td")
             if (tdElements.size != 7) {
                 throw ParseException("Unknown attend_course layout")
@@ -67,11 +67,13 @@ class MyClassParser : BaseParser(), RowParser<MyClass> {
         val periodList = mutableListOf<Int>()
 
         if (data.period.length >= 3) {
-            val first = data.period.find { it.isDigit() } ?: throw ParseException("First period not found.")
-            val last = data.period.findLast { it.isDigit() } ?: throw ParseException("Last period not found.")
+            val first = data.period.find { it.isDigit() }
+                    ?: throw ParseException("First period not found.")
+            val last = data.period.findLast { it.isDigit() }
+                    ?: throw ParseException("Last period not found.")
 
             val periodFirst = first.toString().toInt()
-            val periodLast  = last.toString().toInt()
+            val periodLast = last.toString().toInt()
 
             if (periodFirst > periodLast) {
                 throw ParseException("Invalid period range: $first to $last")

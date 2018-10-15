@@ -60,10 +60,12 @@ class DashboardViewModel(
         var dayOfWeek = calender.get(Calendar.DAY_OF_WEEK)
 
         // 午後8時以降は明日の時間割
-        if (hour >= 20) { dayOfWeek++ }
+        if (hour >= 20) {
+            dayOfWeek++
+        }
 
         // 土、日は月に
-        val week = if (dayOfWeek in Calendar.MONDAY..Calendar.FRIDAY) ClassWeek.valueOf(dayOfWeek-1) else ClassWeek.MONDAY
+        val week = if (dayOfWeek in Calendar.MONDAY..Calendar.FRIDAY) ClassWeek.valueOf(dayOfWeek - 1) else ClassWeek.MONDAY
 
         return filter { it.week == week }
     }

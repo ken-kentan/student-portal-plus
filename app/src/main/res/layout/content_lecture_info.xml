@@ -6,6 +6,7 @@
     tools:showIn="@layout/activity_notice_detail">
 
     <data>
+
         <variable
             name="data"
             type="jp.kentan.studentportalplus.data.model.LectureInformation" />

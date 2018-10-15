@@ -17,11 +17,11 @@ class WebActivity : AppCompatActivity() {
         private const val EXTRA_TITLE = "EXTRA_TITLE"
         private const val EXTRA_URL = "EXTRA_URL"
 
-        fun createIntent(context: Context, title: String, url: String)
-                = Intent(context, WebActivity::class.java).apply {
-            putExtra(EXTRA_TITLE, title)
-            putExtra(EXTRA_URL, url)
-        }
+        fun createIntent(context: Context, title: String, url: String) =
+                Intent(context, WebActivity::class.java).apply {
+                    putExtra(EXTRA_TITLE, title)
+                    putExtra(EXTRA_URL, url)
+                }
     }
 
     private lateinit var webView: WebView

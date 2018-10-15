@@ -34,16 +34,16 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.newTask
 
-class NotificationController(context: Context): ContextWrapper(context) {
+class NotificationController(context: Context) : ContextWrapper(context) {
 
     companion object {
         const val NEWLY_CHANNEL_ID = "0_newly_channel" //新着通知
         private const val APP_CHANNEL_ID = "99_app_channel"
 
         private const val GROUP_KEY = "student_portal_plus"
-        private const val SUMMARY_NOTIFICATION_ID =  0
-        private const val ERROR_NOTIFICATION_ID   = -1
-        private const val INBOX_LINE_LIMIT        =  4
+        private const val SUMMARY_NOTIFICATION_ID = 0
+        private const val ERROR_NOTIFICATION_ID = -1
+        private const val INBOX_LINE_LIMIT = 4
 
         private val CAN_USE_VECTOR_DRAWABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         private val CAN_USE_SUMMARY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -67,7 +67,9 @@ class NotificationController(context: Context): ContextWrapper(context) {
 
 
         fun setupChannel(context: Context) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { return }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                return
+            }
 
             val color = ContextCompat.getColor(context, R.color.colorAccent)
 
@@ -132,7 +134,9 @@ class NotificationController(context: Context): ContextWrapper(context) {
 
                 notificationManager.notify(id, builder.build())
 
-                if (++id >= Int.MAX_VALUE) { id = 1 }
+                if (++id >= Int.MAX_VALUE) {
+                    id = 1
+                }
             }
         } else {
             val title = if (contentList.size > 1) getString(R.string.title_content_inbox, contentList.size, name) else name
@@ -159,7 +163,9 @@ class NotificationController(context: Context): ContextWrapper(context) {
 
             notificationManager.notify(id, builder.build())
 
-            if (++id >= Int.MAX_VALUE) { id = 1 }
+            if (++id >= Int.MAX_VALUE) {
+                id = 1
+            }
         }
 
         isFirstNotify = false

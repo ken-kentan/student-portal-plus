@@ -5,6 +5,7 @@
     tools:context="jp.kentan.studentportalplus.ui.welcome.WelcomeActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.welcome.WelcomeViewModel" />

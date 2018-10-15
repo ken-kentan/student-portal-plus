@@ -132,7 +132,7 @@ class DashboardFragment : Fragment() {
         startLectureCancelActivity.observe(fragment, Observer { id ->
             startActivity(LectureCancelDetailActivity.createIntent(requireContext(), id))
         })
-        startNoticeDetailActivity.observe(fragment, Observer {  id ->
+        startNoticeDetailActivity.observe(fragment, Observer { id ->
             startActivity(NoticeDetailActivity.createIntent(requireContext(), id))
         })
     }

@@ -28,7 +28,7 @@ data class LectureCancellation(
             }
 
             override fun areContentsTheSame(oldItem: LectureCancellation, newItem: LectureCancellation): Boolean {
-                return  oldItem == newItem
+                return oldItem == newItem
             }
         }
     }

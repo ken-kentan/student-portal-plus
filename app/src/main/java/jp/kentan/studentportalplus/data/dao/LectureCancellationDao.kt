@@ -79,7 +79,7 @@ class LectureCancellationDao(
 
             st = compileStatement("DELETE FROM $TABLE_NAME WHERE hash NOT IN ($args)")
             list.forEachIndexed { i, d ->
-                st.bindLong(i+1, d.hash)
+                st.bindLong(i + 1, d.hash)
             }
 
             st.executeUpdateDelete()

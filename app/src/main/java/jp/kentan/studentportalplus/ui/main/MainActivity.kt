@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
         fun createIntent(context: Context, isSync: Boolean = false, fragment: FragmentType? = null) =
                 Intent(context, MainActivity::class.java).apply {
                     putExtra(EXTRA_IS_SYNC, isSync)
-                    if (fragment != null) { putExtra(EXTRA_FRAGMENT, fragment.name) }
+                    if (fragment != null) {
+                        putExtra(EXTRA_FRAGMENT, fragment.name)
+                    }
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 }

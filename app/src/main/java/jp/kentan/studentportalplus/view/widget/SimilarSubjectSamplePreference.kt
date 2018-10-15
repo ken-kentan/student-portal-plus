@@ -43,7 +43,7 @@ class SimilarSubjectSamplePreference @JvmOverloads constructor(
 
             var indexChar = 'A'
             itemList.forEachIndexed { index, item ->
-                item.find<TextView>(R.id.date).text = "2018/01/0${index+1}"
+                item.find<TextView>(R.id.date).text = "2018/01/0${index + 1}"
                 item.find<TextView>(R.id.subject).text = SUBJECTS[index]
                 item.find<TextView>(R.id.detail).text = "詳細テキスト${indexChar++}"
 

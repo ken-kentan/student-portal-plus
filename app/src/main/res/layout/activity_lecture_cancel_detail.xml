@@ -6,6 +6,7 @@
     tools:context=".ui.lectureCancel.detail.lectureCancelDetailActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.lecturecancel.detail.LectureCancelDetailViewModel" />
@@ -45,7 +46,7 @@
 
         <include
             layout="@layout/content_lecture_cancel"
-            bind:data="@{viewModel.lectureCancel}"/>
+            bind:data="@{viewModel.lectureCancel}" />
 
         <jp.kentan.studentportalplus.view.widget.LectureAttendFloatingActionButton
             android:id="@+id/fab"

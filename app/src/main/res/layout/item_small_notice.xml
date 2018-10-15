@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="jp.kentan.studentportalplus.data.model.Notice" />
@@ -59,7 +60,7 @@
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_favorite_off"/>
+            tools:src="@drawable/ic_favorite_off" />
 
         <View
             android:id="@+id/divider"

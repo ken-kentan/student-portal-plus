@@ -5,6 +5,7 @@
     tools:context=".ui.timetable.TimetableFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.timetable.TimetableViewModel" />

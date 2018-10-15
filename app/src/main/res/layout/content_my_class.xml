@@ -6,7 +6,9 @@
     tools:showIn="@layout/activity_my_class_detail">
 
     <data>
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="data"
             type="jp.kentan.studentportalplus.data.model.MyClass" />

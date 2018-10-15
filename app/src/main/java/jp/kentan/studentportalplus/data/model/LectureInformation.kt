@@ -29,7 +29,7 @@ data class LectureInformation(
             }
 
             override fun areContentsTheSame(oldItem: LectureInformation, newItem: LectureInformation): Boolean {
-                return  oldItem == newItem
+                return oldItem == newItem
             }
         }
     }

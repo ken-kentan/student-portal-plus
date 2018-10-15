@@ -25,12 +25,12 @@ class ShibbolethClient(
     private companion object {
         const val TAG = "ShibbolethClient"
         const val CONNECT_TIMEOUT_SEC: Long = 30
-        const val WRITE_TIMEOUT_SEC  : Long = 30
-        const val READ_TIMEOUT_SEC   : Long = 60
+        const val WRITE_TIMEOUT_SEC: Long = 30
+        const val READ_TIMEOUT_SEC: Long = 60
 
         const val IDP_AUTH_HOST = "auth.cis.kit.ac.jp"
         const val IDP_END_POINT = "https://auth.cis.kit.ac.jp"
-        const val IDP_AUTH_URL  = "https://portal.student.kit.ac.jp/ead/"
+        const val IDP_AUTH_URL = "https://portal.student.kit.ac.jp/ead/"
 
         const val INPUT_NAME_USERNAME = "j_username"
         const val INPUT_NAME_PASSWORD = "j_password"
@@ -73,7 +73,7 @@ class ShibbolethClient(
     }
 
     private fun enableTls12(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             return builder
         }
 
@@ -134,7 +134,7 @@ class ShibbolethClient(
                 .build()
 
         val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                    ?: throw ShibbolethException("Empty response body")
+        val body = response.body() ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -160,7 +160,7 @@ class ShibbolethClient(
     @Throws(Exception::class)
     private fun passLoadingSessionInformationPage(document: Document): Document {
         // Ignore if form not exist
-        SESSION_FORM_PARAMS.forEach{
+        SESSION_FORM_PARAMS.forEach {
             document.selectFirst("input[name=$it]") ?: return document
         }
 
@@ -168,7 +168,7 @@ class ShibbolethClient(
 
         val requestBody = FormBody.Builder()
                 .add("shib_idp_ls_supported", "false")
-                .add("_eventId_proceed"     , "")
+                .add("_eventId_proceed", "")
                 .build()
 
         val request = Request.Builder()
@@ -177,7 +177,7 @@ class ShibbolethClient(
                 .build()
 
         val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
+        val body = response.body() ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -192,7 +192,7 @@ class ShibbolethClient(
     @Throws(Exception::class)
     private fun passLoginPage(document: Document, username: String, password: String): Document {
         // Ignore if form not exist
-        LOGIN_FORM_PARAMS.forEach{
+        LOGIN_FORM_PARAMS.forEach {
             document.selectFirst("input[name=$it]") ?: return document
         }
 
@@ -211,7 +211,7 @@ class ShibbolethClient(
                 .build()
 
         val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                        ?: throw ShibbolethException("Empty response body")
+        val body = response.body() ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -230,16 +230,19 @@ class ShibbolethClient(
             throw ShibbolethAuthenticationException(formErrorElem.text())
         }
 
-        val formElem         = document.selectFirst("form")                     ?: throw ShibbolethException("Empty saml response form")
-        val relayStateElem   = document.selectFirst("input[name=RelayState]")   ?: throw ShibbolethException("Empty relay state")
-        val samlResponseElem = document.selectFirst("input[name=SAMLResponse]") ?: throw ShibbolethException("Empty saml response")
+        val formElem = document.selectFirst("form")
+                ?: throw ShibbolethException("Empty saml response form")
+        val relayStateElem = document.selectFirst("input[name=RelayState]")
+                ?: throw ShibbolethException("Empty relay state")
+        val samlResponseElem = document.selectFirst("input[name=SAMLResponse]")
+                ?: throw ShibbolethException("Empty saml response")
 
-        val action       = formElem.attr("action")
-        val relayState   = relayStateElem.attr("value")
+        val action = formElem.attr("action")
+        val relayState = relayStateElem.attr("value")
         val samlResponse = samlResponseElem.attr("value")
 
         val requestBody = FormBody.Builder()
-                .add("RelayState"  , relayState)
+                .add("RelayState", relayState)
                 .add("SAMLResponse", samlResponse)
                 .build()
 
@@ -249,7 +252,7 @@ class ShibbolethClient(
                 .build()
 
         val response = client.newCall(request)?.execute() ?: throw ShibbolethException("Empty response")
-        val body     = response.body()                         ?: throw ShibbolethException("Empty response body")
+        val body = response.body() ?: throw ShibbolethException("Empty response body")
 
         if (!response.isSuccessful) {
             throw ShibbolethException("Error HTTP status code: ${response.code()} ${response.message()}")
@@ -262,7 +265,7 @@ class ShibbolethClient(
 
     private fun isRequireLogin(response: Response): Boolean {
         val netResponse = response.networkResponse() ?: return false
-        val request     = netResponse.request()      ?: return false
+        val request = netResponse.request() ?: return false
 
         return request.url().host() == IDP_AUTH_HOST
     }

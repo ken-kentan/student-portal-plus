@@ -6,6 +6,7 @@
     tools:context=".ui.notice.detail.NoticeDetailActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.notice.detail.NoticeDetailViewModel" />
@@ -74,7 +75,7 @@
 
         <include
             layout="@layout/content_notice_detail"
-            bind:data="@{viewModel.notice}"/>
+            bind:data="@{viewModel.notice}" />
 
         <jp.kentan.studentportalplus.view.widget.FavoriteFloatingActionButton
             android:id="@+id/fab"

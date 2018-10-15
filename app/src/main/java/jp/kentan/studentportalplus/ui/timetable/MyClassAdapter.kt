@@ -151,7 +151,7 @@ class MyClassAdapter(
             binding.layout.setOnClickListener { onClick(data.id) }
         }
 
-        override fun setMask(ratio: Float) { }
+        override fun setMask(ratio: Float) {}
     }
 
     abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

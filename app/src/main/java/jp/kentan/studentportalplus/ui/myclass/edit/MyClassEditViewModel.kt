@@ -74,7 +74,9 @@ class MyClassEditViewModel(
         isUpdateMode = true
         title.value = R.string.title_my_class_edit
 
-        if (isInitialized) { return }
+        if (isInitialized) {
+            return
+        }
         isInitialized = true
 
         val data = portalRepository.getMyClassWithSync(id) ?: let {
@@ -90,7 +92,9 @@ class MyClassEditViewModel(
         isUpdateMode = false
         title.value = R.string.title_my_class_add
 
-        if (isInitialized) { return }
+        if (isInitialized) {
+            return
+        }
         isInitialized = true
 
         val data = MyClass(
@@ -208,7 +212,9 @@ class MyClassEditViewModel(
 
     private fun ObservableField<String>.setErrorCancelCallback(error: SingleLiveData<Boolean>) {
         addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) { error.value = false }
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                error.value = false
+            }
         })
     }
 

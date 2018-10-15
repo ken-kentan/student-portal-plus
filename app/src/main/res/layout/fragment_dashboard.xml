@@ -5,9 +5,11 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.dashboard.DashboardViewModel" />
+
         <variable
             name="mainViewModel"
             type="jp.kentan.studentportalplus.ui.main.MainViewModel" />

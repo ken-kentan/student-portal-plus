@@ -6,6 +6,7 @@
     tools:context=".ui.myclass.detail.MyClassDetailActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.myclass.detail.MyClassDetailViewModel" />
@@ -46,7 +47,7 @@
 
         <include
             layout="@layout/content_my_class"
-            bind:data="@{viewModel.myClass}"/>
+            bind:data="@{viewModel.myClass}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

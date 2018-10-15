@@ -5,6 +5,7 @@
     tools:context="jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditViewModel" />

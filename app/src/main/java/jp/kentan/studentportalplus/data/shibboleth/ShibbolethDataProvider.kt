@@ -36,7 +36,7 @@ class ShibbolethDataProvider(
         const val CIPHER_TYPE = "RSA/ECB/PKCS1Padding"
         const val CIPHER_PROVIDER = "AndroidOpenSSL"
 
-        const val KEY_NAME     = "name"
+        const val KEY_NAME = "name"
         const val KEY_USERNAME = "username"
         const val KEY_PASSWORD = "password"
 
@@ -49,7 +49,8 @@ class ShibbolethDataProvider(
 
     init {
         try {
-            val keyStore = KeyStore.getInstance("AndroidKeyStore") ?: throw ShibbolethException("KeyStore is null")
+            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+                    ?: throw ShibbolethException("KeyStore is null")
             keyStore.load(null)
 
             createKeyIfNeed(keyStore)
@@ -152,7 +153,7 @@ class ShibbolethDataProvider(
 
     fun save(name: String, data: ShibbolethData) {
         preferences.edit {
-            putString(KEY_NAME    , encrypt(name))
+            putString(KEY_NAME, encrypt(name))
             putString(KEY_USERNAME, encrypt(data.username))
             putString(KEY_PASSWORD, encrypt(data.password))
         }

@@ -32,7 +32,7 @@ fun setDate(view: TextView, date: Date?) {
 
 @BindingAdapter("noticeDate")
 fun setNoticeDate(view: TextView, data: Notice?) {
-    view.text = if (data != null ) {
+    view.text = if (data != null) {
         view.context.getString(R.string.text_created_date, data.createdDate.formatYearMonthDay())
     } else {
         null
@@ -41,7 +41,7 @@ fun setNoticeDate(view: TextView, data: Notice?) {
 
 @BindingAdapter("lectureInfoDate")
 fun setLectureInfoDate(view: TextView, data: LectureInformation?) {
-    data ?: run {
+    if (data == null) {
         view.text = null
         return
     }
@@ -57,7 +57,7 @@ fun setLectureInfoDate(view: TextView, data: LectureInformation?) {
 
 @BindingAdapter("lectureCancelDate")
 fun setLectureCancelDate(view: TextView, data: LectureCancellation?) {
-    view.text = if (data != null ) {
+    view.text = if (data != null) {
         view.context.getString(R.string.text_lecture_cancel_created_date, data.createdDate.formatYearMonthDay())
     } else {
         null
@@ -66,7 +66,7 @@ fun setLectureCancelDate(view: TextView, data: LectureCancellation?) {
 
 @BindingAdapter("myClassWeekPeriod")
 fun setMyClassWeekPeriod(view: TextView, data: MyClass?) {
-    data ?: run {
+    if (data == null) {
         view.text = null
         return
     }
@@ -83,7 +83,7 @@ fun setMyClassWeekPeriod(view: TextView, data: MyClass?) {
 
 @BindingAdapter("myClassDayPeriod")
 fun setMyClassDayPeriod(view: TextView, data: MyClass?) {
-    data ?: run {
+    if (data == null) {
         view.text = null
         return
     }
@@ -93,13 +93,13 @@ fun setMyClassDayPeriod(view: TextView, data: MyClass?) {
 
 @BindingAdapter("lectureInfoWeekPeriod")
 fun setLectureInfoWeekPeriod(view: TextView, data: LectureInformation?) {
-    data ?: run {
+    if (data == null) {
         view.text = null
         return
     }
 
     val semester: String = data.semester.let {
-        if (arrayOf("前", "後", "春", "秋").contains(it)) { "${it}学期" } else { it }
+        if (arrayOf("前", "後", "春", "秋").contains(it)) "${it}学期" else it
     }
     val period: String = data.period.let {
         if (it != "-") "${it}限" else ""
@@ -115,7 +115,7 @@ fun setLectureInfoWeekPeriod(view: TextView, data: LectureInformation?) {
 
 @BindingAdapter("lectureCancelWeekPeriod")
 fun setLectureCancelWeekPeriod(view: TextView, data: LectureCancellation?) {
-    data ?: run {
+    if (data == null) {
         view.text = null
         return
     }
@@ -138,11 +138,7 @@ fun setSyllabusText(view: TextView, scheduleCode: String?) {
 
 @BindingAdapter("bold")
 fun setBold(view: TextView, isBold: Boolean) {
-    if (isBold) {
-        view.setTypeface(null, Typeface.BOLD)
-    } else {
-        view.setTypeface(null, Typeface.NORMAL)
-    }
+    view.setTypeface(null, if (isBold) Typeface.BOLD else Typeface.NORMAL)
 }
 
 @BindingAdapter("entities")

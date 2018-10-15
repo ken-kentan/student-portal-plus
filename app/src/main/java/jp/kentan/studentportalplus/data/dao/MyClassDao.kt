@@ -32,17 +32,17 @@ class MyClassDao(
 
     fun update(data: MyClass) = database.use {
         update(TABLE_NAME,
-                "hash"          to data.hash,
-                "week"          to data.week.code,
-                "period"        to data.period,
+                "hash" to data.hash,
+                "week" to data.week.code,
+                "period" to data.period,
                 "schedule_code" to data.scheduleCode,
-                "credit"        to data.credit,
-                "category"      to data.category,
-                "subject"       to data.subject,
-                "instructor"    to data.instructor,
-                "user"          to data.isUser,
-                "color"         to data.color,
-                "location"      to data.location)
+                "credit" to data.credit,
+                "category" to data.category,
+                "subject" to data.subject,
+                "instructor" to data.instructor,
+                "user" to data.isUser,
+                "color" to data.color,
+                "location" to data.location)
                 .whereArgs("_id=${data.id}")
                 .exec()
     }
@@ -79,7 +79,7 @@ class MyClassDao(
 
                 st = compileStatement("DELETE FROM $TABLE_NAME WHERE user=0 AND hash NOT IN ($args)")
                 list.forEachIndexed { i, d ->
-                    st.bindLong(i+1, d.hash)
+                    st.bindLong(i + 1, d.hash)
                 }
 
                 st.executeUpdateDelete()
@@ -93,7 +93,7 @@ class MyClassDao(
         transaction {
             val st = compileStatement("INSERT INTO $TABLE_NAME VALUES(?,?,?,?,?,?,?,?,?,?,?,?);")
 
-            list.forEach{
+            list.forEach {
                 st.bindNull(1)
                 st.bindLong(2, it.hash)
                 st.bindLong(3, it.week.code.toLong())

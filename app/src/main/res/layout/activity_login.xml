@@ -5,6 +5,7 @@
     tools:context="jp.kentan.studentportalplus.ui.login.LoginActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="jp.kentan.studentportalplus.ui.login.LoginViewModel" />

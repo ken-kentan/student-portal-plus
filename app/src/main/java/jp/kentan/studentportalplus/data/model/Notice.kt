@@ -24,7 +24,7 @@ data class Notice(
             }
 
             override fun areContentsTheSame(oldItem: Notice, newItem: Notice): Boolean {
-                return  oldItem == newItem
+                return oldItem == newItem
             }
         }
     }

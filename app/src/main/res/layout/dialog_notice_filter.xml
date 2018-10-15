@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="query"
             type="jp.kentan.studentportalplus.data.component.NoticeQuery" />
@@ -75,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_read"
-                    android:checked="@{query.read}"  />
+                    android:checked="@{query.read}" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/favorite_chip"
@@ -83,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_favorite"
-                    android:checked="@{query.favorite}"  />
+                    android:checked="@{query.favorite}" />
 
             </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>

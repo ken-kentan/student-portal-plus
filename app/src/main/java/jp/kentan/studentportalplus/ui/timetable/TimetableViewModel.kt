@@ -93,7 +93,7 @@ class TimetableViewModel(
         val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
         return if (day in Calendar.MONDAY..Calendar.FRIDAY) {
-            ClassWeek.valueOf(day-1)
+            ClassWeek.valueOf(day - 1)
         } else {
             ClassWeek.UNKNOWN
         }

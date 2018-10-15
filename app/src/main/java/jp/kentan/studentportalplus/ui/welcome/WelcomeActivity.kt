@@ -3,6 +3,8 @@ package jp.kentan.studentportalplus.ui.welcome
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -38,7 +40,13 @@ class WelcomeActivity : AppCompatActivity() {
             })
         }
         binding.webView.apply {
-            webViewClient = viewModel.getWebViewClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView, url: String?) {
+                    if (!title.contains(context.getString(R.string.title_terms))) {
+                        view.loadUrl(context.getString(R.string.url_terms_local))
+                    }
+                }
+            }
             loadUrl(getString(R.string.url_terms))
         }
     }

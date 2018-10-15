@@ -16,7 +16,7 @@ class NoticeViewModel(
     var query = NoticeQuery()
         private set(value) {
             field = value
-            queryLiveData .value = query
+            queryLiveData.value = query
         }
 
     private val queryLiveData = MutableLiveData<NoticeQuery>()

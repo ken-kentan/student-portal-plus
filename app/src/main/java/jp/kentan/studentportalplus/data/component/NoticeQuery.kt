@@ -40,10 +40,10 @@ data class NoticeQuery(
                     set(Calendar.HOUR_OF_DAY, 0)
                 }
 
-                when(this) {
-                    WEEK -> { calendar.set(Calendar.DAY_OF_WEEK , calendar.firstDayOfWeek) }
-                    MONTH -> { calendar.set(Calendar.DAY_OF_MONTH, 1) }
-                    YEAR -> { calendar.set(Calendar.DAY_OF_YEAR , 1) }
+                when (this) {
+                    WEEK -> calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+                    MONTH -> calendar.set(Calendar.DAY_OF_MONTH, 1)
+                    YEAR -> calendar.set(Calendar.DAY_OF_YEAR, 1)
                     else -> {}
                 }
 

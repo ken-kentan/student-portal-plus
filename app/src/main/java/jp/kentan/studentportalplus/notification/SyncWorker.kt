@@ -20,7 +20,7 @@ import java.io.StringWriter
 import java.util.*
 import javax.inject.Inject
 
-class SyncWorker(context : Context, params : WorkerParameters) : Worker(context, params) {
+class SyncWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     companion object {
         const val NAME = "sync_worker"

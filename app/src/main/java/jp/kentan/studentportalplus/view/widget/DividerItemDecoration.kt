@@ -51,7 +51,7 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
 
         // Last position
-        if (parent.getChildAdapterPosition(view) == state.itemCount -1) {
+        if (parent.getChildAdapterPosition(view) == state.itemCount - 1) {
             outRect.set(0, 0, 0, 0)
             return
         }

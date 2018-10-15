@@ -40,7 +40,9 @@ class MainViewModel(
     fun onActivityCreated(isSync: Boolean) {
         portalRepository.loadFromDb()
 
-        if (isSync) { onRefresh() }
+        if (isSync) {
+            onRefresh()
+        }
     }
 
     fun onRefresh() {

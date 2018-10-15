@@ -88,7 +88,8 @@ class LoginViewModel(
             if (isSuccess) {
                 loginSuccess.postValue(Unit)
             } else {
-                message.set(errorMessage ?: this@LoginViewModel.context.getString(R.string.error_unknown))
+                message.set(errorMessage
+                        ?: this@LoginViewModel.context.getString(R.string.error_unknown))
                 loading.set(false)
             }
         }
@@ -96,7 +97,9 @@ class LoginViewModel(
 
     private fun ObservableField<String>.setErrorCancelCallback(error: SingleLiveData<Boolean>) {
         addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) { error.value = false }
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                error.value = false
+            }
         })
     }
 
