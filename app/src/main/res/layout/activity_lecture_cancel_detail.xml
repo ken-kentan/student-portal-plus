@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> viewModel.onAttendClick(viewModel.lectureCancel)}"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_add"
             app:attend="@{viewModel.lectureCancel.attend}"
             app:backgroundTint="@color/red_600"
