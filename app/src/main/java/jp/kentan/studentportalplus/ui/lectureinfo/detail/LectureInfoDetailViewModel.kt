@@ -57,7 +57,7 @@ class LectureInfoDetailViewModel(
                     indefiniteSnackbar.postValue(R.string.error_update)
                 }
             }
-        } else {
+        } else if (data.attend != LectureAttend.PORTAL) {
             showAttendNotDialog.value = data.subject
         }
     }
