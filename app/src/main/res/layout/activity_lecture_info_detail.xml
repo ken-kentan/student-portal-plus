@@ -53,12 +53,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> viewModel.onAttendClick(viewModel.lectureInfo)}"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_add"
             app:attend="@{viewModel.lectureInfo.attend}"
             app:backgroundTint="@color/red_600"
             app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom|end"
-            android:visibility="gone" />
+            app:layout_anchorGravity="bottom|end"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

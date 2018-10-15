@@ -55,7 +55,7 @@
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/grey_600"
             android:textSize="14sp"
             android:text="@{data.instructor}"
