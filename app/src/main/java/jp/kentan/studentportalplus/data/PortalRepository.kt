@@ -20,9 +20,9 @@ import jp.kentan.studentportalplus.data.parser.NoticeParser
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
 import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
 import jp.kentan.studentportalplus.util.getSimilarSubjectThresholdFloat
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.defaultSharedPreferences
 
 class PortalRepository(

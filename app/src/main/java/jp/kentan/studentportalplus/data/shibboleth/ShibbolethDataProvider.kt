@@ -15,7 +15,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import jp.kentan.studentportalplus.data.model.User
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.KeyPairGenerator
@@ -171,7 +172,7 @@ class ShibbolethDataProvider(
             result.value = it
         }
 
-        launch {
+        GlobalScope.launch {
             result.postValue(
                     User(
                             name = decrypt(preferences.getString(KEY_NAME, null)) ?: "",

@@ -9,8 +9,8 @@ import jp.kentan.studentportalplus.data.component.LectureAttend
 import jp.kentan.studentportalplus.data.model.LectureCancellation
 import jp.kentan.studentportalplus.ui.SingleLiveData
 import jp.kentan.studentportalplus.util.formatYearMonthDay
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class LectureCancelDetailViewModel(

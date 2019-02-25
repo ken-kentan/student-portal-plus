@@ -22,10 +22,9 @@ import jp.kentan.studentportalplus.ui.web.WebActivity
 import jp.kentan.studentportalplus.util.formatYearMonthDayHms
 import jp.kentan.studentportalplus.util.getShibbolethLastLoginDate
 import jp.kentan.studentportalplus.util.isEnabledSync
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.android.Main
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.defaultSharedPreferences
 import java.util.*
 import javax.inject.Inject

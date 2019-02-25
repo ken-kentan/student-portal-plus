@@ -15,8 +15,8 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.SingleLiveData
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MyClassEditViewModel(
         private val portalRepository: PortalRepository

@@ -8,8 +8,8 @@ import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.SingleLiveData
 import jp.kentan.studentportalplus.util.formatYearMonthDay
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class NoticeDetailViewModel(
         private val context: Application,

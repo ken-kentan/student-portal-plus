@@ -13,7 +13,7 @@ import jp.kentan.studentportalplus.util.JaroWinklerDistance
 import jp.kentan.studentportalplus.util.getNotificationType
 import jp.kentan.studentportalplus.util.getSimilarSubjectThresholdFloat
 import jp.kentan.studentportalplus.util.isEnabledDetailError
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -38,7 +38,7 @@ class SyncWorker(context: Context, params: WorkerParameters) : Worker(context, p
     override fun doWork(): Result {
         if (isInMidnight() && !inputData.getBoolean(IGNORE_MIDNIGHT, false)) {
             Log.d(TAG, "Skipped because of midnight")
-            return Result.SUCCESS
+            return Result.success()
         }
 
         (applicationContext as StudentPortalPlus).component.inject(this)
@@ -72,7 +72,7 @@ class SyncWorker(context: Context, params: WorkerParameters) : Worker(context, p
             }
         }
 
-        return Result.SUCCESS
+        return Result.success()
     }
 
     private fun isInMidnight(): Boolean {
