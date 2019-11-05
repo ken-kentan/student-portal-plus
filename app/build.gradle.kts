@@ -112,3 +112,5 @@ dependencies {
     androidTestImplementation(Deps.Test.kotlinCoroutines)
     androidTestImplementation(Deps.Test.commonLang)
 }
+
+apply(plugin = "com.google.gms.google-services")
