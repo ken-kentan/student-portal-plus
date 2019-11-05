@@ -28,4 +28,6 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Distribute App
-        run: ./gradlew assembleDebug appDistributionUploadDebug
+        run: |
+          echo $GOOGLE_SERVICES_JSON | base64 --decode --ignore-garbage > .app/google-services.json
+          ./gradlew assembleDebug appDistributionUploadDebug
