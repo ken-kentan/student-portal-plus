@@ -2,6 +2,8 @@ object Deps {
     object GradlePlugin {
         const val android = "com.android.tools.build:gradle:3.5.1"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
+        const val firebaseAppDistribution =
+            "com.google.firebase:firebase-appdistribution-gradle:1.1.0"
     }
 
     object Kotlin {
