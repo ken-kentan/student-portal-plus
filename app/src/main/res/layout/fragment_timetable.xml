@@ -1,374 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.timetable.TimetableFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="jp.kentan.studentportalplus.ui.timetable.TimetableViewModel" />
-    </data>
-
-    <FrameLayout
+    <ViewSwitcher
+        android:id="@+id/view_switcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateFirstView="false"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:measureAllChildren="false"
+        android:outAnimation="@android:anim/slide_out_right">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/grid_constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/monday_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/timetable_grid_period_width"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/name_week_monday"
+                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                app:layout_constraintEnd_toStartOf="@id/tuesday_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tuesday_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/name_week_tuesday"
+                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                app:layout_constraintEnd_toStartOf="@id/wednesday_text_view"
+                app:layout_constraintStart_toEndOf="@id/monday_text_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/wednesday_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/name_week_wednesday"
+                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                app:layout_constraintEnd_toStartOf="@id/thursday_text_view"
+                app:layout_constraintStart_toEndOf="@id/tuesday_text_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/thursday_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/name_week_thursday"
+                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                app:layout_constraintEnd_toStartOf="@id/friday_text_view"
+                app:layout_constraintStart_toEndOf="@id/wednesday_text_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/friday_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/name_week_friday"
+                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/thursday_text_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/grid_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/monday_text_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey_200"
-            app:isVisible="@{!safeUnbox(viewModel.isGridLayout)}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone" />
-
-        <TextView
-            android:id="@+id/note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center_horizontal"
-            android:text="@string/text_my_class_empty"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/grid_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grey_50"
-            android:paddingTop="3dp"
-            app:isVisible="@{safeUnbox(viewModel.isGridLayout)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:id="@+id/corner"
-                android:layout_width="30dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/monday_header"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/monday_header" />
-
-            <TextView
-                android:id="@+id/monday_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/name_monday"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/tuesday_header"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/corner"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tuesday_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/name_tuesday"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/monday_header"
-                app:layout_constraintEnd_toStartOf="@+id/wednesday_header"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/monday_header"
-                app:layout_constraintTop_toTopOf="@+id/monday_header" />
-
-            <TextView
-                android:id="@+id/wednesday_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/name_wednesday"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/tuesday_header"
-                app:layout_constraintEnd_toStartOf="@+id/thursday_header"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/tuesday_header"
-                app:layout_constraintTop_toTopOf="@+id/tuesday_header" />
-
-            <TextView
-                android:id="@+id/thursday_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/name_thursday"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/wednesday_header"
-                app:layout_constraintEnd_toStartOf="@+id/friday_header"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/wednesday_header"
-                app:layout_constraintTop_toTopOf="@+id/wednesday_header" />
-
-            <TextView
-                android:id="@+id/friday_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/name_friday"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/thursday_header"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/thursday_header"
-                app:layout_constraintTop_toTopOf="@+id/thursday_header" />
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:fillViewport="true"
-                android:requiresFadingEdge="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/monday_header">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/grid_recycler_view"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:background="@color/grey_200"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="5"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/period1_header"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:id="@+id/period1_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period1_header"
-                        app:layout_constraintTop_toTopOf="@+id/period1_header" />
-
-                    <TextView
-                        android:id="@+id/period1_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8:50"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period1_header"
-                        app:layout_constraintTop_toTopOf="@+id/period1_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period1_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="1"
-                        android:textColor="@color/colorPrimary"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period2_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period2_header"
-                        app:layout_constraintTop_toTopOf="@+id/period2_header" />
-
-                    <TextView
-                        android:id="@+id/period2_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10:30"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period2_header"
-                        app:layout_constraintTop_toTopOf="@+id/period2_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period2_header"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="2"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period1_header"
-                        app:layout_constraintStart_toStartOf="@+id/period1_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period1_header"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period3_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period3_header"
-                        app:layout_constraintTop_toTopOf="@+id/period3_header" />
-
-                    <TextView
-                        android:id="@+id/period3_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12:50"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period3_header"
-                        app:layout_constraintTop_toTopOf="@+id/period3_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period3_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="3"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period2_header"
-                        app:layout_constraintStart_toStartOf="@+id/period2_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period2_header"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period4_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period4_header"
-                        app:layout_constraintTop_toTopOf="@+id/period4_header" />
-
-                    <TextView
-                        android:id="@+id/period4_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14:30"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period4_header"
-                        app:layout_constraintTop_toTopOf="@+id/period4_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period4_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="4"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period3_header"
-                        app:layout_constraintStart_toStartOf="@+id/period3_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period3_header"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period5_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period5_header"
-                        app:layout_constraintTop_toTopOf="@+id/period5_header" />
-
-                    <TextView
-                        android:id="@+id/period5_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="16:10"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period5_header"
-                        app:layout_constraintTop_toTopOf="@+id/period5_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period5_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="5"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period4_header"
-                        app:layout_constraintStart_toStartOf="@+id/period4_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period4_header"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period6_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period6_header"
-                        app:layout_constraintTop_toTopOf="@+id/period6_header" />
-
-                    <TextView
-                        android:id="@+id/period6_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="17:50"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period6_header"
-                        app:layout_constraintTop_toTopOf="@+id/period6_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period6_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="6"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period5_header"
-                        app:layout_constraintStart_toStartOf="@+id/period5_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period5_header"
-                        tools:ignore="HardcodedText" />
-
-                    <View
-                        android:id="@+id/period7_divider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider"
-                        app:layout_constraintRight_toRightOf="@+id/period7_header"
-                        app:layout_constraintTop_toTopOf="@+id/period7_header" />
-
-                    <TextView
-                        android:id="@+id/period7_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19:30"
-                        android:textColor="@color/grey_600"
-                        android:textSize="10sp"
-                        app:layout_constraintEnd_toEndOf="@+id/period7_header"
-                        app:layout_constraintTop_toTopOf="@+id/period7_divider"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                    <TextView
-                        android:id="@+id/period7_header"
-                        android:layout_width="30dp"
-                        android:layout_height="@dimen/timetable_grid_height"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="7"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintEnd_toEndOf="@+id/period6_header"
-                        app:layout_constraintStart_toStartOf="@+id/period6_header"
-                        app:layout_constraintTop_toBottomOf="@+id/period6_header"
-                        tools:ignore="HardcodedText" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
+    </ViewSwitcher>
 </layout>

@@ -1,73 +1,85 @@
 package jp.kentan.studentportalplus.ui.login
 
 import android.app.Application
-import androidx.databinding.Observable
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.shibboleth.ShibbolethClient
-import jp.kentan.studentportalplus.data.shibboleth.ShibbolethDataProvider
-import jp.kentan.studentportalplus.ui.SingleLiveData
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
+import jp.kentan.studentportalplus.data.UserRepository
+import jp.kentan.studentportalplus.ui.Event
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
-        private val context: Application,
-        private val provider: ShibbolethDataProvider
-) : AndroidViewModel(context) {
+class LoginViewModel @Inject constructor(
+    application: Application,
+    private val userRepository: UserRepository
+) : AndroidViewModel(application) {
 
-    val loading = ObservableBoolean()
-    val username = ObservableField<String>()
-    val password = ObservableField<String>()
-    val message = ObservableField<String>()
+    val isLoading = MutableLiveData<Boolean>()
 
-    val isEnabledErrorUsername = SingleLiveData<Boolean>()
-    val isEnabledErrorPassword = SingleLiveData<Boolean>()
+    val message = MutableLiveData<String>()
 
-    val loginSuccess = SingleLiveData<Unit>()
-    val validation = SingleLiveData<ValidationResult>()
-    val hideSoftInput = SingleLiveData<Unit>()
+    val username = MutableLiveData<String>()
+    val password = MutableLiveData<String>()
 
-    private var loginJob: Job? = null
+    private val _errorUsername = MediatorLiveData<Int>().apply {
+        addSource(username) { value = null }
+    }
+    val errorUsername: LiveData<Int>
+        get() = _errorUsername
 
-    init {
-        username.setErrorCancelCallback(isEnabledErrorUsername)
-        password.setErrorCancelCallback(isEnabledErrorPassword)
+    private val _errorPassword = MediatorLiveData<Int>().apply {
+        addSource(password) { value = null }
+    }
+    val errorPassword: LiveData<Int>
+        get() = _errorPassword
+
+    val onPasswordEditorActionListener = TextView.OnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
+            onLoginClick()
+            return@OnEditorActionListener true
+        }
+
+        return@OnEditorActionListener false
     }
 
-    fun onActivityCreated() {
-        val username = provider.getUsername() ?: return
+    private val _finishActivity = MutableLiveData<Boolean>()
+    val finishActivity: LiveData<Boolean>
+        get() = _finishActivity
 
-        this.username.set(username)
-    }
+    private val _hideSoftInput = MutableLiveData<Event<Unit>>()
+    val hideSoftInput: LiveData<Event<Unit>>
+        get() = _hideSoftInput
 
-    fun cancelLogin() {
-        loginJob?.cancel()
+    private val unknownErrorMessage = application.getString(R.string.error_unknown)
+
+    private var shouldLaunchMainActivity = false
+
+    fun onActivityCreate(shouldLaunchMainActivity: Boolean) {
+        this.shouldLaunchMainActivity = shouldLaunchMainActivity
     }
 
     fun onLoginClick() {
-        val username = username.get() ?: ""
-        val password = password.get() ?: ""
+        _hideSoftInput.value = Event(Unit)
 
-        var result = ValidationResult()
+        val username = username.value.orEmpty()
+        val password = password.value.orEmpty()
 
-        if (password.isEmpty()) {
-            result = result.copy(isEmptyPassword = true)
-        } else if (!password.isValidPassword()) {
-            result = result.copy(isInvalidPassword = true)
-        }
+        _errorUsername.value = null
+        _errorPassword.value = null
 
-        if (username.isEmpty()) {
-            result = result.copy(isEmptyUsername = true)
+        if (username.isBlank()) {
+            _errorUsername.value = R.string.error_field_empty
         } else if (!username.isValidUsername()) {
-            result = result.copy(isInvalidUsername = true)
+            _errorUsername.value = R.string.error_invalid_username
+        }
+        if (password.isBlank()) {
+            _errorPassword.value = R.string.error_field_empty
+        } else if (!password.isValidPassword()) {
+            _errorPassword.value = R.string.error_invalid_password
         }
 
-        if (result.isError) {
-            validation.value = result
+        if (_errorUsername.value != null || _errorPassword.value != null) {
             return
         }
 
@@ -75,35 +87,25 @@ class LoginViewModel(
     }
 
     private fun login(username: String, password: String) {
-        hideSoftInput.value = Unit
-        loginJob?.cancel()
+        isLoading.value = true
 
-        loginJob = GlobalScope.launch {
-            loading.set(true)
-
-            val (isSuccess, errorMessage) = async {
-                ShibbolethClient(this@LoginViewModel.context, provider).auth(username, password)
-            }.await()
-
-            if (isSuccess) {
-                loginSuccess.postValue(Unit)
-            } else {
-                message.set(errorMessage
-                        ?: this@LoginViewModel.context.getString(R.string.error_unknown))
-                loading.set(false)
-            }
+        viewModelScope.launch {
+            runCatching {
+                userRepository.login(username, password)
+            }.fold(
+                onSuccess = {
+                    _finishActivity.value = shouldLaunchMainActivity
+                },
+                onFailure = {
+                    message.value = it.message ?: unknownErrorMessage
+                    isLoading.value = false
+                }
+            )
         }
-    }
-
-    private fun ObservableField<String>.setErrorCancelCallback(error: SingleLiveData<Boolean>) {
-        addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                error.value = false
-            }
-        })
     }
 
     private fun String.isValidUsername() = startsWith('b') || startsWith('m') || startsWith('d')
 
     private fun String.isValidPassword() = length in 8..24
+
 }

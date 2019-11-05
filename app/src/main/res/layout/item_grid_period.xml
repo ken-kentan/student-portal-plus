@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="period"
+            type="jp.kentan.studentportalplus.data.vo.Period" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="@dimen/timetable_grid_period_width"
+        android:layout_height="@dimen/timetable_grid_height">
+
+        <TextView
+            android:id="@+id/start_time_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="end"
+            android:text="@{period.startTimeResId}"
+            android:textAppearance="@style/TextAppearance.AppTheme.PeriodStartTime"
+            tools:text="10:30" />
+
+        <TextView
+            android:id="@+id/period_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{Integer.toString(period.value)}"
+            android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+            tools:text="1" />
+
+    </FrameLayout>
+</layout>

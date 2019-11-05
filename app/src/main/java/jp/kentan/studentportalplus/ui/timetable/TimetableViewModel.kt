@@ -1,122 +1,51 @@
 package jp.kentan.studentportalplus.ui.timetable
 
-import android.content.SharedPreferences
-import androidx.lifecycle.*
-import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.ClassWeek
-import jp.kentan.studentportalplus.data.model.MyClass
-import jp.kentan.studentportalplus.ui.SingleLiveData
-import jp.kentan.studentportalplus.util.isGridTimetableLayout
-import jp.kentan.studentportalplus.util.setGridTimetableLayout
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.vo.DayOfWeek
+import jp.kentan.studentportalplus.data.vo.Period
+import jp.kentan.studentportalplus.ui.Event
+import javax.inject.Inject
 
-class TimetableViewModel(
-        private val preferences: SharedPreferences,
-        private val portalRepository: PortalRepository
+class TimetableViewModel @Inject constructor(
+    attendCourseRepository: AttendCourseRepository,
+    private val localPreferences: LocalPreferences
 ) : ViewModel() {
 
-    companion object {
-        private val EMPTY_ITEM = MyClass(
-                hash = 0,
-                week = ClassWeek.UNKNOWN,
-                period = 1,
-                scheduleCode = "",
-                credit = 0,
-                category = "",
-                subject = "",
-                instructor = "",
-                isUser = false
-        )
+    val attendCourseList = attendCourseRepository.getListFlow().asLiveData()
+
+    private val _isGridLayout = MutableLiveData<Boolean>(localPreferences.isGridTimetableLayout)
+    val isGridLayout: LiveData<Boolean>
+        get() = _isGridLayout
+
+    private val _startEditAttendCourseActivity = MutableLiveData<Event<Pair<Period, DayOfWeek>>>()
+    val startEditAttendCourseActivity: LiveData<Event<Pair<Period, DayOfWeek>>>
+        get() = _startEditAttendCourseActivity
+
+    private val _startAttendCourseDetailActivity = MutableLiveData<Event<Long>>()
+    val startAttendCourseDetailActivity: LiveData<Event<Long>>
+        get() = _startAttendCourseDetailActivity
+
+    val onAttendCourseClick = { id: Long ->
+        _startAttendCourseDetailActivity.value = Event(id)
     }
 
-    val isGridLayout = MutableLiveData<Boolean>()
-
-    val myClassList: LiveData<List<MyClass>> = Transformations.switchMap(isGridLayout) { isGrid ->
-        dayOfWeek.value = getDayOfWeek()
-
-        if (isGrid) {
-            val result = MediatorLiveData<List<MyClass>>()
-
-            result.addSource(portalRepository.myClassList) { list ->
-                GlobalScope.launch {
-                    result.postValue(list.toWeekTimetable())
-                }
-            }
-
-            return@switchMap result
-        } else {
-            return@switchMap portalRepository.myClassList
-        }
+    val onBlankClick = { period: Period, dayOfWeek: DayOfWeek ->
+        _startEditAttendCourseActivity.value = Event(Pair(period, dayOfWeek))
     }
 
-    val dayOfWeek = MutableLiveData<ClassWeek>()
-    val notifyDataSetChanged = SingleLiveData<Unit>()
-    val startDetailActivity = SingleLiveData<Long>()
-    val startAddActivity = SingleLiveData<Pair<ClassWeek, Int>>()
-
-    init {
-        isGridLayout.value = preferences.isGridTimetableLayout()
+    fun onAddClick() {
+        _startEditAttendCourseActivity.value = Event(Pair(Period.ONE, DayOfWeek.MONDAY))
     }
 
-    fun onFragmentResume() {
-        if (isGridLayout.value == true) {
-            dayOfWeek.value = getDayOfWeek()
-            notifyDataSetChanged.value = Unit
-        }
-    }
+    fun onSwitchLayoutClick() {
+        val isGrid = requireNotNull(_isGridLayout.value)
 
-    fun onClick(id: Long) {
-        startDetailActivity.value = id
-    }
-
-    fun onAddClick(week: ClassWeek, period: Int) {
-        startAddActivity.value = week to period
-    }
-
-    fun onWeekLayoutClick() {
-        if (isGridLayout.value != true) {
-            isGridLayout.value = true
-            preferences.setGridTimetableLayout(true)
-        }
-    }
-
-    fun onListLayoutClick() {
-        if (isGridLayout.value != false) {
-            isGridLayout.value = false
-            preferences.setGridTimetableLayout(false)
-        }
-    }
-
-    private fun getDayOfWeek(): ClassWeek {
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-
-        return if (day in Calendar.MONDAY..Calendar.FRIDAY) {
-            ClassWeek.valueOf(day - 1)
-        } else {
-            ClassWeek.UNKNOWN
-        }
-    }
-
-    private fun List<MyClass>.toWeekTimetable(): List<MyClass> {
-        val list = mutableListOf<MyClass>()
-
-        // id for empty
-        var emptyId: Long = -1
-
-        for (period in 1..7) {
-            for (week in ClassWeek.TIMETABLE) {
-                val myClass = find { it.period == period && it.week == week }
-
-                if (myClass != null) {
-                    list.add(myClass)
-                } else {
-                    list.add(EMPTY_ITEM.copy(id = emptyId--, week = week, period = period))
-                }
-            }
-        }
-
-        return list
+        _isGridLayout.value = !isGrid
+        localPreferences.isGridTimetableLayout = !isGrid
     }
 }

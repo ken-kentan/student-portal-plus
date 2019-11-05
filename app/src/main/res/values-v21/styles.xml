@@ -1,26 +1,11 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+    <style name="AppTheme" parent="Platform.AppTheme">
+        <item name="android:navigationBarColor">?attr/colorPrimarySurface</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/grey_100</item>
-        <item name="colorPrimaryDark">@color/grey_300</item>
-        <item name="actionBarTheme">@style/AppTheme.Light.AppBarOverlay</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <style name="AppTheme.TransparentStatus">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>

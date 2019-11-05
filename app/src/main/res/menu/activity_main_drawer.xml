@@ -5,27 +5,27 @@
 
     <group android:id="@+id/main_section" android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_dashboard"
+            android:id="@+id/navigation_dashboard"
             android:icon="@drawable/ic_menu_dashboard"
             android:title="@string/menu_dashboard" />
 
         <item
-            android:id="@+id/nav_timetable"
+            android:id="@+id/navigation_timetable"
             android:icon="@drawable/ic_menu_timetable"
             android:title="@string/menu_timetable" />
 
         <item
-            android:id="@+id/nav_lecture_info"
-            android:icon="@drawable/ic_menu_lecture_info"
+            android:id="@+id/navigation_lecture_information"
+            android:icon="@drawable/ic_menu_lecture_information"
             android:title="@string/menu_lecture_info" />
 
         <item
-            android:id="@+id/nav_lecture_cancel"
-            android:icon="@drawable/ic_menu_lecture_cancel"
+            android:id="@+id/navigation_lecture_cancellation"
+            android:icon="@drawable/ic_menu_lecture_cancellation"
             android:title="@string/menu_lecture_cancel" />
 
         <item
-            android:id="@+id/nav_notice"
+            android:id="@+id/navigation_notice"
             android:icon="@drawable/ic_menu_notice"
             android:title="@string/menu_notice" />
     </group>

@@ -1,84 +1,91 @@
 package jp.kentan.studentportalplus.ui.timetable
 
-import android.annotation.SuppressLint
-import android.graphics.Typeface
+import android.content.Context
 import android.os.Bundle
-import android.view.*
-import android.widget.TextView
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.observe
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.databinding.FragmentTimetableBinding
-import jp.kentan.studentportalplus.ui.ViewModelFactory
-import jp.kentan.studentportalplus.ui.main.FragmentType
-import jp.kentan.studentportalplus.ui.main.MainViewModel
-import jp.kentan.studentportalplus.ui.myclass.detail.MyClassDetailActivity
-import jp.kentan.studentportalplus.ui.myclass.edit.MyClassEditActivity
+import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailActivity
+import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseActivity
+import jp.kentan.studentportalplus.ui.observeEvent
+import jp.kentan.studentportalplus.view.widget.DividerItemDecoration
 import javax.inject.Inject
 
-class TimetableFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = TimetableFragment()
-    }
+class TimetableFragment : Fragment(R.layout.fragment_timetable) {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var binding: FragmentTimetableBinding
-    private lateinit var viewModel: TimetableViewModel
+    private val timetableViewModel by activityViewModels<TimetableViewModel> { viewModelFactory }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_timetable, container, false)
-        binding.setLifecycleOwner(this)
+    private lateinit var timetableItemDecoration: TimetableItemDecoration
 
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        AndroidSupportInjection.inject(this)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
 
-        val provider = ViewModelProvider(requireActivity(), viewModelFactory)
+        val gridTimetableAdapter = TimetableAdapter(
+            layout = TimetableAdapter.Layout.GRID,
+            onAttendCourseClick = timetableViewModel.onAttendCourseClick,
+            onBlankClick = timetableViewModel.onBlankClick
+        )
+        val listTimetableAdapter = TimetableAdapter(
+            layout = TimetableAdapter.Layout.LIST,
+            onAttendCourseClick = timetableViewModel.onAttendCourseClick
+        )
 
-        viewModel = provider.get(TimetableViewModel::class.java)
+        timetableItemDecoration = TimetableItemDecoration(requireContext())
 
-        val adapter = MyClassAdapter(layoutInflater, viewModel::onClick, viewModel::onAddClick)
+        val binding = FragmentTimetableBinding.bind(view)
 
-        binding.viewModel = viewModel
         binding.gridRecyclerView.apply {
-            setAdapter(adapter)
-            isNestedScrollingEnabled = false
+            adapter = gridTimetableAdapter
             setHasFixedSize(true)
-            itemAnimator = null
+            addItemDecoration(timetableItemDecoration)
+            layoutManager = TimetableLayoutManager()
         }
         binding.listRecyclerView.apply {
-            setAdapter(adapter)
+            adapter = listTimetableAdapter
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(requireContext()))
         }
 
-        viewModel.subscribe(adapter)
+        timetableViewModel.attendCourseList.observe(viewLifecycleOwner) {
+            gridTimetableAdapter.submitList(it)
+            listTimetableAdapter.submitList(it)
+        }
+        timetableViewModel.isGridLayout.observe(viewLifecycleOwner) { isGrid ->
+            binding.viewSwitcher.displayedChild = if (isGrid) 0 else 1
+        }
+        timetableViewModel.startEditAttendCourseActivity.observeEvent(viewLifecycleOwner) { (period, dayOfWeek) ->
+            startActivity(
+                EditAttendCourseActivity.createIntent(
+                    requireContext(),
+                    period,
+                    dayOfWeek
+                )
+            )
+        }
+        timetableViewModel.startAttendCourseDetailActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(AttendCourseDetailActivity.createIntent(requireContext(), it))
+        }
+    }
 
-        // Call MainViewModel::onAttachFragment
-        provider.get(MainViewModel::class.java)
-                .onAttachFragment(FragmentType.TIMETABLE)
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.onFragmentResume()
+        timetableItemDecoration.syncCalenderByCurrentTime()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -86,81 +93,11 @@ class TimetableFragment : Fragment() {
         inflater.inflate(R.menu.timetable, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_add -> viewModel.onAddClick(ClassWeek.MONDAY, 1)
-            R.id.action_switch_layout -> showLayoutSelectPopup()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_add -> timetableViewModel.onAddClick()
+            R.id.action_switch_layout -> timetableViewModel.onSwitchLayoutClick()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun TimetableViewModel.subscribe(adapter: MyClassAdapter) {
-        val fragment = this@TimetableFragment
-
-        // Should call before adapter::submitList
-        isGridLayout.observe(fragment, Observer { isGrid ->
-            adapter.isGridLayout = isGrid
-        })
-
-        myClassList.observe(fragment, Observer { list ->
-            adapter.updateCalender()
-            adapter.submitList(list)
-
-            binding.note.isVisible = !adapter.isGridLayout && list.isEmpty()
-        })
-
-        dayOfWeek.observe(fragment, Observer { updateWeekHeaders(it) })
-
-        notifyDataSetChanged.observe(fragment, Observer {
-            adapter.updateCalender()
-            adapter.notifyDataSetChanged()
-        })
-
-        startDetailActivity.observe(fragment, Observer { id ->
-            startActivity(MyClassDetailActivity.createIntent(requireContext(), id))
-        })
-
-        startAddActivity.observe(fragment, Observer { (week, period) ->
-            startActivity(MyClassEditActivity.createIntent(requireContext(), week, period))
-        })
-    }
-
-    @SuppressLint("RestrictedApi")
-    private fun showLayoutSelectPopup() {
-        val anchor: View = requireActivity().findViewById(R.id.action_switch_layout)
-
-        val popup = PopupMenu(requireContext(), anchor).apply {
-            menuInflater.inflate(R.menu.popup_switch_layout, menu)
-            setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_view_week -> viewModel.onWeekLayoutClick()
-                    R.id.action_view_list -> viewModel.onListLayoutClick()
-                }
-                return@setOnMenuItemClickListener true
-            }
-            show()
-        }
-
-        (popup.menu as MenuBuilder).setOptionalIconsVisible(true)
-    }
-
-    private fun updateWeekHeaders(today: ClassWeek) {
-        binding.apply {
-            mondayHeader.setToday(today == ClassWeek.MONDAY)
-            tuesdayHeader.setToday(today == ClassWeek.TUESDAY)
-            wednesdayHeader.setToday(today == ClassWeek.WEDNESDAY)
-            thursdayHeader.setToday(today == ClassWeek.THURSDAY)
-            fridayHeader.setToday(today == ClassWeek.FRIDAY)
-        }
-    }
-
-    private fun TextView.setToday(isToday: Boolean) {
-        if (isToday) {
-            typeface = Typeface.DEFAULT_BOLD
-            setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
-        } else {
-            typeface = Typeface.DEFAULT
-            setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-        }
     }
 }

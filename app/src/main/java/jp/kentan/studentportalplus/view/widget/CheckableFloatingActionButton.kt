@@ -6,9 +6,9 @@ import android.widget.Checkable
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 abstract class CheckableFloatingActionButton @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = com.google.android.material.R.attr.floatingActionButtonStyle
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = com.google.android.material.R.attr.floatingActionButtonStyle
 ) : FloatingActionButton(context, attrs, defStyleAttr), Checkable {
 
     private var isChecked = false
@@ -16,14 +16,15 @@ abstract class CheckableFloatingActionButton @JvmOverloads constructor(
     override fun isChecked() = isChecked
 
     override fun toggle() {
-        isChecked = !isChecked
-        onCheckedChange()
+        val checked = !isChecked
+        isChecked = checked
+        onCheckChanged(checked)
     }
 
     override fun setChecked(checked: Boolean) {
         isChecked = checked
-        onCheckedChange()
+        onCheckChanged(checked)
     }
 
-    abstract fun onCheckedChange()
+    abstract fun onCheckChanged(isChecked: Boolean)
 }

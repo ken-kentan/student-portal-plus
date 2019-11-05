@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 public class JaroWinklerDistance {
 
-    public float getDistance(String s1, String s2) {
+    public static float getDistance(String s1, String s2) {
         int[] mtp = matches(s1, s2);
         float m = mtp[0];
         if (m == 0) {
@@ -36,7 +36,7 @@ public class JaroWinklerDistance {
         return j < 0.7D ? j : j + Math.min(0.1f, 1f / mtp[3]) * mtp[2] * (1 - j);
     }
 
-    private int[] matches(String s1, String s2) {
+    private static int[] matches(String s1, String s2) {
         String max, min;
         if (s1.length() > s2.length()) {
             max = s1;
@@ -90,6 +90,6 @@ public class JaroWinklerDistance {
                 break;
             }
         }
-        return new int[] { matches, transpositions / 2, prefix, max.length() };
+        return new int[]{matches, transpositions / 2, prefix, max.length()};
     }
 }

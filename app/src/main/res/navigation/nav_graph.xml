@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="jp.kentan.studentportalplus.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_lecture_information"
+        android:name="jp.kentan.studentportalplus.ui.lectureinformation.LectureInformationFragment"
+        android:label="@string/title_lecture_info"
+        tools:layout="@layout/fragment_list" />
+
+    <fragment
+        android:id="@+id/navigation_lecture_cancellation"
+        android:name="jp.kentan.studentportalplus.ui.lecturecancellation.LectureCancellationFragment"
+        android:label="@string/title_lecture_cancel"
+        tools:layout="@layout/fragment_list" />
+
+    <fragment
+        android:id="@+id/navigation_notice"
+        android:name="jp.kentan.studentportalplus.ui.notice.NoticeFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/navigation_timetable"
+        android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
+        android:label="@string/title_timetable" />
+</navigation>

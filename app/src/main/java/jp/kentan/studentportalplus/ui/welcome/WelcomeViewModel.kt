@@ -1,15 +1,19 @@
 package jp.kentan.studentportalplus.ui.welcome
 
-import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import jp.kentan.studentportalplus.ui.SingleLiveData
+import jp.kentan.studentportalplus.ui.Event
 
 class WelcomeViewModel : ViewModel() {
 
-    val isCheckedAgree = ObservableBoolean()
-    val startLoginActivity = SingleLiveData<Unit>()
+    val isAgreeChecked = MutableLiveData<Boolean>()
 
-    fun onClickShibboleth() {
-        startLoginActivity.value = Unit
+    private val _startLoginActivity = MutableLiveData<Event<Unit>>()
+    val startLoginActivity: LiveData<Event<Unit>>
+        get() = _startLoginActivity
+
+    fun onShibbolethClick() {
+        _startLoginActivity.value = Event(Unit)
     }
 }

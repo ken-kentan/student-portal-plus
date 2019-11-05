@@ -1,168 +1,114 @@
 package jp.kentan.studentportalplus.ui.dashboard
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ChangeBounds
-import androidx.transition.Fade
 import androidx.transition.TransitionManager
-import androidx.transition.TransitionSet
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.model.Lecture
 import jp.kentan.studentportalplus.databinding.FragmentDashboardBinding
-import jp.kentan.studentportalplus.ui.ViewModelFactory
-import jp.kentan.studentportalplus.ui.lecturecancel.detail.LectureCancelDetailActivity
-import jp.kentan.studentportalplus.ui.lectureinfo.detail.LectureInfoDetailActivity
-import jp.kentan.studentportalplus.ui.main.FragmentType
-import jp.kentan.studentportalplus.ui.main.MainViewModel
-import jp.kentan.studentportalplus.ui.myclass.detail.MyClassDetailActivity
-import jp.kentan.studentportalplus.ui.notice.detail.NoticeDetailActivity
+import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailActivity
+import jp.kentan.studentportalplus.ui.dashboard.adapter.LectureCancellationAdapter
+import jp.kentan.studentportalplus.ui.dashboard.adapter.LectureInformationAdapter
+import jp.kentan.studentportalplus.ui.dashboard.adapter.NoticeAdapter
+import jp.kentan.studentportalplus.ui.dashboard.adapter.TimetableAdapter
+import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
+import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
+import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
+import jp.kentan.studentportalplus.ui.observeEvent
 import javax.inject.Inject
 
-class DashboardFragment : Fragment() {
-
-    companion object {
-        private val TRANSITION by lazy(LazyThreadSafetyMode.NONE) {
-            TransitionSet()
-                    .setOrdering(TransitionSet.ORDERING_SEQUENTIAL)
-                    .addTransition(ChangeBounds())
-                    .addTransition(Fade(Fade.IN))
-        }
-
-        fun newInstance() = DashboardFragment()
-    }
+class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var binding: FragmentDashboardBinding
+    private val dashboardViewModel by activityViewModels<DashboardViewModel> { viewModelFactory }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
-        binding.setLifecycleOwner(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val binding = FragmentDashboardBinding.bind(view).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = dashboardViewModel
+        }
 
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        AndroidSupportInjection.inject(this)
-
-        val provider = ViewModelProvider(requireActivity(), viewModelFactory)
-
-        val viewModel = provider.get(DashboardViewModel::class.java)
-        val mainViewModel = provider.get(MainViewModel::class.java)
-
-        binding.viewModel = viewModel
-        binding.mainViewModel = mainViewModel
-
-        val myClassAdapter = MyClassAdapter(layoutInflater, viewModel::onMyClassClick)
-        val lectureInfoAdapter = LectureAdapter(layoutInflater, viewModel::onLectureInfoClick)
-        val lectureCancelAdapter = LectureAdapter(layoutInflater, viewModel::onLectureCancelClick)
-        val noticeAdapter = NoticeAdapter(layoutInflater, viewModel::onNoticeItemClick, viewModel::onNoticeFavoriteClick)
+        val attendCourseAdapter = TimetableAdapter(
+            parentCardView = binding.timetableCardView,
+            onItemClick = dashboardViewModel.onAttendCourseItemClick
+        )
+        val lectureInfoAdapter = LectureInformationAdapter(
+            onItemClick = dashboardViewModel.onLectureInformationItemClick,
+            onShowAllClick = dashboardViewModel.onLectureInformationShowAllClick
+        )
+        val lectureCancelAdapter = LectureCancellationAdapter(
+            onItemClick = dashboardViewModel.onLectureCancellationItemClick,
+            onShowAllClick = dashboardViewModel.onLectureCancellationShowAllClick
+        )
+        val noticeAdapter = NoticeAdapter(
+            onItemClick = dashboardViewModel.onNoticeItemClick,
+            onFavoriteClick = dashboardViewModel.onNoticeFavoriteClick,
+            onShowAllClick = dashboardViewModel.onNoticeShowAllClick
+        )
 
         binding.apply {
-            timetableRecyclerView.setup(myClassAdapter)
-            lectureInfoRecyclerView.setup(lectureInfoAdapter)
-            lectureCancelRecyclerView.setup(lectureCancelAdapter)
+            timetableRecyclerView.setup(attendCourseAdapter)
+            lectureInformationRecyclerView.setup(lectureInfoAdapter)
+            lectureCancellationRecyclerView.setup(lectureCancelAdapter)
             noticeRecyclerView.setup(noticeAdapter)
         }
 
-        viewModel.subscribe(myClassAdapter, lectureInfoAdapter, lectureCancelAdapter, noticeAdapter)
+        dashboardViewModel.portalSet.observe(viewLifecycleOwner) { set ->
+            TransitionManager.beginDelayedTransition(binding.layout)
 
-        // Call MainViewModel::onAttachFragment
-        mainViewModel.onAttachFragment(FragmentType.DASHBOARD)
-    }
-
-    private fun DashboardViewModel.subscribe(
-            myClassAdapter: MyClassAdapter,
-            lectureInfoAdapter: LectureAdapter,
-            lectureCancelAdapter: LectureAdapter,
-            noticeAdapter: NoticeAdapter
-    ) {
-        val fragment = this@DashboardFragment
-
-        portalDataSet.observe(fragment, Observer { set ->
-            TransitionManager.beginDelayedTransition(binding.layout, TRANSITION)
-
-            myClassAdapter.submitList(set.myClassList)
-            lectureInfoAdapter.submitList(set.lectureInfoList.take(DashboardViewModel.MAX_ITEM_SIZE), set.lectureInfoList.isInvisibleLastDivider())
-            lectureCancelAdapter.submitList(set.lectureCancelList.take(DashboardViewModel.MAX_ITEM_SIZE), set.lectureCancelList.isInvisibleLastDivider())
+            attendCourseAdapter.submitList(set.attendCourseList)
+            lectureInfoAdapter.submitList(set.lectureInfoList)
+            lectureCancelAdapter.submitList(set.lectureCancelList)
             noticeAdapter.submitList(set.noticeList)
 
-            if (set.myClassList.isNotEmpty()) {
-                val week = set.myClassList.first().week
-                binding.timetableHeader.text = getString(R.string.name_timetable, week.fullDisplayName)
-                binding.timetableCard.isVisible = true
-            } else {
-                binding.timetableCard.isVisible = false
+            binding.layout.requestLayout()
+        }
+
+        val navOptions = navOptions {
+            anim {
+                enter = R.anim.nav_default_enter_anim
+                exit = R.anim.nav_default_exit_anim
+                popEnter = R.anim.nav_default_pop_enter_anim
+                popExit = R.anim.nav_default_pop_exit_anim
             }
+        }
 
-            updateCardView(
-                    binding.lectureInfoHeader,
-                    binding.lectureInfoNote,
-                    binding.lectureInfoButton,
-                    R.string.name_lecture_info,
-                    set.lectureInfoList.size)
+        dashboardViewModel.navigation.observeEvent(viewLifecycleOwner) {
+            findNavController().navigate(it, null, navOptions)
+        }
+        dashboardViewModel.startAttendCourseDetailActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(AttendCourseDetailActivity.createIntent(requireContext(), it))
+        }
+        dashboardViewModel.startLectureInfoActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(LectureInformationDetailActivity.createIntent(requireContext(), it))
+        }
+        dashboardViewModel.startLectureCancelActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(LectureCancellationDetailActivity.createIntent(requireContext(), it))
+        }
+        dashboardViewModel.startNoticeActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(NoticeDetailActivity.createIntent(requireContext(), it))
+        }
+    }
 
-            updateCardView(
-                    binding.lectureCancelHeader,
-                    binding.lectureCancelNote,
-                    binding.lectureCancelButton,
-                    R.string.name_lecture_cancel,
-                    set.lectureCancelList.size)
-        })
-
-        startMyClassDetailActivity.observe(fragment, Observer { id ->
-            startActivity(MyClassDetailActivity.createIntent(requireContext(), id))
-        })
-
-        startLectureInfoActivity.observe(fragment, Observer { id ->
-            startActivity(LectureInfoDetailActivity.createIntent(requireContext(), id))
-        })
-        startLectureCancelActivity.observe(fragment, Observer { id ->
-            startActivity(LectureCancelDetailActivity.createIntent(requireContext(), id))
-        })
-        startNoticeDetailActivity.observe(fragment, Observer { id ->
-            startActivity(NoticeDetailActivity.createIntent(requireContext(), id))
-        })
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     private fun RecyclerView.setup(adapter: RecyclerView.Adapter<*>) {
         isNestedScrollingEnabled = false
         setAdapter(adapter)
         setHasFixedSize(false)
+        itemAnimator = null
     }
-
-    private fun updateCardView(header: TextView, note: TextView, button: TextView, titleId: Int, itemCount: Int) {
-        header.text = getString(titleId)
-
-        when {
-            itemCount <= 0 -> {
-                note.isVisible = true
-                button.isVisible = false
-            }
-            itemCount > DashboardViewModel.MAX_ITEM_SIZE -> {
-                header.append(getString(R.string.text_more_item, itemCount - DashboardViewModel.MAX_ITEM_SIZE))
-
-                note.isVisible = false
-                button.isVisible = true
-            }
-            else -> { // 1-3
-                button.isVisible = false
-                note.isVisible = false
-            }
-        }
-    }
-
-    private fun List<Lecture>.isInvisibleLastDivider() = size <= DashboardViewModel.MAX_ITEM_SIZE
 }

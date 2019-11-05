@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="jp.kentan.studentportalplus.data.entity.AttendCourse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/timetable_grid_height"
+        android:layout_margin="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:background="@{data.color.resId}"
+        tools:background="@color/course_light_blue_1">
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:shadowColor="@color/text_shadow_attend_course"
+            android:shadowRadius="2"
+            android:text="@{data.subject}"
+            android:textColor="@color/text_attend_course_subject"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Subject" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:shadowColor="@color/text_shadow_attend_course"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:text="@{data.location}"
+            android:textColor="@color/text_attend_course"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/instructor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SmallSp"
+            tools:text="Location" />
+
+        <TextView
+            android:id="@+id/instructor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:shadowColor="@color/text_shadow_attend_course"
+            android:shadowRadius="2"
+            android:text="@{data.instructor}"
+            android:textColor="@color/text_attend_course"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SmallSp"
+            tools:text="Instructor" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

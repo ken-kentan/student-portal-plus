@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#565C67</color>
+    <color name="primary_variant">#1E2128</color>
+    <color name="secondary">#1285D0</color>
+    <color name="secondary_variant">#2B77BA</color>
+    <color name="surface">#1D1D1D</color>
+
+    <color name="course_light_blue_1">#01579b</color>
+
+    <color name="favorite_orange">#FFD180</color>
+    <color name="favorite_grey">#757575</color>
+
+    <color name="timetable_grid_mask">#212121</color>
+    <color name="timetable_grid_background">#1B1B1B</color>
+
+    <color name="background">#121212</color>
+</resources>

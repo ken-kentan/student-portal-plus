@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="jp.kentan.studentportalplus.ui.main.MainViewModel" />
+            type="jp.kentan.studentportalplus.ui.MainViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -23,7 +22,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:viewModel="@{viewModel}" />
+            app:viewModel="@{viewModel}" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -31,10 +30,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:onNavigationItemSelected="@{viewModel::onNavigationItemSelected}"
-            app:itemIconTint="@color/drawer_item_icon"
-            app:itemTextColor="@color/drawer_item_text"
-            app:itemBackground="@android:color/transparent"
             app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer" />
 

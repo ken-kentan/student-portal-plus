@@ -15,16 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.AppTheme.Toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/header_image"
             android:layout_width="0dp"
-            android:layout_height="@dimen/img_header_height"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:src="@mipmap/header"
+            android:contentDescription="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/app_name" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <WebView
             android:id="@+id/web_view"
@@ -34,20 +42,20 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/agree_checkbox"
+            app:layout_constraintBottom_toTopOf="@+id/agree_check_box"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_image" />
 
-        <CheckBox
-            android:id="@+id/agree_checkbox"
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/agree_check_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/agree_to_terms"
-            android:checked="@={viewModel.isCheckedAgree}"
+            android:checked="@={viewModel.isAgreeChecked}"
+            android:text="@string/text_agree_to_terms"
             app:layout_constraintBottom_toTopOf="@+id/shibboleth_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -59,9 +67,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:enabled="@{viewModel.isAgreeChecked}"
+            android:onClick="@{() -> viewModel.onShibbolethClick()}"
             android:text="@string/button_shibboleth"
-            android:enabled="@{viewModel.isCheckedAgree}"
-            android:onClick="@{() -> viewModel.onClickShibboleth()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

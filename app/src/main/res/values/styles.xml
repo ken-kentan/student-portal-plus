@@ -1,33 +1,49 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+    <style name="Platform.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_variant</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="navigationViewStyle">@style/Widget.AppTheme.NavigationView</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.AppTheme.Headline6</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/grey_100</item>
-        <item name="colorPrimaryDark">@color/grey_300</item>
-        <item name="actionBarTheme">@style/AppTheme.Light.AppBarOverlay</item>
+    <style name="AppTheme" parent="Platform.AppTheme" />
+
+    <style name="AppTheme.TransparentStatus" />
+
+    <style name="AppTheme.AppBarOverlay" parent="">
+        <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
+        <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
+
+    <style name="Widget.AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface" />
+
+    <style name="Widget.AppTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemIconTint">@color/navigation_item_icon_tint</item>
+        <item name="itemTextColor">@color/navigation_item_text_color</item>
+        <item name="itemBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" >
+    <style name="TextAppearance.AppTheme.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/orkney</item>
     </style>
 
-    <style name="AppTheme.Light.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" >
-        <item name="fontFamily">@font/orkney</item>
+    <style name="TextAppearance.AppTheme.Primary" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/primary</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="TextAppearance.AppTheme.PeriodStartTime" parent="AppTheme">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/text_period_start_time</item>
+    </style>
 
 </resources>

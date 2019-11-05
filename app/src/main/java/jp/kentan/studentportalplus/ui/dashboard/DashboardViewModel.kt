@@ -1,72 +1,115 @@
 package jp.kentan.studentportalplus.ui.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import jp.kentan.studentportalplus.data.PortalRepository
-import jp.kentan.studentportalplus.data.component.ClassWeek
-import jp.kentan.studentportalplus.data.component.PortalDataSet
-import jp.kentan.studentportalplus.data.model.MyClass
-import jp.kentan.studentportalplus.data.model.Notice
-import jp.kentan.studentportalplus.ui.SingleLiveData
+import androidx.lifecycle.*
+import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.LectureCancellationRepository
+import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.entity.Notice
+import jp.kentan.studentportalplus.data.vo.DayOfWeek
+import jp.kentan.studentportalplus.ui.Event
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class DashboardViewModel(
-        private val portalRepository: PortalRepository
+class DashboardViewModel @Inject constructor(
+    attendCourseRepository: AttendCourseRepository,
+    lectureInfoRepository: LectureInformationRepository,
+    lectureCancelRepository: LectureCancellationRepository,
+    noticeRepository: NoticeRepository
 ) : ViewModel() {
 
-    companion object {
-        const val MAX_ITEM_SIZE = 3
-    }
+    private val _portalSet = PortalSetLiveData()
+    val portalSet: LiveData<PortalSet>
+        get() = _portalSet
 
-    val portalDataSet: LiveData<PortalDataSet> = Transformations.map(portalRepository.portalDataSet) { set ->
-        return@map PortalDataSet(
-                myClassList = set.myClassList.toTodayTimetable(),
-                lectureInfoList = set.lectureInfoList.filter { it.attend.isAttend() },
-                lectureCancelList = set.lectureCancelList.filter { it.attend.isAttend() },
-                noticeList = set.noticeList.take(MAX_ITEM_SIZE)
-        )
-    }
+    private val _navigation = MutableLiveData<Event<Int>>()
+    val navigation: LiveData<Event<Int>>
+        get() = _navigation
 
-    val startMyClassDetailActivity = SingleLiveData<Long>()
-    val startLectureInfoActivity = SingleLiveData<Long>()
-    val startLectureCancelActivity = SingleLiveData<Long>()
-    val startNoticeDetailActivity = SingleLiveData<Long>()
+    private val _startAttendCourseDetailActivity = MutableLiveData<Event<Long>>()
+    val startAttendCourseDetailActivity: LiveData<Event<Long>>
+        get() = _startAttendCourseDetailActivity
 
-    fun onMyClassClick(id: Long) {
-        startMyClassDetailActivity.value = id
-    }
+    private val _startLectureInfoDetailActivity = MutableLiveData<Event<Long>>()
+    val startLectureInfoActivity: LiveData<Event<Long>>
+        get() = _startLectureInfoDetailActivity
 
-    fun onLectureInfoClick(id: Long) {
-        startLectureInfoActivity.value = id
-    }
+    private val _startLectureCancelDetailActivity = MutableLiveData<Event<Long>>()
+    val startLectureCancelActivity: LiveData<Event<Long>>
+        get() = _startLectureCancelDetailActivity
 
-    fun onLectureCancelClick(id: Long) {
-        startLectureCancelActivity.value = id
-    }
 
-    fun onNoticeItemClick(id: Long) {
-        startNoticeDetailActivity.value = id
-    }
+    private val _startNoticeDetailActivity = MutableLiveData<Event<Long>>()
+    val startNoticeActivity: LiveData<Event<Long>>
+        get() = _startNoticeDetailActivity
 
-    fun onNoticeFavoriteClick(data: Notice) {
-        portalRepository.updateNotice(data.copy(isFavorite = !data.isFavorite))
-    }
+    init {
+        val today = Calendar.getInstance()
 
-    private fun List<MyClass>.toTodayTimetable(): List<MyClass> {
-        val calender = Calendar.getInstance()
-
-        val hour = calender.get(Calendar.HOUR_OF_DAY)
-        var dayOfWeek = calender.get(Calendar.DAY_OF_WEEK)
+        var dayOfWeek = today.get(Calendar.DAY_OF_WEEK)
 
         // 午後8時以降は明日の時間割
-        if (hour >= 20) {
+        if (today.get(Calendar.HOUR_OF_DAY) >= 20) {
             dayOfWeek++
         }
 
-        // 土、日は月に
-        val week = if (dayOfWeek in Calendar.MONDAY..Calendar.FRIDAY) ClassWeek.valueOf(dayOfWeek - 1) else ClassWeek.MONDAY
+        val timetableDayOfWeek = when (dayOfWeek) {
+            Calendar.MONDAY -> DayOfWeek.MONDAY
+            Calendar.TUESDAY -> DayOfWeek.TUESDAY
+            Calendar.WEDNESDAY -> DayOfWeek.WEDNESDAY
+            Calendar.THURSDAY -> DayOfWeek.THURSDAY
+            Calendar.FRIDAY -> DayOfWeek.FRIDAY
+            else -> DayOfWeek.MONDAY
+        }
 
-        return filter { it.week == week }
+        _portalSet.addAttendCourseSource(attendCourseRepository.getListFlow(timetableDayOfWeek).asLiveData())
+        _portalSet.addLectureInformationSource(
+            lectureInfoRepository.getListFlow().map { list ->
+                list.filter { it.attendType.isAttend }
+            }.asLiveData()
+        )
+        _portalSet.addLectureCancellationSource(
+            lectureCancelRepository.getListFlow().map { list ->
+                list.filter { it.attendType.isAttend }
+            }.asLiveData()
+        )
+        _portalSet.addNoticeSource(noticeRepository.getListFlow().asLiveData())
+    }
+
+    val onAttendCourseItemClick = { id: Long ->
+        _startAttendCourseDetailActivity.value = Event(id)
+    }
+
+    val onLectureInformationItemClick = { id: Long ->
+        _startLectureInfoDetailActivity.value = Event(id)
+    }
+
+    val onLectureCancellationItemClick = { id: Long ->
+        _startLectureCancelDetailActivity.value = Event(id)
+    }
+
+    val onNoticeItemClick = { id: Long ->
+        _startNoticeDetailActivity.value = Event(id)
+    }
+
+    val onNoticeFavoriteClick: (Notice) -> Unit = { notice: Notice ->
+        viewModelScope.launch {
+            noticeRepository.update(notice.copy(isFavorite = !notice.isFavorite))
+        }
+    }
+
+    val onLectureInformationShowAllClick = {
+        _navigation.value = Event(R.id.navigation_lecture_information)
+    }
+
+    val onLectureCancellationShowAllClick = {
+        _navigation.value = Event(R.id.navigation_lecture_cancellation)
+    }
+
+    val onNoticeShowAllClick = {
+        _navigation.value = Event(R.id.navigation_notice)
     }
 }

@@ -5,12 +5,12 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="img_header_height">56dp</dimen>
 
+    <dimen name="item_small_height">65dp</dimen> <!-- 64dp + 1dp(divider) -->
+    <dimen name="item_height">72dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
-
-    <dimen name="list_item_height_medium">56dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
-    <dimen name="timetable_grid_height">104dp</dimen>
+    <dimen name="timetable_grid_height">112dp</dimen>
+    <dimen name="timetable_grid_period_width">32dp</dimen>
 </resources>

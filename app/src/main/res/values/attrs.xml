@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="FavoriteFloatingActionButton" />
-    <declare-styleable name="LectureAttendFloatingActionButton">
-        <attr name="attend" format="enum" />
+    <declare-styleable name="NoticeFloatingActionButton" />
+
+    <declare-styleable name="CourseAttendFloatingActionButton">
+        <attr name="attendType" format="enum" />
     </declare-styleable>
 
     <declare-styleable name="CustomTabsTextView">
