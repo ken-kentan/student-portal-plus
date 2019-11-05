@@ -1,7 +1,6 @@
 package jp.kentan.studentportalplus.ui.attendcoursedetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.every
@@ -11,8 +10,8 @@ import jp.kentan.studentportalplus.MainCoroutineRule
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.entity.AttendCourse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -39,16 +38,12 @@ class AttendCourseDetailViewModelTest {
         viewModel.onActivityCreate(id)
 
         every {
-            attendCourseRepository.getObservable(id)
-        } returns MutableLiveData<AttendCourse>(TestData.attendCourse)
+            attendCourseRepository.getFlow(id)
+        } returns flowOf(TestData.attendCourse)
     }
 
     @Test
     fun onActivityCreate_dataLoad() {
-        every {
-            attendCourseRepository.getObservable(TestData.attendCourse.id)
-        } returns MutableLiveData(TestData.attendCourse)
-
         val vm = AttendCourseDetailViewModel(attendCourseRepository)
         vm.onActivityCreate(TestData.attendCourse.id)
 
@@ -63,8 +58,8 @@ class AttendCourseDetailViewModelTest {
     @Test
     fun onActivityCreate_dataNotFound() {
         every {
-            attendCourseRepository.getObservable(TestData.attendCourse.id)
-        } returns MutableLiveData(null)
+            attendCourseRepository.getFlow(TestData.attendCourse.id)
+        } returns flowOf(null)
 
         val vm = AttendCourseDetailViewModel(attendCourseRepository)
         vm.onActivityCreate(TestData.attendCourse.id)

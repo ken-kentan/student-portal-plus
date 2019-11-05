@@ -1,49 +1,50 @@
 package jp.kentan.studentportalplus.data
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import jp.kentan.studentportalplus.LiveDataTestUtil
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
+import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
-import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class DefaultAttendCourseRepositoryTest {
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
     private val repository = DefaultAttendCourseRepository(FakeAttendCourseDao())
 
     @Test
-    fun getObservable() {
-        val observable = repository.getObservable(TestData.attendCourse.id)
+    fun getFlow() = runBlocking {
+        val flow = repository.getFlow(TestData.attendCourse.id)
 
-        assertThat(LiveDataTestUtil.getValue(observable)).isEqualTo(TestData.attendCourse)
+        flow.collect {
+            assertThat(it).isEqualTo(TestData.attendCourse)
+        }
     }
 
     @Test
-    fun getObservableList() {
-        val observableList = repository.getObservableList()
+    fun getListFlow() = runBlocking {
+        val flow = repository.getListFlow()
 
-        assertThat(LiveDataTestUtil.getValue(observableList))
-            .hasSize(FakeAttendCourseDao.ALL_LIST_SIZE)
+        flow.collect {
+            assertThat(it).hasSize(FakeAttendCourseDao.ALL_LIST_SIZE)
+        }
     }
 
     @Test
-    fun getObservableList_dayOfWeek() {
-        val observableList = repository.getObservableList(DayOfWeek.MONDAY)
+    fun getListFlow_dayOfWeek() = runBlocking {
+        val flow = repository.getListFlow(DayOfWeek.MONDAY)
 
-        assertThat(LiveDataTestUtil.getValue(observableList))
-            .hasSize(FakeAttendCourseDao.DAY_OF_WEEK_LIST_SIZE)
+        flow.collect {
+            assertThat(it).hasSize(FakeAttendCourseDao.DAY_OF_WEEK_LIST_SIZE)
+        }
     }
 
     @Test
@@ -69,6 +70,28 @@ class DefaultAttendCourseRepositoryTest {
     }
 
     @Test
+    fun add_lecture() = runBlocking {
+        val dao = mockk<AttendCourseDao>()
+        val repo = DefaultAttendCourseRepository(dao)
+        every { dao.insertAll(any()) } returns listOf(1)
+
+        val lecture = object : Lecture {
+            override val subject = "subject"
+            override val instructor = "instructor"
+            override val dayOfWeek = "月曜日"
+            override val period = "1"
+        }
+
+        val isSuccess = repo.add(lecture)
+
+        verify {
+            dao.insertAll(any())
+        }
+
+        assertThat(isSuccess).isTrue()
+    }
+
+    @Test
     fun update() = runBlocking {
         val dao = mockk<AttendCourseDao>()
         val repo = DefaultAttendCourseRepository(dao)
@@ -84,7 +107,7 @@ class DefaultAttendCourseRepositoryTest {
     }
 
     @Test
-    fun delete() = runBlocking {
+    fun remove() = runBlocking {
         val dao = mockk<AttendCourseDao>()
         val repo = DefaultAttendCourseRepository(dao)
         every { dao.delete(TestData.attendCourse.id) } returns 1
@@ -93,6 +116,21 @@ class DefaultAttendCourseRepositoryTest {
 
         verify {
             dao.delete(TestData.attendCourse.id)
+        }
+
+        assertThat(isSuccess).isTrue()
+    }
+
+    @Test
+    fun remove_subject() = runBlocking {
+        val dao = mockk<AttendCourseDao>()
+        val repo = DefaultAttendCourseRepository(dao)
+        every { dao.delete("subject", AttendCourse.Type.USER) } returns 1
+
+        val isSuccess = repo.remove("subject")
+
+        verify {
+            dao.delete("subject", AttendCourse.Type.USER)
         }
 
         assertThat(isSuccess).isTrue()

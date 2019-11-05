@@ -1,11 +1,11 @@
 package jp.kentan.studentportalplus.data.dao
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class FakeAttendCourseDao : AttendCourseDao {
 
@@ -14,21 +14,24 @@ class FakeAttendCourseDao : AttendCourseDao {
         const val DAY_OF_WEEK_LIST_SIZE = 5
     }
 
-    override fun getAsLiveData(id: Long): LiveData<AttendCourse?> =
-        MutableLiveData(TestData.attendCourse)
+    override fun getFlow(id: Long): Flow<AttendCourse?> = flowOf(TestData.attendCourse)
 
-    override fun getSubjectAsLiveData(): LiveData<List<AttendCourseSubject>> =
-        MutableLiveData(listOf(TestData.attendCourseSubject))
+    override fun getListFlow(): Flow<List<AttendCourse>> =
+        flowOf(List(ALL_LIST_SIZE) { TestData.attendCourse })
 
-    override fun getAllAsLiveData(): LiveData<List<AttendCourse>> =
-        MutableLiveData(List(ALL_LIST_SIZE) { TestData.attendCourse })
+    override fun getListFlow(dayOfWeek: DayOfWeek): Flow<List<AttendCourse>> =
+        flowOf(List(DAY_OF_WEEK_LIST_SIZE) { TestData.attendCourse })
 
-    override fun getAllAsLiveData(dayOfWeek: DayOfWeek): LiveData<List<AttendCourse>> =
-        MutableLiveData(List(DAY_OF_WEEK_LIST_SIZE) { TestData.attendCourse })
+    override fun getSubjectListFlow(): Flow<List<AttendCourseSubject>> =
+        flowOf(listOf(TestData.attendCourseSubject))
 
     override fun get(id: Long): AttendCourse? = TestData.attendCourse
 
     override fun insert(attendCourse: AttendCourse): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun insertAll(attendCourseList: List<AttendCourse>): List<Long> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -40,5 +43,11 @@ class FakeAttendCourseDao : AttendCourseDao {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deleteNotInHash(type: Int, hash: List<Long>) {}
+    override fun delete(subject: String, attendType: AttendCourse.Type): Int {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun deleteNotInHash(type: Int, hash: List<Long>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
