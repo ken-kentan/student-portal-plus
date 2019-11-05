@@ -25,5 +25,7 @@ jobs:
             uses: actions/setup-java@v1
             with:
                 java-version: 1.8
+            env:
+                FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           - name: Distribute App
             run: ./gradlew assembleDebug appDistributionUploadDebug
