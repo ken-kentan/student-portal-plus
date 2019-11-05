@@ -1,6 +1,6 @@
 name: Android CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -25,11 +25,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Decode google-services.json
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $GOOGLE_SERVICES_JSON | base64 --decode > ./app/google-services.json
       - name: Distribute App
         env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: ./gradlew assembleDebug appDistributionUploadDebug
+        run: |
+          echo $GOOGLE_SERVICES_JSON | base64 --decode > ./app/google-services.json
+          ./gradlew assembleDebug appDistributionUploadDebug
