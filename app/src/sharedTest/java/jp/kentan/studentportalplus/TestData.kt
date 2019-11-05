@@ -37,6 +37,7 @@ object TestData {
         detailHtml = "detailHtml",
         createdDate = Date(),
         updatedDate = Date(),
+        attendType = AttendCourse.Type.PORTAL,
         isRead = false
     )
 }
