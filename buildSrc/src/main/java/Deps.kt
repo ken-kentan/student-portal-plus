@@ -2,6 +2,9 @@ object Deps {
     object GradlePlugin {
         const val android = "com.android.tools.build:gradle:3.5.1"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
+        const val googleServices = "com.google.gms:google-services:4.3.2"
+        const val firebaseAppDistribution =
+            "com.google.firebase:firebase-appdistribution-gradle:1.1.0"
     }
 
     object Kotlin {
@@ -19,7 +22,7 @@ object Deps {
     object AndroidX {
         const val appCompat = "androidx.appcompat:appcompat:1.1.0"
         const val coreKtx = "androidx.core:core-ktx:1.1.0"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.1.0"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-rc01"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         const val workKtx = "androidx.work:work-runtime-ktx:2.2.0"

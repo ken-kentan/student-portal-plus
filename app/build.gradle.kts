@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
+    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -38,9 +37,7 @@ android {
     }
 
     kotlinOptions {
-        // @see https://github.com/gradle/kotlin-dsl-samples/issues/1368
-        val options = this as KotlinJvmOptions
-        options.jvmTarget = "1.8"
+        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -55,6 +52,10 @@ android {
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+
+            firebaseAppDistribution {
+                groups = "testers"
+            }
         }
     }
 
@@ -111,3 +112,5 @@ dependencies {
     androidTestImplementation(Deps.Test.kotlinCoroutines)
     androidTestImplementation(Deps.Test.commonLang)
 }
+
+apply(plugin = "com.google.gms.google-services")
