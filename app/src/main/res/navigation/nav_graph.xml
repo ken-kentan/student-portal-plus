@@ -31,5 +31,6 @@
     <fragment
         android:id="@+id/navigation_timetable"
         android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
-        android:label="@string/title_timetable" />
+        android:label="@string/title_timetable"
+        tools:layout="@layout/fragment_timetable" />
 </navigation>
