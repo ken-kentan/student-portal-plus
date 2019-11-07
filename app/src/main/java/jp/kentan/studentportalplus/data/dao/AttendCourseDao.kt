@@ -16,7 +16,7 @@ interface AttendCourseDao {
     @Query("SELECT * FROM attend_courses")
     fun getListFlow(): Flow<List<AttendCourse>>
 
-    @Query("SELECT * FROM attend_courses WHERE day_of_week = :dayOfWeek ORDER BY period")
+    @Query("SELECT * FROM attend_courses WHERE day_of_week = :dayOfWeek ORDER BY period, subject")
     fun getListFlow(dayOfWeek: DayOfWeek): Flow<List<AttendCourse>>
 
     @Query("SELECT subject, type FROM attend_courses")

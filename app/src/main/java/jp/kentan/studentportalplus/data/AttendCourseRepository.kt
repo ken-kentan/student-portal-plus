@@ -39,7 +39,8 @@ class DefaultAttendCourseRepository(
 
     override fun getListFlow(): Flow<List<AttendCourse>> =
         attendCourseDao.getListFlow().map { list ->
-            list.sortedBy { it.type == AttendCourse.Type.PORTAL }
+            list.sortedBy { it.subject }
+                .sortedBy { it.type == AttendCourse.Type.USER }
                 .sortedBy { it.period }
                 .sortedBy { it.dayOfWeek }
         }.flowOn(Dispatchers.IO)

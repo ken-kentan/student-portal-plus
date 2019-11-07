@@ -11,7 +11,7 @@ interface LectureInformationDao {
     @Query("SELECT * FROM lecture_infos WHERE _id = :id")
     fun getFlow(id: Long): Flow<LectureInformation?>
 
-    @Query("SELECT * FROM lecture_infos")
+    @Query("SELECT * FROM lecture_infos ORDER BY updated_date DESC, subject")
     fun getListFlow(): Flow<List<LectureInformation>>
 
     @Transaction

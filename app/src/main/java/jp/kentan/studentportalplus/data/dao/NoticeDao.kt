@@ -11,7 +11,7 @@ interface NoticeDao {
     @Query("SELECT * FROM notices WHERE _id = :id")
     fun getFlow(id: Long): Flow<Notice>
 
-    @Query("SELECT * FROM notices")
+    @Query("SELECT * FROM notices ORDER BY created_date DESC, _id")
     fun getListFlow(): Flow<List<Notice>>
 
     @Transaction
