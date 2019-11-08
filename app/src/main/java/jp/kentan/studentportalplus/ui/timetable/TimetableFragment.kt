@@ -28,9 +28,12 @@ class TimetableFragment : Fragment(R.layout.fragment_timetable) {
 
     private lateinit var timetableItemDecoration: TimetableItemDecoration
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val gridTimetableAdapter = TimetableAdapter(
             layout = TimetableAdapter.Layout.GRID,
             onAttendCourseClick = timetableViewModel.onAttendCourseClick,
