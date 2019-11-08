@@ -109,6 +109,7 @@
     <string name="hint_category">分類</string>
     <string name="hint_credit">単位数</string>
     <string name="hint_schedule_code">時間割番号</string>
+    <string name="hint_query_subject_instructor">科目・教員名で検索&#8230;</string>
 
     <!-- action -->
     <string name="action_save">保存</string>
@@ -116,6 +117,7 @@
     <string name="action_discard">破棄</string>
     <string name="action_exclude">除外</string>
     <string name="action_add">追加</string>
+    <string name="action_search">検索</string>
     <string name="action_close">閉じる</string>
     <string name="action_switch_layout">レイアウト</string>
     <string name="action_yes">はい</string>
