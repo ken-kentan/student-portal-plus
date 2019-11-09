@@ -73,7 +73,7 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
 
         }
 
-        val queryText = lectureInfoViewModel.searchQueryText
+        val queryText = lectureInfoViewModel.queryText
         if (!queryText.isNullOrBlank()) {
             searchItem.expandActionView()
             searchView.setQuery(queryText, false)

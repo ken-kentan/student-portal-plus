@@ -6,6 +6,7 @@ import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -16,11 +17,12 @@ interface LectureInformationRepository {
 
     fun getListFlow(): Flow<List<LectureInformation>>
 
-    fun getListFlow(query: LectureQuery): Flow<List<LectureInformation>>
+    fun getListFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
 
     suspend fun setRead(id: Long)
 }
 
+@ExperimentalCoroutinesApi
 class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
     attendCourseDao: AttendCourseDao,
@@ -30,7 +32,7 @@ class DefaultLectureInformationRepository(
     private val subjectListFlow = attendCourseDao.getSubjectListFlow()
     private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
 
-    override fun getFlow(id: Long): Flow<LectureInformation?> = combine(
+    override fun getFlow(id: Long) = combine(
         lectureInformationDao.getFlow(id),
         subjectListFlow,
         similarSubjectThresholdFlow
@@ -43,7 +45,7 @@ class DefaultLectureInformationRepository(
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun getListFlow(): Flow<List<LectureInformation>> = combine(
+    override fun getListFlow() = combine(
         lectureInformationDao.getListFlow(),
         subjectListFlow,
         similarSubjectThresholdFlow
@@ -53,20 +55,23 @@ class DefaultLectureInformationRepository(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun getListFlow(query: LectureQuery): Flow<List<LectureInformation>> = combine(
+    override fun getListFlow(queryFlow: Flow<LectureQuery>) = combine(
         lectureInformationDao.getListFlow(),
         subjectListFlow,
-        similarSubjectThresholdFlow
-    ) { lectureInfoList, subjectList, threshold ->
-        lectureInfoList.map { info ->
-            info.copy(attendType = subjectList.calcAttendCourseType(info.subject, threshold))
-        }.filter { lectureInfo ->
+        similarSubjectThresholdFlow,
+        queryFlow
+    ) { lectureInfoList, subjectList, threshold, query ->
+        lectureInfoList.filter { lecture ->
             if (query.textList.isNotEmpty()) {
                 return@filter query.textList.any {
-                    lectureInfo.subject.contains(it) || lectureInfo.instructor.contains(it)
+                    lecture.subject.contains(it, ignoreCase = true)
+                        || lecture.instructor.contains(it, ignoreCase = true)
                 }
             }
+
             return@filter true
+        }.map { lecture ->
+            lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
         }
     }.flowOn(Dispatchers.IO)
 
