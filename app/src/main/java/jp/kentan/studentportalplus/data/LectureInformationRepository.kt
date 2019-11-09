@@ -31,6 +31,15 @@ class DefaultLectureInformationRepository(
 
     private val subjectListFlow = attendCourseDao.getSubjectListFlow()
     private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
+    private val lectureInfoListFlow = combine(
+        lectureInformationDao.getListFlow(),
+        subjectListFlow,
+        similarSubjectThresholdFlow
+    ) { lectureInfoList, subjectList, threshold ->
+        lectureInfoList.map { lecture ->
+            lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
+        }
+    }
 
     override fun getFlow(id: Long) = combine(
         lectureInformationDao.getFlow(id),
@@ -45,23 +54,22 @@ class DefaultLectureInformationRepository(
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun getListFlow() = combine(
-        lectureInformationDao.getListFlow(),
-        subjectListFlow,
-        similarSubjectThresholdFlow
-    ) { lectureInfoList, subjectList, threshold ->
-        lectureInfoList.map { info ->
-            info.copy(attendType = subjectList.calcAttendCourseType(info.subject, threshold))
-        }
-    }.flowOn(Dispatchers.IO)
+    override fun getListFlow() = lectureInfoListFlow.flowOn(Dispatchers.IO)
 
     override fun getListFlow(queryFlow: Flow<LectureQuery>) = combine(
-        lectureInformationDao.getListFlow(),
-        subjectListFlow,
-        similarSubjectThresholdFlow,
+        lectureInfoListFlow,
         queryFlow
-    ) { lectureInfoList, subjectList, threshold, query ->
+    ) { lectureInfoList, query ->
         lectureInfoList.filter { lecture ->
+            if (query.isUnread && lecture.isRead) {
+                return@filter false
+            }
+            if (query.isRead && !lecture.isRead) {
+                return@filter false
+            }
+            if (query.isAttend && !lecture.attendType.isAttend) {
+                return@filter false
+            }
             if (query.textList.isNotEmpty()) {
                 return@filter query.textList.any {
                     lecture.subject.contains(it, ignoreCase = true)
@@ -70,8 +78,6 @@ class DefaultLectureInformationRepository(
             }
 
             return@filter true
-        }.map { lecture ->
-            lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
         }
     }.flowOn(Dispatchers.IO)
 

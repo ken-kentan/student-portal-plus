@@ -11,12 +11,15 @@ class LectureInformationViewModel @Inject constructor(
     lectureInfoRepository: LectureInformationRepository
 ) : ViewModel() {
 
-    private val query = MutableLiveData(LectureQuery())
-    val queryText: String?
-        get() = query.value?.text
+    private val _query = MutableLiveData(LectureQuery())
+    val query: LectureQuery
+        get() = requireNotNull(_query.value)
 
     val lectureInfoList: LiveData<List<LectureInformation>> =
-        lectureInfoRepository.getListFlow(query.asFlow()).asLiveData()
+        lectureInfoRepository.getListFlow(_query.asFlow()).asLiveData()
+
+    val queryText: String?
+        get() = query.text
 
     private val _startDetailActivity = MutableLiveData<Event<Long>>()
     val startDetailActivity: LiveData<Event<Long>>
@@ -26,8 +29,11 @@ class LectureInformationViewModel @Inject constructor(
         _startDetailActivity.value = Event(id)
     }
 
+    val onFilterApplyClick = { query: LectureQuery ->
+        _query.value = query
+    }
+
     fun onQueryTextChange(newText: String?) {
-        val query = requireNotNull(query.value)
-        this.query.value = query.copy(text = newText)
+        _query.value = query.copy(text = newText)
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.lifecycle.observe
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.FragmentListBinding
+import jp.kentan.studentportalplus.ui.LectureFilterDialogFragment
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
 import jp.kentan.studentportalplus.ui.observeEvent
 import jp.kentan.studentportalplus.view.widget.DividerItemDecoration
@@ -54,7 +56,7 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search, menu)
+        inflater.inflate(R.menu.query, menu)
 
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
@@ -70,7 +72,6 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
                     return true
                 }
             })
-
         }
 
         val queryText = lectureInfoViewModel.queryText
@@ -81,5 +82,15 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
         }
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_filter) {
+            LectureFilterDialogFragment(
+                lectureInfoViewModel.query,
+                lectureInfoViewModel.onFilterApplyClick
+            ).show(parentFragmentManager, "lecture_info_query")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
