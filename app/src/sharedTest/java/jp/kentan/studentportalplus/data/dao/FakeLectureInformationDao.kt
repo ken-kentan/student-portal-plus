@@ -17,7 +17,9 @@ class FakeLectureInformationDao : LectureInformationDao {
         flowOf(List(ALL_LIST_SIZE) { TestData.lectureInfo })
 
     override fun updateRead(id: Long): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        check(id == TestData.lectureInfo.id)
+
+        return 1
     }
 
     override fun insert(lectureInfo: LectureInformation): Long {
