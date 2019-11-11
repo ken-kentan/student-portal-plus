@@ -30,12 +30,9 @@ class LectureInformationsFragment : Fragment(R.layout.fragment_list),
 
     private val lectureInfosViewModel by activityViewModels<LectureInformationsViewModel> { viewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+
         val lecturesAdapter =
             LecturesAdapter(lectureInfosViewModel.onItemClick)
 
