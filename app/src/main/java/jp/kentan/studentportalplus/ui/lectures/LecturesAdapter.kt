@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import jp.kentan.studentportalplus.databinding.ItemTextBinding
 import jp.kentan.studentportalplus.util.executeAfter
 
 class LecturesAdapter(
+    @StringRes private val emptyTextResId: Int,
     private val onItemClick: (Long) -> Unit
 ) : RecyclerView.Adapter<LecturesAdapter.ViewHolder>() {
 
@@ -65,7 +67,7 @@ class LecturesAdapter(
                 root.setOnClickListener { onItemClick(lectureCancel.id) }
             }
             is ViewHolder.TextViewHolder -> holder.binding.executeAfter {
-                textView.setText(R.string.text_empty_lecture_information)
+                textView.setText(emptyTextResId)
             }
         }
     }

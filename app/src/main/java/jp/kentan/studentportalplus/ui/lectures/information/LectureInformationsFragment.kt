@@ -33,8 +33,10 @@ class LectureInformationsFragment : Fragment(R.layout.fragment_list),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
 
-        val lecturesAdapter =
-            LecturesAdapter(lectureInfosViewModel.onItemClick)
+        val lecturesAdapter = LecturesAdapter(
+            R.string.text_empty_lecture_information,
+            lectureInfosViewModel.onItemClick
+        )
 
         FragmentListBinding.bind(view).recyclerView.apply {
             adapter = lecturesAdapter
