@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.lectureinformation
+package jp.kentan.studentportalplus.ui.lectures.information
 
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.data.LectureInformationRepository
@@ -7,7 +7,7 @@ import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
-class LectureInformationViewModel @Inject constructor(
+class LectureInformationsViewModel @Inject constructor(
     lectureInfoRepository: LectureInformationRepository
 ) : ViewModel() {
 
@@ -29,11 +29,11 @@ class LectureInformationViewModel @Inject constructor(
         _startDetailActivity.value = Event(id)
     }
 
-    val onFilterApplyClick = { query: LectureQuery ->
-        _query.value = query
-    }
-
     fun onQueryTextChange(newText: String?) {
         _query.value = query.copy(text = newText)
+    }
+
+    fun onFilterApplyClick(query: LectureQuery) {
+        _query.value = query
     }
 }

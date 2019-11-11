@@ -102,11 +102,11 @@ class DashboardViewModel @Inject constructor(
     }
 
     val onLectureInformationShowAllClick = {
-        _navigation.value = Event(R.id.navigation_lecture_information)
+        _navigation.value = Event(R.id.navigation_lecture_informations)
     }
 
     val onLectureCancellationShowAllClick = {
-        _navigation.value = Event(R.id.navigation_lecture_cancellation)
+        _navigation.value = Event(R.id.navigation_lecture_cancellations)
     }
 
     val onNoticeShowAllClick = {

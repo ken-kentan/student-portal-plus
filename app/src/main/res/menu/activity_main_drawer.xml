@@ -15,12 +15,12 @@
             android:title="@string/menu_timetable" />
 
         <item
-            android:id="@+id/navigation_lecture_information"
+            android:id="@+id/navigation_lecture_informations"
             android:icon="@drawable/ic_menu_lecture_information"
             android:title="@string/menu_lecture_info" />
 
         <item
-            android:id="@+id/navigation_lecture_cancellation"
+            android:id="@+id/navigation_lecture_cancellations"
             android:icon="@drawable/ic_menu_lecture_cancellation"
             android:title="@string/menu_lecture_cancel" />
 

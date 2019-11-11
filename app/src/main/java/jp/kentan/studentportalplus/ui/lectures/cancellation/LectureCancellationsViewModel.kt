@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.lecturecancellation
+package jp.kentan.studentportalplus.ui.lectures.cancellation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +8,8 @@ import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
-class LectureCancellationViewModel @Inject constructor(
-    private val lectureCancelRepository: LectureCancellationRepository
+class LectureCancellationsViewModel @Inject constructor(
+    lectureCancelRepository: LectureCancellationRepository
 ) : ViewModel() {
 
     val lectureCancelList = lectureCancelRepository.getListFlow().asLiveData()

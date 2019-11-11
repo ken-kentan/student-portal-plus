@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.lectureinformation
+package jp.kentan.studentportalplus.ui.lectures.information
 
 import android.content.Context
 import android.os.Bundle
@@ -13,19 +13,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.databinding.FragmentListBinding
-import jp.kentan.studentportalplus.ui.LectureFilterDialogFragment
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
+import jp.kentan.studentportalplus.ui.lectures.LecturesAdapter
+import jp.kentan.studentportalplus.ui.lectures.LecturesFilterDialogFragment
 import jp.kentan.studentportalplus.ui.observeEvent
 import jp.kentan.studentportalplus.view.widget.DividerItemDecoration
 import javax.inject.Inject
 
-class LectureInformationFragment : Fragment(R.layout.fragment_list) {
+class LectureInformationsFragment : Fragment(R.layout.fragment_list),
+    LecturesFilterDialogFragment.Listener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val lectureInfoViewModel by activityViewModels<LectureInformationViewModel> { viewModelFactory }
+    private val lectureInfosViewModel by activityViewModels<LectureInformationsViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,19 +36,20 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val lectureInfoAdapter = LectureInformationAdapter(lectureInfoViewModel.onItemClick)
+        val lecturesAdapter =
+            LecturesAdapter(lectureInfosViewModel.onItemClick)
 
         FragmentListBinding.bind(view).recyclerView.apply {
-            adapter = lectureInfoAdapter
+            adapter = lecturesAdapter
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(requireContext()))
         }
 
-        lectureInfoViewModel.lectureInfoList.observe(
+        lectureInfosViewModel.lectureInfoList.observe(
             viewLifecycleOwner,
-            lectureInfoAdapter::submitList
+            lecturesAdapter::submitList
         )
-        lectureInfoViewModel.startDetailActivity.observeEvent(viewLifecycleOwner) {
+        lectureInfosViewModel.startDetailActivity.observeEvent(viewLifecycleOwner) {
             startActivity(LectureInformationDetailActivity.createIntent(requireContext(), it))
         }
     }
@@ -66,15 +70,13 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
                 override fun onQueryTextSubmit(query: String?) = true
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (searchItem.isActionViewExpanded) {
-                        lectureInfoViewModel.onQueryTextChange(newText)
-                    }
+                    lectureInfosViewModel.onQueryTextChange(newText)
                     return true
                 }
             })
         }
 
-        val queryText = lectureInfoViewModel.queryText
+        val queryText = lectureInfosViewModel.queryText
         if (!queryText.isNullOrBlank()) {
             searchItem.expandActionView()
             searchView.setQuery(queryText, false)
@@ -86,11 +88,14 @@ class LectureInformationFragment : Fragment(R.layout.fragment_list) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_filter) {
-            LectureFilterDialogFragment(
-                lectureInfoViewModel.query,
-                lectureInfoViewModel.onFilterApplyClick
-            ).show(parentFragmentManager, "lecture_info_query")
+            LecturesFilterDialogFragment.newInstance(
+                lectureInfosViewModel.query
+            ).show(childFragmentManager, "lecture_infos_filter")
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onFilterApplyClick(lectureQuery: LectureQuery) {
+        lectureInfosViewModel.onFilterApplyClick(lectureQuery)
     }
 }

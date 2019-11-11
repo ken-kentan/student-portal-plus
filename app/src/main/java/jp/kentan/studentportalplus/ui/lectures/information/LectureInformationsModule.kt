@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.lecturecancellation
+package jp.kentan.studentportalplus.ui.lectures.information
 
 import androidx.lifecycle.ViewModel
 import dagger.Binds
@@ -10,15 +10,15 @@ import jp.kentan.studentportalplus.di.ViewModelKey
 
 @Module
 @Suppress("UNUSED")
-abstract class LectureCancellationModule {
+abstract class LectureInformationsModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun contributeLectureCancellationFragment(): LectureCancellationFragment
+    abstract fun contributeLectureInformationsFragment(): LectureInformationsFragment
 
     @Binds
     @IntoMap
-    @ViewModelKey(LectureCancellationViewModel::class)
-    abstract fun bindLectureCancellationViewModel(viewModel: LectureCancellationViewModel): ViewModel
+    @ViewModelKey(LectureInformationsViewModel::class)
+    abstract fun bindLectureInformationsViewModel(viewModel: LectureInformationsViewModel): ViewModel
 
 }
