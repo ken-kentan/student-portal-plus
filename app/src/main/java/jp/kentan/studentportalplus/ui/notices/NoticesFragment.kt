@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.notice
+package jp.kentan.studentportalplus.ui.notices
 
 import android.content.Context
 import android.os.Bundle
@@ -15,15 +15,15 @@ import jp.kentan.studentportalplus.ui.observeEvent
 import jp.kentan.studentportalplus.view.widget.DividerItemDecoration
 import javax.inject.Inject
 
-class NoticeFragment : Fragment(R.layout.fragment_list) {
+class NoticesFragment : Fragment(R.layout.fragment_list) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val noticeViewModel by activityViewModels<NoticeViewModel> { viewModelFactory }
+    private val noticeViewModel by activityViewModels<NoticesViewModel> { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val noticeAdapter = NoticeAdapter(noticeViewModel.onItemClick)
+        val noticeAdapter = NoticesAdapter(noticeViewModel.onItemClick)
 
         FragmentListBinding.bind(view).recyclerView.apply {
             adapter = noticeAdapter

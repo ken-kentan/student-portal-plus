@@ -24,8 +24,8 @@
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_notice"
-        android:name="jp.kentan.studentportalplus.ui.notice.NoticeFragment"
+        android:id="@+id/navigation_notices"
+        android:name="jp.kentan.studentportalplus.ui.notices.NoticesFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_list" />
     <fragment

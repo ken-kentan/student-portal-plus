@@ -17,9 +17,9 @@ import jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellations
 import jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsModule
 import jp.kentan.studentportalplus.ui.login.LoginActivity
 import jp.kentan.studentportalplus.ui.login.LoginModule
-import jp.kentan.studentportalplus.ui.notice.NoticeModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
+import jp.kentan.studentportalplus.ui.notices.NoticesModule
 import jp.kentan.studentportalplus.ui.timetable.TimetableModule
 
 @Module
@@ -36,7 +36,7 @@ abstract class ActivityBindingModule {
             TimetableModule::class,
             LectureInformationsModule::class,
             LectureCancellationsModule::class,
-            NoticeModule::class
+            NoticesModule::class
         ]
     )
     abstract fun contributeMainActivity(): MainActivity

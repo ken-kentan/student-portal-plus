@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.notice
+package jp.kentan.studentportalplus.ui.notices
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +8,8 @@ import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
-class NoticeViewModel @Inject constructor(
-    private val noticeRepository: NoticeRepository
+class NoticesViewModel @Inject constructor(
+    noticeRepository: NoticeRepository
 ) : ViewModel() {
 
     val lectureInfoList = noticeRepository.getListFlow().asLiveData()

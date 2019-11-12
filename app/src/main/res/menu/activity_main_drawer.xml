@@ -25,7 +25,7 @@
             android:title="@string/menu_lecture_cancel" />
 
         <item
-            android:id="@+id/navigation_notice"
+            android:id="@+id/navigation_notices"
             android:icon="@drawable/ic_menu_notice"
             android:title="@string/menu_notice" />
     </group>
