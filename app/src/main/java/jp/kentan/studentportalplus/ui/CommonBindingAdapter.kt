@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.ui
 import android.graphics.Typeface
 import android.view.View
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -66,5 +67,11 @@ object CommonBindingAdapter {
         }
 
         view.setImageResource(resourceId)
+    }
+
+    @JvmStatic
+    @BindingAdapter("selectedItemPosition")
+    fun setSelectedItemPosition(view: Spinner, position: Int) {
+        view.setSelection(position)
     }
 }

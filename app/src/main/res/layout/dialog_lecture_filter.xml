@@ -34,7 +34,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="0.65"
             app:layout_constraintStart_toEndOf="@+id/order_text_view"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectedItemPosition="@{query.order.ordinal()}" />
 
         <TextView
             android:id="@+id/type_text_view"
