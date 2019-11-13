@@ -1,10 +1,8 @@
 package jp.kentan.studentportalplus.ui.notices
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.vo.NoticeQuery
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
@@ -12,7 +10,14 @@ class NoticesViewModel @Inject constructor(
     noticeRepository: NoticeRepository
 ) : ViewModel() {
 
-    val lectureInfoList = noticeRepository.getListFlow().asLiveData()
+    private val _query = MutableLiveData(NoticeQuery())
+    val query: NoticeQuery
+        get() = requireNotNull(_query.value)
+
+    val queryText: String?
+        get() = query.text
+
+    val lectureInfoList = noticeRepository.getListFlow(_query.asFlow()).asLiveData()
 
     private val _startDetailActivity = MutableLiveData<Event<Long>>()
     val startDetailActivity: LiveData<Event<Long>>
@@ -20,5 +25,13 @@ class NoticesViewModel @Inject constructor(
 
     val onItemClick = { id: Long ->
         _startDetailActivity.value = Event(id)
+    }
+
+    fun onQueryTextChange(newText: String?) {
+        _query.value = query.copy(text = newText)
+    }
+
+    fun onFilterApplyClick(query: NoticeQuery) {
+        _query.value = query
     }
 }
