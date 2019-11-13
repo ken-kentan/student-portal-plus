@@ -52,7 +52,7 @@ class LecturesFilterDialogFragment : AppCompatDialogFragment() {
 
                 listener.onFilterApplyClick(query)
             }
-            .setNegativeButton(R.string.action_no, null)
+            .setNegativeButton(R.string.action_cancel, null)
             .setView(binding.root)
             .create()
     }

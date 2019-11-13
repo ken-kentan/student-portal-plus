@@ -137,8 +137,7 @@
     <string name="action_close">閉じる</string>
     <string name="action_filter">絞り込み</string>
     <string name="action_switch_layout">レイアウト</string>
-    <string name="action_yes">はい</string>
-    <string name="action_no">いいえ</string>
+    <string name="action_cancel">キャンセル</string>
 
     <!-- menu -->
     <string name="menu_dashboard">Dashboard</string>

@@ -58,7 +58,7 @@ class LectureInformationDetailActivity : DaggerAppCompatActivity() {
                 .setPositiveButton(R.string.action_exclude) { _, _ ->
                     lectureInfoDetailViewModel.onExcludeConfirmClick(subject)
                 }
-                .setNegativeButton(R.string.action_no, null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .show()
         }
         lectureInfoDetailViewModel.finishWithNotFoundError.observe(this) {

@@ -64,7 +64,7 @@ class AttendCourseDetailActivity : DaggerAppCompatActivity() {
                 .setPositiveButton(R.string.action_delete) { _, _ ->
                     attendCourseDetailViewModel.onDeleteConfirmClick()
                 }
-                .setNegativeButton(R.string.action_no, null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .show()
         }
         attendCourseDetailViewModel.error.observeEvent(this) {
