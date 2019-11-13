@@ -1,3 +1,3 @@
 [submodule "colorpicker"]
 	path = colorpicker
-	url = https://android.googlesource.com/platform/frameworks/opt/colorpicker
+	url = https://github.com/ken-kentan/colorpicker.git
