@@ -60,6 +60,11 @@
     <string name="name_period5_start_time">16:10</string>
     <string name="name_period6_start_time">17:50</string>
     <string name="name_period7_start_time">19:30</string>
+    <string name="name_date_range_all">全期間</string>
+    <string name="name_date_range_day">今日</string>
+    <string name="name_date_range_week">今週</string>
+    <string name="name_date_range_month">今月</string>
+    <string name="name_date_range_year">今年</string>
     <string name="name_order_update_date">最終更新日</string>
     <string name="name_order_attend_course">受講科目優先</string>
     <string name="name_null">未入力</string>

@@ -5,19 +5,22 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import jp.kentan.studentportalplus.R
 
-data class LectureQuery(
+data class NoticeQuery(
     val text: String? = null,
-    val order: Order = Order.UPDATED_DATE,
+    val dateRange: DateRange = DateRange.ALL,
     val isUnread: Boolean = false,
     val isRead: Boolean = false,
     val isAttend: Boolean = false
 ) : Parcelable {
 
-    enum class Order(
+    enum class DateRange(
         @StringRes val resId: Int
     ) {
-        UPDATED_DATE(R.string.name_order_update_date),
-        ATTEND_CLASS(R.string.name_order_attend_course)
+        ALL(R.string.name_date_range_all),
+        DAY(R.string.name_date_range_day),
+        WEEK(R.string.name_date_range_week),
+        MONTH(R.string.name_date_range_month),
+        YEAR(R.string.name_date_range_year)
     }
 
     val textList: List<String> = if (text.isNullOrBlank()) {
@@ -32,7 +35,7 @@ data class LectureQuery(
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readSerializable() as Order,
+        parcel.readSerializable() as DateRange,
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte()
@@ -40,7 +43,7 @@ data class LectureQuery(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(text)
-        parcel.writeSerializable(order)
+        parcel.writeSerializable(dateRange)
         parcel.writeByte(if (isUnread) 1 else 0)
         parcel.writeByte(if (isRead) 1 else 0)
         parcel.writeByte(if (isAttend) 1 else 0)
@@ -48,8 +51,8 @@ data class LectureQuery(
 
     override fun describeContents() = 0
 
-    companion object CREATOR : Parcelable.Creator<LectureQuery> {
-        override fun createFromParcel(parcel: Parcel) = LectureQuery(parcel)
-        override fun newArray(size: Int): Array<LectureQuery?> = arrayOfNulls(size)
+    companion object CREATOR : Parcelable.Creator<NoticeQuery> {
+        override fun createFromParcel(parcel: Parcel) = NoticeQuery(parcel)
+        override fun newArray(size: Int): Array<NoticeQuery?> = arrayOfNulls(size)
     }
 }
