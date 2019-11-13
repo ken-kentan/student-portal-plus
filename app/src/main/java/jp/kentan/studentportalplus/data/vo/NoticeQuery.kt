@@ -36,17 +36,17 @@ data class NoticeQuery(
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readSerializable() as DateRange,
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readInt() == 1,
+        parcel.readInt() == 1,
+        parcel.readInt() == 1
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(text)
         parcel.writeSerializable(dateRange)
-        parcel.writeByte(if (isUnread) 1 else 0)
-        parcel.writeByte(if (isRead) 1 else 0)
-        parcel.writeByte(if (isAttend) 1 else 0)
+        parcel.writeInt(if (isUnread) 1 else 0)
+        parcel.writeInt(if (isRead) 1 else 0)
+        parcel.writeInt(if (isAttend) 1 else 0)
     }
 
     override fun describeContents() = 0
