@@ -34,13 +34,17 @@ class LecturesFilterDialogFragment : AppCompatDialogFragment() {
             requireArguments().getParcelable<LectureQuery>(BUNDLE_LECTURE_QUERY)
         )
 
-        val binding = DialogLectureFilterBinding.inflate(LayoutInflater.from(requireContext()))
-        binding.query = lectureQuery
+        val context = requireContext()
+        val binding = DialogLectureFilterBinding.inflate(LayoutInflater.from(context)).apply {
+            query = lectureQuery
+            orderSpinner.adapter = LectureQueryOrderAdapter(context)
+        }
 
-        return MaterialAlertDialogBuilder(requireContext())
+        return MaterialAlertDialogBuilder(context)
             .setTitle(R.string.title_filter_dialog)
             .setPositiveButton(R.string.action_apply) { _, _ ->
                 val query = lectureQuery.copy(
+                    order = binding.orderSpinner.selectedItem as LectureQuery.Order,
                     isUnread = binding.unreadChip.isChecked,
                     isRead = binding.readChip.isChecked,
                     isAttend = binding.attendChip.isChecked

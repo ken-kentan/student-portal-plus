@@ -18,10 +18,22 @@
 
         <TextView
             android:id="@+id/order_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/name_display_order"
+            app:layout_constraintBottom_toBottomOf="@id/order_spinner"
+            app:layout_constraintEnd_toStartOf="@+id/order_spinner"
+            app:layout_constraintHorizontal_weight="0.35"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/order_spinner" />
+
+        <Spinner
+            android:id="@+id/order_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.65"
+            app:layout_constraintStart_toEndOf="@+id/order_text_view"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -31,7 +43,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/name_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/order_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/order_spinner" />
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="0dp"
@@ -47,24 +59,24 @@
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name_unread"
-                android:checked="@{query.unread}" />
+                android:checked="@{query.unread}"
+                android:text="@string/name_unread" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/read_chip"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name_read"
-                android:checked="@{query.read}" />
+                android:checked="@{query.read}"
+                android:text="@string/name_read" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/attend_chip"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name_attend_course"
-                android:checked="@{query.attend}" />
+                android:checked="@{query.attend}"
+                android:text="@string/name_attend_course" />
         </com.google.android.material.chip.ChipGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -60,7 +60,7 @@ class DefaultLectureInformationRepository(
         lectureInfoListFlow,
         queryFlow
     ) { lectureInfoList, query ->
-        lectureInfoList.filter { lecture ->
+        val filteredList = lectureInfoList.filter { lecture ->
             if (query.isUnread && lecture.isRead) {
                 return@filter false
             }
@@ -78,6 +78,13 @@ class DefaultLectureInformationRepository(
             }
 
             return@filter true
+        }
+
+        return@combine when (query.order) {
+            LectureQuery.Order.UPDATED_DATE -> filteredList
+            LectureQuery.Order.ATTEND_CLASS -> filteredList.sortedByDescending {
+                it.attendType.isAttend
+            }
         }
     }.flowOn(Dispatchers.IO)
 
