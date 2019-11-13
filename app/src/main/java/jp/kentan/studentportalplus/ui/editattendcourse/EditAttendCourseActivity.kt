@@ -77,7 +77,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
                 .setTitle(R.string.title_confirm)
                 .setMessage(R.string.text_discard_confirm)
                 .setPositiveButton(R.string.action_discard) { _, _ -> super.finish() }
-                .setNegativeButton(R.string.action_no, null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .show()
         }
 

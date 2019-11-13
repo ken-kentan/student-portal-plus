@@ -12,20 +12,20 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_lecture_information"
-        android:name="jp.kentan.studentportalplus.ui.lectureinformation.LectureInformationFragment"
+        android:id="@+id/navigation_lecture_informations"
+        android:name="jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsFragment"
         android:label="@string/title_lecture_info"
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_lecture_cancellation"
-        android:name="jp.kentan.studentportalplus.ui.lecturecancellation.LectureCancellationFragment"
+        android:id="@+id/navigation_lecture_cancellations"
+        android:name="jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsFragment"
         android:label="@string/title_lecture_cancel"
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_notice"
-        android:name="jp.kentan.studentportalplus.ui.notice.NoticeFragment"
+        android:id="@+id/navigation_notices"
+        android:name="jp.kentan.studentportalplus.ui.notices.NoticesFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_list" />
     <fragment

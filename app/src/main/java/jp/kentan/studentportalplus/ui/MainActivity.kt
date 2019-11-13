@@ -55,9 +55,9 @@ class MainActivity : DaggerAppCompatActivity() {
                     setOf(
                         R.id.navigation_dashboard,
                         R.id.navigation_timetable,
-                        R.id.navigation_lecture_information,
-                        R.id.navigation_lecture_cancellation,
-                        R.id.navigation_notice
+                        R.id.navigation_lecture_informations,
+                        R.id.navigation_lecture_cancellations,
+                        R.id.navigation_notices
                     )
                 ).setDrawerLayout(drawerLayout).build()
 

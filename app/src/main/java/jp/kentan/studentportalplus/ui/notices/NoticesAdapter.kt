@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.notice
+package jp.kentan.studentportalplus.ui.notices
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -13,9 +13,9 @@ import jp.kentan.studentportalplus.databinding.ItemNoticeBinding
 import jp.kentan.studentportalplus.databinding.ItemTextBinding
 import jp.kentan.studentportalplus.util.executeAfter
 
-class NoticeAdapter(
+class NoticesAdapter(
     private val onItemClick: (Long) -> Unit
-) : RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<NoticesAdapter.ViewHolder>() {
 
     private val differ = AsyncListDiffer<Any>(this, DiffCallback)
 

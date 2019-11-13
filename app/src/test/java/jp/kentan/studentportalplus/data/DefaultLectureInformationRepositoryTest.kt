@@ -3,11 +3,11 @@ package jp.kentan.studentportalplus.data
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
 import io.mockk.verify
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
 import jp.kentan.studentportalplus.data.dao.FakeLectureInformationDao
-import jp.kentan.studentportalplus.data.dao.LectureInformationDao
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
@@ -58,10 +58,7 @@ class DefaultLectureInformationRepositoryTest {
 
     @Test
     fun setRead() = runBlocking {
-        val lectureInfoDao = mockk<LectureInformationDao>()
-        every {
-            lectureInfoDao.updateRead(TestData.lectureInfo.id)
-        } returns 1
+        val lectureInfoDao = spyk<FakeLectureInformationDao>()
 
         val repo = DefaultLectureInformationRepository(
             lectureInfoDao,

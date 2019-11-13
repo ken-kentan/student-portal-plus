@@ -13,6 +13,7 @@
     <string name="title_edit_attend_course_add">Add</string>
     <string name="title_delete">消去</string>
     <string name="title_confirm">確認</string>
+    <string name="title_filter_dialog">検索フィルタ</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -20,6 +21,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- name -->
+    <string name="name_attend_course">受講科目</string>
     <string name="name_lecture_information">授業関連連絡</string>
     <string name="name_lecture_cancellation">休講情報</string>
     <string name="name_notice">最新情報</string>
@@ -46,6 +48,12 @@
     <string name="name_semester_and_day_of_week_and_period">学期 曜日時限</string>
     <string name="name_grade_and_day_of_week_and_period">区分 曜日時限</string>
     <string name="name_cancel_date">休講年月日</string>
+    <string name="name_display_order">表示順</string>
+    <string name="name_created_date">掲載日</string>
+    <string name="name_type">特徴</string>
+    <string name="name_unread">未読</string>
+    <string name="name_read">既読</string>
+    <string name="name_favorite">お気に入り</string>
     <string name="name_period1_start_time">8:50</string>
     <string name="name_period2_start_time">10:30</string>
     <string name="name_period3_start_time">12:50</string>
@@ -53,6 +61,13 @@
     <string name="name_period5_start_time">16:10</string>
     <string name="name_period6_start_time">17:50</string>
     <string name="name_period7_start_time">19:30</string>
+    <string name="name_date_range_all">全期間</string>
+    <string name="name_date_range_day">今日</string>
+    <string name="name_date_range_week">今週</string>
+    <string name="name_date_range_month">今月</string>
+    <string name="name_date_range_year">今年</string>
+    <string name="name_order_update_date">最終更新日</string>
+    <string name="name_order_attend_course">受講科目優先</string>
     <string name="name_null">未入力</string>
 
     <!-- text -->
@@ -109,17 +124,20 @@
     <string name="hint_category">分類</string>
     <string name="hint_credit">単位数</string>
     <string name="hint_schedule_code">時間割番号</string>
+    <string name="hint_query_subject_instructor">科目・教員名で検索&#8230;</string>
 
     <!-- action -->
+    <string name="action_apply">適用</string>
     <string name="action_save">保存</string>
     <string name="action_delete">消去</string>
     <string name="action_discard">破棄</string>
     <string name="action_exclude">除外</string>
     <string name="action_add">追加</string>
+    <string name="action_search">検索</string>
     <string name="action_close">閉じる</string>
+    <string name="action_filter">絞り込み</string>
     <string name="action_switch_layout">レイアウト</string>
-    <string name="action_yes">はい</string>
-    <string name="action_no">いいえ</string>
+    <string name="action_cancel">キャンセル</string>
 
     <!-- menu -->
     <string name="menu_dashboard">Dashboard</string>

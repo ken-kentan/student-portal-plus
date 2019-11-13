@@ -9,17 +9,17 @@ import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailModul
 import jp.kentan.studentportalplus.ui.dashboard.DashboardModule
 import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseActivity
 import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseModule
-import jp.kentan.studentportalplus.ui.lecturecancellation.LectureCancellationModule
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailModule
-import jp.kentan.studentportalplus.ui.lectureinformation.LectureInformationModule
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailModule
+import jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsModule
+import jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsModule
 import jp.kentan.studentportalplus.ui.login.LoginActivity
 import jp.kentan.studentportalplus.ui.login.LoginModule
-import jp.kentan.studentportalplus.ui.notice.NoticeModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
+import jp.kentan.studentportalplus.ui.notices.NoticesModule
 import jp.kentan.studentportalplus.ui.timetable.TimetableModule
 
 @Module
@@ -34,9 +34,9 @@ abstract class ActivityBindingModule {
             // fragments
             DashboardModule::class,
             TimetableModule::class,
-            LectureInformationModule::class,
-            LectureCancellationModule::class,
-            NoticeModule::class
+            LectureInformationsModule::class,
+            LectureCancellationsModule::class,
+            NoticesModule::class
         ]
     )
     abstract fun contributeMainActivity(): MainActivity
