@@ -2,6 +2,6 @@
 <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
         app:font="@font/orkney"
-        app:fontWeight="400"
-        app:fontStyle="normal" />
+        app:fontStyle="normal"
+        app:fontWeight="400" />
 </font-family>

@@ -32,9 +32,9 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:refreshing="@{viewModel.isSyncing}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:onRefreshListener="@{() -> viewModel.onRefresh()}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:refreshing="@{viewModel.isSyncing}">
 
             <fragment
                 android:id="@+id/nav_host_fragment"

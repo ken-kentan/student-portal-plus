@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/main_section" android:checkableBehavior="single">
+    <group
+        android:id="@+id/main_section"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/navigation_dashboard"
             android:icon="@drawable/ic_menu_dashboard"
@@ -30,7 +32,7 @@
             android:title="@string/menu_notice" />
     </group>
 
-    <group android:id="@+id/map_section" >
+    <group android:id="@+id/map_section">
         <item
             android:id="@+id/nav_campus_map"
             android:icon="@drawable/ic_menu_campus_map"
@@ -45,9 +47,9 @@
     <group android:id="@+id/other_section">
         <item
             android:id="@+id/nav_setting"
+            android:checkable="false"
             android:icon="@drawable/ic_menu_setting"
-            android:title="@string/menu_setting"
-            android:checkable="false" />
+            android:title="@string/menu_setting" />
     </group>
 
 </menu>
