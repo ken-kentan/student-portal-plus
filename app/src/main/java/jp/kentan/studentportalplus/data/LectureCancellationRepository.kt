@@ -60,7 +60,7 @@ class DefaultLectureCancellationRepository(
         lectureCancelListFlow,
         queryFlow
     ) { lectureCancelList, query ->
-        lectureCancelList.filter { lecture ->
+        val filteredList = lectureCancelList.filter { lecture ->
             if (query.isUnread && lecture.isRead) {
                 return@filter false
             }
@@ -78,6 +78,13 @@ class DefaultLectureCancellationRepository(
             }
 
             return@filter true
+        }
+
+        return@combine when (query.order) {
+            LectureQuery.Order.UPDATED_DATE -> filteredList
+            LectureQuery.Order.ATTEND_CLASS -> filteredList.sortedByDescending {
+                it.attendType.isAttend
+            }
         }
     }.flowOn(Dispatchers.IO)
 
