@@ -2,16 +2,20 @@ package jp.kentan.studentportalplus.ui.lectures.information
 
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
 class LectureInformationsViewModel @Inject constructor(
-    lectureInfoRepository: LectureInformationRepository
+    lectureInfoRepository: LectureInformationRepository,
+    private val localPreferences: LocalPreferences
 ) : ViewModel() {
 
-    private val _query = MutableLiveData(LectureQuery())
+    private val _query = MutableLiveData(
+        LectureQuery(order = localPreferences.lectureInformationsOrder)
+    )
     val query: LectureQuery
         get() = requireNotNull(_query.value)
 
@@ -35,5 +39,7 @@ class LectureInformationsViewModel @Inject constructor(
 
     fun onFilterApplyClick(query: LectureQuery) {
         _query.value = query
+
+        localPreferences.lectureInformationsOrder = query.order
     }
 }

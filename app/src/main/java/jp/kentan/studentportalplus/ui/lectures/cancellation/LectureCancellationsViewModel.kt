@@ -2,15 +2,19 @@ package jp.kentan.studentportalplus.ui.lectures.cancellation
 
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
+import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.ui.Event
 import javax.inject.Inject
 
 class LectureCancellationsViewModel @Inject constructor(
-    lectureCancelRepository: LectureCancellationRepository
+    lectureCancelRepository: LectureCancellationRepository,
+    private val localPreferences: LocalPreferences
 ) : ViewModel() {
 
-    private val _query = MutableLiveData(LectureQuery())
+    private val _query = MutableLiveData(
+        LectureQuery(order = localPreferences.lectureCancellationsOrder)
+    )
     val query: LectureQuery
         get() = requireNotNull(_query.value)
 
@@ -33,5 +37,7 @@ class LectureCancellationsViewModel @Inject constructor(
 
     fun onFilterApplyClick(query: LectureQuery) {
         _query.value = query
+
+        localPreferences.lectureCancellationsOrder = query.order
     }
 }
