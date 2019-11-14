@@ -187,8 +187,8 @@ class EditAttendCourseViewModel @Inject constructor(
         _showColorPickerDialog.value = Event(color)
     }
 
-    fun onColorSelect(color: CourseColor) {
-        this.color.value = color
+    fun onCourseColorSelect(courseColor: CourseColor) {
+        color.value = courseColor
     }
 
     fun onFinish() {

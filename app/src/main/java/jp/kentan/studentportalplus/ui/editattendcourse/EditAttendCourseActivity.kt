@@ -138,7 +138,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         ).run {
             setOnColorSelectedListener {
                 val selectedColor = requireNotNull(colorMap[it])
-                editAttendCourseViewModel.onColorSelect(selectedColor)
+                editAttendCourseViewModel.onCourseColorSelect(selectedColor)
             }
             show(supportFragmentManager, "color_picker_dialog")
         }
