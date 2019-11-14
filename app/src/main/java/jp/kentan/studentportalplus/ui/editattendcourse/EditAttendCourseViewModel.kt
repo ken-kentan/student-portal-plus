@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
 import jp.kentan.studentportalplus.ui.Event
@@ -20,7 +21,7 @@ class EditAttendCourseViewModel @Inject constructor(
     val dayOfWeekList = DayOfWeek.values().map { it.format(application) }
     val periodList = Period.values().map { it.format(application) }
 
-    val color = MutableLiveData<AttendCourse.Color>()
+    val color = MutableLiveData<CourseColor>()
     val subject = MutableLiveData<String>()
     val instructor = MutableLiveData<String>()
     val location = MutableLiveData<String>()
@@ -61,6 +62,10 @@ class EditAttendCourseViewModel @Inject constructor(
     private val _toast = MutableLiveData<Event<Int>>()
     val toast: LiveData<Event<Int>>
         get() = _toast
+
+    private val _showColorPickerDialog = MutableLiveData<Event<CourseColor>>()
+    val showColorPickerDialog: LiveData<Event<CourseColor>>
+        get() = _showColorPickerDialog
 
     private val _showFinishConfirmDialog = MutableLiveData<Event<Unit>>()
     val showFinishConfirmDialog: LiveData<Event<Unit>>
@@ -159,6 +164,7 @@ class EditAttendCourseViewModel @Inject constructor(
             category = category.value.orEmpty(),
             credit = credit ?: 0,
             scheduleCode = scheduleCode,
+            color = requireNotNull(color.value),
             type = originalAttendCourse.type
         )
 
@@ -174,6 +180,15 @@ class EditAttendCourseViewModel @Inject constructor(
                 _toast.value = Event(R.string.error_save_failed)
             }
         }
+    }
+
+    fun onColorClick() {
+        val color = color.value ?: return
+        _showColorPickerDialog.value = Event(color)
+    }
+
+    fun onColorSelect(color: CourseColor) {
+        this.color.value = color
     }
 
     fun onFinish() {

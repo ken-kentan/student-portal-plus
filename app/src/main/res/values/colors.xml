@@ -8,6 +8,9 @@
     <color name="surface">#FFFFFF</color>
 
     <color name="course_light_blue_1">#4FC3F7</color>
+    <color name="course_light_blue_2">#03A9F4</color>
+    <color name="course_light_blue_3">#0288D1</color>
+    <color name="course_light_blue_4">#01579B</color>
 
     <color name="favorite_orange">#FF9100</color>
     <color name="favorite_grey">#E0E0E0</color>

@@ -8,12 +8,15 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import com.android.colorpicker.ColorPickerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
 import jp.kentan.studentportalplus.databinding.ActivityEditAttendCourseBinding
@@ -35,6 +38,8 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         private const val EXTRA_ID = "ID"
         private const val EXTRA_PERIOD = "PERIOD"
         private const val EXTRA_DAY_OF_WEEK = "DAY_OF_WEEK"
+
+        private const val COLOR_PICKER_COLUMN = 4
 
         fun createIntent(context: Context, id: Long) =
             Intent(context, EditAttendCourseActivity::class.java).apply {
@@ -71,7 +76,9 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         editAttendCourseViewModel.toast.observeEvent(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
-
+        editAttendCourseViewModel.showColorPickerDialog.observeEvent(this) {
+            showColorPickerDialog(it)
+        }
         editAttendCourseViewModel.showFinishConfirmDialog.observeEvent(this) {
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.title_confirm)
@@ -80,7 +87,6 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
                 .setNegativeButton(R.string.action_cancel, null)
                 .show()
         }
-
         editAttendCourseViewModel.finish.observe(this) {
             super.finish()
         }
@@ -117,5 +123,24 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
 
     override fun finish() {
         editAttendCourseViewModel.onFinish()
+    }
+
+    private fun showColorPickerDialog(courseColor: CourseColor) {
+        val colorMap = CourseColor.values()
+            .associateBy { ContextCompat.getColor(this, it.resId) }
+
+        ColorPickerDialog.newInstance(
+            R.string.title_color_picker,
+            colorMap.keys.toIntArray(),
+            ContextCompat.getColor(this, courseColor.resId),
+            COLOR_PICKER_COLUMN,
+            colorMap.size
+        ).run {
+            setOnColorSelectedListener {
+                val selectedColor = requireNotNull(colorMap[it])
+                editAttendCourseViewModel.onColorSelect(selectedColor)
+            }
+            show(supportFragmentManager, "color_picker_dialog")
+        }
     }
 }

@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data.dao
 
 import androidx.room.TypeConverter
 import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 
 class AttendCourseConverter {
@@ -19,9 +20,9 @@ class AttendCourseConverter {
     fun dayOfWeekTo(dayOfWeek: DayOfWeek?) = dayOfWeek?.name
 
     @TypeConverter
-    fun fromColor(name: String?) = name?.let(AttendCourse.Color::valueOf)
+    fun fromColor(name: String?) = name?.let(CourseColor::valueOf)
 
     @TypeConverter
-    fun colorTo(color: AttendCourse.Color?) = color?.name
+    fun colorTo(color: CourseColor?) = color?.name
 
 }
