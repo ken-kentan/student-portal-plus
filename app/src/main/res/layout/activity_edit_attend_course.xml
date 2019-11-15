@@ -43,11 +43,12 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/subject_text_input_layout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:hint="@string/hint_subject"
                     app:error="@{viewModel.errorSubject}"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/color_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -62,6 +63,19 @@
                         android:text="@={viewModel.subject}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/color_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onColorClick()}"
+                    app:courseColor="@{viewModel.color}"
+                    app:icon="@drawable/ic_palette_white_24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/subject_text_input_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/instructor_text_input_layout"

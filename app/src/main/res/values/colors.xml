@@ -8,6 +8,29 @@
     <color name="surface">#FFFFFF</color>
 
     <color name="course_light_blue_1">#4FC3F7</color>
+    <color name="course_light_blue_2">#03A9F4</color>
+    <color name="course_light_blue_3">#0288D1</color>
+    <color name="course_light_blue_4">#01579B</color>
+    <color name="course_green_1">#81C784</color>
+    <color name="course_green_2">#4CAF50</color>
+    <color name="course_green_3">#388E3C</color>
+    <color name="course_green_4">#1B5E20</color>
+    <color name="course_red_1">#E57373</color>
+    <color name="course_red_2">#F44336</color>
+    <color name="course_red_3">#D32F2F</color>
+    <color name="course_red_4">#B71C1C</color>
+    <color name="course_orange_1">#FFB74D</color>
+    <color name="course_orange_2">#FF9800</color>
+    <color name="course_orange_3">#F57C00</color>
+    <color name="course_orange_4">#E65100</color>
+    <color name="course_purple_1">#BA68C8</color>
+    <color name="course_purple_2">#9C27B0</color>
+    <color name="course_purple_3">#7B1FA2</color>
+    <color name="course_purple_4">#4A148C</color>
+    <color name="course_brown_1">#A1887F</color>
+    <color name="course_brown_2">#795548</color>
+    <color name="course_brown_3">#5D4037</color>
+    <color name="course_brown_4">#3E2723</color>
 
     <color name="favorite_orange">#FF9100</color>
     <color name="favorite_grey">#E0E0E0</color>

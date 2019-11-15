@@ -100,6 +100,8 @@ dependencies {
 
     implementation(Deps.jsoup)
 
+    implementation(project(":colorpicker"))
+
     testImplementation(Deps.Test.junit)
     testImplementation(Deps.Test.mockk)
     testImplementation(Deps.Test.truth)

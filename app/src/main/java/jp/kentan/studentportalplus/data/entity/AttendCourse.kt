@@ -1,11 +1,10 @@
 package jp.kentan.studentportalplus.data.entity
 
-import androidx.annotation.ColorRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.util.Murmur3
 
@@ -40,7 +39,7 @@ data class AttendCourse(
     val type: Type,
 
     @ColumnInfo(name = "color")
-    val color: Color = Color.DEFAULT,
+    val color: CourseColor = CourseColor.DEFAULT,
 
     @ColumnInfo(name = "location")
     val location: String? = null,
@@ -60,19 +59,6 @@ data class AttendCourse(
 
         val canAttend: Boolean
             get() = this == SIMILAR || this == NOT
-    }
-
-    enum class Color(
-        @ColorRes val resId: Int
-    ) {
-        LIGHT_BLUE_1(R.color.course_light_blue_1),
-        LIGHT_BLUE_2(R.color.course_light_blue_1),
-        LIGHT_BLUE_3(R.color.course_light_blue_1),
-        LIGHT_BLUE_4(R.color.course_light_blue_1);
-
-        companion object {
-            val DEFAULT = LIGHT_BLUE_1
-        }
     }
 
     init {
