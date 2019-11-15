@@ -53,7 +53,7 @@ object Deps {
         }
     }
 
-    const val material = "com.google.android.material:material:1.1.0-beta01"
+    const val material = "com.google.android.material:material:1.1.0-beta02"
 
     object Dagger {
         private const val version = "2.25.2"
