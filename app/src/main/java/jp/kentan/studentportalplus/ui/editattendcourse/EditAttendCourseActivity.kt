@@ -76,9 +76,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         editAttendCourseViewModel.toast.observeEvent(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
-        editAttendCourseViewModel.showColorPickerDialog.observeEvent(this) {
-            showColorPickerDialog(it)
-        }
+        editAttendCourseViewModel.showColorPickerDialog.observeEvent(this, showColorPickerDialog)
         editAttendCourseViewModel.showFinishConfirmDialog.observeEvent(this) {
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.title_confirm)
@@ -125,7 +123,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         editAttendCourseViewModel.onFinish()
     }
 
-    private fun showColorPickerDialog(courseColor: CourseColor) {
+    private val showColorPickerDialog = { courseColor: CourseColor ->
         val colorMap = CourseColor.values()
             .associateBy { ContextCompat.getColor(this, it.resId) }
 
