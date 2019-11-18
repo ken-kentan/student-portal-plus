@@ -6,8 +6,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import jp.kentan.studentportalplus.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +28,15 @@ fun Activity.hideSoftInput() {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+/**
+ * find NavController from FragmentManager directly
+ * @see 'https://issuetracker.google.com/issues/143828489#comment5'
+ */
+fun FragmentManager.findNavController(): NavController {
+    val navHostFragment = findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+    return navHostFragment.navController
 }
 
 fun Context.buildCustomTabsIntent(): CustomTabsIntent = CustomTabsIntent.Builder()

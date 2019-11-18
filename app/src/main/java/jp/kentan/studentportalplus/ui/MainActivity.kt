@@ -11,8 +11,6 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -21,6 +19,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
 import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
 import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
+import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -49,8 +48,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 setSupportActionBar(appBar.toolbar)
 
-                val navController = findNavController()
-                navController.navigatorProvider.addNavigator(CustomTabsNavigator(this@MainActivity))
+                val navController = supportFragmentManager.findNavController()
                 NavigationUI.setupWithNavController(navView, navController)
 
                 val appBarConfiguration = AppBarConfiguration.Builder(
@@ -106,15 +104,5 @@ class MainActivity : DaggerAppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    /**
-     * find NavController from FragmentManager directly
-     * @see 'https://issuetracker.google.com/issues/143828489#comment5'
-     */
-    private fun findNavController(): NavController {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navHostFragment.navController
     }
 }
