@@ -3,7 +3,6 @@ package jp.kentan.studentportalplus.data.source
 import android.os.Build
 import android.util.Log
 import jp.kentan.studentportalplus.data.entity.User
-import jp.kentan.studentportalplus.util.Tls12SocketFactory
 import okhttp3.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

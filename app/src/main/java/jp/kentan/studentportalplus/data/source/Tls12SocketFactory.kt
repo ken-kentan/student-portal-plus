@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.util
+package jp.kentan.studentportalplus.data.source
 
 import java.io.IOException
 import java.net.InetAddress
@@ -56,7 +56,8 @@ class Tls12SocketFactory(private val delegate: SSLSocketFactory) : SSLSocketFact
 
     private fun Socket.enableTls12(): Socket {
         if (this is SSLSocket) {
-            enabledProtocols = TLS_V12_ONLY
+            enabledProtocols =
+                TLS_V12_ONLY
         }
         return this
     }
