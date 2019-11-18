@@ -32,7 +32,10 @@
             android:title="@string/menu_notice" />
     </group>
 
-    <group android:id="@+id/map_section">
+    <group
+        android:id="@+id/map_section"
+        android:menuCategory="secondary"
+        android:orderInCategory="1">
         <item
             android:id="@+id/navigation_campus_map"
             android:icon="@drawable/ic_menu_campus_map"
@@ -44,7 +47,10 @@
             android:title="@string/menu_room_map" />
     </group>
 
-    <group android:id="@+id/other_section">
+    <group
+        android:id="@+id/other_section"
+        android:menuCategory="secondary"
+        android:orderInCategory="2">
         <item
             android:id="@+id/nav_setting"
             android:checkable="false"
