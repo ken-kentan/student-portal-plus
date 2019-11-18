@@ -34,12 +34,12 @@
 
     <group android:id="@+id/map_section">
         <item
-            android:id="@+id/nav_campus_map"
+            android:id="@+id/navigation_campus_map"
             android:icon="@drawable/ic_menu_campus_map"
             android:title="@string/menu_campus_map" />
 
         <item
-            android:id="@+id/nav_room_map"
+            android:id="@+id/navigation_room_map"
             android:icon="@drawable/ic_menu_room_map"
             android:title="@string/menu_room_map" />
     </group>

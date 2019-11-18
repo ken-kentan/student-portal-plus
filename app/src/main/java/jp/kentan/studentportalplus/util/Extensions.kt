@@ -42,34 +42,6 @@ inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
 private val YMD_DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
 fun Date.formatYearMonthDay(): String = YMD_DATE_FORMAT.format(this)
 
-fun <T> MediatorLiveData<T>.asLiveData() = this as LiveData<T>
+fun String.isPdf() = endsWith(".pdf", ignoreCase = true)
 
-inline fun <T, E1, E2, R> LiveData<T>.combineWith(
-    liveData1: LiveData<E1>,
-    liveData2: LiveData<E2>,
-    crossinline block: (T, E1, E2) -> R
-): LiveData<R> {
-    val result = MediatorLiveData<R>()
-    result.addSource(this) {
-        result.value = block(
-            it ?: return@addSource,
-            liveData1.value ?: return@addSource,
-            liveData2.value ?: return@addSource
-        )
-    }
-    result.addSource(liveData1) {
-        result.value = block(
-            value ?: return@addSource,
-            it ?: return@addSource,
-            liveData2.value ?: return@addSource
-        )
-    }
-    result.addSource(liveData2) {
-        result.value = block(
-            value ?: return@addSource,
-            liveData1.value ?: return@addSource,
-            it ?: return@addSource
-        )
-    }
-    return result
-}
+fun <T> MediatorLiveData<T>.asLiveData() = this as LiveData<T>

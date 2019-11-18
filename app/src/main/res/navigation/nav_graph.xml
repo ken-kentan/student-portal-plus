@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
+        android:id="@+id/navigation_timetable"
+        android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
+        android:label="@string/title_timetable"
+        tools:layout="@layout/fragment_timetable" />
+
+    <fragment
         android:id="@+id/navigation_lecture_informations"
         android:name="jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsFragment"
         android:label="@string/title_lecture_info"
@@ -28,9 +34,12 @@
         android:name="jp.kentan.studentportalplus.ui.notices.NoticesFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_list" />
-    <fragment
-        android:id="@+id/navigation_timetable"
-        android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
-        android:label="@string/title_timetable"
-        tools:layout="@layout/fragment_timetable" />
+
+    <customTabs
+        android:id="@+id/navigation_campus_map"
+        app:url="@string/url_campus_map" />
+
+    <customTabs
+        android:id="@+id/navigation_room_map"
+        app:url="@string/url_room_map" />
 </navigation>

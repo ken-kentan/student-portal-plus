@@ -10,5 +10,9 @@
         <attr name="html" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomTabsNavigator">
+        <attr name="url" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="SimilarSubjectSamplePreference" />
 </resources>

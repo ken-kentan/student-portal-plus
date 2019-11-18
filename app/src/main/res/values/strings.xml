@@ -152,6 +152,8 @@
 
     <!-- URL -->
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=%1$s</string>
+    <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
+    <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
 
     <!-- Dashboard -->
     <string name="text_today_timetable">%1$s曜日の時間割</string>

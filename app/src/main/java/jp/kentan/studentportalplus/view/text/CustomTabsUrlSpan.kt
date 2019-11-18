@@ -9,6 +9,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.util.CustomTabsHelper
 import jp.kentan.studentportalplus.util.buildCustomTabsIntent
+import jp.kentan.studentportalplus.util.isPdf
 
 class CustomTabsUrlSpan(
     private val context: Context, url: String
@@ -17,19 +18,16 @@ class CustomTabsUrlSpan(
     private val localPreferences = LocalPreferences(context)
 
     override fun onClick(widget: View) {
-        val rawUrl = this.url
+        var url = this.url
 
-        val isPdf = rawUrl.endsWith(".pdf", true)
-
-        var url = rawUrl
-        if (isPdf && localPreferences.isEnabledPdfOpenWithGdocs) {
-            val isRequireLogin = rawUrl.startsWith("https://portal.student.kit.ac.jp", true)
+        if (url.isPdf() && localPreferences.isEnabledPdfOpenWithGdocs) {
+            val isRequireLogin = url.startsWith("https://portal.student.kit.ac.jp", true)
 
             if (isRequireLogin) {
                 Toast.makeText(context, R.string.error_gdocs_require_login, Toast.LENGTH_LONG)
                     .show()
             } else {
-                url = context.getString(R.string.url_gdocs, rawUrl)
+                url = context.getString(R.string.url_gdocs, url)
             }
         }
 
