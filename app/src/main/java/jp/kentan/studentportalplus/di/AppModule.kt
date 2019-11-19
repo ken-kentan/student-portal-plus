@@ -40,7 +40,8 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideShibbolethClient(source: ShibbolethDataSource) = ShibbolethClient(source)
+    fun provideShibbolethClient(source: ShibbolethDataSource, localPreferences: LocalPreferences) =
+        ShibbolethClient(source, localPreferences)
 
     @JvmStatic
     @Provides

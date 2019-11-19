@@ -16,6 +16,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         private const val LECTURE_INFORMATIONS_ORDER = "lecture_informations_order"
         private const val LECTURE_CANCELLATIONS_ORDER = "lecture_cancellations_order"
         private const val SIMILAR_SUBJECT_THRESHOLD = "similar_subject_threshold"
+        private const val SHIBBOLETH_LAST_LOGIN_DATE = "shibboleth_last_login_date"
     }
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
@@ -64,6 +65,12 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == SIMILAR_SUBJECT_THRESHOLD) {
             similarSubjectThresholdChannel.offer(similarSubjectThreshold / 100F)
+        }
+    }
+
+    fun updateShibbolethLastLoginDate() {
+        sharedPreferences.edit {
+            putLong(SHIBBOLETH_LAST_LOGIN_DATE, System.currentTimeMillis())
         }
     }
 }
