@@ -7,27 +7,27 @@
         android:id="@+id/main_section"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_dashboard"
+            android:id="@+id/dashboard_fragment"
             android:icon="@drawable/ic_menu_dashboard"
             android:title="@string/menu_dashboard" />
 
         <item
-            android:id="@+id/navigation_timetable"
+            android:id="@+id/timetable_fragment"
             android:icon="@drawable/ic_menu_timetable"
             android:title="@string/menu_timetable" />
 
         <item
-            android:id="@+id/navigation_lecture_informations"
+            android:id="@+id/lecture_informations_fragment"
             android:icon="@drawable/ic_menu_lecture_information"
             android:title="@string/menu_lecture_info" />
 
         <item
-            android:id="@+id/navigation_lecture_cancellations"
+            android:id="@+id/lecture_cancellations_fragment"
             android:icon="@drawable/ic_menu_lecture_cancellation"
             android:title="@string/menu_lecture_cancel" />
 
         <item
-            android:id="@+id/navigation_notices"
+            android:id="@+id/notices_fragment"
             android:icon="@drawable/ic_menu_notice"
             android:title="@string/menu_notice" />
     </group>
@@ -37,12 +37,12 @@
         android:menuCategory="secondary"
         android:orderInCategory="1">
         <item
-            android:id="@+id/navigation_campus_map"
+            android:id="@+id/campus_map_custom_tabs"
             android:icon="@drawable/ic_menu_campus_map"
             android:title="@string/menu_campus_map" />
 
         <item
-            android:id="@+id/navigation_room_map"
+            android:id="@+id/room_map_custom_tabs"
             android:icon="@drawable/ic_menu_room_map"
             android:title="@string/menu_room_map" />
     </group>
@@ -52,7 +52,7 @@
         android:menuCategory="secondary"
         android:orderInCategory="2">
         <item
-            android:id="@+id/nav_setting"
+            android:id="@+id/settings_activity"
             android:checkable="false"
             android:icon="@drawable/ic_menu_setting"
             android:title="@string/menu_setting" />
