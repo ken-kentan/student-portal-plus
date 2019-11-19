@@ -3,7 +3,7 @@ object Deps {
         const val android = "com.android.tools.build:gradle:3.5.2"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val googleServices = "com.google.gms:google-services:4.3.2"
-        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.0"
+        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.9.5"
         const val firebaseAppDistribution =
             "com.google.firebase:firebase-appdistribution-gradle:1.1.0"
     }
