@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_graph"
+    app:startDestination="@id/general_preference_fragment">
+
+    <fragment
+        android:id="@+id/general_preference_fragment"
+        android:name="jp.kentan.studentportalplus.ui.settings.GeneralPreferenceFragment"
+        android:label="@string/title_settings" />
+</navigation>

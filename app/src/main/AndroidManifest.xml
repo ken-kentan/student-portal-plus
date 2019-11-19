@@ -49,6 +49,7 @@
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_login_activity" />
         <activity android:name=".ui.editattendcourse.EditAttendCourseActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
