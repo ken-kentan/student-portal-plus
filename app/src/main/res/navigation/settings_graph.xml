@@ -8,4 +8,12 @@
         android:id="@+id/general_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.GeneralPreferenceFragment"
         android:label="@string/title_settings" />
+
+    <activity
+        android:id="@+id/login_activity"
+        android:name="jp.kentan.studentportalplus.ui.login.LoginActivity" />
+
+    <activity
+        android:id="@+id/oss_licenses_menu_activity"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
 </navigation>

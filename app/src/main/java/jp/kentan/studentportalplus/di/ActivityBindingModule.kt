@@ -20,6 +20,8 @@ import jp.kentan.studentportalplus.ui.login.LoginModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
 import jp.kentan.studentportalplus.ui.notices.NoticesModule
+import jp.kentan.studentportalplus.ui.settings.SettingsActivity
+import jp.kentan.studentportalplus.ui.settings.SettingsModule
 import jp.kentan.studentportalplus.ui.timetable.TimetableModule
 
 @Module
@@ -64,5 +66,9 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [LoginModule::class])
     abstract fun contributeLoginActivity(): LoginActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    abstract fun contributeSettingsActivity(): SettingsActivity
 
 }

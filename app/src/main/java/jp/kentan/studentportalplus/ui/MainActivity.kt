@@ -53,11 +53,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 val appBarConfiguration = AppBarConfiguration.Builder(
                     setOf(
-                        R.id.navigation_dashboard,
-                        R.id.navigation_timetable,
-                        R.id.navigation_lecture_informations,
-                        R.id.navigation_lecture_cancellations,
-                        R.id.navigation_notices
+                        R.id.dashboard_fragment,
+                        R.id.timetable_fragment,
+                        R.id.lecture_informations_fragment,
+                        R.id.lecture_cancellations_fragment,
+                        R.id.notices_fragment
                     )
                 ).setDrawerLayout(drawerLayout).build()
 

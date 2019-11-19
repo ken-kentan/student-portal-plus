@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
+import java.util.*
 
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -67,6 +68,9 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             similarSubjectThresholdChannel.offer(similarSubjectThreshold / 100F)
         }
     }
+
+    val shibbolethLastLoginDate: Date
+        get() = Date(sharedPreferences.getLong(SHIBBOLETH_LAST_LOGIN_DATE, 0))
 
     fun updateShibbolethLastLoginDate() {
         sharedPreferences.edit {

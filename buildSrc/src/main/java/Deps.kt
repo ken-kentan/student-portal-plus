@@ -3,6 +3,7 @@ object Deps {
         const val android = "com.android.tools.build:gradle:3.5.2"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val googleServices = "com.google.gms:google-services:4.3.2"
+        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.0"
         const val firebaseAppDistribution =
             "com.google.firebase:firebase-appdistribution-gradle:1.1.0"
     }
@@ -54,6 +55,8 @@ object Deps {
     }
 
     const val material = "com.google.android.material:material:1.1.0-beta02"
+
+    const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object Dagger {
         private const val version = "2.25.2"

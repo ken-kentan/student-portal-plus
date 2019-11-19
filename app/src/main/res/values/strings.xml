@@ -89,6 +89,7 @@
     <string name="text_lecture_information_updated_date">\n最終更新日: %1$s</string>
     <string name="text_lecture_cancellation_created_date">掲示日: %1$s</string>
     <string name="text_notice_created_date">掲載日: %1$s</string>
+    <string name="text_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
 
     <!-- info -->
     <string name="info_login_form">ユーザー名とパスワードを入力して下さい</string>
@@ -174,6 +175,47 @@
     <string name="suffix_day_of_week">%1$s曜日</string>
     <string name="suffix_day_of_week_short">%1$s曜</string>
     <string name="text_day_of_week_and_period">%1$s %2$s</string>
+
+    <!-- Settings -->
+    <string name="pref_category_shibboleth">シボレス</string>
+    <string name="pref_title_login">再ログイン</string>
+    <string name="pref_summary_login">ユーザー名とパスワードを更新します</string>
+    <string name="pref_title_last_login_date">最終ログイン日時</string>
+
+    <string name="pref_category_notification">新着通知</string>
+    <string name="pref_title_sync">自動同期</string>
+    <string name="pref_summary_sync">一定間隔で自動的に同期(フェッチ)します</string>
+    <string name="pref_title_sync_interval">同期間隔</string>
+    <string name="pref_summary_sync_interval">%1$sごと</string>
+    <string name="pref_title_notification_type">通知の種類</string>
+    <string name="pref_summary_notification_type">通知内容をカスタマイズします</string>
+    <string name="pref_title_vibration">バイブレーション</string>
+    <string name="pref_summary_vibration">通知が届いたら振動させる</string>
+    <string name="pref_title_led">通知LED</string>
+    <string name="pref_summary_led">通知が届いたらLEDを点滅させる</string>
+    <string name="pref_title_notification_settings">通知設定</string>
+    <string name="pref_summary_notification_settings">通知設定を変更</string>
+
+    <string name="pref_category_portal">ポータルデータ</string>
+    <string name="pref_title_similar_subject_threshold">類似科目の設定</string>
+    <string name="pref_summary_similar_subject_threshold">類似科目名のしきい値を変更します</string>
+    <string name="pref_title_similar_threshold">類似科目名のしきい値</string>
+    <string name="pref_title_sample">サンプル</string>
+    <string name="pref_title_pdf_gdocs">PDFをGoogle Docsで開く</string>
+    <string name="pref_summary_pdf_gdocs">ダウンロードせずGoogle Docsで表示します</string>
+    <string name="pref_title_detail_error">詳細なエラーメッセージを表示</string>
+    <string name="pref_summary_detail_error">エラー発生時に原因を詳細に表示します</string>
+
+    <string name="pref_category_about">概要</string>
+    <string name="pref_title_version">バージョン</string>
+    <string name="pref_title_share">友達にシェア</string>
+    <string name="pref_summary_share">このアプリを友達に教える</string>
+    <string name="pref_title_developer">開発元</string>
+    <string name="pref_summary_developer">K² Studio.</string>
+    <string name="pref_title_terms">利用規約・プライバシーポリシー</string>
+    <string name="pref_summary_terms">利用規約およびプライバシーポリシーの詳細</string>
+    <string name="pref_title_license">オープンソースライセンス</string>
+    <string name="pref_summary_license">オープンソースソフトウェアに関するライセンスの詳細</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
