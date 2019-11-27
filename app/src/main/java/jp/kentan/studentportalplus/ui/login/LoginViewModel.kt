@@ -19,7 +19,12 @@ class LoginViewModel @Inject constructor(
 
     val message = MutableLiveData<String>()
 
-    val username = MutableLiveData<String>()
+    val username = MutableLiveData<String>().apply {
+        viewModelScope.launch {
+            value = userRepository.get()?.username
+        }
+    }
+
     val password = MutableLiveData<String>()
 
     private val _errorUsername = MediatorLiveData<Int>().apply {

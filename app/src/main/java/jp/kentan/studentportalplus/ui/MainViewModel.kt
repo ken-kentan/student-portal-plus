@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import jp.kentan.studentportalplus.data.UserRepository
@@ -15,7 +16,7 @@ class MainViewModel @Inject constructor(
     userRepository: UserRepository
 ) : AndroidViewModel(application) {
 
-    val user = userRepository.getUser()
+    val user = userRepository.getFlow().asLiveData()
     val isSyncing = MutableLiveData<Boolean>()
 
     private val _closeDrawer = MutableLiveData<Event<Unit>>()

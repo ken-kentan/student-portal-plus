@@ -1,42 +1,58 @@
 package jp.kentan.studentportalplus.data
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import jp.kentan.studentportalplus.data.entity.User
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.source.ShibbolethDataSource
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 
-class UserRepository(
+interface UserRepository {
+    suspend fun login(username: String, password: String)
+
+    suspend fun get(): User?
+
+    fun getFlow(): Flow<User>
+}
+
+@ExperimentalCoroutinesApi
+class DefaultUserRepository(
     private val shibbolethClient: ShibbolethClient,
     private val shibbolethDataSource: ShibbolethDataSource,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + Job())
-) {
+) : UserRepository {
 
-    private val userLiveData = MutableLiveData<User>()
+    private val userChannel = ConflatedBroadcastChannel<User>()
 
-    suspend fun login(username: String, password: String) = withContext(Dispatchers.IO) {
+    override suspend fun login(username: String, password: String) = withContext(Dispatchers.IO) {
         val user = shibbolethClient.authenticate(username, password)
 
         shibbolethDataSource.save(user.name, username, password)
-
-        userLiveData.postValue(user)
+        userChannel.send(user)
     }
 
-    fun getUser(): LiveData<User> {
+    override suspend fun get(): User? = withContext(Dispatchers.IO) {
+        runCatching {
+            User(shibbolethDataSource.name, shibbolethDataSource.username)
+        }.getOrNull()
+    }
+
+    override fun getFlow(): Flow<User> {
         coroutineScope.launch {
             runCatching {
                 User(shibbolethDataSource.name, shibbolethDataSource.username)
             }.fold(
-                onSuccess = userLiveData::postValue,
+                onSuccess = {
+                    userChannel.offer(it)
+                },
                 onFailure = {
                     Log.e("UserRepository", "Failed to get user", it)
                 }
             )
         }
 
-        return userLiveData
+        return userChannel.asFlow()
     }
-
 }
