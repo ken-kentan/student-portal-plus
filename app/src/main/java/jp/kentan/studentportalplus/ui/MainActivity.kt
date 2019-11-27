@@ -12,6 +12,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
@@ -73,9 +74,13 @@ class MainActivity : DaggerAppCompatActivity() {
         mainViewModel.user.observe(this) {
             navBinding.user = it
         }
-
         mainViewModel.closeDrawer.observeEvent(this) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        mainViewModel.indefiniteSnackbar.observeEvent(this) {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).apply {
+                setAction(R.string.action_close) { dismiss() }
+            }.show()
         }
     }
 

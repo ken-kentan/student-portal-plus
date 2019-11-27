@@ -14,6 +14,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     companion object {
         private const val IS_GRID_TIMETABLE_LAYOUT = "is_grid_timetable_layout"
         private const val IS_ENABLED_PDF_OPEN_WITH_GDOCS = "is_enabled_pdf_open_with_gdocs"
+        private const val IS_ENABLED_DETAIL_ERROR = "is_enabled_detail_error"
         private const val LECTURE_INFORMATIONS_ORDER = "lecture_informations_order"
         private const val LECTURE_CANCELLATIONS_ORDER = "lecture_cancellations_order"
         private const val SIMILAR_SUBJECT_THRESHOLD = "similar_subject_threshold"
@@ -34,6 +35,12 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         get() = sharedPreferences.getBoolean(IS_ENABLED_PDF_OPEN_WITH_GDOCS, true)
         set(value) = sharedPreferences.edit {
             putBoolean(IS_ENABLED_PDF_OPEN_WITH_GDOCS, value)
+        }
+
+    var isEnabledDetailError: Boolean
+        get() = sharedPreferences.getBoolean(IS_ENABLED_DETAIL_ERROR, false)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_ENABLED_DETAIL_ERROR, value)
         }
 
     var lectureInformationsOrder: LectureQuery.Order

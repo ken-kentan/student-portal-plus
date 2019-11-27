@@ -96,7 +96,7 @@
         <androidx.preference.Preference
             android:key="terms"
             android:title="@string/pref_title_terms"
-            android:summary="@string/pref_summary_terms"></androidx.preference.Preference>
+            android:summary="@string/pref_summary_terms" />
 
         <androidx.preference.Preference
             android:key="oss_licenses"

@@ -96,6 +96,8 @@
 
     <!-- error -->
     <string name="error_unknown">不明なエラーです</string>
+    <string name="error_sync_failed">同期に失敗しました。時間をおいて再試行して下さい</string>
+    <string name="error_sync_cancelled">同期がキャンセルされました</string>
     <string name="error_field_empty">未入力です</string>
     <string name="error_invalid_username">無効なユーザー名です</string>
     <string name="error_invalid_password">無効なパスワード文字数です</string>
