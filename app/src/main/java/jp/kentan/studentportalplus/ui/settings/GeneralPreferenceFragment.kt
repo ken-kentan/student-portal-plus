@@ -19,8 +19,6 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var localPreference: LocalPreferences
 
-    private lateinit var shibbolethLastLoginDatePreference: Preference
-
     private val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -28,15 +26,11 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.pref_general, rootKey)
 
-        shibbolethLastLoginDatePreference = requirePreference("shibboleth_last_login_date")
+        val navController = findNavController()
 
         requirePreference<Preference>("login").setOnPreferenceClickListener {
-            findNavController().navigate(R.id.login_activity)
+            navController.navigate(R.id.login_activity)
             return@setOnPreferenceClickListener true
-        }
-
-        shibbolethLastLoginDatePreference.setSummaryProvider {
-            dateFormat.format(localPreference.shibbolethLastLoginDate)
         }
 
         requirePreference<Preference>("version").setSummaryProvider { BuildConfig.VERSION_NAME }
@@ -52,9 +46,16 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         requirePreference<Preference>("oss_licenses").setOnPreferenceClickListener {
-            findNavController().navigate(R.id.oss_licenses_menu_activity)
+            navController.navigate(R.id.oss_licenses_menu_activity)
             return@setOnPreferenceClickListener true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requirePreference<Preference>("shibboleth_last_login_date").summary =
+            dateFormat.format(localPreference.shibbolethLastLoginDate)
     }
 
     private fun <T : Preference> requirePreference(key: String) =
