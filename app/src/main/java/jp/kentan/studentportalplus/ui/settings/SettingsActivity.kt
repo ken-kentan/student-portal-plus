@@ -2,12 +2,12 @@ package jp.kentan.studentportalplus.ui.settings
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivitySettingsBinding
-import jp.kentan.studentportalplus.util.findNavController
 
 class SettingsActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class SettingsActivity : DaggerAppCompatActivity() {
                     }.build()
 
                 setupActionBarWithNavController(
-                    supportFragmentManager.findNavController(),
+                    findNavController(this@SettingsActivity, R.id.nav_host_fragment),
                     appBarConfiguration
                 )
             }

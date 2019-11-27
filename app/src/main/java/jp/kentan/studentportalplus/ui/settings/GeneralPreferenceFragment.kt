@@ -26,10 +26,8 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.pref_general, rootKey)
 
-        val navController = findNavController()
-
         requirePreference<Preference>("login").setOnPreferenceClickListener {
-            navController.navigate(R.id.login_activity)
+            findNavController().navigate(R.id.login_activity)
             return@setOnPreferenceClickListener true
         }
 
@@ -46,7 +44,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         requirePreference<Preference>("oss_licenses").setOnPreferenceClickListener {
-            navController.navigate(R.id.oss_licenses_menu_activity)
+            findNavController().navigate(R.id.oss_licenses_menu_activity)
             return@setOnPreferenceClickListener true
         }
     }

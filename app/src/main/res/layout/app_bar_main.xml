@@ -37,7 +37,7 @@
             app:onRefreshListener="@{() -> viewModel.onRefresh()}"
             app:refreshing="@{viewModel.isSyncing}">
 
-            <androidx.fragment.app.FragmentContainerView
+            <fragment
                 android:id="@+id/nav_host_fragment"
                 android:name="jp.kentan.studentportalplus.ui.NavHostFragment"
                 android:layout_width="match_parent"

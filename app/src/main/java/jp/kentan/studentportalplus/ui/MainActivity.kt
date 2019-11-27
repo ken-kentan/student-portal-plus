@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -17,7 +18,6 @@ import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
 import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
-import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -46,7 +46,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 setSupportActionBar(appBar.toolbar)
 
-                val navController = supportFragmentManager.findNavController()
+                val navController = findNavController(R.id.nav_host_fragment)
                 NavigationUI.setupWithNavController(navView, navController)
 
                 val appBarConfiguration = AppBarConfiguration.Builder(
