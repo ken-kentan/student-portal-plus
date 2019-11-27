@@ -5,10 +5,12 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.data.vo.LectureQuery
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import java.util.*
 
+@ExperimentalCoroutinesApi
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
@@ -64,7 +66,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         }
 
     private val similarSubjectThreshold: Int
-        get() = sharedPreferences.getInt(SIMILAR_SUBJECT_THRESHOLD, 80)
+        get() = sharedPreferences.getString(SIMILAR_SUBJECT_THRESHOLD, null)?.toIntOrNull() ?: 80
 
     private val similarSubjectThresholdChannel =
         ConflatedBroadcastChannel(similarSubjectThreshold / 100F)

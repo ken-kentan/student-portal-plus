@@ -11,6 +11,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivitySettingsBinding
 
 class SettingsActivity : DaggerAppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

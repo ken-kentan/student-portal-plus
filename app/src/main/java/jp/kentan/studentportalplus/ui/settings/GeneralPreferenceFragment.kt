@@ -2,6 +2,8 @@ package jp.kentan.studentportalplus.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.IdRes
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -27,7 +29,12 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.pref_general, rootKey)
 
         requirePreference<Preference>("login").setOnPreferenceClickListener {
-            findNavController().navigate(R.id.login_activity)
+            onNavDestinationClicked(R.id.login_activity, isFragment = false)
+            return@setOnPreferenceClickListener true
+        }
+
+        requirePreference<Preference>("similar_subject_threshold").setOnPreferenceClickListener {
+            onNavDestinationClicked(R.id.similar_subject_preference_fragment)
             return@setOnPreferenceClickListener true
         }
 
@@ -44,7 +51,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         requirePreference<Preference>("oss_licenses").setOnPreferenceClickListener {
-            findNavController().navigate(R.id.oss_licenses_menu_activity)
+            onNavDestinationClicked(R.id.oss_licenses_menu_activity, isFragment = false)
             return@setOnPreferenceClickListener true
         }
     }
@@ -54,6 +61,20 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
         requirePreference<Preference>("shibboleth_last_login_date").summary =
             dateFormat.format(localPreference.shibbolethLastLoginDate)
+    }
+
+    private fun onNavDestinationClicked(@IdRes resId: Int, isFragment: Boolean = true) {
+        val builder = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+
+        if (isFragment) {
+            builder.setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
+                .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
+        }
+
+        findNavController().navigate(resId, null, builder.build())
     }
 
     private fun <T : Preference> requirePreference(key: String) =
