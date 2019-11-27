@@ -31,14 +31,14 @@ object Deps {
         const val browser = "androidx.browser:browser:1.0.0"
 
         object Navigation {
-            private const val version = "2.1.0"
+            private const val version = "2.2.0-rc02"
 
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.2.0-rc01"
+            private const val version = "2.2.0-rc02"
 
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -46,7 +46,7 @@ object Deps {
         }
 
         object Room {
-            private const val version = "2.2.1"
+            private const val version = "2.2.2"
 
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -68,14 +68,14 @@ object Deps {
     }
 
     object AssistedInject {
-        private const val version = "0.5.1"
+        private const val version = "0.5.2"
 
         const val core = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
         const val processor = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
     }
 
     object OkHttp {
-        private const val version = "3.14.2"
+        private const val version = "3.14.4"
 
         const val client = "com.squareup.okhttp3:okhttp:$version"
         const val urlConnection = "com.squareup.okhttp3:okhttp-urlconnection:$version"
