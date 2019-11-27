@@ -3,7 +3,7 @@ package jp.kentan.studentportalplus.ui.settings
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivitySettingsBinding
@@ -15,14 +15,15 @@ class SettingsActivity : DaggerAppCompatActivity() {
 
         DataBindingUtil.setContentView<ActivitySettingsBinding>(this, R.layout.activity_settings)
             .apply {
+                setSupportActionBar(toolbar)
+
                 val appBarConfiguration = AppBarConfiguration.Builder()
                     .setFallbackOnNavigateUpListener {
                         finish()
                         return@setFallbackOnNavigateUpListener true
                     }.build()
 
-                NavigationUI.setupWithNavController(
-                    toolbar,
+                setupActionBarWithNavController(
                     supportFragmentManager.findNavController(),
                     appBarConfiguration
                 )
