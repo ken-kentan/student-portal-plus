@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import jp.kentan.studentportalplus.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +37,9 @@ fun Activity.hideSoftInput() {
 //    val navHostFragment = findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 //    return navHostFragment.navController
 //}
+
+fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: String) =
+    findPreference<T>(key) ?: throw NullPointerException("Preference($key) is not found.")
 
 fun Context.buildCustomTabsIntent(): CustomTabsIntent = CustomTabsIntent.Builder()
     .setShowTitle(true)

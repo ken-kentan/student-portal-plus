@@ -4,20 +4,20 @@
     <androidx.preference.PreferenceCategory android:title="@string/pref_title_similar_subject_threshold">
 
         <androidx.preference.ListPreference
-            android:key="similar_subject_threshold"
-            android:title="@string/pref_title_similar_threshold"
+            android:defaultValue="80"
             android:entries="@array/similar_subject_threshold_name"
             android:entryValues="@array/similar_subject_threshold_values"
-            android:defaultValue="80"
-            android:icon="@drawable/ic_pref_similar_subject" />
+            android:icon="@drawable/ic_pref_similar_subject"
+            android:key="similar_subject_threshold"
+            android:title="@string/pref_title_similar_threshold" />
 
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_title_sample">
 
-        <!--        <jp.kentan.studentportalplus.view.widget.SimilarSubjectSamplePreference-->
-        <!--            android:key="similar_threshold_sample"-->
-        <!--            android:layout="@layout/preference_subject_similar_sample" />-->
+        <jp.kentan.studentportalplus.view.widget.SimilarSubjectSamplePreference
+            android:key="similar_subject_sample"
+            android:layout="@layout/preference_subject_similar_sample" />
 
     </androidx.preference.PreferenceCategory>
 

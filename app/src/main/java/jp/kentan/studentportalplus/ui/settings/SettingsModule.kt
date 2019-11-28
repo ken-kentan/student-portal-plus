@@ -10,4 +10,8 @@ abstract class SettingsModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract fun contributeGeneralPreferenceFragment(): GeneralPreferenceFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract fun contributeSimilarSubjectPreferenceFragment(): SimilarSubjectPreferenceFragment
 }

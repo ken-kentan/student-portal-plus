@@ -59,7 +59,7 @@ object CommonBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("attendType")
-    fun setAttendType(view: ImageView, attendType: AttendCourse.Type) {
+    fun setAttendType(view: ImageView, attendType: AttendCourse.Type?) {
         val resourceId = when (attendType) {
             AttendCourse.Type.PORTAL, AttendCourse.Type.USER -> R.drawable.ic_attend_red_24dp
             AttendCourse.Type.SIMILAR -> R.drawable.ic_attend_yellow_24dp

@@ -11,6 +11,7 @@ import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.util.requirePreference
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -76,7 +77,4 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
         findNavController().navigate(resId, null, builder.build())
     }
-
-    private fun <T : Preference> requirePreference(key: String) =
-        findPreference<T>(key) ?: throw NullPointerException("$key is not found.")
 }
