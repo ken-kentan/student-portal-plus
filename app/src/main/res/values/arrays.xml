@@ -17,7 +17,7 @@
 
     <string-array name="similar_subject_threshold_name">
         <item>70%以上</item>
-        <item>80%以上 (推奨)</item>
+        <item>80%以上（推奨）</item>
         <item>90%以上</item>
         <item>100%</item>
     </string-array>
