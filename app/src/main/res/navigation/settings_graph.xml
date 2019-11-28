@@ -11,7 +11,8 @@
 
     <fragment
         android:id="@+id/similar_subject_preference_fragment"
-        android:name="jp.kentan.studentportalplus.ui.settings.SimilarSubjectPreferenceFragment" />
+        android:name="jp.kentan.studentportalplus.ui.settings.SimilarSubjectPreferenceFragment"
+        android:label="@string/title_settings" />
 
     <activity
         android:id="@+id/login_activity"
