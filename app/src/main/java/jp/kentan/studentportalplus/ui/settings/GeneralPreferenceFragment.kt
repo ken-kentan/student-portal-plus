@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -17,56 +18,56 @@ import java.util.*
 import javax.inject.Inject
 
 
-class GeneralPreferenceFragment : PreferenceFragmentCompat() {
+class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickListener {
 
     @Inject
     lateinit var localPreference: LocalPreferences
 
-    private val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN)
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         AndroidSupportInjection.inject(this)
-
         setPreferencesFromResource(R.xml.pref_general, rootKey)
+    }
 
-        requirePreference<Preference>("login").setOnPreferenceClickListener {
-            onNavDestinationClicked(R.id.login_activity, isFragment = false)
-            return@setOnPreferenceClickListener true
-        }
-
-        requirePreference<Preference>("notification_type").setOnPreferenceClickListener {
-            onNavDestinationClicked(R.id.notification_type_preference_fragment)
-            return@setOnPreferenceClickListener true
-        }
-
-        requirePreference<Preference>("similar_subject_threshold").setOnPreferenceClickListener {
-            onNavDestinationClicked(R.id.similar_subject_preference_fragment)
-            return@setOnPreferenceClickListener true
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         requirePreference<Preference>("version").setSummaryProvider { BuildConfig.VERSION_NAME }
 
-        requirePreference<Preference>("share").setOnPreferenceClickListener {
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app))
-            }
-            startActivity(intent)
-
-            return@setOnPreferenceClickListener true
-        }
-
-        requirePreference<Preference>("oss_licenses").setOnPreferenceClickListener {
-            onNavDestinationClicked(R.id.oss_licenses_menu_activity, isFragment = false)
-            return@setOnPreferenceClickListener true
-        }
+        registerOnPreferenceClickListener("login")
+        registerOnPreferenceClickListener("notification_type")
+        registerOnPreferenceClickListener("similar_subject_threshold")
+        registerOnPreferenceClickListener("oss_licenses")
+        registerOnPreferenceClickListener("share")
     }
 
     override fun onResume() {
         super.onResume()
 
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN)
         requirePreference<Preference>("shibboleth_last_login_date").summary =
             dateFormat.format(localPreference.shibbolethLastLoginDate)
+    }
+
+    override fun onPreferenceClick(preference: Preference?): Boolean {
+        when (preference?.key) {
+            "login" -> onNavDestinationClicked(R.id.login_activity, isFragment = false)
+            "notification_type" -> onNavDestinationClicked(R.id.notification_type_preference_fragment)
+            "similar_subject_threshold" -> onNavDestinationClicked(R.id.similar_subject_preference_fragment)
+            "oss_licenses" -> onNavDestinationClicked(
+                R.id.oss_licenses_menu_activity,
+                isFragment = false
+            )
+            "share" -> {
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app))
+                }
+                startActivity(intent)
+            }
+            else -> return false
+        }
+
+        return true
     }
 
     private fun onNavDestinationClicked(@IdRes resId: Int, isFragment: Boolean = true) {
@@ -81,5 +82,9 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         findNavController().navigate(resId, null, builder.build())
+    }
+
+    private fun registerOnPreferenceClickListener(key: String) {
+        requirePreference<Preference>(key).onPreferenceClickListener = this
     }
 }
