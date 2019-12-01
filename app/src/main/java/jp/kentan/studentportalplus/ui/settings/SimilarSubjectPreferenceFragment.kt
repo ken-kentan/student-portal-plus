@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.observe
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
@@ -26,18 +27,14 @@ class SimilarSubjectPreferenceFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val similarSubjectPreference = requirePreference<Preference>("similar_subject_threshold")
+        requirePreference<Preference>("similar_subject_threshold")
+            .summaryProvider = Preference.SummaryProvider<ListPreference> { it.entry }
 
         val similarSubjectSamplePreference =
             requirePreference<SimilarSubjectSamplePreference>("similar_subject_sample")
 
-        localPreferences.similarSubjectThresholdFlow.asLiveData()
-            .observe(viewLifecycleOwner) { threshold ->
-                val percent = (threshold * 100).toInt()
-                similarSubjectPreference.summary =
-                    if (percent < 100) "$percent%%以上" else "$percent%%"
-
-                similarSubjectSamplePreference.threshold = threshold
-            }
+        localPreferences.similarSubjectThresholdFlow.asLiveData().observe(viewLifecycleOwner) {
+            similarSubjectSamplePreference.threshold = it
+        }
     }
 }
