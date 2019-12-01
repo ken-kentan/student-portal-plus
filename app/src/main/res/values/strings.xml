@@ -11,7 +11,9 @@
     <string name="title_notice">News &amp; Events</string>
     <string name="title_edit_attend_course_update">Edit</string>
     <string name="title_edit_attend_course_add">Add</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_preference_general">Settings</string>
+    <string name="title_preference_notification_type">Notification Type</string>
+    <string name="title_preference_similar_subject">Similar Subject</string>
     <string name="title_delete">消去</string>
     <string name="title_confirm">確認</string>
     <string name="title_filter_dialog">検索フィルタ</string>
