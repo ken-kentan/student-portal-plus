@@ -10,6 +10,11 @@
         android:label="@string/title_settings" />
 
     <fragment
+        android:id="@+id/notification_type_preference_fragment"
+        android:name="jp.kentan.studentportalplus.ui.settings.NotificationTypePreferenceFragment"
+        android:label="@string/title_settings" />
+
+    <fragment
         android:id="@+id/similar_subject_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.SimilarSubjectPreferenceFragment"
         android:label="@string/title_settings" />

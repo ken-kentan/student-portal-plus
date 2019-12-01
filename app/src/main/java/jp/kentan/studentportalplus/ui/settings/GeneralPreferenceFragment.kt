@@ -34,6 +34,11 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat() {
             return@setOnPreferenceClickListener true
         }
 
+        requirePreference<Preference>("notification_type").setOnPreferenceClickListener {
+            onNavDestinationClicked(R.id.notification_type_preference_fragment)
+            return@setOnPreferenceClickListener true
+        }
+
         requirePreference<Preference>("similar_subject_threshold").setOnPreferenceClickListener {
             onNavDestinationClicked(R.id.similar_subject_preference_fragment)
             return@setOnPreferenceClickListener true

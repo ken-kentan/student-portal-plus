@@ -13,5 +13,9 @@ abstract class SettingsModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
+    abstract fun contributeNotificationTypePreferenceFragment(): NotificationTypePreferenceFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
     abstract fun contributeSimilarSubjectPreferenceFragment(): SimilarSubjectPreferenceFragment
 }

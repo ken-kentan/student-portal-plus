@@ -15,6 +15,28 @@
         <item>360</item>
     </string-array>
 
+    <string-array name="notification_type_lecture_name">
+        <item>すべて</item>
+        <item>受講科目・類似科目</item>
+        <item>通知しない</item>
+    </string-array>
+    <string-array name="notification_type_lecture_values">
+        <item>ALL</item>
+        <item>ATTEND</item>
+        <item>NOT</item>
+    </string-array>
+
+    <string-array name="notification_type_notice_name">
+        <item>すべて</item>
+        <item>重要</item>
+        <item>通知しない</item>
+    </string-array>
+    <string-array name="notification_type_notice_values">
+        <item>ALL</item>
+        <item>IMPORTANT</item>
+        <item>NOT</item>
+    </string-array>
+
     <string-array name="similar_subject_threshold_name">
         <item>70%以上</item>
         <item>80%以上（推奨）</item>
