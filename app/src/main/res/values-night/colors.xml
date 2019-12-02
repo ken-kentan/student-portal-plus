@@ -6,6 +6,8 @@
     <color name="secondary_variant">#2B77BA</color>
     <color name="surface">#1D1D1D</color>
 
+    <color name="app_bar_text_hint">#60FFFFFF</color>
+
     <color name="course_light_blue_1">#81D4FA</color>
     <color name="course_light_blue_2">#4FC3F7</color>
     <color name="course_light_blue_3">#29B6F6</color>

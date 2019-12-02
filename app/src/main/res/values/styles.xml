@@ -20,10 +20,10 @@
 
     <style name="AppTheme.AppBarOverlay" parent="">
         <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
+        <item name="android:textColorHint">@color/app_bar_text_hint</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
         <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
     </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
 
     <style name="Widget.AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface" />
 
