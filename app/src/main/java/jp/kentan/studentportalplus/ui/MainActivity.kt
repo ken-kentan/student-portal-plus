@@ -49,19 +49,6 @@ class MainActivity : DaggerAppCompatActivity() {
                 setSupportActionBar(appBar.toolbar)
 
                 val navController = findNavController(R.id.nav_host_fragment)
-//                NavigationUI.setupWithNavController(navView, navController)
-
-//                val appBarConfiguration = AppBarConfiguration.Builder(
-//                    setOf(
-//                        R.id.dashboard_fragment,
-//                        R.id.timetable_fragment,
-//                        R.id.lecture_informations_fragment,
-//                        R.id.lecture_cancellations_fragment,
-//                        R.id.notices_fragment
-//                    )
-//                ).setDrawerLayout(drawerLayout).build()
-//
-//                setupActionBarWithNavController(navController, appBarConfiguration)
                 setupWithNavController(navView, drawerLayout, navController)
 
                 val toggle = ActionBarDrawerToggle(
@@ -134,8 +121,7 @@ class MainActivity : DaggerAppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             title = destination.label
 
-            val menu = navigationView.menu
-            menu.forEach { item ->
+            navigationView.menu.forEach { item ->
                 item.isChecked = destination.id == item.itemId
             }
         }

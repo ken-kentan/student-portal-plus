@@ -26,4 +26,8 @@
     <activity
         android:id="@+id/oss_licenses_menu_activity"
         android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+
+    <customTabs
+        android:id="@+id/terms_custom_tabs"
+        app:url="@string/url_terms" />
 </navigation>

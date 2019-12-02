@@ -36,6 +36,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
         registerOnPreferenceClickListener("login")
         registerOnPreferenceClickListener("notification_type")
         registerOnPreferenceClickListener("similar_subject_threshold")
+        registerOnPreferenceClickListener("terms")
         registerOnPreferenceClickListener("oss_licenses")
         registerOnPreferenceClickListener("share")
     }
@@ -53,6 +54,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
             "login" -> onNavDestinationClicked(R.id.login_activity, isFragment = false)
             "notification_type" -> onNavDestinationClicked(R.id.notification_type_preference_fragment)
             "similar_subject_threshold" -> onNavDestinationClicked(R.id.similar_subject_preference_fragment)
+            "terms" -> onNavDestinationClicked(R.id.terms_custom_tabs, isFragment = false)
             "oss_licenses" -> onNavDestinationClicked(
                 R.id.oss_licenses_menu_activity,
                 isFragment = false
