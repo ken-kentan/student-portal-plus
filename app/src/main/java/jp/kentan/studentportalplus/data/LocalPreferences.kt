@@ -5,12 +5,11 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.data.vo.LectureQuery
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import java.util.*
 
-@ExperimentalCoroutinesApi
+
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {

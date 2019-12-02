@@ -34,7 +34,7 @@ class LectureInformationsFragment : Fragment(R.layout.fragment_list),
         setHasOptionsMenu(true)
 
         val lecturesAdapter = LecturesAdapter(
-            R.string.text_empty_lecture_information,
+            R.string.text_not_found_lecture_information,
             lectureInfosViewModel.onItemClick
         )
 

@@ -34,7 +34,7 @@ class LectureCancellationsFragment : Fragment(R.layout.fragment_list),
         setHasOptionsMenu(true)
 
         val lecturesAdapter = LecturesAdapter(
-            R.string.text_empty_lecture_cancellation,
+            R.string.text_not_found_lecture_cancellation,
             lectureCancelsViewModel.onItemClick
         )
 
