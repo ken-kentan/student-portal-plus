@@ -11,6 +11,9 @@
     <string name="title_notice">News &amp; Events</string>
     <string name="title_edit_attend_course_update">Edit</string>
     <string name="title_edit_attend_course_add">Add</string>
+    <string name="title_preference_general">Settings</string>
+    <string name="title_preference_notification_type">Notification Type</string>
+    <string name="title_preference_similar_subject">Similar Subject</string>
     <string name="title_delete">消去</string>
     <string name="title_confirm">確認</string>
     <string name="title_filter_dialog">検索フィルタ</string>
@@ -88,12 +91,15 @@
     <string name="text_lecture_information_updated_date">\n最終更新日: %1$s</string>
     <string name="text_lecture_cancellation_created_date">掲示日: %1$s</string>
     <string name="text_notice_created_date">掲載日: %1$s</string>
+    <string name="text_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
 
     <!-- info -->
     <string name="info_login_form">ユーザー名とパスワードを入力して下さい</string>
 
     <!-- error -->
     <string name="error_unknown">不明なエラーです</string>
+    <string name="error_sync_failed">同期に失敗しました。時間をおいて再試行して下さい</string>
+    <string name="error_sync_cancelled">同期がキャンセルされました</string>
     <string name="error_field_empty">未入力です</string>
     <string name="error_invalid_username">無効なユーザー名です</string>
     <string name="error_invalid_password">無効なパスワード文字数です</string>
@@ -151,6 +157,7 @@
     <string name="menu_setting">Setting</string>
 
     <!-- URL -->
+    <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=%1$s</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
@@ -173,6 +180,51 @@
     <string name="suffix_day_of_week">%1$s曜日</string>
     <string name="suffix_day_of_week_short">%1$s曜</string>
     <string name="text_day_of_week_and_period">%1$s %2$s</string>
+
+    <!-- Settings -->
+    <string name="pref_category_shibboleth">シボレス</string>
+    <string name="pref_title_login">再ログイン</string>
+    <string name="pref_summary_login">ユーザー名とパスワードを更新します</string>
+    <string name="pref_title_last_login_date">最終ログイン日時</string>
+
+    <string name="pref_category_notification">新着通知</string>
+    <string name="pref_title_sync">自動同期</string>
+    <string name="pref_summary_sync">一定間隔で自動的に同期(フェッチ)します</string>
+    <string name="pref_title_sync_interval">同期間隔</string>
+    <string name="pref_summary_sync_interval">%1$sごと</string>
+    <string name="pref_title_notification_type">通知の種類</string>
+    <string name="pref_summary_notification_type">通知内容をカスタマイズします</string>
+    <string name="pref_title_vibration">バイブレーション</string>
+    <string name="pref_summary_vibration">通知が届いたら振動させる</string>
+    <string name="pref_title_led">通知LED</string>
+    <string name="pref_summary_led">通知が届いたらLEDを点滅させる</string>
+    <string name="pref_title_notification_settings">通知設定</string>
+    <string name="pref_summary_notification_settings">通知設定を変更</string>
+
+    <string name="pref_category_portal">ポータルデータ</string>
+    <string name="pref_title_similar_subject_threshold">類似科目の設定</string>
+    <string name="pref_summary_similar_subject_threshold">類似科目名のしきい値を変更します</string>
+    <string name="pref_title_similar_threshold">類似科目名のしきい値</string>
+    <string name="pref_title_sample">サンプル</string>
+    <string name="pref_title_pdf_gdocs">PDFをGoogle Docsで開く</string>
+    <string name="pref_summary_pdf_gdocs">ダウンロードせずGoogle Docsで表示します</string>
+    <string name="pref_title_detail_error">詳細なエラーメッセージを表示</string>
+    <string name="pref_summary_detail_error">エラー発生時に原因を詳細に表示します</string>
+
+    <string name="pref_category_about">概要</string>
+    <string name="pref_title_version">バージョン</string>
+    <string name="pref_title_share">友達にシェア</string>
+    <string name="pref_summary_share">このアプリを友達に教える</string>
+    <string name="pref_title_developer">開発元</string>
+    <string name="pref_summary_developer">K² Studio.</string>
+    <string name="pref_title_terms">利用規約・プライバシーポリシー</string>
+    <string name="pref_summary_terms">利用規約およびプライバシーポリシーの詳細</string>
+    <string name="pref_title_license">オープンソースライセンス</string>
+    <string name="pref_summary_license">オープンソースソフトウェアに関するライセンスの詳細</string>
+
+    <string name="text_similar_subject1">が受講科目、</string>
+    <string name="text_similar_subject2">が類似科目です.</string>
+    <string name="text_similar_subject3">類似科目は受講科目と同様に通知されます.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

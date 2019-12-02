@@ -26,6 +26,9 @@ import java.util.Arrays;
  */
 public class JaroWinklerDistance {
 
+    private JaroWinklerDistance() {
+    }
+
     public static float getDistance(String s1, String s2) {
         int[] mtp = matches(s1, s2);
         float m = mtp[0];

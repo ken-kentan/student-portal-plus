@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data.source
 
 import android.os.Build
 import android.util.Log
+import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.User
 import okhttp3.*
 import org.jsoup.Jsoup
@@ -15,7 +16,8 @@ import javax.net.ssl.X509TrustManager
 
 
 class ShibbolethClient(
-    private val shibbolethDataSource: ShibbolethDataSource
+    private val shibbolethDataSource: ShibbolethDataSource,
+    private val localPreferences: LocalPreferences
 ) {
 
     private companion object {
@@ -209,6 +211,8 @@ class ShibbolethClient(
         val body = response.body() ?: throw ShibbolethResponseException(
             "Empty response body"
         )
+
+        localPreferences.updateShibbolethLastLoginDate()
 
         Log.d(TAG, "Passed: SamlResponsePage")
 

@@ -3,24 +3,23 @@ package jp.kentan.studentportalplus.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
 import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
-import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -49,21 +48,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 setSupportActionBar(appBar.toolbar)
 
-                val navController = findNavController()
-                navController.navigatorProvider.addNavigator(CustomTabsNavigator(this@MainActivity))
-                NavigationUI.setupWithNavController(navView, navController)
-
-                val appBarConfiguration = AppBarConfiguration.Builder(
-                    setOf(
-                        R.id.navigation_dashboard,
-                        R.id.navigation_timetable,
-                        R.id.navigation_lecture_informations,
-                        R.id.navigation_lecture_cancellations,
-                        R.id.navigation_notices
-                    )
-                ).setDrawerLayout(drawerLayout).build()
-
-                setupActionBarWithNavController(navController, appBarConfiguration)
+                val navController = findNavController(R.id.nav_host_fragment)
+                setupWithNavController(navView, drawerLayout, navController)
 
                 val toggle = ActionBarDrawerToggle(
                     this@MainActivity, drawerLayout, appBar.toolbar,
@@ -78,9 +64,13 @@ class MainActivity : DaggerAppCompatActivity() {
         mainViewModel.user.observe(this) {
             navBinding.user = it
         }
-
         mainViewModel.closeDrawer.observeEvent(this) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        mainViewModel.indefiniteSnackbar.observeEvent(this) {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).apply {
+                setAction(R.string.action_close) { dismiss() }
+            }.show()
         }
     }
 
@@ -93,28 +83,47 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+    private fun setupWithNavController(
+        navigationView: NavigationView,
+        drawerLayout: DrawerLayout,
+        navController: NavController
+    ) {
+        val fragmentSet = setOf(
+            R.id.dashboard_fragment,
+            R.id.timetable_fragment,
+            R.id.lecture_informations_fragment,
+            R.id.lecture_cancellations_fragment,
+            R.id.notices_fragment
+        )
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                startActivity(WelcomeActivity.createIntent(this))
-                true
+        navigationView.setNavigationItemSelectedListener { item ->
+            val builder = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+
+            if (fragmentSet.contains(item.itemId)) {
+                builder.setPopUpTo(R.id.dashboard_fragment, false)
+                    .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
+                    .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
+                    .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
+                    .setPopExitAnim(androidx.navigation.ui.R.anim.nav_default_pop_exit_anim)
             }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
-    /**
-     * find NavController from FragmentManager directly
-     * @see 'https://issuetracker.google.com/issues/143828489#comment5'
-     */
-    private fun findNavController(): NavController {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navHostFragment.navController
+            return@setNavigationItemSelectedListener try {
+                navController.navigate(item.itemId, null, builder.build())
+                drawerLayout.closeDrawer(navigationView)
+
+                true
+            } catch (e: IllegalArgumentException) {
+                false
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            title = destination.label
+
+            navigationView.menu.forEach { item ->
+                item.isChecked = destination.id == item.itemId
+            }
+        }
     }
 }

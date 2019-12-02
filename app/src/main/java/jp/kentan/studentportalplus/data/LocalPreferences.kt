@@ -5,17 +5,22 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.data.vo.LectureQuery
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
+import java.util.*
 
+@ExperimentalCoroutinesApi
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private const val IS_GRID_TIMETABLE_LAYOUT = "is_grid_timetable_layout"
         private const val IS_ENABLED_PDF_OPEN_WITH_GDOCS = "is_enabled_pdf_open_with_gdocs"
+        private const val IS_ENABLED_DETAIL_ERROR = "is_enabled_detail_error"
         private const val LECTURE_INFORMATIONS_ORDER = "lecture_informations_order"
         private const val LECTURE_CANCELLATIONS_ORDER = "lecture_cancellations_order"
         private const val SIMILAR_SUBJECT_THRESHOLD = "similar_subject_threshold"
+        private const val SHIBBOLETH_LAST_LOGIN_DATE = "shibboleth_last_login_date"
     }
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
@@ -32,6 +37,12 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         get() = sharedPreferences.getBoolean(IS_ENABLED_PDF_OPEN_WITH_GDOCS, true)
         set(value) = sharedPreferences.edit {
             putBoolean(IS_ENABLED_PDF_OPEN_WITH_GDOCS, value)
+        }
+
+    var isEnabledDetailError: Boolean
+        get() = sharedPreferences.getBoolean(IS_ENABLED_DETAIL_ERROR, false)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_ENABLED_DETAIL_ERROR, value)
         }
 
     var lectureInformationsOrder: LectureQuery.Order
@@ -55,7 +66,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         }
 
     private val similarSubjectThreshold: Int
-        get() = sharedPreferences.getInt(SIMILAR_SUBJECT_THRESHOLD, 80)
+        get() = sharedPreferences.getString(SIMILAR_SUBJECT_THRESHOLD, null)?.toIntOrNull() ?: 80
 
     private val similarSubjectThresholdChannel =
         ConflatedBroadcastChannel(similarSubjectThreshold / 100F)
@@ -64,6 +75,15 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == SIMILAR_SUBJECT_THRESHOLD) {
             similarSubjectThresholdChannel.offer(similarSubjectThreshold / 100F)
+        }
+    }
+
+    val shibbolethLastLoginDate: Date
+        get() = Date(sharedPreferences.getLong(SHIBBOLETH_LAST_LOGIN_DATE, 0))
+
+    fun updateShibbolethLastLoginDate() {
+        sharedPreferences.edit {
+            putLong(SHIBBOLETH_LAST_LOGIN_DATE, System.currentTimeMillis())
         }
     }
 }

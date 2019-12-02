@@ -3,43 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_dashboard">
+    app:startDestination="@id/dashboard_fragment">
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/dashboard_fragment"
         android:name="jp.kentan.studentportalplus.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_timetable"
+        android:id="@+id/timetable_fragment"
         android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
         android:label="@string/title_timetable"
         tools:layout="@layout/fragment_timetable" />
 
     <fragment
-        android:id="@+id/navigation_lecture_informations"
+        android:id="@+id/lecture_informations_fragment"
         android:name="jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsFragment"
         android:label="@string/title_lecture_info"
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_lecture_cancellations"
+        android:id="@+id/lecture_cancellations_fragment"
         android:name="jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsFragment"
         android:label="@string/title_lecture_cancel"
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_notices"
+        android:id="@+id/notices_fragment"
         android:name="jp.kentan.studentportalplus.ui.notices.NoticesFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_list" />
 
     <customTabs
-        android:id="@+id/navigation_campus_map"
+        android:id="@+id/campus_map_custom_tabs"
         app:url="@string/url_campus_map" />
 
     <customTabs
-        android:id="@+id/navigation_room_map"
+        android:id="@+id/room_map_custom_tabs"
         app:url="@string/url_room_map" />
+
+    <activity
+        android:id="@+id/settings_activity"
+        android:name="jp.kentan.studentportalplus.ui.settings.SettingsActivity" />
 </navigation>

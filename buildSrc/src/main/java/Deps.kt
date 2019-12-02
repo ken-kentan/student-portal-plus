@@ -3,12 +3,13 @@ object Deps {
         const val android = "com.android.tools.build:gradle:3.5.2"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val googleServices = "com.google.gms:google-services:4.3.2"
+        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.9.5"
         const val firebaseAppDistribution =
             "com.google.firebase:firebase-appdistribution-gradle:1.1.0"
     }
 
     object Kotlin {
-        const val version = "1.3.50"
+        const val version = "1.3.61"
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
@@ -30,14 +31,14 @@ object Deps {
         const val browser = "androidx.browser:browser:1.0.0"
 
         object Navigation {
-            private const val version = "2.1.0"
+            private const val version = "2.2.0-rc02"
 
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.2.0-rc01"
+            private const val version = "2.2.0-rc02"
 
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -45,7 +46,7 @@ object Deps {
         }
 
         object Room {
-            private const val version = "2.2.1"
+            private const val version = "2.2.2"
 
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -54,6 +55,8 @@ object Deps {
     }
 
     const val material = "com.google.android.material:material:1.1.0-beta02"
+
+    const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object Dagger {
         private const val version = "2.25.2"
@@ -65,14 +68,14 @@ object Deps {
     }
 
     object AssistedInject {
-        private const val version = "0.5.1"
+        private const val version = "0.5.2"
 
         const val core = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
         const val processor = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
     }
 
     object OkHttp {
-        private const val version = "3.14.2"
+        private const val version = "3.14.4"
 
         const val client = "com.squareup.okhttp3:okhttp:$version"
         const val urlConnection = "com.squareup.okhttp3:okhttp-urlconnection:$version"

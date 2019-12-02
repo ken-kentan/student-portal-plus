@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.firebase.appdistribution")
 }
 
@@ -86,6 +87,8 @@ dependencies {
     kapt(Deps.AndroidX.Room.compiler)
 
     implementation(Deps.material)
+
+    implementation(Deps.playServicesOssLicenses)
 
     implementation(Deps.Dagger.core)
     implementation(Deps.Dagger.androidSupport)

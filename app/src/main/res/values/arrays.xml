@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sync_interval_name">
+        <item>30分</item>
+        <item>1時間</item>
+        <item>2時間</item>
+        <item>3時間</item>
+        <item>6時間</item>
+    </string-array>
+    <string-array name="sync_interval_values">
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>360</item>
+    </string-array>
+
+    <string-array name="notification_type_lecture_name">
+        <item>すべて</item>
+        <item>受講科目・類似科目</item>
+        <item>通知しない</item>
+    </string-array>
+    <string-array name="notification_type_lecture_values">
+        <item>ALL</item>
+        <item>ATTEND</item>
+        <item>NOT</item>
+    </string-array>
+
+    <string-array name="notification_type_notice_name">
+        <item>すべて</item>
+        <item>重要</item>
+        <item>通知しない</item>
+    </string-array>
+    <string-array name="notification_type_notice_values">
+        <item>ALL</item>
+        <item>IMPORTANT</item>
+        <item>NOT</item>
+    </string-array>
+
+    <string-array name="similar_subject_threshold_name">
+        <item>70%以上</item>
+        <item>80%以上（推奨）</item>
+        <item>90%以上</item>
+        <item>100%</item>
+    </string-array>
+    <string-array name="similar_subject_threshold_values">
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+</resources>

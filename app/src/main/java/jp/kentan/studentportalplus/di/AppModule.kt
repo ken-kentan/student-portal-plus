@@ -40,7 +40,8 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideShibbolethClient(source: ShibbolethDataSource) = ShibbolethClient(source)
+    fun provideShibbolethClient(source: ShibbolethDataSource, localPreferences: LocalPreferences) =
+        ShibbolethClient(source, localPreferences)
 
     @JvmStatic
     @Provides
@@ -50,8 +51,10 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideUserRepository(client: ShibbolethClient, source: ShibbolethDataSource) =
-        UserRepository(client, source)
+    fun provideUserRepository(
+        client: ShibbolethClient,
+        source: ShibbolethDataSource
+    ): UserRepository = DefaultUserRepository(client, source)
 
     @JvmStatic
     @Provides
