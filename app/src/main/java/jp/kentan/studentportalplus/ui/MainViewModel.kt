@@ -73,16 +73,9 @@ class MainViewModel @Inject constructor(
             WorkInfo.State.CANCELLED -> {
                 message = getApplication<Application>().getString(R.string.error_sync_cancelled)
             }
-            else -> Unit
+            else -> return
         }
 
-        if (message != null) {
-            _indefiniteSnackbar.value = Event(message)
-        }
-
-        if (workInfo.state.isFinished) {
-            isSyncing.value = false
-            workInfoLiveData?.removeObserver(this)
-        }
+        _indefiniteSnackbar.value = Event(message)
     }
 }
