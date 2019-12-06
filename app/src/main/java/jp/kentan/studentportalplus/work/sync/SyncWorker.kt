@@ -10,6 +10,9 @@ import jp.kentan.studentportalplus.data.dao.PortalDatabase
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.joinAll
 
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
@@ -33,27 +36,40 @@ class SyncWorker @AssistedInject constructor(
         private const val NOTICE_URL = "https://portal.student.kit.ac.jp"
     }
 
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result = coroutineScope {
         runCatching {
+            // should login first
             val attendCourseDocument = shibbolethClient.fetch(ATTEND_COURSE_URL)
-            val lectureInfoDocument = shibbolethClient.fetch(LECTURE_INFO_URL)
-            val lectureCancelDocument = shibbolethClient.fetch(LECTURE_CANCEL_URL)
-            val noticeDocument = shibbolethClient.fetch(NOTICE_URL)
 
-            val attendCourseList = DocumentParser.parseAttendCourse(attendCourseDocument)
-            val lectureInfoList = DocumentParser.parseLectureInformation(lectureInfoDocument)
-            val lectureCancelList = DocumentParser.parseLectureCancellation(lectureCancelDocument)
-            val noticeList = DocumentParser.parseNotice(noticeDocument)
+            val attendCourseJob = async {
+                val attendCourseList = DocumentParser.parseAttendCourse(attendCourseDocument)
+                database.attendCourseDao.updateAll(attendCourseList)
+            }
 
-            database.attendCourseDao.updateAll(attendCourseList)
-            database.lectureInformationDao.updateAll(lectureInfoList)
-            database.lectureCancellationDao.updateAll(lectureCancelList)
-            database.noticeDao.updateAll(noticeList)
+            val lectureInfoJob = async {
+                val lectureInfoDocument = shibbolethClient.fetch(LECTURE_INFO_URL)
+                val lectureInfoList =
+                    DocumentParser.parseLectureInformation(lectureInfoDocument)
+                database.lectureInformationDao.updateAll(lectureInfoList)
+            }
 
-            return@runCatching
+            val lectureCancelJob = async {
+                val lectureCancelDocument = shibbolethClient.fetch(LECTURE_CANCEL_URL)
+                val lectureCancelList =
+                    DocumentParser.parseLectureCancellation(lectureCancelDocument)
+                database.lectureCancellationDao.updateAll(lectureCancelList)
+            }
+
+            val noticeJob = async {
+                val noticeDocument = shibbolethClient.fetch(NOTICE_URL)
+                val noticeList = DocumentParser.parseNotice(noticeDocument)
+                database.noticeDao.updateAll(noticeList)
+            }
+
+            joinAll(attendCourseJob, lectureInfoJob, lectureCancelJob, noticeJob)
         }.fold(
             onSuccess = {
-                return Result.success()
+                Result.success()
             },
             onFailure = {
                 val outputData = Data.Builder()
@@ -61,7 +77,7 @@ class SyncWorker @AssistedInject constructor(
                     .putBoolean(KEY_DATA_IS_AUTH_ERROR, it is ShibbolethAuthenticationException)
                     .build()
 
-                return Result.failure(outputData)
+                Result.failure(outputData)
             }
         )
     }
