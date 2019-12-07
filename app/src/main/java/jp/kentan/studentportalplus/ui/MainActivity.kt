@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
 import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
+import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -48,7 +48,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 setSupportActionBar(appBar.toolbar)
 
-                val navController = findNavController(R.id.nav_host_fragment)
+                val navController = supportFragmentManager.findNavController()
                 setupWithNavController(navView, drawerLayout, navController)
 
                 val toggle = ActionBarDrawerToggle(

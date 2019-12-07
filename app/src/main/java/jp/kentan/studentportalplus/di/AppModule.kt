@@ -15,15 +15,12 @@ import javax.inject.Singleton
 @Module
 object AppModule {
 
-    @JvmStatic
     @Provides
     fun provideApplication(application: StudentPortalPlus): Application = application
 
-    @JvmStatic
     @Provides
     fun provideContext(application: Application): Context = application.applicationContext
 
-    @JvmStatic
     @Provides
     @Singleton
     fun providePortalDatabase(context: Context): PortalDatabase = Room.databaseBuilder(
@@ -32,23 +29,19 @@ object AppModule {
         "portal_database"
     ).build()
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideShibbolethDataSource(context: Context) = ShibbolethDataSource(context)
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideShibbolethClient(source: ShibbolethDataSource, localPreferences: LocalPreferences) =
         ShibbolethClient(source, localPreferences)
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideLocalPreferences(context: Context) = LocalPreferences(context)
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideUserRepository(
@@ -56,7 +49,6 @@ object AppModule {
         source: ShibbolethDataSource
     ): UserRepository = DefaultUserRepository(client, source)
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideLectureInformationRepository(
@@ -68,7 +60,6 @@ object AppModule {
         localPreferences
     )
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideLectureCancellationRepository(
@@ -80,13 +71,11 @@ object AppModule {
         localPreferences
     )
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideNoticeRepository(database: PortalDatabase): NoticeRepository =
         DefaultNoticeRepository(database.noticeDao)
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideAttendCourseRepository(database: PortalDatabase): AttendCourseRepository =

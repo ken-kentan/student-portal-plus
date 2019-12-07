@@ -6,8 +6,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import jp.kentan.studentportalplus.R
@@ -29,14 +32,14 @@ fun Activity.hideSoftInput() {
     }
 }
 
-///**
-// * find NavController from FragmentManager directly
-// * @see 'https://issuetracker.google.com/issues/143828489#comment5'
-// */
-//fun FragmentManager.findNavController(): NavController {
-//    val navHostFragment = findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//    return navHostFragment.navController
-//}
+/**
+ * find NavController from FragmentManager directly
+ * @see 'https://issuetracker.google.com/issues/143828489#comment5'
+ */
+fun FragmentManager.findNavController(): NavController {
+    val navHostFragment = findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+    return navHostFragment.navController
+}
 
 fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: String) =
     findPreference<T>(key) ?: throw NullPointerException("Preference($key) is not found.")
