@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
-import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.XxHash64
 
 @Entity(tableName = "attend_courses", indices = [Index(value = ["hash"], unique = true)])
 data class AttendCourse(
@@ -45,7 +45,7 @@ data class AttendCourse(
     val location: String? = null,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = Murmur3.hash64("$dayOfWeek$period$scheduleCode$credit$category$subject$instructor$type")
+    val hash: Long = XxHash64.hash("$dayOfWeek$period$scheduleCode$credit$category$subject$instructor$type")
 ) {
     enum class Type {
         PORTAL,  // ポータル取得

@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.entity
 
 import androidx.room.*
-import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.XxHash64
 import java.util.*
 
 @Entity(tableName = "lecture_infos", indices = [Index(value = ["hash"], unique = true)])
@@ -50,7 +50,7 @@ data class LectureInformation(
     val attendType: AttendCourse.Type = AttendCourse.Type.UNKNOWN,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = Murmur3.hash64("$grade$semester$subject$instructor$dayOfWeek$period$category$detailHtml$createdDate$updatedDate")
+    val hash: Long = XxHash64.hash("$grade$semester$subject$instructor$dayOfWeek$period$category$detailHtml$createdDate$updatedDate")
 ) : Lecture {
     // Room constructor
     constructor(
