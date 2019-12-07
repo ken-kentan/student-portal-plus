@@ -132,6 +132,7 @@
     <string name="hint_credit">単位数</string>
     <string name="hint_schedule_code">時間割番号</string>
     <string name="hint_query_subject_instructor">科目・教員名で検索&#8230;</string>
+    <string name="hint_query_title">タイトルで検索&#8230;</string>
 
     <!-- action -->
     <string name="action_apply">適用</string>
