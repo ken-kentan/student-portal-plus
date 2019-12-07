@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import jp.kentan.studentportalplus.util.Murmur3
+import jp.kentan.studentportalplus.util.XxHash64
 import java.util.*
 
 @Entity(tableName = "notices", indices = [Index(value = ["hash"], unique = true)])
@@ -41,5 +41,5 @@ data class Notice(
     val isFavorite: Boolean = false,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = Murmur3.hash64("$createdDate$inCharge$category$title$detailHtml$link")
+    val hash: Long = XxHash64.hash("$createdDate$inCharge$category$title$detailHtml$link")
 )
