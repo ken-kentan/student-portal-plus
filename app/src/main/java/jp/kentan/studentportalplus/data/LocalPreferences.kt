@@ -24,6 +24,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         // For notifications
         private const val IS_ENABLED_NOTIFICATION_VIBRATION = "is_enabled_notification_vibration"
         private const val IS_ENABLED_NOTIFICATION_LED = "is_enabled_notification_led"
+        private const val NOTIFICATION_ID = "notification_id"
     }
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
@@ -101,4 +102,10 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             putLong(SHIBBOLETH_LAST_LOGIN_DATE, System.currentTimeMillis())
         }
     }
+
+    var notificationId: Int
+        get() = sharedPreferences.getInt(NOTIFICATION_ID, 1)
+        set(value) = sharedPreferences.edit {
+            putInt(NOTIFICATION_ID, value)
+        }
 }

@@ -6,9 +6,11 @@ import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import jp.kentan.studentportalplus.data.dao.PortalDatabase
+import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.LectureCancellationRepository
+import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
-import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
@@ -18,8 +20,10 @@ import kotlinx.coroutines.joinAll
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
-    private val database: PortalDatabase,
-    private val shibbolethClient: ShibbolethClient,
+    private val attendCourseRepository: AttendCourseRepository,
+    private val lectureInfoRepository: LectureInformationRepository,
+    private val lectureCancelRepository: LectureCancellationRepository,
+    private val noticeRepository: NoticeRepository,
     private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(appContext, params) {
 
@@ -28,48 +32,28 @@ class SyncWorker @AssistedInject constructor(
 
         const val KEY_DATA_MESSAGE = "message"
         const val KEY_DATA_IS_AUTH_ERROR = "is_auth_error"
-
-        private const val ATTEND_COURSE_URL =
-            "https://portal.student.kit.ac.jp/ead/?c=attend_course"
-        private const val LECTURE_INFO_URL =
-            "https://portal.student.kit.ac.jp/ead/?c=lecture_information"
-        private const val LECTURE_CANCEL_URL =
-            "https://portal.student.kit.ac.jp/ead/?c=lecture_cancellation"
-        private const val NOTICE_URL = "https://portal.student.kit.ac.jp"
     }
 
     override suspend fun doWork(): Result = coroutineScope {
         runCatching {
-            // should login first
-            val attendCourseDocument = shibbolethClient.fetch(ATTEND_COURSE_URL)
-
-            val attendCourseJob = async {
-                val attendCourseList = DocumentParser.parseAttendCourse(attendCourseDocument)
-                database.attendCourseDao.updateAll(attendCourseList)
-            }
+            // should sync first
+            attendCourseRepository.syncWithRemote()
 
             val lectureInfoJob = async {
-                val lectureInfoDocument = shibbolethClient.fetch(LECTURE_INFO_URL)
-                val lectureInfoList =
-                    DocumentParser.parseLectureInformation(lectureInfoDocument)
-                database.lectureInformationDao.updateAll(lectureInfoList)
+                lectureInfoRepository.syncWithRemote()
             }
 
             val lectureCancelJob = async {
-                val lectureCancelDocument = shibbolethClient.fetch(LECTURE_CANCEL_URL)
-                val lectureCancelList =
-                    DocumentParser.parseLectureCancellation(lectureCancelDocument)
-                database.lectureCancellationDao.updateAll(lectureCancelList)
+                lectureCancelRepository.syncWithRemote()
             }
 
-            val noticeJob = async {
-                val noticeDocument = shibbolethClient.fetch(NOTICE_URL)
-                val noticeList = DocumentParser.parseNotice(noticeDocument)
-                val updatedList = database.noticeDao.updateAll(noticeList)
-                notificationHelper.sendNotice(updatedList)
+            val noticeDeferred = async {
+                noticeRepository.syncWithRemote()
             }
 
-            joinAll(attendCourseJob, lectureInfoJob, lectureCancelJob, noticeJob)
+            joinAll(lectureInfoJob, lectureCancelJob)
+
+            notificationHelper.sendNotice(noticeDeferred.await())
         }.fold(
             onSuccess = {
                 Result.success()

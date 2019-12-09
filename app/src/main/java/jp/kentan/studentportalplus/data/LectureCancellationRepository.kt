@@ -4,6 +4,7 @@ import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
+import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,14 +21,22 @@ interface LectureCancellationRepository {
     fun getListFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureCancellation>>
 
     suspend fun setRead(id: Long)
+
+    suspend fun syncWithRemote(): List<LectureCancellation>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultLectureCancellationRepository(
     private val lectureCancellationDao: LectureCancellationDao,
+    private val shibbolethClient: ShibbolethClient,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
 ) : LectureCancellationRepository {
+
+    companion object {
+        private const val LECTURE_CANCEL_URL =
+            "https://portal.student.kit.ac.jp/ead/?c=lecture_cancellation"
+    }
 
     private val subjectListFlow = attendCourseDao.getSubjectListFlow()
     private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
@@ -92,5 +101,11 @@ class DefaultLectureCancellationRepository(
         withContext(Dispatchers.IO) {
             lectureCancellationDao.updateRead(id)
         }
+    }
+
+    override suspend fun syncWithRemote(): List<LectureCancellation> = withContext(Dispatchers.IO) {
+        val document = shibbolethClient.fetch(LECTURE_CANCEL_URL)
+        val lectureCancelList = DocumentParser.parseLectureCancellation(document)
+        lectureCancellationDao.updateAll(lectureCancelList)
     }
 }

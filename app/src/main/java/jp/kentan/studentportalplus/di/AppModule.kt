@@ -56,9 +56,11 @@ object AppModule {
     @Singleton
     fun provideLectureInformationRepository(
         database: PortalDatabase,
+        shibbolethClient: ShibbolethClient,
         localPreferences: LocalPreferences
     ): LectureInformationRepository = DefaultLectureInformationRepository(
         database.lectureInformationDao,
+        shibbolethClient,
         database.attendCourseDao,
         localPreferences
     )
@@ -67,22 +69,29 @@ object AppModule {
     @Singleton
     fun provideLectureCancellationRepository(
         database: PortalDatabase,
+        shibbolethClient: ShibbolethClient,
         localPreferences: LocalPreferences
     ): LectureCancellationRepository = DefaultLectureCancellationRepository(
         database.lectureCancellationDao,
+        shibbolethClient,
         database.attendCourseDao,
         localPreferences
     )
 
     @Provides
     @Singleton
-    fun provideNoticeRepository(database: PortalDatabase): NoticeRepository =
-        DefaultNoticeRepository(database.noticeDao)
+    fun provideNoticeRepository(
+        database: PortalDatabase,
+        shibbolethClient: ShibbolethClient
+    ): NoticeRepository = DefaultNoticeRepository(database.noticeDao, shibbolethClient)
 
     @Provides
     @Singleton
-    fun provideAttendCourseRepository(database: PortalDatabase): AttendCourseRepository =
-        DefaultAttendCourseRepository(database.attendCourseDao)
+    fun provideAttendCourseRepository(
+        database: PortalDatabase,
+        shibbolethClient: ShibbolethClient
+    ): AttendCourseRepository =
+        DefaultAttendCourseRepository(database.attendCourseDao, shibbolethClient)
 
     @Provides
     fun provideNotificationHelper(
@@ -90,8 +99,8 @@ object AppModule {
         localPreferences: LocalPreferences
     ): NotificationHelper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         SummaryNotification(context, localPreferences)
-        } else {
-            TODO("VERSION.SDK_INT < N")
-        }
+    } else {
+        TODO("VERSION.SDK_INT < N")
+    }
 
 }
