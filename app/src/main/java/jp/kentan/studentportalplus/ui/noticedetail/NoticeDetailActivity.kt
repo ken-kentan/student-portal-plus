@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityNoticeDetailBinding
@@ -15,11 +17,11 @@ import javax.inject.Inject
 class NoticeDetailActivity : DaggerAppCompatActivity() {
 
     companion object {
-        private const val EXTRA_LECTURE_INFORMATION_ID = "LECTURE_INFORMATION_ID"
+        private const val EXTRA_NOTICE_ID = "NOTICE_ID"
 
         fun createIntent(context: Context, id: Long) =
             Intent(context, NoticeDetailActivity::class.java).apply {
-                putExtra(EXTRA_LECTURE_INFORMATION_ID, id)
+                putExtra(EXTRA_NOTICE_ID, id)
             }
     }
 
@@ -41,8 +43,13 @@ class NoticeDetailActivity : DaggerAppCompatActivity() {
             setSupportActionBar(toolbar)
         }
 
+        noticeDetailViewModel.finishWithNotFoundError.observe(this) {
+            Toast.makeText(this, R.string.error_not_found, Toast.LENGTH_LONG).show()
+            finish()
+        }
+
         noticeDetailViewModel.onActivityCreate(
-            id = intent.getLongExtra(EXTRA_LECTURE_INFORMATION_ID, 0)
+            id = intent.getLongExtra(EXTRA_NOTICE_ID, 0)
         )
     }
 

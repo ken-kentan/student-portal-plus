@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.ui.noticedetail
 
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.util.asLiveData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,6 +15,12 @@ class NoticeDetailViewModel @Inject constructor(
     val notice = noticeId.switchMap {
         noticeRepository.getFlow(it).asLiveData()
     }
+
+    val finishWithNotFoundError = MediatorLiveData<Unit>().apply {
+        addSource(notice) {
+            if (it == null) value = Unit
+        }
+    }.asLiveData()
 
     fun onActivityCreate(id: Long) {
         viewModelScope.launch {
