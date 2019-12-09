@@ -20,6 +20,10 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         private const val LECTURE_CANCELLATIONS_ORDER = "lecture_cancellations_order"
         private const val SIMILAR_SUBJECT_THRESHOLD = "similar_subject_threshold"
         private const val SHIBBOLETH_LAST_LOGIN_DATE = "shibboleth_last_login_date"
+
+        // For notifications
+        private const val IS_ENABLED_NOTIFICATION_VIBRATION = "is_enabled_notification_vibration"
+        private const val IS_ENABLED_NOTIFICATION_LED = "is_enabled_notification_led"
     }
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
@@ -42,6 +46,18 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         get() = sharedPreferences.getBoolean(IS_ENABLED_DETAIL_ERROR, false)
         set(value) = sharedPreferences.edit {
             putBoolean(IS_ENABLED_DETAIL_ERROR, value)
+        }
+
+    var isEnabledNotificationVibration: Boolean
+        get() = sharedPreferences.getBoolean(IS_ENABLED_NOTIFICATION_VIBRATION, true)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_ENABLED_NOTIFICATION_VIBRATION, value)
+        }
+
+    var isEnabledNotificationLed: Boolean
+        get() = sharedPreferences.getBoolean(IS_ENABLED_NOTIFICATION_LED, true)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_ENABLED_NOTIFICATION_LED, value)
         }
 
     var lectureInformationsOrder: LectureQuery.Order

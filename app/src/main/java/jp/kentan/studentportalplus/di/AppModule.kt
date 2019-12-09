@@ -85,9 +85,11 @@ object AppModule {
         DefaultAttendCourseRepository(database.attendCourseDao)
 
     @Provides
-    fun provideNotificationHelper(context: Context): NotificationHelper =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            SummaryNotification(context)
+    fun provideNotificationHelper(
+        context: Context,
+        localPreferences: LocalPreferences
+    ): NotificationHelper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        SummaryNotification(context, localPreferences)
         } else {
             TODO("VERSION.SDK_INT < N")
         }
