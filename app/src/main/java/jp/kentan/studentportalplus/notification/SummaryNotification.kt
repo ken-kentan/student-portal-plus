@@ -7,7 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +35,15 @@ class SummaryNotification(
         private const val SUMMARY_NOTIFICATION_ID = 0
 
         private const val SMALL_APP_ICON_RES_ID = R.drawable.ic_menu_dashboard
+    }
+
+    private inner class NotificationContent(
+        val title: String,
+        val text: String?,
+        private val intent: Intent
+    ) {
+        fun createPendingIntent(notificationId: Int): PendingIntent =
+            intent.toPendingIntent(notificationId)
     }
 
     private val notificationManager = NotificationManagerCompat.from(context)
@@ -86,28 +97,52 @@ class SummaryNotification(
             return
         }
 
-        sendGroupSummaryIfNeeded()
-
-        val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setSmallIcon(R.drawable.ic_menu_notice)
-            .setGroup(GROUP_KEY)
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
-            .setGroupSummary(false)
-            .setSubText(context.getString(R.string.name_notice))
-            .setAutoCancel(true)
-
-        noticeList.forEach { notice ->
-            val intent = NoticeDetailActivity.createIntent(context, notice.id).apply {
+        val contentList = noticeList.map {
+            val intent = NoticeDetailActivity.createIntent(context, it.id).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
-            builder.setContentTitle(notice.title)
-                .setContentText(notice.detailText ?: notice.link)
-                .setContentIntent(intent.toPendingIntent(99))
-
-            notificationManager.notify(99, builder.build())
+            NotificationContent(
+                title = it.title,
+                text = it.detailText ?: it.link,
+                intent = intent
+            )
         }
+
+        sendContentToNewlyChannel(R.drawable.ic_menu_notice, R.string.name_notice, contentList)
+    }
+
+    private fun sendContentToNewlyChannel(
+        @DrawableRes smallIconResId: Int,
+        @StringRes subTextResId: Int,
+        contentList: List<NotificationContent>
+    ) {
+        sendGroupSummaryIfNeeded()
+
+        var notificationId = localPreferences.notificationId
+
+        val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSmallIcon(smallIconResId)
+            .setGroup(GROUP_KEY)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
+            .setGroupSummary(false)
+            .setSubText(context.getString(subTextResId))
+            .setAutoCancel(true)
+
+        contentList.forEach {
+            builder.setContentTitle(it.title)
+                .setContentText(it.text)
+                .setContentIntent(it.createPendingIntent(notificationId))
+
+            notificationManager.notify(notificationId, builder.build())
+
+            if (++notificationId >= Int.MAX_VALUE) {
+                notificationId = 1
+            }
+        }
+
+        localPreferences.notificationId = notificationId
     }
 
     private fun sendGroupSummaryIfNeeded() {
@@ -138,9 +173,9 @@ class SummaryNotification(
         notificationManager.notify(SUMMARY_NOTIFICATION_ID, builder.build())
     }
 
-    private fun Intent.toPendingIntent(code: Int) = PendingIntent.getActivity(
+    private fun Intent.toPendingIntent(requestCode: Int) = PendingIntent.getActivity(
         context,
-        code,
+        requestCode,
         this,
         PendingIntent.FLAG_UPDATE_CURRENT
     )
