@@ -9,6 +9,7 @@ import com.squareup.inject.assisted.AssistedInject
 import jp.kentan.studentportalplus.data.dao.PortalDatabase
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
+import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -18,7 +19,8 @@ class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
     private val database: PortalDatabase,
-    private val shibbolethClient: ShibbolethClient
+    private val shibbolethClient: ShibbolethClient,
+    private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(appContext, params) {
 
     companion object {
@@ -63,7 +65,8 @@ class SyncWorker @AssistedInject constructor(
             val noticeJob = async {
                 val noticeDocument = shibbolethClient.fetch(NOTICE_URL)
                 val noticeList = DocumentParser.parseNotice(noticeDocument)
-                database.noticeDao.updateAll(noticeList)
+                val updatedList = database.noticeDao.updateAll(noticeList)
+                notificationHelper.sendNotice(updatedList)
             }
 
             joinAll(attendCourseJob, lectureInfoJob, lectureCancelJob, noticeJob)
