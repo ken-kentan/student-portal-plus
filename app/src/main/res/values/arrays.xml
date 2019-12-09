@@ -27,9 +27,9 @@
     </string-array>
 
     <string-array name="notification_type_notice_name">
-        <item>すべて</item>
-        <item>重要</item>
-        <item>通知しない</item>
+        <item>@string/name_notification_all</item>
+        <item>@string/name_notification_important</item>
+        <item>@string/name_notification_not</item>
     </string-array>
     <string-array name="notification_type_notice_values">
         <item>ALL</item>

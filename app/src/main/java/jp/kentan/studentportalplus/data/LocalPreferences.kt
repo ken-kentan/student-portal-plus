@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.data.vo.LectureQuery
+import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import java.util.*
@@ -25,6 +26,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         private const val IS_ENABLED_NOTIFICATION_VIBRATION = "is_enabled_notification_vibration"
         private const val IS_ENABLED_NOTIFICATION_LED = "is_enabled_notification_led"
         private const val NOTIFICATION_ID = "notification_id"
+        private const val NOTICE_NOTIFICATION_TYPE = "notification_type_notice"
     }
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
@@ -107,5 +109,12 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         get() = sharedPreferences.getInt(NOTIFICATION_ID, 1)
         set(value) = sharedPreferences.edit {
             putInt(NOTIFICATION_ID, value)
+        }
+
+    val noticeNotificationType: NoticeNotificationType
+        get() {
+            val type = sharedPreferences.getString(NOTICE_NOTIFICATION_TYPE, null)
+                ?: return NoticeNotificationType.ALL
+            return NoticeNotificationType.valueOf(type)
         }
 }

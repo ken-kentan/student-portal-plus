@@ -6,11 +6,10 @@ import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.LectureCancellationRepository
-import jp.kentan.studentportalplus.data.LectureInformationRepository
-import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.*
+import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
@@ -24,6 +23,7 @@ class SyncWorker @AssistedInject constructor(
     private val lectureInfoRepository: LectureInformationRepository,
     private val lectureCancelRepository: LectureCancellationRepository,
     private val noticeRepository: NoticeRepository,
+    private val localPreferences: LocalPreferences,
     private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(appContext, params) {
 
@@ -53,7 +53,9 @@ class SyncWorker @AssistedInject constructor(
 
             joinAll(lectureInfoJob, lectureCancelJob)
 
-            notificationHelper.sendNotice(noticeDeferred.await())
+            // TODO: If auto sync enabled
+            val noticeNotificationType = localPreferences.noticeNotificationType
+            notificationHelper.sendNotice(noticeDeferred.await().filterWith(noticeNotificationType))
         }.fold(
             onSuccess = {
                 Result.success()
@@ -68,6 +70,15 @@ class SyncWorker @AssistedInject constructor(
             }
         )
     }
+
+    private fun List<Notice>.filterWith(notificationType: NoticeNotificationType) =
+        when (notificationType) {
+            NoticeNotificationType.ALL -> this
+            NoticeNotificationType.IMPORTANT -> filter {
+                it.title.contains("重要") || it.title.contains("注意")
+            }
+            NoticeNotificationType.NOT -> emptyList()
+        }
 
     @AssistedInject.Factory
     interface Factory : ChildWorkerFactory
