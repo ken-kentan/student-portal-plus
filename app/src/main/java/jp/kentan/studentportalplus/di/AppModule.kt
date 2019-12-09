@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.di
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -10,6 +11,8 @@ import jp.kentan.studentportalplus.data.*
 import jp.kentan.studentportalplus.data.dao.PortalDatabase
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.source.ShibbolethDataSource
+import jp.kentan.studentportalplus.notification.NotificationHelper
+import jp.kentan.studentportalplus.notification.SummaryNotification
 import javax.inject.Singleton
 
 @Module
@@ -80,5 +83,13 @@ object AppModule {
     @Singleton
     fun provideAttendCourseRepository(database: PortalDatabase): AttendCourseRepository =
         DefaultAttendCourseRepository(database.attendCourseDao)
+
+    @Provides
+    fun provideNotificationHelper(context: Context): NotificationHelper =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            SummaryNotification(context)
+        } else {
+            TODO("VERSION.SDK_INT < N")
+        }
 
 }

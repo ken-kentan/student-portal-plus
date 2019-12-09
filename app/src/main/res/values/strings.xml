@@ -73,6 +73,8 @@
     <string name="name_order_update_date">最終更新日</string>
     <string name="name_order_attend_course">受講科目優先</string>
     <string name="name_null">未入力</string>
+    <string name="name_newly_channel">新着通知</string>
+    <string name="name_app_channel">Student Portal+</string>
 
     <!-- text -->
     <string name="text_agree_to_terms">上記の利用規約に同意します</string>
