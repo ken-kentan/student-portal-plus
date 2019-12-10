@@ -18,6 +18,7 @@ import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
+import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -42,8 +43,9 @@ class SummaryNotification(
         val text: String?,
         private val intent: Intent
     ) {
-        fun createPendingIntent(notificationId: Int): PendingIntent =
-            intent.toPendingIntent(notificationId)
+        fun createPendingIntent(notificationId: Int): PendingIntent = intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }.toPendingIntent(notificationId)
     }
 
     private val notificationManager = NotificationManagerCompat.from(context)
@@ -89,7 +91,23 @@ class SummaryNotification(
     }
 
     override fun sendLectureCancellation(lectureCancelList: List<LectureCancellation>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (lectureCancelList.isEmpty()) {
+            return
+        }
+
+        val contentList = lectureCancelList.map {
+            NotificationContent(
+                title = it.subject,
+                text = it.detailText,
+                intent = LectureCancellationDetailActivity.createIntent(context, it.id)
+            )
+        }
+
+        sendContentToNewlyChannel(
+            R.drawable.ic_menu_lecture_cancellation,
+            R.string.name_lecture_cancellation,
+            contentList
+        )
     }
 
     override fun sendNotice(noticeList: List<Notice>) {
@@ -98,14 +116,10 @@ class SummaryNotification(
         }
 
         val contentList = noticeList.map {
-            val intent = NoticeDetailActivity.createIntent(context, it.id).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-
             NotificationContent(
                 title = it.title,
                 text = it.detailText ?: it.link,
-                intent = intent
+                intent = NoticeDetailActivity.createIntent(context, it.id)
             )
         }
 
