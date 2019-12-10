@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import jp.kentan.studentportalplus.data.vo.LectureNotificationType
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -26,6 +27,8 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         private const val IS_ENABLED_NOTIFICATION_VIBRATION = "is_enabled_notification_vibration"
         private const val IS_ENABLED_NOTIFICATION_LED = "is_enabled_notification_led"
         private const val NOTIFICATION_ID = "notification_id"
+        private const val LECTURE_INFO_NOTIFICATION_TYPE = "notification_type_lecture_info"
+        private const val LECTURE_CANCEL_NOTIFICATION_TYPE = "notification_type_lecture_cancel"
         private const val NOTICE_NOTIFICATION_TYPE = "notification_type_notice"
     }
 
@@ -109,6 +112,20 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         get() = sharedPreferences.getInt(NOTIFICATION_ID, 1)
         set(value) = sharedPreferences.edit {
             putInt(NOTIFICATION_ID, value)
+        }
+
+    val lectureInformationNotificationType: LectureNotificationType
+        get() {
+            val type = sharedPreferences.getString(LECTURE_INFO_NOTIFICATION_TYPE, null)
+                ?: return LectureNotificationType.ALL
+            return LectureNotificationType.valueOf(type)
+        }
+
+    val lectureCancellationNotificationType: LectureNotificationType
+        get() {
+            val type = sharedPreferences.getString(LECTURE_CANCEL_NOTIFICATION_TYPE, null)
+                ?: return LectureNotificationType.ALL
+            return LectureNotificationType.valueOf(type)
         }
 
     val noticeNotificationType: NoticeNotificationType

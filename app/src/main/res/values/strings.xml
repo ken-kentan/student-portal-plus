@@ -77,6 +77,7 @@
     <string name="name_app_channel">Student Portal+</string>
     <string name="name_notification_all">すべて</string>
     <string name="name_notification_important">重要・注意を含む</string>
+    <string name="name_notification_attend_or_similar">受講科目・類似科目</string>
     <string name="name_notification_not">通知しない</string>
 
     <!-- text -->

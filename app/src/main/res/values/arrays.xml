@@ -16,9 +16,9 @@
     </string-array>
 
     <string-array name="notification_type_lecture_name">
-        <item>すべて</item>
-        <item>受講科目・類似科目</item>
-        <item>通知しない</item>
+        <item>@string/name_notification_all</item>
+        <item>@string/name_notification_attend_or_similar</item>
+        <item>@string/name_notification_not</item>
     </string-array>
     <string-array name="notification_type_lecture_values">
         <item>ALL</item>
