@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data
 
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
@@ -20,6 +21,8 @@ interface AttendCourseRepository {
     fun getListFlow(dayOfWeek: DayOfWeek): Flow<List<AttendCourse>>
 
     suspend fun get(id: Long): AttendCourse?
+
+    suspend fun getSubjectList(): List<AttendCourseSubject>
 
     suspend fun add(attendCourse: AttendCourse): Boolean
 
@@ -58,7 +61,11 @@ class DefaultAttendCourseRepository(
         attendCourseDao.getListFlow(dayOfWeek)
 
     override suspend fun get(id: Long): AttendCourse? = withContext(Dispatchers.IO) {
-        return@withContext attendCourseDao.get(id)
+        attendCourseDao.get(id)
+    }
+
+    override suspend fun getSubjectList(): List<AttendCourseSubject> = withContext(Dispatchers.IO) {
+        attendCourseDao.getSubjectList()
     }
 
     override suspend fun add(attendCourse: AttendCourse): Boolean = withContext(Dispatchers.IO) {

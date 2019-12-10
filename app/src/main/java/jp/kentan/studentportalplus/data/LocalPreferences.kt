@@ -86,16 +86,17 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             putString(LECTURE_CANCELLATIONS_ORDER, value.name)
         }
 
-    private val similarSubjectThreshold: Int
-        get() = sharedPreferences.getString(SIMILAR_SUBJECT_THRESHOLD, null)?.toIntOrNull() ?: 80
+    val similarSubjectThreshold: Float
+        get() = (sharedPreferences.getString(SIMILAR_SUBJECT_THRESHOLD, null)?.toIntOrNull()
+            ?: 80) / 100F
 
     private val similarSubjectThresholdChannel =
-        ConflatedBroadcastChannel(similarSubjectThreshold / 100F)
+        ConflatedBroadcastChannel(similarSubjectThreshold)
     val similarSubjectThresholdFlow = similarSubjectThresholdChannel.asFlow()
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == SIMILAR_SUBJECT_THRESHOLD) {
-            similarSubjectThresholdChannel.offer(similarSubjectThreshold / 100F)
+            similarSubjectThresholdChannel.offer(similarSubjectThreshold)
         }
     }
 

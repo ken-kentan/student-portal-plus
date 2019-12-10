@@ -7,14 +7,17 @@ import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import jp.kentan.studentportalplus.data.*
+import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
+import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.entity.Notice
+import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import jp.kentan.studentportalplus.data.vo.LectureNotificationType
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
 
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
@@ -38,24 +41,38 @@ class SyncWorker @AssistedInject constructor(
         runCatching {
             // should sync first
             attendCourseRepository.syncWithRemote()
+            val subjectList = attendCourseRepository.getSubjectList()
 
-            val lectureInfoJob = async {
+            val similarSubjectThreshold = localPreferences.similarSubjectThreshold
+
+            val lectureInfoDeferred = async {
                 lectureInfoRepository.syncWithRemote()
+                    .filterWith(
+                        localPreferences.lectureInformationNotificationType,
+                        subjectList,
+                        similarSubjectThreshold
+                    )
             }
 
-            val lectureCancelJob = async {
+            val lectureCancelDeferred = async {
                 lectureCancelRepository.syncWithRemote()
+                    .filterWith(
+                        localPreferences.lectureCancellationNotificationType,
+                        subjectList,
+                        similarSubjectThreshold
+                    )
             }
 
             val noticeDeferred = async {
                 noticeRepository.syncWithRemote()
+                    .filterWith(
+                        localPreferences.noticeNotificationType
+                    )
             }
 
-            joinAll(lectureInfoJob, lectureCancelJob)
-
-            // TODO: If auto sync enabled
-            val noticeNotificationType = localPreferences.noticeNotificationType
-            notificationHelper.sendNotice(noticeDeferred.await().filterWith(noticeNotificationType))
+            notificationHelper.sendLectureInformation(lectureInfoDeferred.await())
+            notificationHelper.sendLectureCancellation(lectureCancelDeferred.await())
+            notificationHelper.sendNotice(noticeDeferred.await())
         }.fold(
             onSuccess = {
                 Result.success()
@@ -69,6 +86,18 @@ class SyncWorker @AssistedInject constructor(
                 Result.failure(outputData)
             }
         )
+    }
+
+    private fun <T : Lecture> List<T>.filterWith(
+        notificationType: LectureNotificationType,
+        subjectList: List<AttendCourseSubject>,
+        threshold: Float
+    ): List<T> = when (notificationType) {
+        LectureNotificationType.ALL -> this
+        LectureNotificationType.ATTEND -> filter {
+            subjectList.calcAttendCourseType(it.subject, threshold).isAttend
+        }
+        LectureNotificationType.NOT -> emptyList()
     }
 
     private fun List<Notice>.filterWith(notificationType: NoticeNotificationType) =

@@ -17,7 +17,7 @@
 
     <string-array name="notification_type_lecture_name">
         <item>@string/name_notification_all</item>
-        <item>@string/name_notification_attend_or_similar</item>
+        <item>@string/name_notification_attend</item>
         <item>@string/name_notification_not</item>
     </string-array>
     <string-array name="notification_type_lecture_values">

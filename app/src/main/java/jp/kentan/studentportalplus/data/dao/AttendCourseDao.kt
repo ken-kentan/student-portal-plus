@@ -25,6 +25,9 @@ interface AttendCourseDao {
     @Query("SELECT * FROM attend_courses WHERE _id = :id")
     fun get(id: Long): AttendCourse?
 
+    @Query("SELECT subject, type FROM attend_courses")
+    fun getSubjectList(): List<AttendCourseSubject>
+
     @Transaction
     fun updateAll(attendCourseList: List<AttendCourse>) {
         attendCourseList.forEach { course ->
