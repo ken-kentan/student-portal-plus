@@ -19,6 +19,7 @@ import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
+import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -87,7 +88,23 @@ class SummaryNotification(
     }
 
     override fun sendLectureInformation(lectureInfoList: List<LectureInformation>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (lectureInfoList.isEmpty()) {
+            return
+        }
+
+        val contentList = lectureInfoList.map {
+            NotificationContent(
+                title = it.subject,
+                text = it.detailText,
+                intent = LectureInformationDetailActivity.createIntent(context, it.id)
+            )
+        }
+
+        sendContentToNewlyChannel(
+            R.drawable.ic_menu_lecture_information,
+            R.string.name_lecture_information,
+            contentList
+        )
     }
 
     override fun sendLectureCancellation(lectureCancelList: List<LectureCancellation>) {
