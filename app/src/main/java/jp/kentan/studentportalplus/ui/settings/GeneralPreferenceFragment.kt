@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.ui.settings
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -12,6 +13,7 @@ import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
 import jp.kentan.studentportalplus.util.requirePreference
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,6 +41,16 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
         registerOnPreferenceClickListener("terms")
         registerOnPreferenceClickListener("oss_licenses")
         registerOnPreferenceClickListener("share")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requirePreference<Preference>("notification_settings").setOnPreferenceClickListener {
+                val settingsIntent =
+                    SummaryNotificationHelper.createNewlyChannelSettingsIntent(requireContext())
+                startActivity(settingsIntent)
+
+                return@setOnPreferenceClickListener true
+            }
+        }
     }
 
     override fun onResume() {

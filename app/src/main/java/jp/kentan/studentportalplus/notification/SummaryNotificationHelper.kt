@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -36,6 +37,13 @@ class SummaryNotificationHelper(
         private const val SUMMARY_NOTIFICATION_ID = 0
 
         private const val SMALL_APP_ICON_RES_ID = R.drawable.ic_menu_dashboard
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun createNewlyChannelSettingsIntent(context: Context) =
+            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                putExtra(Settings.EXTRA_CHANNEL_ID, NEWLY_CHANNEL_ID)
+            }
     }
 
     private inner class NotificationContent(
@@ -59,7 +67,7 @@ class SummaryNotificationHelper(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setupChannels() {
+    private fun setupChannels() {
         val newlyChannel = NotificationChannel(
             NEWLY_CHANNEL_ID,
             context.getString(R.string.name_newly_channel),
