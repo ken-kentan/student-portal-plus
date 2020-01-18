@@ -21,10 +21,9 @@ import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
-import java.util.concurrent.atomic.AtomicBoolean
 
 @RequiresApi(Build.VERSION_CODES.N)
-class SummaryNotification(
+class SummaryNotificationHelper(
     private val context: Context,
     private val localPreferences: LocalPreferences
 ) : NotificationHelper() {
@@ -52,8 +51,6 @@ class SummaryNotification(
     private val notificationManager = NotificationManagerCompat.from(context)
 
     private val color = ContextCompat.getColor(context, R.color.notification)
-
-    private val isGroupSummarySent = AtomicBoolean()
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -148,7 +145,7 @@ class SummaryNotification(
         @StringRes subTextResId: Int,
         contentList: List<NotificationContent>
     ) {
-        sendGroupSummaryIfNeeded()
+        sendGroupSummary()
 
         var notificationId = localPreferences.notificationId
 
@@ -176,29 +173,25 @@ class SummaryNotification(
         localPreferences.notificationId = notificationId
     }
 
-    private fun sendGroupSummaryIfNeeded() {
-        if (isGroupSummarySent.getAndSet(true)) {
-            return
-        }
-
-        val vibrate = if (localPreferences.isEnabledNotificationVibration) {
-            VIBRATION_PATTERN
-        } else {
-            longArrayOf(0)
-        }
-
+    private fun sendGroupSummary() {
         val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSmallIcon(SMALL_APP_ICON_RES_ID)
             .setColor(color)
             .setGroup(GROUP_KEY)
             .setGroupSummary(true)
-            .setVibrate(vibrate)
             .setOnlyAlertOnce(true)
             .setAutoCancel(true)
 
-        if (localPreferences.isEnabledNotificationLed) {
-            builder.setLights(color, 1000, 2000)
+        // If notification chanel not supported
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            if (localPreferences.isEnabledNotificationVibration) {
+                builder.setVibrate(VIBRATION_PATTERN)
+            }
+
+            if (localPreferences.isEnabledNotificationLed) {
+                builder.setLights(color, 1000, 2000)
+            }
         }
 
         notificationManager.notify(SUMMARY_NOTIFICATION_ID, builder.build())

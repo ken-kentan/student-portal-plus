@@ -12,7 +12,7 @@ import jp.kentan.studentportalplus.data.dao.PortalDatabase
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.source.ShibbolethDataSource
 import jp.kentan.studentportalplus.notification.NotificationHelper
-import jp.kentan.studentportalplus.notification.SummaryNotification
+import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
 import javax.inject.Singleton
 
 @Module
@@ -98,7 +98,7 @@ object AppModule {
         context: Context,
         localPreferences: LocalPreferences
     ): NotificationHelper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        SummaryNotification(context, localPreferences)
+        SummaryNotificationHelper(context, localPreferences)
     } else {
         TODO("VERSION.SDK_INT < N")
     }
