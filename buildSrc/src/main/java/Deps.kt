@@ -31,14 +31,14 @@ object Deps {
         const val browser = "androidx.browser:browser:1.0.0"
 
         object Navigation {
-            private const val version = "2.2.0-rc03"
+            private const val version = "2.2.0"
 
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.2.0-rc03"
+            private const val version = "2.2.0"
 
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -46,7 +46,7 @@ object Deps {
         }
 
         object Room {
-            private const val version = "2.2.2"
+            private const val version = "2.2.3"
 
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -54,7 +54,7 @@ object Deps {
         }
     }
 
-    const val material = "com.google.android.material:material:1.1.0-beta02"
+    const val material = "com.google.android.material:material:1.1.0-rc02"
 
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
