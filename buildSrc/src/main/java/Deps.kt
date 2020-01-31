@@ -5,7 +5,7 @@ object Deps {
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.9.5"
         const val firebaseAppDistribution =
-            "com.google.firebase:firebase-appdistribution-gradle:1.2.0"
+            "com.google.firebase:firebase-appdistribution-gradle:1.3.1"
     }
 
     object Kotlin {
