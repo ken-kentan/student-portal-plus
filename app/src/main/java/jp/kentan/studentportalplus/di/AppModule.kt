@@ -102,5 +102,4 @@ object AppModule {
     } else {
         TODO("VERSION.SDK_INT < N")
     }
-
 }

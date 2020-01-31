@@ -23,6 +23,10 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         private const val SIMILAR_SUBJECT_THRESHOLD = "similar_subject_threshold"
         private const val SHIBBOLETH_LAST_LOGIN_DATE = "shibboleth_last_login_date"
 
+        // For sync
+        private const val IS_ENABLED_SYNC = "is_enabled_sync"
+        private const val SYNC_INTERVAL_MINUTES = "sync_interval_minutes"
+
         // For notifications
         private const val IS_ENABLED_NOTIFICATION_VIBRATION = "is_enabled_notification_vibration"
         private const val IS_ENABLED_NOTIFICATION_LED = "is_enabled_notification_led"
@@ -35,6 +39,9 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
         registerOnSharedPreferenceChangeListener(this@LocalPreferences)
     }
+
+    val isEnabledSync: Boolean
+        get() = sharedPreferences.getBoolean(IS_ENABLED_SYNC, true)
 
     var isGridTimetableLayout: Boolean
         get() = sharedPreferences.getBoolean(IS_GRID_TIMETABLE_LAYOUT, true)
@@ -108,6 +115,10 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             putLong(SHIBBOLETH_LAST_LOGIN_DATE, System.currentTimeMillis())
         }
     }
+
+    val syncIntervalMinutes: Long
+        get() = sharedPreferences.getString("sync_interval_minutes", "120")?.toLongOrNull()
+            ?: 120L
 
     var notificationId: Int
         get() = sharedPreferences.getInt(NOTIFICATION_ID, 1)

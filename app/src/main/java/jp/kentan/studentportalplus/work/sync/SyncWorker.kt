@@ -1,9 +1,7 @@
 package jp.kentan.studentportalplus.work.sync
 
 import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.Data
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import jp.kentan.studentportalplus.data.*
@@ -18,6 +16,7 @@ import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import java.util.concurrent.TimeUnit
 
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
@@ -31,10 +30,25 @@ class SyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, params) {
 
     companion object {
-        private const val TAG = "SyncWorker"
+        const val NAME = "sync_worker"
 
         const val KEY_DATA_MESSAGE = "message"
         const val KEY_DATA_IS_AUTH_ERROR = "is_auth_error"
+
+        fun buildPeriodicWorkRequest(intervalMinutes: Long): PeriodicWorkRequest {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            return PeriodicWorkRequestBuilder<SyncWorker>(
+                intervalMinutes,
+                TimeUnit.MINUTES,
+                intervalMinutes / 2,
+                TimeUnit.MINUTES
+            )
+                .setConstraints(constraints)
+                .build()
+        }
     }
 
     override suspend fun doWork(): Result = coroutineScope {
