@@ -41,6 +41,15 @@ android {
         jvmTarget = "1.8"
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = File("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
