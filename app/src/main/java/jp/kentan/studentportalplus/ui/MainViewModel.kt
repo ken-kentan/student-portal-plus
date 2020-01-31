@@ -2,20 +2,21 @@ package jp.kentan.studentportalplus.ui
 
 import android.app.Application
 import androidx.lifecycle.*
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
-import jp.kentan.studentportalplus.data.UserRepository
-import jp.kentan.studentportalplus.work.sync.SyncWorker
+import jp.kentan.studentportalplus.data.*
+import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     application: Application,
     userRepository: UserRepository,
+    private val attendCourseRepository: AttendCourseRepository,
+    private val lectureInfoRepository: LectureInformationRepository,
+    private val lectureCancelRepository: LectureCancellationRepository,
+    private val noticeRepository: NoticeRepository,
     private val localPreferences: LocalPreferences
-) : AndroidViewModel(application), Observer<WorkInfo> {
+) : AndroidViewModel(application) {
 
     val user = userRepository.getFlow().asLiveData()
     val isSyncing = MutableLiveData<Boolean>()
@@ -28,14 +29,6 @@ class MainViewModel @Inject constructor(
     val closeDrawer: LiveData<Event<Unit>>
         get() = _closeDrawer
 
-    private val workManager = WorkManager.getInstance(application)
-
-    private var workInfoLiveData: LiveData<WorkInfo>? = null
-        set(value) {
-            value?.observeForever(this)
-            field = value
-        }
-
     fun onRefresh() {
         if (isSyncing.value == true) {
             return
@@ -43,39 +36,29 @@ class MainViewModel @Inject constructor(
 
         isSyncing.value = true
 
-        val syncRequest = OneTimeWorkRequestBuilder<SyncWorker>().build()
-
-        workInfoLiveData = workManager.getWorkInfoByIdLiveData(syncRequest.id)
-
-        workManager.enqueue(syncRequest)
-    }
-
-    override fun onChanged(workInfo: WorkInfo?) {
-        if (workInfo == null || !workInfo.state.isFinished) {
-            return
-        }
-
-        isSyncing.value = false
-        workInfoLiveData?.removeObserver(this)
-
-        var message: String? = null
-
-        when (workInfo.state) {
-            WorkInfo.State.FAILED -> {
-                if (localPreferences.isEnabledDetailError) {
-                    message = workInfo.outputData.getString(SyncWorker.KEY_DATA_MESSAGE)
+        viewModelScope.launch {
+            runCatching {
+                attendCourseRepository.syncWithRemote()
+                lectureInfoRepository.syncWithRemote()
+                lectureCancelRepository.syncWithRemote()
+                noticeRepository.syncWithRemote()
+            }.onFailure {
+                if (it is ShibbolethAuthenticationException) {
+                    // TODO
                 }
 
-                if (message == null) {
-                    message = getApplication<Application>().getString(R.string.error_sync_failed)
-                }
-            }
-            WorkInfo.State.CANCELLED -> {
-                message = getApplication<Application>().getString(R.string.error_sync_cancelled)
-            }
-            else -> return
-        }
+                val throwableMessage = it.message
+                val message =
+                    if (localPreferences.isEnabledDetailError && !throwableMessage.isNullOrEmpty()) {
+                        throwableMessage
+                    } else {
+                        getApplication<Application>().getString(R.string.error_sync_failed)
+                    }
 
-        _indefiniteSnackbar.value = Event(message)
+                _indefiniteSnackbar.value = Event(message)
+            }.also {
+                isSyncing.value = false
+            }
+        }
     }
 }
