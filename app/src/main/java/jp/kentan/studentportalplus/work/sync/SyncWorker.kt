@@ -100,9 +100,9 @@ class SyncWorker @AssistedInject constructor(
                 Result.success()
             } catch (e: Exception) {
                 if (e is ShibbolethAuthenticationException) {
-                    // TODO
+                    notificationHelper.sendAuthenticationError(e.message)
                 } else if (localPreferences.isEnabledDetailError) {
-                    // TODO
+                    notificationHelper.sendError(e)
                 }
 
                 Log.e(TAG, "Failed to sync", e)

@@ -12,7 +12,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
@@ -25,14 +24,11 @@ import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 
 @RequiresApi(Build.VERSION_CODES.N)
 class SummaryNotificationHelper(
-    private val context: Context,
+    context: Context,
     private val localPreferences: LocalPreferences
-) : NotificationHelper() {
+) : NotificationHelper(context) {
 
     companion object {
-        private const val NEWLY_CHANNEL_ID = "0_newly_channel" // 新着通知
-        private const val APP_CHANNEL_ID = "99_app_channel"
-
         private const val GROUP_KEY = "student_portal_plus"
         private const val SUMMARY_NOTIFICATION_ID = 0
 
@@ -55,8 +51,6 @@ class SummaryNotificationHelper(
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         }.toPendingIntent(notificationId)
     }
-
-    private val notificationManager = NotificationManagerCompat.from(context)
 
     private val color = ContextCompat.getColor(context, R.color.notification)
 
