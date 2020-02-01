@@ -1,6 +1,7 @@
 package jp.kentan.studentportalplus.work.sync
 
 import android.content.Context
+import android.util.Log
 import androidx.work.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -16,6 +17,7 @@ import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class SyncWorker @AssistedInject constructor(
@@ -32,8 +34,10 @@ class SyncWorker @AssistedInject constructor(
     companion object {
         const val NAME = "sync_worker"
 
-        const val KEY_DATA_MESSAGE = "message"
-        const val KEY_DATA_IS_AUTH_ERROR = "is_auth_error"
+        private const val TAG = "SyncWorker"
+
+        private val AVAILABLE_HOUR = 5..22
+        private const val KEY_IS_IGNORE_MIDNIGHT = "is_ignore_midnight"
 
         fun buildPeriodicWorkRequest(intervalMinutes: Long): PeriodicWorkRequest {
             val constraints = Constraints.Builder()
@@ -51,55 +55,65 @@ class SyncWorker @AssistedInject constructor(
         }
     }
 
-    override suspend fun doWork(): Result = coroutineScope {
-        runCatching {
-            // should sync first
-            attendCourseRepository.syncWithRemote()
-            val subjectList = attendCourseRepository.getSubjectList()
+    override suspend fun doWork(): Result {
+        if (!inputData.getBoolean(KEY_IS_IGNORE_MIDNIGHT, false) && isInMidnight()) {
+            Log.d(TAG, "Skipped work because for midnight")
+            return Result.success()
+        }
 
-            val similarSubjectThreshold = localPreferences.similarSubjectThreshold
+        return coroutineScope {
+            try {
+                attendCourseRepository.syncWithRemote()
+                val subjectList = attendCourseRepository.getSubjectList()
 
-            val lectureInfoDeferred = async {
-                lectureInfoRepository.syncWithRemote()
-                    .filterWith(
-                        localPreferences.lectureInformationNotificationType,
-                        subjectList,
-                        similarSubjectThreshold
-                    )
-            }
+                val similarSubjectThreshold = localPreferences.similarSubjectThreshold
 
-            val lectureCancelDeferred = async {
-                lectureCancelRepository.syncWithRemote()
-                    .filterWith(
-                        localPreferences.lectureCancellationNotificationType,
-                        subjectList,
-                        similarSubjectThreshold
-                    )
-            }
+                val lectureInfoDeferred = async {
+                    lectureInfoRepository.syncWithRemote()
+                        .filterWith(
+                            localPreferences.lectureInformationNotificationType,
+                            subjectList,
+                            similarSubjectThreshold
+                        )
+                }
 
-            val noticeDeferred = async {
-                noticeRepository.syncWithRemote()
-                    .filterWith(
-                        localPreferences.noticeNotificationType
-                    )
-            }
+                val lectureCancelDeferred = async {
+                    lectureCancelRepository.syncWithRemote()
+                        .filterWith(
+                            localPreferences.lectureCancellationNotificationType,
+                            subjectList,
+                            similarSubjectThreshold
+                        )
+                }
 
-            notificationHelper.sendLectureInformation(lectureInfoDeferred.await())
-            notificationHelper.sendLectureCancellation(lectureCancelDeferred.await())
-            notificationHelper.sendNotice(noticeDeferred.await())
-        }.fold(
-            onSuccess = {
+                val noticeDeferred = async {
+                    noticeRepository.syncWithRemote()
+                        .filterWith(
+                            localPreferences.noticeNotificationType
+                        )
+                }
+
+                notificationHelper.sendLectureInformation(lectureInfoDeferred.await())
+                notificationHelper.sendLectureCancellation(lectureCancelDeferred.await())
+                notificationHelper.sendNotice(noticeDeferred.await())
+
                 Result.success()
-            },
-            onFailure = {
-                val outputData = Data.Builder()
-                    .putString(KEY_DATA_MESSAGE, it.message)
-                    .putBoolean(KEY_DATA_IS_AUTH_ERROR, it is ShibbolethAuthenticationException)
-                    .build()
+            } catch (e: Exception) {
+                if (e is ShibbolethAuthenticationException) {
+                    // TODO
+                } else if (localPreferences.isEnabledDetailError) {
+                    // TODO
+                }
 
-                Result.failure(outputData)
+                Log.e(TAG, "Failed to sync", e)
+                Result.failure()
             }
-        )
+        }
+    }
+
+    private fun isInMidnight(): Boolean {
+        val timeZone = TimeZone.getTimeZone("Asia/Tokyo")
+        return Calendar.getInstance(timeZone).get(Calendar.HOUR_OF_DAY) !in AVAILABLE_HOUR
     }
 
     private fun <T : Lecture> List<T>.filterWith(
