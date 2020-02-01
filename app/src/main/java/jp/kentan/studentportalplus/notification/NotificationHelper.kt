@@ -50,12 +50,7 @@ abstract class NotificationHelper(
         )
     }
 
-    private fun sendErrorInternal(
-        intent: Intent,
-        subText: String,
-        title: String,
-        text: String
-    ) {
+    private fun sendErrorInternal(intent: Intent, subText: String, title: String, text: String) {
         val pendingIntent = PendingIntent.getActivity(
             context,
             ERROR_NOTIFICATION_ID,
