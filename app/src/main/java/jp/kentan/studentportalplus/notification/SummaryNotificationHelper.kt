@@ -12,7 +12,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
@@ -52,7 +51,7 @@ class SummaryNotificationHelper(
         }.toPendingIntent(notificationId)
     }
 
-    private val color = ContextCompat.getColor(context, R.color.notification)
+    private val color = context.getColor(R.color.notification)
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

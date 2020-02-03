@@ -56,4 +56,5 @@
     <color name="background">#F5F5F5</color>
 
     <color name="notification">#1285D0</color>
+    <color name="notification_error">#B00020</color>
 </resources>

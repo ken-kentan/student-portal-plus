@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
@@ -62,7 +63,7 @@ abstract class NotificationHelper(
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setColor(ContextCompat.getColor(context, R.color.red_600))
+            .setColor(ContextCompat.getColor(context, R.color.notification_error))
 //            .setSmallIcon(SMALL_APP_ICON)
             .setSubText(subText)
             .setContentTitle(title)
