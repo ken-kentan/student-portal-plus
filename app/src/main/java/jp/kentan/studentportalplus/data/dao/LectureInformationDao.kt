@@ -23,7 +23,7 @@ interface LectureInformationDao {
 
             Log.d("LectureInformationDao", "$id: ${info.subject}")
             if (id > 0) {
-                insertList.add(info)
+                insertList.add(info.copy(id = id))
             }
         }
 
