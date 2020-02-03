@@ -53,6 +53,10 @@ class SyncWorker @AssistedInject constructor(
                 .setConstraints(constraints)
                 .build()
         }
+
+        fun buildOneTimeWorkRequest() = OneTimeWorkRequest.Builder(SyncWorker::class.java)
+            .setInputData(Data.Builder().putBoolean(KEY_IS_IGNORE_MIDNIGHT, true).build())
+            .build()
     }
 
     override suspend fun doWork(): Result {
