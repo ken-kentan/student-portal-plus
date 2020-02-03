@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -59,19 +60,23 @@ abstract class NotificationHelper(
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val smallIconResId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            R.drawable.ic_menu_dashboard
+        } else {
+            R.mipmap.ic_notification_app
+        }
+
         val builder = NotificationCompat.Builder(context, APP_CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setColor(ContextCompat.getColor(context, R.color.notification_error))
-//            .setSmallIcon(SMALL_APP_ICON)
+            .setSmallIcon(smallIconResId)
             .setSubText(subText)
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-
-        // TODO add retry service
 
         notificationManager.notify(ERROR_NOTIFICATION_ID, builder.build())
     }
