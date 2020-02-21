@@ -60,6 +60,8 @@ class SyncWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
+        notificationHelper.cancelError()
+
         if (!inputData.getBoolean(KEY_IS_IGNORE_MIDNIGHT, false) && isInMidnight()) {
             Log.d(TAG, "Skipped work because for midnight")
             return Result.success()

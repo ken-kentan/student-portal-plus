@@ -53,6 +53,10 @@ abstract class NotificationHelper(
         )
     }
 
+    fun cancelError() {
+        notificationManager.cancel(ERROR_NOTIFICATION_ID)
+    }
+
     private fun sendErrorInternal(intent: Intent, subText: String, title: String, text: String) {
         val pendingIntent = PendingIntent.getActivity(
             context,
@@ -88,11 +92,13 @@ abstract class NotificationHelper(
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
 
-            NotificationCompat.Action.Builder(
+            val action = NotificationCompat.Action.Builder(
                 R.drawable.ic_notification_retry,
                 context.getString(R.string.action_retry),
                 retrySyncService
-            )
+            ).build()
+
+            builder.addAction(action)
         }
 
         notificationManager.notify(ERROR_NOTIFICATION_ID, builder.build())
