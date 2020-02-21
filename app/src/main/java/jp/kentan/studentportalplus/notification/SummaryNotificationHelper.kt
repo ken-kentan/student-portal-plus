@@ -31,7 +31,7 @@ class SummaryNotificationHelper(
         private const val GROUP_KEY = "student_portal_plus"
         private const val SUMMARY_NOTIFICATION_ID = 0
 
-        private const val SMALL_APP_ICON_RES_ID = R.drawable.ic_menu_dashboard
+        private const val SMALL_APP_ICON_RES_ID = R.drawable.ic_notification_app
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun createNewlyChannelSettingsIntent(context: Context) =

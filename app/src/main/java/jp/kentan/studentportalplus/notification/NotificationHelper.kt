@@ -13,6 +13,7 @@ import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.login.LoginActivity
+import jp.kentan.studentportalplus.work.sync.RetrySyncService
 
 abstract class NotificationHelper(
     protected val context: Context
@@ -61,7 +62,7 @@ abstract class NotificationHelper(
         )
 
         val smallIconResId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            R.drawable.ic_menu_dashboard
+            R.drawable.ic_notification_app
         } else {
             R.mipmap.ic_notification_app
         }
@@ -77,6 +78,22 @@ abstract class NotificationHelper(
             .setContentText(text)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+
+        // if notification action support
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val retrySyncService = PendingIntent.getService(
+                context,
+                ERROR_NOTIFICATION_ID,
+                RetrySyncService.createIntent(context),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            NotificationCompat.Action.Builder(
+                R.drawable.ic_notification_retry,
+                context.getString(R.string.action_retry),
+                retrySyncService
+            )
+        }
 
         notificationManager.notify(ERROR_NOTIFICATION_ID, builder.build())
     }

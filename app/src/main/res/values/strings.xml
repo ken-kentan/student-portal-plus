@@ -155,6 +155,7 @@
     <string name="action_filter">絞り込み</string>
     <string name="action_switch_layout">レイアウト</string>
     <string name="action_cancel">キャンセル</string>
+    <string name="action_retry">再試行</string>
 
     <!-- menu -->
     <string name="menu_dashboard">Dashboard</string>
