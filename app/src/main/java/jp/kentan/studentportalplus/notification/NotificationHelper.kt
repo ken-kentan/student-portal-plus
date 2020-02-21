@@ -3,7 +3,6 @@ package jp.kentan.studentportalplus.notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -65,41 +64,32 @@ abstract class NotificationHelper(
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val smallIconResId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            R.drawable.ic_notification_app
-        } else {
-            R.mipmap.ic_notification_app
-        }
-
         val builder = NotificationCompat.Builder(context, APP_CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setColor(ContextCompat.getColor(context, R.color.notification_error))
-            .setSmallIcon(smallIconResId)
+            .setSmallIcon(R.drawable.ic_notification_app)
             .setSubText(subText)
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
-        // if notification action support
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val retrySyncService = PendingIntent.getService(
-                context,
-                ERROR_NOTIFICATION_ID,
-                RetrySyncService.createIntent(context),
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+        val retrySyncService = PendingIntent.getService(
+            context,
+            ERROR_NOTIFICATION_ID,
+            RetrySyncService.createIntent(context),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
-            val action = NotificationCompat.Action.Builder(
-                R.drawable.ic_notification_retry,
-                context.getString(R.string.action_retry),
-                retrySyncService
-            ).build()
+        val action = NotificationCompat.Action.Builder(
+            R.drawable.ic_notification_retry,
+            context.getString(R.string.action_retry),
+            retrySyncService
+        ).build()
 
-            builder.addAction(action)
-        }
+        builder.addAction(action)
 
         notificationManager.notify(ERROR_NOTIFICATION_ID, builder.build())
     }
