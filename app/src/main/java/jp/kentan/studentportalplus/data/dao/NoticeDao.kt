@@ -11,14 +11,14 @@ interface NoticeDao {
     @Query("SELECT * FROM notices WHERE _id = :id")
     fun getFlow(id: Long): Flow<Notice>
 
-    @Query("SELECT * FROM notices ORDER BY created_date DESC, _id")
+    @Query("SELECT * FROM notices ORDER BY created_date DESC, _id DESC")
     fun getListFlow(): Flow<List<Notice>>
 
     @Transaction
     fun updateAll(noticeList: List<Notice>): List<Notice> {
         val insertList = mutableListOf<Notice>()
 
-        noticeList.forEach { notice ->
+        noticeList.asReversed().forEach { notice ->
             val id = insert(notice)
 
             Log.d("NoticeDao", "$id: ${notice.title}")
