@@ -190,12 +190,16 @@ class SummaryNotificationHelper(
 
         // If notification chanel not supported
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            if (localPreferences.isEnabledNotificationVibration) {
-                builder.setVibrate(VIBRATION_PATTERN)
+            val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
+                VIBRATION_PATTERN
+            } else {
+                longArrayOf(0)
             }
 
+            builder.setVibrate(vibratePattern)
+
             if (localPreferences.isEnabledNotificationLed) {
-                builder.setLights(color, 1000, 2000)
+                builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
             }
         }
 

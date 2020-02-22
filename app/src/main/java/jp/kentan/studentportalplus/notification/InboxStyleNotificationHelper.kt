@@ -25,9 +25,6 @@ class InboxStyleNotificationHelper(
 
     companion object {
         private const val INBOX_LINE_LIMIT = 4
-
-        private const val NOTIFICATION_LED_ON_MILLIS = 1000
-        private const val NOTIFICATION_LED_OFF_MILLIS = 2000
     }
 
     private class NotificationContent(

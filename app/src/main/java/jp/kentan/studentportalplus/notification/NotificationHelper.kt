@@ -19,6 +19,8 @@ abstract class NotificationHelper(
 ) {
     companion object {
         val VIBRATION_PATTERN = longArrayOf(0, 300, 300, 300)
+        const val NOTIFICATION_LED_ON_MILLIS = 1000
+        const val NOTIFICATION_LED_OFF_MILLIS = 2000
 
         const val NEWLY_CHANNEL_ID = "0_newly_channel" // 新着通知
         const val APP_CHANNEL_ID = "99_app_channel"
