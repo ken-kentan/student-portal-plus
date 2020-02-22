@@ -2,9 +2,11 @@ package jp.kentan.studentportalplus.ui
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.work.WorkManager
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.*
 import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import jp.kentan.studentportalplus.work.sync.SyncWorker
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +32,12 @@ class MainViewModel @Inject constructor(
         get() = _closeDrawer
 
     fun onRefresh() {
+        val request = SyncWorker.buildOneTimeWorkRequest()
+        WorkManager.getInstance(getApplication())
+            .enqueue(request)
+
+        return
+
         if (isSyncing.value == true) {
             return
         }

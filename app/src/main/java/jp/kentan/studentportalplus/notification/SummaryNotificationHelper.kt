@@ -99,7 +99,7 @@ class SummaryNotificationHelper(
         }
 
         sendContentToNewlyChannel(
-            R.drawable.ic_menu_lecture_information,
+            R.drawable.ic_notification_lecture_information,
             R.string.name_lecture_information,
             contentList
         )
@@ -119,7 +119,7 @@ class SummaryNotificationHelper(
         }
 
         sendContentToNewlyChannel(
-            R.drawable.ic_menu_lecture_cancellation,
+            R.drawable.ic_notification_lecture_cancellation,
             R.string.name_lecture_cancellation,
             contentList
         )
@@ -138,7 +138,11 @@ class SummaryNotificationHelper(
             )
         }
 
-        sendContentToNewlyChannel(R.drawable.ic_menu_notice, R.string.name_notice, contentList)
+        sendContentToNewlyChannel(
+            R.drawable.ic_notification_notice,
+            R.string.name_notice,
+            contentList
+        )
     }
 
     private fun sendContentToNewlyChannel(
