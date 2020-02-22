@@ -23,16 +23,16 @@ object Deps {
 
     object AndroidX {
         const val appCompat = "androidx.appcompat:appcompat:1.1.0"
-        const val coreKtx = "androidx.core:core-ktx:1.1.0"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-rc05"
+        const val coreKtx = "androidx.core:core-ktx:1.2.0"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.2"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-        const val workKtx = "androidx.work:work-runtime-ktx:2.2.0"
+        const val workKtx = "androidx.work:work-runtime-ktx:2.3.2"
         const val preferenceKtx = "androidx.preference:preference-ktx:1.1.0"
         const val browser = "androidx.browser:browser:1.2.0"
 
         object Navigation {
-            private const val version = "2.2.0"
+            private const val version = "2.2.1"
 
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
@@ -47,7 +47,7 @@ object Deps {
         }
 
         object Room {
-            private const val version = "2.2.3"
+            private const val version = "2.2.4"
 
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -55,12 +55,12 @@ object Deps {
         }
     }
 
-    const val material = "com.google.android.material:material:1.1.0-rc02"
+    const val material = "com.google.android.material:material:1.1.0"
 
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object Dagger {
-        private const val version = "2.25.4"
+        private const val version = "2.26"
 
         const val core = "com.google.dagger:dagger:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -82,7 +82,7 @@ object Deps {
         const val urlConnection = "com.squareup.okhttp3:okhttp-urlconnection:$version"
     }
 
-    const val jsoup = "org.jsoup:jsoup:1.12.1"
+    const val jsoup = "org.jsoup:jsoup:1.12.2"
 
     object Test {
         const val junit = "junit:junit:4.13"

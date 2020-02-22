@@ -19,7 +19,6 @@ android {
         versionName = Versions.name
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
 
     sourceSets {
