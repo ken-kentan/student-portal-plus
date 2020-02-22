@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.data
 
 import jp.kentan.studentportalplus.data.dao.NoticeDao
 import jp.kentan.studentportalplus.data.entity.Notice
+import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.NoticeQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,12 +21,19 @@ interface NoticeRepository {
     suspend fun update(notice: Notice): Boolean
 
     suspend fun setRead(id: Long)
+
+    suspend fun syncWithRemote(): List<Notice>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultNoticeRepository(
-    private val noticeDao: NoticeDao
+    private val noticeDao: NoticeDao,
+    private val shibbolethClient: ShibbolethClient
 ) : NoticeRepository {
+
+    companion object {
+        private const val NOTICE_URL = "https://portal.student.kit.ac.jp"
+    }
 
     override fun getFlow(id: Long): Flow<Notice> = noticeDao.getFlow(id)
 
@@ -65,5 +73,11 @@ class DefaultNoticeRepository(
         withContext(Dispatchers.IO) {
             noticeDao.updateRead(id)
         }
+    }
+
+    override suspend fun syncWithRemote(): List<Notice> = withContext(Dispatchers.IO) {
+        val document = shibbolethClient.fetch(NOTICE_URL)
+        val noticeList = DocumentParser.parseNotice(document)
+        noticeDao.updateAll(noticeList)
     }
 }

@@ -3,12 +3,14 @@ package jp.kentan.studentportalplus.data
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.verify
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.Lecture
+import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -18,7 +20,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class DefaultAttendCourseRepositoryTest {
 
-    private val repository = DefaultAttendCourseRepository(FakeAttendCourseDao())
+    private val repository = DefaultAttendCourseRepository(FakeAttendCourseDao(), mockk())
 
     @Test
     fun getFlow() = runBlocking {
@@ -57,7 +59,7 @@ class DefaultAttendCourseRepositoryTest {
     @Test
     fun add() = runBlocking {
         val dao = mockk<AttendCourseDao>()
-        val repo = DefaultAttendCourseRepository(dao)
+        val repo = DefaultAttendCourseRepository(dao, mockk())
         every { dao.insert(TestData.attendCourse) } returns 1
 
         val isSuccess = repo.add(TestData.attendCourse)
@@ -72,7 +74,7 @@ class DefaultAttendCourseRepositoryTest {
     @Test
     fun add_lecture() = runBlocking {
         val dao = mockk<AttendCourseDao>()
-        val repo = DefaultAttendCourseRepository(dao)
+        val repo = DefaultAttendCourseRepository(dao, mockk())
         every { dao.insertAll(any()) } returns listOf(1)
 
         val lecture = object : Lecture {
@@ -94,7 +96,7 @@ class DefaultAttendCourseRepositoryTest {
     @Test
     fun update() = runBlocking {
         val dao = mockk<AttendCourseDao>()
-        val repo = DefaultAttendCourseRepository(dao)
+        val repo = DefaultAttendCourseRepository(dao, mockk())
         every { dao.update(TestData.attendCourse) } returns 1
 
         val isSuccess = repo.update(TestData.attendCourse)
@@ -109,7 +111,7 @@ class DefaultAttendCourseRepositoryTest {
     @Test
     fun remove() = runBlocking {
         val dao = mockk<AttendCourseDao>()
-        val repo = DefaultAttendCourseRepository(dao)
+        val repo = DefaultAttendCourseRepository(dao, mockk())
         every { dao.delete(TestData.attendCourse.id) } returns 1
 
         val isSuccess = repo.remove(TestData.attendCourse.id)
@@ -124,7 +126,7 @@ class DefaultAttendCourseRepositoryTest {
     @Test
     fun remove_subject() = runBlocking {
         val dao = mockk<AttendCourseDao>()
-        val repo = DefaultAttendCourseRepository(dao)
+        val repo = DefaultAttendCourseRepository(dao, mockk())
         every { dao.delete("subject", AttendCourse.Type.USER) } returns 1
 
         val isSuccess = repo.remove("subject")
@@ -134,5 +136,32 @@ class DefaultAttendCourseRepositoryTest {
         }
 
         assertThat(isSuccess).isTrue()
+    }
+
+    @Test
+    fun syncWithRemote() = runBlocking {
+        val list = listOf(TestData.attendCourse)
+
+        val dao = mockk<AttendCourseDao>()
+        val client = mockk<ShibbolethClient>()
+
+        mockkObject(DocumentParser)
+
+        val repo = DefaultAttendCourseRepository(dao, client)
+        every { dao.updateAll(list) } returns Unit
+        every { client.fetch(any()) } returns mockk()
+        every { DocumentParser.parseAttendCourse(any()) } returns list
+
+        repo.syncWithRemote()
+
+        verify {
+            client.fetch(any())
+        }
+        verify {
+            DocumentParser.parseAttendCourse(any())
+        }
+        verify {
+            dao.updateAll(list)
+        }
     }
 }

@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.work.sync
+package jp.kentan.studentportalplus.data
 
 import android.util.Log
 import jp.kentan.studentportalplus.data.entity.AttendCourse

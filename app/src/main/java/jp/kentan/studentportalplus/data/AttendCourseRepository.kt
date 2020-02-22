@@ -2,7 +2,9 @@ package jp.kentan.studentportalplus.data
 
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.Lecture
+import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,8 @@ interface AttendCourseRepository {
 
     suspend fun get(id: Long): AttendCourse?
 
+    suspend fun getSubjectList(): List<AttendCourseSubject>
+
     suspend fun add(attendCourse: AttendCourse): Boolean
 
     suspend fun add(lecture: Lecture): Boolean
@@ -29,11 +33,19 @@ interface AttendCourseRepository {
     suspend fun remove(id: Long): Boolean
 
     suspend fun remove(subject: String): Boolean
+
+    suspend fun syncWithRemote()
 }
 
 class DefaultAttendCourseRepository(
-    private val attendCourseDao: AttendCourseDao
+    private val attendCourseDao: AttendCourseDao,
+    private val shibbolethClient: ShibbolethClient
 ) : AttendCourseRepository {
+
+    companion object {
+        private const val ATTEND_COURSE_URL =
+            "https://portal.student.kit.ac.jp/ead/?c=attend_course"
+    }
 
     override fun getFlow(id: Long): Flow<AttendCourse?> = attendCourseDao.getFlow(id)
 
@@ -49,7 +61,11 @@ class DefaultAttendCourseRepository(
         attendCourseDao.getListFlow(dayOfWeek)
 
     override suspend fun get(id: Long): AttendCourse? = withContext(Dispatchers.IO) {
-        return@withContext attendCourseDao.get(id)
+        attendCourseDao.get(id)
+    }
+
+    override suspend fun getSubjectList(): List<AttendCourseSubject> = withContext(Dispatchers.IO) {
+        attendCourseDao.getSubjectList()
     }
 
     override suspend fun add(attendCourse: AttendCourse): Boolean = withContext(Dispatchers.IO) {
@@ -94,5 +110,11 @@ class DefaultAttendCourseRepository(
     override suspend fun remove(subject: String): Boolean = withContext(Dispatchers.IO) {
         val count = attendCourseDao.delete(subject, AttendCourse.Type.USER)
         return@withContext count > 0
+    }
+
+    override suspend fun syncWithRemote() = withContext(Dispatchers.IO) {
+        val document = shibbolethClient.fetch(ATTEND_COURSE_URL)
+        val attendCourseList = DocumentParser.parseAttendCourse(document)
+        attendCourseDao.updateAll(attendCourseList)
     }
 }

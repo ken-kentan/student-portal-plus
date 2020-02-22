@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
@@ -22,14 +23,29 @@ import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
 import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
+
 class MainActivity : DaggerAppCompatActivity() {
 
     companion object {
-        fun createIntent(context: Context) =
+        private const val EXTRA_START_DESTINATION = "START_DESTINATION"
+
+        fun createIntent(context: Context, startDestination: Destination? = null) =
             Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+                if (startDestination != null) {
+                    putExtra(EXTRA_START_DESTINATION, startDestination)
+                }
             }
+    }
+
+    enum class Destination(
+        @IdRes val resId: Int
+    ) {
+        LECTURE_INFORMATION(R.id.lecture_informations_fragment),
+        LECTURE_CANCELLATION(R.id.lecture_cancellations_fragment),
+        NOTICE(R.id.notices_fragment)
     }
 
     @Inject
@@ -41,6 +57,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
             .apply {
                 lifecycleOwner = this@MainActivity
@@ -49,7 +66,13 @@ class MainActivity : DaggerAppCompatActivity() {
                 setSupportActionBar(appBar.toolbar)
 
                 val navController = supportFragmentManager.findNavController()
-                setupWithNavController(navView, drawerLayout, navController)
+
+                setupWithNavController(
+                    navView,
+                    drawerLayout,
+                    navController,
+                    intent.getSerializableExtra(EXTRA_START_DESTINATION) as Destination?
+                )
 
                 val toggle = ActionBarDrawerToggle(
                     this@MainActivity, drawerLayout, appBar.toolbar,
@@ -86,9 +109,10 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun setupWithNavController(
         navigationView: NavigationView,
         drawerLayout: DrawerLayout,
-        navController: NavController
+        navController: NavController,
+        startDestination: Destination?
     ) {
-        val fragmentSet = setOf(
+        val fragmentIdSet = setOf(
             R.id.dashboard_fragment,
             R.id.timetable_fragment,
             R.id.lecture_informations_fragment,
@@ -100,7 +124,7 @@ class MainActivity : DaggerAppCompatActivity() {
             val builder = NavOptions.Builder()
                 .setLaunchSingleTop(true)
 
-            if (fragmentSet.contains(item.itemId)) {
+            if (fragmentIdSet.contains(item.itemId)) {
                 builder.setPopUpTo(R.id.dashboard_fragment, false)
                     .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
                     .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
@@ -124,6 +148,10 @@ class MainActivity : DaggerAppCompatActivity() {
             navigationView.menu.forEach { item ->
                 item.isChecked = destination.id == item.itemId
             }
+        }
+
+        if (startDestination != null) {
+            navController.navigate(startDestination.resId)
         }
     }
 }

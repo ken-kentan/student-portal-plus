@@ -3,7 +3,6 @@ package jp.kentan.studentportalplus.ui.settings
 import android.os.Bundle
 import android.view.View
 import androidx.preference.ListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.util.requirePreference
@@ -17,7 +16,7 @@ class NotificationTypePreferenceFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val summaryProvider = Preference.SummaryProvider<ListPreference> { it.entry }
+        val summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
 
         requirePreference<ListPreference>("notification_type_lecture_info")
             .summaryProvider = summaryProvider

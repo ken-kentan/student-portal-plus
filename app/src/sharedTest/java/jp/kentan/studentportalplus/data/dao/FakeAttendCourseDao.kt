@@ -27,6 +27,10 @@ class FakeAttendCourseDao : AttendCourseDao {
 
     override fun get(id: Long): AttendCourse? = TestData.attendCourse
 
+    override fun getSubjectList(): List<AttendCourseSubject> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun insert(attendCourse: AttendCourse): Long {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

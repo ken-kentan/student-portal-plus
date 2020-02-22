@@ -16,6 +16,10 @@ class FakeLectureInformationDao : LectureInformationDao {
     override fun getListFlow(): Flow<List<LectureInformation>> =
         flowOf(List(ALL_LIST_SIZE) { TestData.lectureInfo })
 
+    override fun updateAll(lectureInfoList: List<LectureInformation>): List<LectureInformation> {
+        return lectureInfoList
+    }
+
     override fun updateRead(id: Long): Int {
         check(id == TestData.lectureInfo.id)
 

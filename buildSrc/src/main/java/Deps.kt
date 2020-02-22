@@ -32,14 +32,14 @@ object Deps {
         const val browser = "androidx.browser:browser:1.2.0"
 
         object Navigation {
-            private const val version = "2.2.0-rc04"
+            private const val version = "2.2.0"
 
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.2.0-rc03"
+            private const val version = "2.2.0"
 
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"

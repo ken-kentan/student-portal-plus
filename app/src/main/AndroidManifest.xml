@@ -56,6 +56,8 @@
             android:authorities="${applicationId}.workmanager-init"
             android:exported="false"
             tools:node="remove" />
+
+        <service android:name=".work.sync.RetrySyncService" />
     </application>
 
 </manifest>

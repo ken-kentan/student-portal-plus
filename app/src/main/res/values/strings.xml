@@ -18,6 +18,9 @@
     <string name="title_confirm">確認</string>
     <string name="title_filter_dialog">検索フィルタ</string>
     <string name="title_color_picker">色を選択</string>
+    <string name="title_sync_failed">同期失敗</string>
+    <string name="title_required_login">再ログインが必要です</string>
+    <string name="title_inbox_style">%1$d件の%2$s</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -73,6 +76,12 @@
     <string name="name_order_update_date">最終更新日</string>
     <string name="name_order_attend_course">受講科目優先</string>
     <string name="name_null">未入力</string>
+    <string name="name_newly_channel">新着通知</string>
+    <string name="name_app_channel">Student Portal+</string>
+    <string name="name_notification_all">すべて</string>
+    <string name="name_notification_important">重要・注意を含む</string>
+    <string name="name_notification_attend">受講科目・類似科目</string>
+    <string name="name_notification_not">通知しない</string>
 
     <!-- text -->
     <string name="text_agree_to_terms">上記の利用規約に同意します</string>
@@ -92,11 +101,13 @@
     <string name="text_lecture_cancellation_created_date">掲示日: %1$s</string>
     <string name="text_notice_created_date">掲載日: %1$s</string>
     <string name="text_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
+    <string name="text_summary_inbox_style">他%1$d件</string>
 
     <!-- info -->
     <string name="info_login_form">ユーザー名とパスワードを入力して下さい</string>
 
     <!-- error -->
+    <string name="error">エラー</string>
     <string name="error_unknown">不明なエラーです</string>
     <string name="error_sync_failed">同期に失敗しました。時間をおいて再試行して下さい</string>
     <string name="error_sync_cancelled">同期がキャンセルされました</string>
@@ -146,6 +157,7 @@
     <string name="action_filter">絞り込み</string>
     <string name="action_switch_layout">レイアウト</string>
     <string name="action_cancel">キャンセル</string>
+    <string name="action_retry">再試行</string>
 
     <!-- menu -->
     <string name="menu_dashboard">Dashboard</string>

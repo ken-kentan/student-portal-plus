@@ -44,4 +44,6 @@
     <color name="timetable_grid_background">#1B1B1B</color>
 
     <color name="background">#121212</color>
+
+    <color name="notification_error">#CF6679</color>
 </resources>

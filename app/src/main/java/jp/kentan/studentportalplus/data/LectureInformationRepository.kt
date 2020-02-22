@@ -4,6 +4,7 @@ import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureInformationDao
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
+import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,14 +21,22 @@ interface LectureInformationRepository {
     fun getListFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
 
     suspend fun setRead(id: Long)
+
+    suspend fun syncWithRemote(): List<LectureInformation>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
+    private val shibbolethClient: ShibbolethClient,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
 ) : LectureInformationRepository {
+
+    companion object {
+        private const val LECTURE_INFO_URL =
+            "https://portal.student.kit.ac.jp/ead/?c=lecture_information"
+    }
 
     private val subjectListFlow = attendCourseDao.getSubjectListFlow()
     private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
@@ -92,5 +101,11 @@ class DefaultLectureInformationRepository(
         withContext(Dispatchers.IO) {
             lectureInformationDao.updateRead(id)
         }
+    }
+
+    override suspend fun syncWithRemote(): List<LectureInformation> = withContext(Dispatchers.IO) {
+        val document = shibbolethClient.fetch(LECTURE_INFO_URL)
+        val lectureInfoList = DocumentParser.parseLectureInformation(document)
+        lectureInformationDao.updateAll(lectureInfoList)
     }
 }

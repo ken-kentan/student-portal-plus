@@ -23,7 +23,7 @@ interface LectureCancellationDao {
 
             Log.d("LectureCancellationDao", "$id: ${cancel.subject}")
             if (id > 0) {
-                insertList.add(cancel)
+                insertList.add(cancel.copy(id = id))
             }
         }
 

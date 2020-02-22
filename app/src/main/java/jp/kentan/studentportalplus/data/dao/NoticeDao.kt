@@ -23,7 +23,7 @@ interface NoticeDao {
 
             Log.d("NoticeDao", "$id: ${notice.title}")
             if (id > 0) {
-                insertList.add(notice)
+                insertList.add(notice.copy(id = id))
             }
         }
 

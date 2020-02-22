@@ -25,23 +25,18 @@ interface AttendCourseDao {
     @Query("SELECT * FROM attend_courses WHERE _id = :id")
     fun get(id: Long): AttendCourse?
 
-    @Transaction
-    fun updateAll(attendCourseList: List<AttendCourse>): List<AttendCourse> {
-        val insertList = mutableListOf<AttendCourse>()
+    @Query("SELECT subject, type FROM attend_courses")
+    fun getSubjectList(): List<AttendCourseSubject>
 
+    @Transaction
+    fun updateAll(attendCourseList: List<AttendCourse>) {
         attendCourseList.forEach { course ->
             val id = insert(course)
-
             Log.d("AttendCourseDao", "$id: ${course.subject}")
-            if (id > 0) {
-                insertList.add(course)
-            }
         }
 
         // Delete old notices
         deleteNotInHash(AttendCourse.Type.PORTAL.ordinal, attendCourseList.map { it.hash })
-
-        return insertList
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

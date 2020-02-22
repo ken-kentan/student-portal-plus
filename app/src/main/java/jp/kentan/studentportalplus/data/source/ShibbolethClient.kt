@@ -269,4 +269,4 @@ class ShibbolethAuthenticationException(message: String) : ShibbolethException(m
 
 class ShibbolethResponseException(message: String) : ShibbolethException(message)
 
-abstract class ShibbolethException(message: String) : Exception(message)
+abstract class ShibbolethException(override val message: String) : Exception(message)
