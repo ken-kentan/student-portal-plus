@@ -25,6 +25,9 @@ class InboxStyleNotificationHelper(
 
     companion object {
         private const val INBOX_LINE_LIMIT = 4
+
+        private const val NOTIFICATION_LED_ON_MILLIS = 1000
+        private const val NOTIFICATION_LED_OFF_MILLIS = 2000
     }
 
     private class NotificationContent(
@@ -44,6 +47,8 @@ class InboxStyleNotificationHelper(
         BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large)
 
     private val color = ContextCompat.getColor(context, R.color.notification)
+
+    private var isFirstNotification = true
 
     override fun sendLectureInformation(lectureInfoList: List<LectureInformation>) {
         if (lectureInfoList.isEmpty()) {
@@ -125,6 +130,22 @@ class InboxStyleNotificationHelper(
             .setContentIntent(pendingIntent)
             .setStyle(createInboxStyle(title, contentList))
             .setAutoCancel(true)
+
+        if (isFirstNotification) {
+            isFirstNotification = false
+
+            val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
+                VIBRATION_PATTERN
+            } else {
+                longArrayOf(0)
+            }
+
+            builder.setVibrate(vibratePattern)
+
+            if (localPreferences.isEnabledNotificationLed) {
+                builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
+            }
+        }
 
         notificationManager.notify(notificationId, builder.build())
 
