@@ -14,15 +14,26 @@
         <item name="textAppearanceHeadline6">@style/TextAppearance.AppTheme.Headline6</item>
     </style>
 
-    <style name="AppTheme" parent="Platform.AppTheme" />
+    <style name="AppTheme" parent="Platform.AppTheme">
+        <item name="android:navigationBarColor">?attr/colorPrimarySurface</item>
+    </style>
 
-    <style name="AppTheme.TransparentStatus" />
+    <style name="AppTheme.TransparentStatusBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="">
         <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
         <item name="android:textColorHint">@color/app_bar_text_hint</item>
         <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
         <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
+    </style>
+
+    <style name="AppTheme.ActionBar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
     <style name="Widget.AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface" />
