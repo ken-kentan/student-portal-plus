@@ -1,9 +1,9 @@
 object Deps {
     object GradlePlugin {
-        const val android = "com.android.tools.build:gradle:3.5.2"
+        const val android = "com.android.tools.build:gradle:3.6.0"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
-        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.1"
+        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.9.5"
         const val firebaseAppDistribution =
             "com.google.firebase:firebase-appdistribution-gradle:1.3.1"
     }
@@ -12,7 +12,6 @@ object Deps {
         const val version = "1.3.61"
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
-
 
         object Coroutines {
             internal const val version = "1.3.3"
