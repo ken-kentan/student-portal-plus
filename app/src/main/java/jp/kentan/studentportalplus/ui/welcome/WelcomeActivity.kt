@@ -3,6 +3,8 @@ package jp.kentan.studentportalplus.ui.welcome
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,7 +16,10 @@ import jp.kentan.studentportalplus.ui.observeEvent
 class WelcomeActivity : AppCompatActivity() {
 
     companion object {
-        fun createIntent(context: Context) = Intent(context, WelcomeActivity::class.java)
+        fun createIntent(context: Context) = Intent(context, WelcomeActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
     }
 
     private val welcomeViewModel by viewModels<WelcomeViewModel>()
@@ -28,6 +33,17 @@ class WelcomeActivity : AppCompatActivity() {
                 viewModel = welcomeViewModel
 
                 setSupportActionBar(toolbar)
+
+                webView.webViewClient = object : WebViewClient() {
+                    override fun onReceivedError(
+                        view: WebView?,
+                        errorCode: Int,
+                        description: String?,
+                        failingUrl: String?
+                    ) {
+                        welcomeViewModel.onWebViewReceivedError()
+                    }
+                }
             }
 
         welcomeViewModel.startLoginActivity.observeEvent(this) {
