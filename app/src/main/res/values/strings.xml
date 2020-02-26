@@ -171,6 +171,7 @@
 
     <!-- URL -->
     <string name="url_terms">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
+    <string name="url_terms_local">file:///android_asset/terms_and_privacy_policy.html</string>
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=%1$s</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
