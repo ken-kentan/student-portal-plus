@@ -20,6 +20,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.ActivityMainBinding
 import jp.kentan.studentportalplus.databinding.NavHeaderMainBinding
+import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
 import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
@@ -57,6 +58,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (mainViewModel.shouldLaunchWelcomeActivity) {
+            startActivity(WelcomeActivity.createIntent(this))
+            return
+        }
 
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
             .apply {

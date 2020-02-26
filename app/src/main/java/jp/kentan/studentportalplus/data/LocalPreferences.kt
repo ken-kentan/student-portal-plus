@@ -15,6 +15,8 @@ import java.util.*
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+        private const val IS_AUTHENICATED_USER = "is_authenticated_user"
+
         private const val IS_GRID_TIMETABLE_LAYOUT = "is_grid_timetable_layout"
         private const val IS_ENABLED_PDF_OPEN_WITH_GDOCS = "is_enabled_pdf_open_with_gdocs"
         private const val IS_ENABLED_DETAIL_ERROR = "is_enabled_detail_error"
@@ -39,6 +41,9 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context).apply {
         registerOnSharedPreferenceChangeListener(this@LocalPreferences)
     }
+
+    val isAuthenticatedUser: Boolean
+        get() = sharedPreferences.getBoolean(IS_AUTHENICATED_USER, false)
 
     val isEnabledSync: Boolean
         get() = sharedPreferences.getBoolean(IS_ENABLED_SYNC, true)
