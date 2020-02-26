@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.ui.Event
 import kotlinx.coroutines.launch
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     application: Application,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val localPreferences: LocalPreferences
 ) : AndroidViewModel(application) {
 
     val isLoading = MutableLiveData<Boolean>()
@@ -99,6 +101,7 @@ class LoginViewModel @Inject constructor(
                 userRepository.login(username, password)
             }.fold(
                 onSuccess = {
+                    localPreferences.isAuthenticatedUser = true
                     _finishActivity.value = shouldLaunchMainActivity
                 },
                 onFailure = {

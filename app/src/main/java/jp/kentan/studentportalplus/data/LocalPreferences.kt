@@ -42,11 +42,14 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
         registerOnSharedPreferenceChangeListener(this@LocalPreferences)
     }
 
-    val isAuthenticatedUser: Boolean
-        get() = sharedPreferences.getBoolean(IS_AUTHENICATED_USER, false)
-
     val isEnabledSync: Boolean
         get() = sharedPreferences.getBoolean(IS_ENABLED_SYNC, true)
+
+    var isAuthenticatedUser: Boolean
+        get() = sharedPreferences.getBoolean(IS_AUTHENICATED_USER, false)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_AUTHENICATED_USER, value)
+        }
 
     var isGridTimetableLayout: Boolean
         get() = sharedPreferences.getBoolean(IS_GRID_TIMETABLE_LAYOUT, true)
