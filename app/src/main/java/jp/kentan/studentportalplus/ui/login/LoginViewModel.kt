@@ -107,6 +107,8 @@ class LoginViewModel @Inject constructor(
                 userRepository.login(username, password)
             }.fold(
                 onSuccess = {
+                    message.value = null
+
                     localPreferences.isAuthenticatedUser = true
 
                     val resId = navigateResId
@@ -118,9 +120,10 @@ class LoginViewModel @Inject constructor(
                 },
                 onFailure = {
                     message.value = it.message ?: unknownErrorMessage
-                    isLoading.value = false
                 }
-            )
+            ).also {
+                isLoading.value = false
+            }
         }
     }
 
