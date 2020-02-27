@@ -240,6 +240,9 @@
     <string name="text_similar_subject2">が類似科目です.</string>
     <string name="text_similar_subject3">類似科目は受講科目と同様に通知されます.</string>
 
+    <string name="welcome_notification_title">Notification</string>
+    <string name="welcome_complete">決定</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_lecture_information_detail">LectureInformationDetailActivity

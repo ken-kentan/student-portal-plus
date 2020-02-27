@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/welcome_graph"
     app:startDestination="@id/welcome_term_fragment">
 
     <fragment
         android:id="@+id/welcome_term_fragment"
         android:name="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermFragment"
-        android:label="@string/title_welcome" />
+        android:label="@string/title_welcome"
+        tools:layout="@layout/fragment_welcome_term" />
 
     <fragment
         android:id="@+id/login_fragment"
         android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
-        android:label="@string/title_login" />
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login">
+        <argument
+            android:name="NAVIGATE_RES_ID"
+            android:defaultValue="@id/welcome_notification_fragment"
+            app:argType="reference" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/welcome_notification_fragment"
+        android:name="jp.kentan.studentportalplus.ui.welcome.notification.WelcomeNotificationFragment"
+        android:label="@string/welcome_notification_title"
+        tools:layout="@layout/fragment_welcome_notification" />
 </navigation>

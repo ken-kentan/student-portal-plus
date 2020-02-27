@@ -23,6 +23,7 @@ import jp.kentan.studentportalplus.ui.settings.SettingsActivity
 import jp.kentan.studentportalplus.ui.settings.SettingsModule
 import jp.kentan.studentportalplus.ui.timetable.TimetableModule
 import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
+import jp.kentan.studentportalplus.ui.welcome.notification.WelcomeNotificationModule
 
 @Module
 @Suppress("UNUSED")
@@ -64,7 +65,7 @@ abstract class ActivityBindingModule {
     abstract fun contributeAttendCourseEditActivity(): EditAttendCourseActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [LoginModule::class])
+    @ContributesAndroidInjector(modules = [WelcomeNotificationModule::class, LoginModule::class])
     abstract fun contributeWelcomeActivity(): WelcomeActivity
 
     @ActivityScoped

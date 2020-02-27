@@ -13,14 +13,14 @@ import jp.kentan.studentportalplus.ui.observeEvent
 
 class WelcomeTermFragment : Fragment(R.layout.fragment_welcome_term) {
 
-    private val welcomeViewModel by viewModels<WelcomeTermViewModel>()
+    private val welcomeTermViewModel by viewModels<WelcomeTermViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         FragmentWelcomeTermBinding.bind(view).apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = welcomeViewModel
+            viewModel = welcomeTermViewModel
 
             webView.webViewClient = object : WebViewClient() {
                 override fun onReceivedError(
@@ -29,12 +29,12 @@ class WelcomeTermFragment : Fragment(R.layout.fragment_welcome_term) {
                     description: String?,
                     failingUrl: String?
                 ) {
-                    welcomeViewModel.onWebViewReceivedError()
+                    welcomeTermViewModel.onWebViewReceivedError()
                 }
             }
         }
 
-        welcomeViewModel.navigate.observeEvent(viewLifecycleOwner) {
+        welcomeTermViewModel.navigate.observeEvent(viewLifecycleOwner) {
             findNavController().navigate(it)
         }
     }
