@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.welcome
+package jp.kentan.studentportalplus.ui.welcome.term
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.ui.Event
 
-class WelcomeViewModel : ViewModel() {
+class WelcomeTermViewModel : ViewModel() {
 
     val isAgreeChecked = MutableLiveData<Boolean>()
 

@@ -3,17 +3,13 @@ package jp.kentan.studentportalplus.ui.welcome
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.ui.setupWithNavController
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.databinding.ActivityWelcomeBinding
-import jp.kentan.studentportalplus.ui.login.LoginActivity
-import jp.kentan.studentportalplus.ui.observeEvent
+import jp.kentan.studentportalplus.util.findNavController
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : AppCompatActivity(R.layout.activity_welcome) {
 
     companion object {
         fun createIntent(context: Context) = Intent(context, WelcomeActivity::class.java).apply {
@@ -22,32 +18,11 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    private val welcomeViewModel by viewModels<WelcomeViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DataBindingUtil.setContentView<ActivityWelcomeBinding>(this, R.layout.activity_welcome)
-            .apply {
-                lifecycleOwner = this@WelcomeActivity
-                viewModel = welcomeViewModel
-
-                setSupportActionBar(toolbar)
-
-                webView.webViewClient = object : WebViewClient() {
-                    override fun onReceivedError(
-                        view: WebView?,
-                        errorCode: Int,
-                        description: String?,
-                        failingUrl: String?
-                    ) {
-                        welcomeViewModel.onWebViewReceivedError()
-                    }
-                }
-            }
-
-        welcomeViewModel.startLoginActivity.observeEvent(this) {
-            startActivity(LoginActivity.createIntent(this, shouldLaunchMainActivity = true))
-        }
+        val navController = supportFragmentManager.findNavController()
+        findViewById<Toolbar>(R.id.toolbar)
+            .setupWithNavController(navController)
     }
 }
