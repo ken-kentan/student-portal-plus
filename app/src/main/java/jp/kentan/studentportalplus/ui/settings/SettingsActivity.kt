@@ -1,5 +1,7 @@
 package jp.kentan.studentportalplus.ui.settings
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,6 +13,10 @@ import jp.kentan.studentportalplus.databinding.ActivitySettingsBinding
 import jp.kentan.studentportalplus.util.findNavController
 
 class SettingsActivity : DaggerAppCompatActivity() {
+
+    companion object {
+        fun createIntent(context: Context) = Intent(context, SettingsActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

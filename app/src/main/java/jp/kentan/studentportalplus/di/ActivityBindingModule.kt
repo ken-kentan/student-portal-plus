@@ -15,7 +15,7 @@ import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformatio
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailModule
 import jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsModule
 import jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsModule
-import jp.kentan.studentportalplus.ui.login.LoginActivity
+import jp.kentan.studentportalplus.ui.login.LoginFragment
 import jp.kentan.studentportalplus.ui.login.LoginModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
@@ -65,7 +65,7 @@ abstract class ActivityBindingModule {
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [LoginModule::class])
-    abstract fun contributeLoginActivity(): LoginActivity
+    abstract fun contributeLoginActivity(): LoginFragment
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class])

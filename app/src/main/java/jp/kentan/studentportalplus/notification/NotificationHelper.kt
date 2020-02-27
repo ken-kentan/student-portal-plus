@@ -11,7 +11,7 @@ import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.ui.MainActivity
-import jp.kentan.studentportalplus.ui.login.LoginActivity
+import jp.kentan.studentportalplus.ui.settings.SettingsActivity
 import jp.kentan.studentportalplus.work.sync.RetrySyncService
 
 abstract class NotificationHelper(
@@ -38,7 +38,7 @@ abstract class NotificationHelper(
 
     fun sendAuthenticationError(message: String) {
         sendErrorInternal(
-            intent = LoginActivity.createIntent(context, true),
+            intent = SettingsActivity.createIntent(context),
             subText = context.getString(R.string.title_required_login),
             title = context.getString(R.string.error),
             text = message

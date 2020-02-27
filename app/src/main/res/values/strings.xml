@@ -3,7 +3,7 @@
 
     <!-- title -->
     <string name="title_welcome">Welcome</string>
-    <string name="title_login_activity">Shibboleth</string>
+    <string name="title_login">Shibboleth</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_timetable">Timetable</string>
     <string name="title_lecture_info">Class Schedule</string>

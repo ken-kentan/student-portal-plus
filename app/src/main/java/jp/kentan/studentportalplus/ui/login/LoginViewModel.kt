@@ -3,6 +3,7 @@ package jp.kentan.studentportalplus.ui.login
 import android.app.Application
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
@@ -50,9 +51,13 @@ class LoginViewModel @Inject constructor(
         return@OnEditorActionListener false
     }
 
-    private val _finishActivity = MutableLiveData<Boolean>()
-    val finishActivity: LiveData<Boolean>
-        get() = _finishActivity
+    private val _navigate = MutableLiveData<Event<Int>>()
+    val navigate: LiveData<Event<Int>>
+        get() = _navigate
+
+    private val _popBackStack = MutableLiveData<Event<Unit>>()
+    val popBackStack: LiveData<Event<Unit>>
+        get() = _popBackStack
 
     private val _hideSoftInput = MutableLiveData<Event<Unit>>()
     val hideSoftInput: LiveData<Event<Unit>>
@@ -60,10 +65,11 @@ class LoginViewModel @Inject constructor(
 
     private val unknownErrorMessage = application.getString(R.string.error_unknown)
 
-    private var shouldLaunchMainActivity = false
+    @IdRes
+    private var navigateResId: Int? = null
 
-    fun onActivityCreate(shouldLaunchMainActivity: Boolean) {
-        this.shouldLaunchMainActivity = shouldLaunchMainActivity
+    fun onViewCreated(@IdRes navigateResId: Int?) {
+        this.navigateResId = navigateResId
     }
 
     fun onLoginClick() {
@@ -102,7 +108,13 @@ class LoginViewModel @Inject constructor(
             }.fold(
                 onSuccess = {
                     localPreferences.isAuthenticatedUser = true
-                    _finishActivity.value = shouldLaunchMainActivity
+
+                    val resId = navigateResId
+                    if (resId != null) {
+                        _navigate.value = Event(resId)
+                    } else {
+                        _popBackStack.value = Event(Unit)
+                    }
                 },
                 onFailure = {
                     message.value = it.message ?: unknownErrorMessage

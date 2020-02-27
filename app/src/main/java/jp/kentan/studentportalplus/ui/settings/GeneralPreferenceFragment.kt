@@ -111,7 +111,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when (preference?.key) {
-            "login" -> onNavDestinationClicked(R.id.login_activity, isFragment = false)
+            "login" -> onNavDestinationClicked(R.id.login_fragment)
             "notification_type" -> onNavDestinationClicked(R.id.notification_type_preference_fragment)
             "similar_subject_threshold" -> onNavDestinationClicked(R.id.similar_subject_preference_fragment)
             "terms" -> onNavDestinationClicked(R.id.terms_custom_tabs, isFragment = false)
