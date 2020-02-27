@@ -6,8 +6,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.FragmentWelcomeTermBinding
+import jp.kentan.studentportalplus.ui.observeEvent
 
 class WelcomeTermFragment : Fragment(R.layout.fragment_welcome_term) {
 
@@ -30,6 +32,10 @@ class WelcomeTermFragment : Fragment(R.layout.fragment_welcome_term) {
                     welcomeViewModel.onWebViewReceivedError()
                 }
             }
+        }
+
+        welcomeViewModel.navigate.observeEvent(viewLifecycleOwner) {
+            findNavController().navigate(it)
         }
     }
 }

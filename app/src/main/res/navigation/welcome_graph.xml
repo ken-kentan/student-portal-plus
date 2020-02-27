@@ -8,4 +8,9 @@
         android:id="@+id/welcome_term_fragment"
         android:name="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermFragment"
         android:label="@string/title_welcome" />
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
+        android:label="@string/title_login" />
 </navigation>

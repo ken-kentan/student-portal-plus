@@ -14,15 +14,15 @@ class WelcomeTermViewModel : ViewModel() {
     val termUrl: LiveData<Int>
         get() = _termUrl
 
-    private val _startLoginActivity = MutableLiveData<Event<Unit>>()
-    val startLoginActivity: LiveData<Event<Unit>>
-        get() = _startLoginActivity
+    private val _navigate = MutableLiveData<Event<Int>>()
+    val navigate: LiveData<Event<Int>>
+        get() = _navigate
 
     fun onWebViewReceivedError() {
         _termUrl.value = R.string.url_terms_local
     }
 
     fun onShibbolethClick() {
-        _startLoginActivity.value = Event(Unit)
+        _navigate.value = Event(R.id.login_fragment)
     }
 }

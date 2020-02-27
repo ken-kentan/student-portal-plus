@@ -33,8 +33,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel = loginViewModel
         }
 
-        loginViewModel.navigate.observeEvent(viewLifecycleOwner) { resId ->
-            findNavController().navigate(resId)
+        loginViewModel.navigate.observeEvent(viewLifecycleOwner) {
+            findNavController().navigate(it)
         }
         loginViewModel.popBackStack.observeEvent(viewLifecycleOwner) {
             findNavController().popBackStack()
