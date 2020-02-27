@@ -25,9 +25,9 @@ class DashboardViewModel @Inject constructor(
     val portalSet: LiveData<PortalSet>
         get() = _portalSet
 
-    private val _navigation = MutableLiveData<Event<Int>>()
-    val navigation: LiveData<Event<Int>>
-        get() = _navigation
+    private val _navigate = MutableLiveData<Event<Int>>()
+    val navigate: LiveData<Event<Int>>
+        get() = _navigate
 
     private val _startAttendCourseDetailActivity = MutableLiveData<Event<Long>>()
     val startAttendCourseDetailActivity: LiveData<Event<Long>>
@@ -102,14 +102,14 @@ class DashboardViewModel @Inject constructor(
     }
 
     val onLectureInformationShowAllClick = {
-        _navigation.value = Event(R.id.lecture_informations_fragment)
+        _navigate.value = Event(R.id.lecture_informations_fragment)
     }
 
     val onLectureCancellationShowAllClick = {
-        _navigation.value = Event(R.id.lecture_cancellations_fragment)
+        _navigate.value = Event(R.id.lecture_cancellations_fragment)
     }
 
     val onNoticeShowAllClick = {
-        _navigation.value = Event(R.id.notices_fragment)
+        _navigate.value = Event(R.id.notices_fragment)
     }
 }
