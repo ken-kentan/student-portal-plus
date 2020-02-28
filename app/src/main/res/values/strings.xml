@@ -241,6 +241,7 @@
     <string name="text_similar_subject3">類似科目は受講科目と同様に通知されます.</string>
 
     <string name="welcome_notification_title">Notification</string>
+    <string name="welcome_notification_text">通知タイプを設定してください。</string>
     <string name="welcome_complete">決定</string>
 
     <!-- TODO: Remove or change this placeholder text -->
