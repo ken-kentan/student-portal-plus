@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/info_login_form" />
+                    android:text="@string/login_input_username_and_password_text" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/username_text_input_layout"
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:onClick="@{() -> viewModel.onLoginClick()}"
-                    android:text="@string/button_login" />
+                    android:text="@string/login_action" />
 
             </LinearLayout>
 

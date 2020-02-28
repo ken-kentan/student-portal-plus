@@ -46,7 +46,7 @@
             android:label="@string/title_activity_welcome" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="@string/title_login_activity" />
+            android:label="@string/login_title" />
         <activity android:name=".ui.editattendcourse.EditAttendCourseActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
 

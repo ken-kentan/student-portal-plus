@@ -39,7 +39,7 @@ abstract class NotificationHelper(
     fun sendAuthenticationError(message: String) {
         sendErrorInternal(
             intent = LoginActivity.createIntent(context, true),
-            subText = context.getString(R.string.title_required_login),
+            subText = context.getString(R.string.login_required_again_title),
             title = context.getString(R.string.error),
             text = message
         )
