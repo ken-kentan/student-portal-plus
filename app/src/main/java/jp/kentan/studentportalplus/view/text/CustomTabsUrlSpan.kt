@@ -24,10 +24,10 @@ class CustomTabsUrlSpan(
             val isRequireLogin = url.startsWith("https://portal.student.kit.ac.jp", true)
 
             if (isRequireLogin) {
-                Toast.makeText(context, R.string.error_gdocs_require_login, Toast.LENGTH_LONG)
+                Toast.makeText(context, R.string.custom_tabs_gdocs_require_login, Toast.LENGTH_LONG)
                     .show()
             } else {
-                url = context.getString(R.string.url_gdocs, url)
+                url = context.getString(R.string.custom_tabs_gdocs_url, url)
             }
         }
 

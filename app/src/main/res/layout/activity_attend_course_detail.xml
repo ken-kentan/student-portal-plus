@@ -56,7 +56,7 @@
             android:onClick="@{() -> viewModel.onEditClick()}"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_edit_white_24dp" />
+            app:srcCompat="@drawable/all_edit_white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

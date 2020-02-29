@@ -8,15 +8,15 @@ enum class DayOfWeek(
     val hasSuffix: Boolean = true,
     val hasPeriod: Boolean = true
 ) {
-    MONDAY(R.string.name_week_monday),
-    TUESDAY(R.string.name_week_tuesday),
-    WEDNESDAY(R.string.name_week_wednesday),
-    THURSDAY(R.string.name_week_thursday),
-    FRIDAY(R.string.name_week_friday),
-    SATURDAY(R.string.name_week_saturday),
-    SUNDAY(R.string.name_week_sunday),
-    INTENSIVE(R.string.name_week_intensive, false, false),
-    UNKNOWN(R.string.name_week_unknown, false, false);
+    MONDAY(R.string.day_of_week_monday),
+    TUESDAY(R.string.day_of_week_tuesday),
+    WEDNESDAY(R.string.day_of_week_wednesday),
+    THURSDAY(R.string.day_of_week_thursday),
+    FRIDAY(R.string.day_of_week_friday),
+    SATURDAY(R.string.day_of_week_saturday),
+    SUNDAY(R.string.day_of_week_sunday),
+    INTENSIVE(R.string.day_of_week_intensive, false, false),
+    UNKNOWN(R.string.day_of_week_unknown, false, false);
 
     companion object {
         val WEEKDAY = setOf(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)

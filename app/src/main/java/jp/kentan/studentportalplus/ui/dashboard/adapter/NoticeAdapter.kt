@@ -53,7 +53,7 @@ class NoticeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder.HeaderViewHolder -> holder.binding.executeAfter {
-                textView.setText(R.string.name_notice)
+                textView.setText(R.string.all_notice)
             }
             is ViewHolder.NoticeViewHolder -> holder.binding.executeAfter {
                 val notice = currentList[position] as Notice
@@ -64,7 +64,7 @@ class NoticeAdapter(
             }
             is ViewHolder.ShowAllViewHolder -> holder.binding.executeAfter {
                 textView.apply {
-                    setText(R.string.action_show_all_notice)
+                    setText(R.string.dashboard_open_notices)
                     setOnClickListener { onShowAllClick.invoke() }
                 }
             }

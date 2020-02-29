@@ -59,12 +59,12 @@ class AttendCourseDetailActivity : DaggerAppCompatActivity() {
         }
         attendCourseDetailViewModel.showDeleteDialog.observeEvent(this) { subject ->
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.title_delete)
-                .setMessage(getString(R.string.text_delete_confirm, subject).parseAsHtml())
-                .setPositiveButton(R.string.action_delete) { _, _ ->
+                .setTitle(R.string.all_delete)
+                .setMessage(getString(R.string.attend_course_detail_delete_confirm, subject).parseAsHtml())
+                .setPositiveButton(R.string.all_delete) { _, _ ->
                     attendCourseDetailViewModel.onDeleteConfirmClick()
                 }
-                .setNegativeButton(R.string.action_cancel, null)
+                .setNegativeButton(R.string.all_cancel, null)
                 .show()
         }
         attendCourseDetailViewModel.error.observeEvent(this) {

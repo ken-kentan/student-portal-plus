@@ -8,13 +8,13 @@ enum class Period(
     val value: Int,
     @StringRes val startTimeResId: Int
 ) {
-    ONE(1, R.string.name_period1_start_time),
-    TWO(2, R.string.name_period2_start_time),
-    THREE(3, R.string.name_period3_start_time),
-    FOUR(4, R.string.name_period4_start_time),
-    FIVE(5, R.string.name_period5_start_time),
-    SIX(6, R.string.name_period6_start_time),
-    SEVEN(7, R.string.name_period7_start_time);
+    ONE(1, R.string.period_1_start_time),
+    TWO(2, R.string.period_2_start_time),
+    THREE(3, R.string.period_3_start_time),
+    FOUR(4, R.string.period_4_start_time),
+    FIVE(5, R.string.period_5_start_time),
+    SIX(6, R.string.period_6_start_time),
+    SEVEN(7, R.string.period_7_start_time);
 
     companion object {
         fun rangeOf(period: String): IntRange = with(period) {

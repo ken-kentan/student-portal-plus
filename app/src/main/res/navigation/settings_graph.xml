@@ -7,17 +7,17 @@
     <fragment
         android:id="@+id/general_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.GeneralPreferenceFragment"
-        android:label="@string/title_preference_general" />
+        android:label="@string/settings_title" />
 
     <fragment
         android:id="@+id/notification_type_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.NotificationTypePreferenceFragment"
-        android:label="@string/title_preference_notification_type" />
+        android:label="@string/settings_notification_type_title" />
 
     <fragment
         android:id="@+id/similar_subject_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.SimilarSubjectPreferenceFragment"
-        android:label="@string/title_preference_similar_subject" />
+        android:label="@string/settings_similar_subject_title" />
 
     <fragment
         android:id="@+id/login_fragment"
@@ -30,5 +30,5 @@
 
     <customTabs
         android:id="@+id/terms_custom_tabs"
-        app:url="@string/url_terms" />
+        app:url="@string/settings_terms_of_service_url" />
 </navigation>

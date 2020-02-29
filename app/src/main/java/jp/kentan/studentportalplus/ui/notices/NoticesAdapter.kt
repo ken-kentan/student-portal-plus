@@ -52,7 +52,7 @@ class NoticesAdapter(
                 root.setOnClickListener { onItemClick(notice.id) }
             }
             is ViewHolder.TextViewHolder -> holder.binding.executeAfter {
-                textView.setText(R.string.text_not_found_notice)
+                textView.setText(R.string.notices_not_found)
             }
         }
     }

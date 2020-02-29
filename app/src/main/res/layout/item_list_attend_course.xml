@@ -83,12 +83,12 @@
             android:id="@+id/lock_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/description_lock"
+            android:contentDescription="@string/timetable_lock_description"
             android:padding="16dp"
-            android:src="@{data.type == AttendCourse.Type.USER ? @drawable/ic_lock_grey_24dp : @drawable/ic_lock_green_24dp}"
+            android:src="@{data.type == AttendCourse.Type.USER ? @drawable/all_lock_grey : @drawable/all_lock_green}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:src="@drawable/ic_lock_green_24dp" />
+            tools:src="@drawable/all_lock_green" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
