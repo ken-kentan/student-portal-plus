@@ -31,7 +31,7 @@ class SummaryNotificationHelper(
         private const val GROUP_KEY = "student_portal_plus"
         private const val SUMMARY_NOTIFICATION_ID = 0
 
-        private const val SMALL_APP_ICON_RES_ID = R.drawable.ic_notification_app
+        private const val SMALL_APP_ICON_RES_ID = R.drawable.notification_app
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun createNewlyChannelSettingsIntent(context: Context) =
@@ -99,7 +99,7 @@ class SummaryNotificationHelper(
         }
 
         sendContentToNewlyChannel(
-            R.drawable.ic_notification_lecture_information,
+            R.drawable.notification_lecture_information,
             R.string.all_lecture_information,
             contentList
         )
@@ -119,7 +119,7 @@ class SummaryNotificationHelper(
         }
 
         sendContentToNewlyChannel(
-            R.drawable.ic_notification_lecture_cancellation,
+            R.drawable.notification_lecture_cancellation,
             R.string.all_lecture_cancellation,
             contentList
         )
@@ -139,7 +139,7 @@ class SummaryNotificationHelper(
         }
 
         sendContentToNewlyChannel(
-            R.drawable.ic_notification_notice,
+            R.drawable.notification_notice,
             R.string.all_notice,
             contentList
         )

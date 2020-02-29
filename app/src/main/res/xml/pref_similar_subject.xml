@@ -7,7 +7,7 @@
             android:defaultValue="80"
             android:entries="@array/similar_subject_threshold_name"
             android:entryValues="@array/similar_subject_threshold_values"
-            android:icon="@drawable/ic_pref_similar_subject"
+            android:icon="@drawable/preference_similar_subject"
             android:key="similar_subject_threshold"
             android:title="@string/preference_similar_threshold_title" />
 

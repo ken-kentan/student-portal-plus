@@ -70,7 +70,7 @@
                     android:layout_height="0dp"
                     android:onClick="@{() -> viewModel.onColorClick()}"
                     app:courseColor="@{viewModel.color}"
-                    app:icon="@drawable/ic_palette_white_24dp"
+                    app:icon="@drawable/edit_attend_course_palette"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:layout_constraintBottom_toBottomOf="@id/subject_text_input_layout"

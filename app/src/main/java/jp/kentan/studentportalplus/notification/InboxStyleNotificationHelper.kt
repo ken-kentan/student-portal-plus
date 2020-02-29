@@ -57,7 +57,7 @@ class InboxStyleNotificationHelper(
         }
 
         send(
-            R.drawable.ic_notification_lecture_information,
+            R.drawable.notification_lecture_information,
             R.string.all_lecture_information,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.LECTURE_INFORMATION)
@@ -74,7 +74,7 @@ class InboxStyleNotificationHelper(
         }
 
         send(
-            R.drawable.ic_notification_lecture_cancellation,
+            R.drawable.notification_lecture_cancellation,
             R.string.all_lecture_cancellation,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.LECTURE_CANCELLATION)
@@ -91,7 +91,7 @@ class InboxStyleNotificationHelper(
         }
 
         send(
-            R.drawable.ic_notification_notice,
+            R.drawable.notification_notice,
             R.string.all_notice,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.NOTICE)

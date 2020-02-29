@@ -87,7 +87,7 @@
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:notice="@{viewModel.notice}"
-            tools:src="@drawable/ic_favorite_border_white_24dp" />
+            tools:src="@drawable/all_favorite_border" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

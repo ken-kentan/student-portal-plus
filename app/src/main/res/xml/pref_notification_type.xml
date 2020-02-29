@@ -9,7 +9,7 @@
             android:entries="@array/notification_type_lecture_name"
             android:entryValues="@array/notification_type_lecture_values"
             android:defaultValue="ALL"
-            android:icon="@drawable/ic_pref_lecture_information" />
+            android:icon="@drawable/preference_lecture_information" />
 
         <androidx.preference.ListPreference
             android:key="notification_type_lecture_cancel"
@@ -17,7 +17,7 @@
             android:entries="@array/notification_type_lecture_name"
             android:entryValues="@array/notification_type_lecture_values"
             android:defaultValue="ALL"
-            android:icon="@drawable/ic_pref_lecture_cancellation" />
+            android:icon="@drawable/preference_lecture_cancellation" />
 
         <androidx.preference.ListPreference
             android:key="notification_type_notice"
@@ -25,7 +25,7 @@
             android:entries="@array/notification_type_notice_name"
             android:entryValues="@array/notification_type_notice_values"
             android:defaultValue="ALL"
-            android:icon="@drawable/ic_pref_notice" />
+            android:icon="@drawable/preference_notice" />
 
     </androidx.preference.PreferenceCategory>
 

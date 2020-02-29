@@ -87,7 +87,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_view4"
-            app:srcCompat="@drawable/ic_attend_red_24dp"
+            app:srcCompat="@drawable/all_attend_red"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -110,7 +110,7 @@
             app:layout_constraintBottom_toBottomOf="@id/similar_text_view1"
             app:layout_constraintStart_toEndOf="@id/similar_text_view1"
             app:layout_constraintTop_toTopOf="@id/similar_text_view1"
-            app:srcCompat="@drawable/ic_attend_yellow_24dp"
+            app:srcCompat="@drawable/all_attend_yellow"
             tools:ignore="ContentDescription" />
 
         <TextView

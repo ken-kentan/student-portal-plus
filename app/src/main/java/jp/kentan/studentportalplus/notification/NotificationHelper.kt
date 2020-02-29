@@ -71,7 +71,7 @@ abstract class NotificationHelper(
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setColor(ContextCompat.getColor(context, R.color.notification_error))
-            .setSmallIcon(R.drawable.ic_notification_app)
+            .setSmallIcon(R.drawable.notification_app)
             .setSubText(subText)
             .setContentTitle(title)
             .setContentText(text)
@@ -86,7 +86,7 @@ abstract class NotificationHelper(
         )
 
         val action = NotificationCompat.Action.Builder(
-            R.drawable.ic_notification_retry,
+            R.drawable.notification_retry,
             context.getString(R.string.all_retry),
             retrySyncService
         ).build()

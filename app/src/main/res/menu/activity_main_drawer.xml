@@ -8,27 +8,27 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/dashboard_fragment"
-            android:icon="@drawable/ic_menu_dashboard"
+            android:icon="@drawable/main_menu_dashboard_24dp"
             android:title="@string/menu_dashboard" />
 
         <item
             android:id="@+id/timetable_fragment"
-            android:icon="@drawable/ic_menu_timetable"
+            android:icon="@drawable/main_menu_timetable_24dp"
             android:title="@string/menu_timetable" />
 
         <item
             android:id="@+id/lecture_informations_fragment"
-            android:icon="@drawable/ic_menu_lecture_information"
+            android:icon="@drawable/main_menu_lecture_information_24dp"
             android:title="@string/menu_lecture_info" />
 
         <item
             android:id="@+id/lecture_cancellations_fragment"
-            android:icon="@drawable/ic_menu_lecture_cancellation"
+            android:icon="@drawable/main_menu_lecture_cancellation_24dp"
             android:title="@string/menu_lecture_cancel" />
 
         <item
             android:id="@+id/notices_fragment"
-            android:icon="@drawable/ic_menu_notice"
+            android:icon="@drawable/main_menu_notice_24dp"
             android:title="@string/menu_notice" />
     </group>
 
@@ -38,12 +38,12 @@
         android:orderInCategory="1">
         <item
             android:id="@+id/campus_map_custom_tabs"
-            android:icon="@drawable/ic_menu_campus_map"
+            android:icon="@drawable/main_menu_campus_map_24dp"
             android:title="@string/menu_campus_map" />
 
         <item
             android:id="@+id/room_map_custom_tabs"
-            android:icon="@drawable/ic_menu_room_map"
+            android:icon="@drawable/main_menu_room_map_24dp"
             android:title="@string/menu_room_map" />
     </group>
 
@@ -54,7 +54,7 @@
         <item
             android:id="@+id/settings_activity"
             android:checkable="false"
-            android:icon="@drawable/ic_menu_setting"
+            android:icon="@drawable/main_menu_settings_24dp"
             android:title="@string/menu_settings" />
     </group>
 
