@@ -39,8 +39,8 @@ abstract class NotificationHelper(
     fun sendAuthenticationError(message: String) {
         sendErrorInternal(
             intent = LoginActivity.createIntent(context, true),
-            subText = context.getString(R.string.title_required_login),
-            title = context.getString(R.string.error),
+            subText = context.getString(R.string.notification_required_login_again),
+            title = context.getString(R.string.notification_error),
             text = message
         )
     }
@@ -48,8 +48,8 @@ abstract class NotificationHelper(
     fun sendError(throwable: Throwable) {
         sendErrorInternal(
             intent = MainActivity.createIntent(context),
-            subText = context.getString(R.string.title_sync_failed),
-            title = context.getString(R.string.error),
+            subText = context.getString(R.string.notification_sync_failed),
+            title = context.getString(R.string.notification_error),
             text = throwable.message ?: throwable::class.java.simpleName
         )
     }
@@ -71,7 +71,7 @@ abstract class NotificationHelper(
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setColor(ContextCompat.getColor(context, R.color.notification_error))
-            .setSmallIcon(R.drawable.ic_notification_app)
+            .setSmallIcon(R.drawable.notification_app)
             .setSubText(subText)
             .setContentTitle(title)
             .setContentText(text)
@@ -86,8 +86,8 @@ abstract class NotificationHelper(
         )
 
         val action = NotificationCompat.Action.Builder(
-            R.drawable.ic_notification_retry,
-            context.getString(R.string.action_retry),
+            R.drawable.notification_retry,
+            context.getString(R.string.all_retry),
             retrySyncService
         ).build()
 

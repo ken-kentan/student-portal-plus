@@ -55,9 +55,9 @@ class LectureCancellationDetailViewModel @Inject constructor(
                 val isSuccess = attendCourseRepository.add(lectureCancel)
 
                 if (isSuccess) {
-                    _snackbar.value = Event(R.string.text_add_to_attend_course)
+                    _snackbar.value = Event(R.string.all_add_to_attend_course)
                 } else {
-                    _indefiniteSnackbar.value = Event(R.string.error_update_failed)
+                    _indefiniteSnackbar.value = Event(R.string.all_update_failed)
                 }
             }
         } else if (lectureCancel.attendType != AttendCourse.Type.PORTAL) {
@@ -70,9 +70,9 @@ class LectureCancellationDetailViewModel @Inject constructor(
             val isSuccess = attendCourseRepository.remove(subject)
 
             if (isSuccess) {
-                _snackbar.value = Event(R.string.text_exclude_from_attend_course)
+                _snackbar.value = Event(R.string.all_exclude_from_attend_course)
             } else {
-                _indefiniteSnackbar.value = Event(R.string.error_update_failed)
+                _indefiniteSnackbar.value = Event(R.string.all_update_failed)
             }
         }
     }

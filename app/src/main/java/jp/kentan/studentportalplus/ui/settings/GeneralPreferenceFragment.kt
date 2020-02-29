@@ -122,7 +122,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
             "share" -> {
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app))
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_share_app))
                 }
                 startActivity(intent)
             }

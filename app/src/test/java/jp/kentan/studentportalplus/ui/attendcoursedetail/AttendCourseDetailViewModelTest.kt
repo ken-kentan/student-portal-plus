@@ -67,7 +67,7 @@ class AttendCourseDetailViewModelTest {
         assertThat(LiveDataTestUtil.getValue(vm.attendCourse)).isNull()
 
         assertThat(LiveDataTestUtil.getValue(vm.error)?.peekContent())
-            .isEqualTo(R.string.error_not_found)
+            .isEqualTo(R.string.all_not_found_error)
 
         assertThat(LiveDataTestUtil.getValue(vm.finish)).isEqualTo(Unit)
     }
@@ -115,6 +115,6 @@ class AttendCourseDetailViewModelTest {
         }
 
         val error = LiveDataTestUtil.getValue(viewModel.error)
-        assertThat(error?.peekContent()).isEqualTo(R.string.error_delete_failed)
+        assertThat(error?.peekContent()).isEqualTo(R.string.all_delete_failed)
     }
 }

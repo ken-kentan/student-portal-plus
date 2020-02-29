@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/action_delete"
-        android:icon="@drawable/ic_menu_delete"
-        android:title="@string/action_delete"
+        android:icon="@drawable/delete_menu_delete"
+        android:title="@string/all_delete"
         app:showAsAction="always" />
 
 </menu>

@@ -86,7 +86,7 @@ class EditAttendCourseViewModel @Inject constructor(
             is EditAttendCourseMode.Update -> {
                 viewModelScope.launch {
                     val course = attendCourseRepository.get(mode.id) ?: let {
-                        _toast.value = Event(R.string.error_not_found)
+                        _toast.value = Event(R.string.all_not_found_error)
                         _finish.value = Unit
                         return@launch
                     }
@@ -135,15 +135,15 @@ class EditAttendCourseViewModel @Inject constructor(
         var isCancel = false
 
         if (subject.isBlank()) {
-            _errorSubject.value = R.string.error_field_empty
+            _errorSubject.value = R.string.all_field_empty
             isCancel = true
         }
         if (credit != null && credit !in 1..10) {
-            _errorCredit.value = R.string.error_invalid_credit
+            _errorCredit.value = R.string.edit_attend_course_invalid_credit
             isCancel = true
         }
         if (scheduleCode.validateScheduleCode()) {
-            _errorScheduleCode.value = R.string.error_invalid_schedule_code
+            _errorScheduleCode.value = R.string.edit_attend_course_invalid_schedule_code
             isCancel = true
         }
 
@@ -177,7 +177,7 @@ class EditAttendCourseViewModel @Inject constructor(
             if (isSuccess) {
                 _finish.value = Unit
             } else {
-                _toast.value = Event(R.string.error_save_failed)
+                _toast.value = Event(R.string.edit_attend_course_save_failed)
             }
         }
     }
@@ -218,12 +218,12 @@ class EditAttendCourseViewModel @Inject constructor(
     }
 
     private fun DayOfWeek.format(context: Context) = if (hasSuffix) {
-        context.getString(R.string.suffix_day_of_week, context.getString(resId))
+        context.getString(R.string.edit_attend_course_day_of_week_suffix, context.getString(resId))
     } else {
         context.getString(resId)
     }
 
-    private fun Period.format(context: Context) = context.getString(R.string.suffix_period, value)
+    private fun Period.format(context: Context) = context.getString(R.string.all_period_suffix, value)
 
     private fun String?.toDayOfWeekEnum(): DayOfWeek {
         val displayName = this ?: return DayOfWeek.UNKNOWN

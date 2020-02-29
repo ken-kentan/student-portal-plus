@@ -24,7 +24,7 @@ object LectureInformationDetailBindingAdapter {
         }
 
         view.text = view.context.getString(
-            R.string.text_semester_day_of_week_period,
+            R.string.lecture_information_detail_semester_day_of_week_period,
             lectureInfo.grade,
             semester,
             lectureInfo.dayOfWeek.replace("曜日", "曜"),
@@ -43,14 +43,14 @@ object LectureInformationDetailBindingAdapter {
         val context = view.context
 
         view.text = context.getString(
-            R.string.text_lecture_information_created_date,
+            R.string.lecture_information_detail_created_date,
             data.createdDate.formatYearMonthDay()
         )
 
         if (data.createdDate != data.updatedDate) {
             view.append(
                 context.getString(
-                    R.string.text_lecture_information_updated_date,
+                    R.string.lecture_information_detail_updated_date,
                     data.updatedDate.formatYearMonthDay()
                 )
             )

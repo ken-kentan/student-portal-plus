@@ -29,8 +29,8 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
     private enum class Mode(
         @StringRes val titleId: Int
     ) {
-        UPDATE(R.string.title_edit_attend_course_update),
-        ADD(R.string.title_edit_attend_course_add)
+        UPDATE(R.string.edit_attend_course_edit_title),
+        ADD(R.string.edit_attend_course_add_title)
     }
 
     companion object {
@@ -79,10 +79,10 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         editAttendCourseViewModel.showColorPickerDialog.observeEvent(this, showColorPickerDialog)
         editAttendCourseViewModel.showFinishConfirmDialog.observeEvent(this) {
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.title_confirm)
-                .setMessage(R.string.text_discard_confirm)
-                .setPositiveButton(R.string.action_discard) { _, _ -> super.finish() }
-                .setNegativeButton(R.string.action_cancel, null)
+                .setTitle(R.string.all_confirm)
+                .setMessage(R.string.edit_attend_course_discard_confirm)
+                .setPositiveButton(R.string.all_discard) { _, _ -> super.finish() }
+                .setNegativeButton(R.string.all_cancel, null)
                 .show()
         }
         editAttendCourseViewModel.finish.observe(this) {
@@ -128,7 +128,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
             .associateBy { ContextCompat.getColor(this, it.resId) }
 
         ColorPickerDialog.newInstance(
-            R.string.title_color_picker,
+            R.string.edit_attend_course_color_picker,
             colorMap.keys.toIntArray(),
             ContextCompat.getColor(this, courseColor.resId),
             COLOR_PICKER_COLUMN,

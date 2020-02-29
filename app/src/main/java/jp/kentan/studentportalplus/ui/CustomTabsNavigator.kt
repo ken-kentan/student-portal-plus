@@ -28,7 +28,7 @@ class CustomTabsNavigator(
         var url = requireNotNull(destination.url)
 
         if (url.isPdf()) {
-            url = context.getString(R.string.url_gdocs, url)
+            url = context.getString(R.string.custom_tabs_gdocs_url, url)
         }
 
         context.buildCustomTabsIntent().run {

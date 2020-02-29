@@ -53,13 +53,13 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="?attr/actionBarItemBackground"
-            android:contentDescription="@string/description_favorite"
+            android:contentDescription="@string/all_favorite_description"
             android:padding="16dp"
-            android:src="@{data.favorite ? @drawable/ic_favorite_orange_24dp : @drawable/ic_favorite_grey_24dp}"
+            android:src="@{data.favorite ? @drawable/all_favorite_orange : @drawable/all_favorite_grey}"
             app:layout_constraintBottom_toTopOf="@id/divider_view"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_favorite_grey_24dp" />
+            tools:src="@drawable/all_favorite_grey" />
 
         <View
             android:id="@+id/divider_view"

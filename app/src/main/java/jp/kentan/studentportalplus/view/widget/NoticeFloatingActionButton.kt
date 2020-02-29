@@ -30,7 +30,7 @@ class NoticeFloatingActionButton @JvmOverloads constructor(
     }
 
     override fun onCheckChanged(isChecked: Boolean) {
-        setImageResource(if (isChecked) R.drawable.ic_favorite_grey_24dp else R.drawable.ic_favorite_border_white_24dp)
+        setImageResource(if (isChecked) R.drawable.all_favorite_grey else R.drawable.all_favorite_border)
 
         if (!isInitialized) {
             rotation = if (isChecked) ROTATION_TO else ROTATION_FROM

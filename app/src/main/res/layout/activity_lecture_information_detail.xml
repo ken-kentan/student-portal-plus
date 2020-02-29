@@ -58,7 +58,7 @@
             app:backgroundTint="@color/attend_red"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_add_white_24dp"
+            app:srcCompat="@drawable/all_add_white"
             tools:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

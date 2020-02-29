@@ -55,7 +55,7 @@ class NoticesFragment : Fragment(R.layout.fragment_list), NoticesFilterDialogFra
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.apply {
-            queryHint = getString(R.string.hint_query_title)
+            queryHint = getString(R.string.notices_query)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = true
 

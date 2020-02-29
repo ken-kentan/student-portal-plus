@@ -2,94 +2,94 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_category_shibboleth">
+    <androidx.preference.PreferenceCategory android:title="@string/preference_shibboleth_category">
 
         <androidx.preference.Preference
-            android:icon="@drawable/ic_pref_login"
+            android:icon="@drawable/preference_login"
             android:key="login"
-            android:summary="@string/pref_summary_login"
-            android:title="@string/pref_title_login" />
+            android:summary="@string/preference_login_summary"
+            android:title="@string/preference_login_title" />
 
         <androidx.preference.Preference
             android:key="shibboleth_last_login_date"
-            android:title="@string/pref_title_last_login_date" />
+            android:title="@string/preference_last_login_date_title" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_category_notification">
+    <androidx.preference.PreferenceCategory android:title="@string/preference_notification_category">
 
         <androidx.preference.SwitchPreference
             android:defaultValue="true"
-            android:icon="@drawable/ic_pref_sync"
+            android:icon="@drawable/preference_sync"
             android:key="is_enabled_sync"
-            android:summary="@string/pref_summary_sync"
-            android:title="@string/pref_title_sync" />
+            android:summary="@string/preference_sync_summary"
+            android:title="@string/preference_sync_title" />
 
         <androidx.preference.ListPreference
             android:defaultValue="120"
             android:entries="@array/sync_interval_name"
             android:entryValues="@array/sync_interval_values"
             android:key="sync_interval_minutes"
-            android:summary="@string/pref_summary_sync_interval"
-            android:title="@string/pref_title_sync_interval" />
+            android:summary="@string/preference_sync_interval_summary"
+            android:title="@string/preference_sync_interval_title" />
 
         <androidx.preference.Preference
             android:key="notification_type"
-            android:summary="@string/pref_summary_notification_type"
-            android:title="@string/pref_title_notification_type" />
+            android:summary="@string/preference_notification_type_summary"
+            android:title="@string/preference_notification_type_title" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="is_enabled_notification_vibration"
-            android:summary="@string/pref_summary_vibration"
-            android:title="@string/pref_title_vibration" />
+            android:summary="@string/preference_vibration_summary"
+            android:title="@string/preference_vibration_title" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="is_enabled_notification_led"
-            android:summary="@string/pref_summary_led"
-            android:title="@string/pref_title_led" />
+            android:summary="@string/preference_led_summary"
+            android:title="@string/preference_led_title" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_category_portal">
+    <androidx.preference.PreferenceCategory android:title="@string/preference_portal_category">
 
         <androidx.preference.Preference
-            android:icon="@drawable/ic_pref_similar_subject"
+            android:icon="@drawable/preference_similar_subject"
             android:key="similar_subject_threshold"
-            android:summary="@string/pref_summary_similar_subject_threshold"
-            android:title="@string/pref_title_similar_subject_threshold" />
+            android:summary="@string/preference_similar_subject_threshold_summary"
+            android:title="@string/preference_similar_subject_threshold_title" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
             android:key="is_enabled_pdf_open_with_gdocs"
-            android:summary="@string/pref_summary_pdf_gdocs"
-            android:title="@string/pref_title_pdf_gdocs" />
+            android:summary="@string/preference_pdf_gdocs_summary"
+            android:title="@string/preference_pdf_gdocs_title" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="false"
             android:key="is_enabled_detail_error"
-            android:summary="@string/pref_summary_detail_error"
-            android:title="@string/pref_title_detail_error" />
+            android:summary="@string/preference_detail_error_summary"
+            android:title="@string/preference_detail_error_title" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_category_about">
+    <androidx.preference.PreferenceCategory android:title="@string/preference_about_category">
 
         <androidx.preference.Preference
-            android:icon="@drawable/ic_pref_info"
+            android:icon="@drawable/preference_info"
             android:key="version"
-            android:title="@string/pref_title_version"
+            android:title="@string/preference_version_title"
             app:enableCopying="true" />
 
         <androidx.preference.Preference
             android:key="share"
-            android:summary="@string/pref_summary_share"
-            android:title="@string/pref_title_share" />
+            android:summary="@string/preference_share_summary"
+            android:title="@string/preference_share_title" />
 
         <androidx.preference.Preference
-            android:summary="@string/pref_summary_developer"
-            android:title="@string/pref_title_developer">
+            android:summary="@string/preference_developer_summary"
+            android:title="@string/preference_developer_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://ken.kentan.jp/about/" />
@@ -97,13 +97,13 @@
 
         <androidx.preference.Preference
             android:key="terms"
-            android:summary="@string/pref_summary_terms"
-            android:title="@string/pref_title_terms" />
+            android:summary="@string/preference_terms_summary"
+            android:title="@string/preference_terms_title" />
 
         <androidx.preference.Preference
             android:key="oss_licenses"
-            android:summary="@string/pref_summary_license"
-            android:title="@string/pref_title_license" />
+            android:summary="@string/preference_oss_licenses_summary"
+            android:title="@string/preference_oss_licenses_title" />
 
     </androidx.preference.PreferenceCategory>
 

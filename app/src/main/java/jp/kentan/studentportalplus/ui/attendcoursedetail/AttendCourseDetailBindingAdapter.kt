@@ -18,19 +18,19 @@ object AttendCourseDetailBindingAdapter {
 
         val period = with(attendCourse.period) {
             if (this > 0) context.getString(
-                R.string.suffix_period, this
+                R.string.all_period_suffix, this
             ) else ""
         }
         val dayOfWeek = with(attendCourse.dayOfWeek) {
             if (hasSuffix) {
-                context.getString(R.string.suffix_day_of_week_short, context.getString(resId))
+                context.getString(R.string.attend_course_detail_day_of_week_suffix, context.getString(resId))
             } else {
                 context.getString(resId)
             }
         }
 
         view.text = context.getString(
-            R.string.text_day_of_week_and_period,
+            R.string.attend_course_detail_day_of_week_period,
             dayOfWeek,
             period
         )

@@ -17,11 +17,11 @@ data class NoticeQuery(
     enum class DateRange(
         @StringRes val resId: Int
     ) {
-        ALL(R.string.name_date_range_all),
-        DAY(R.string.name_date_range_day),
-        WEEK(R.string.name_date_range_week),
-        MONTH(R.string.name_date_range_month),
-        YEAR(R.string.name_date_range_year);
+        ALL(R.string.date_range_all),
+        DAY(R.string.date_range_day),
+        WEEK(R.string.date_range_week),
+        MONTH(R.string.date_range_month),
+        YEAR(R.string.date_range_year);
 
         val timeInMillis: Long
             get() = Calendar.getInstance().apply {
