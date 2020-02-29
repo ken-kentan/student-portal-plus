@@ -188,7 +188,7 @@ class SummaryNotificationHelper(
             .setOnlyAlertOnce(true)
             .setAutoCancel(true)
 
-        // If notification_large chanel not supported
+        // If notification chanel not supported
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
                 VIBRATION_PATTERN
