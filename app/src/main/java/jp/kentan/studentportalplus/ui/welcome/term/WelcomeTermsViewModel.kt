@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.ui.Event
 
-class WelcomeTermViewModel : ViewModel() {
+class WelcomeTermsViewModel : ViewModel() {
 
     val isAgreeChecked = MutableLiveData<Boolean>()
 
-    private val _termUrl = MutableLiveData<Int>(R.string.url_terms)
+    private val _termUrl = MutableLiveData<Int>(R.string.all_terms_url)
     val termUrl: LiveData<Int>
         get() = _termUrl
 
@@ -19,7 +19,7 @@ class WelcomeTermViewModel : ViewModel() {
         get() = _navigate
 
     fun onWebViewReceivedError() {
-        _termUrl.value = R.string.url_terms_local
+        _termUrl.value = R.string.all_terms_local_url
     }
 
     fun onShibbolethClick() {

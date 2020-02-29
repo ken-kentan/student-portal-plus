@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/welcome_term_fragment"
-        android:name="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermFragment"
-        android:label="@string/title_welcome"
-        tools:layout="@layout/fragment_welcome_term" />
+        android:name="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermsFragment"
+        android:label="@string/welcome_title"
+        tools:layout="@layout/fragment_welcome_terms" />
 
     <fragment
         android:id="@+id/login_fragment"
         android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
-        android:label="@string/title_login"
+        android:label="@string/login_title"
         tools:layout="@layout/fragment_login">
         <argument
             android:name="NAVIGATE_RES_ID"

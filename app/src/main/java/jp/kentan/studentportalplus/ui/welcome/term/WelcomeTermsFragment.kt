@@ -8,17 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.databinding.FragmentWelcomeTermBinding
+import jp.kentan.studentportalplus.databinding.FragmentWelcomeTermsBinding
 import jp.kentan.studentportalplus.ui.observeEvent
 
-class WelcomeTermFragment : Fragment(R.layout.fragment_welcome_term) {
+class WelcomeTermsFragment : Fragment(R.layout.fragment_welcome_terms) {
 
-    private val welcomeTermViewModel by viewModels<WelcomeTermViewModel>()
+    private val welcomeTermViewModel by viewModels<WelcomeTermsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        FragmentWelcomeTermBinding.bind(view).apply {
+        FragmentWelcomeTermsBinding.bind(view).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = welcomeTermViewModel
 

@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/login_fragment"
         android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
-        android:label="@string/title_login" />
+        android:label="@string/login_title" />
 
     <activity
         android:id="@+id/oss_licenses_menu_activity"
@@ -30,5 +30,5 @@
 
     <customTabs
         android:id="@+id/terms_custom_tabs"
-        app:url="@string/settings_terms_of_service_url" />
+        app:url="@string/all_terms_url" />
 </navigation>
