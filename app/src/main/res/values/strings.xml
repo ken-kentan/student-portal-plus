@@ -56,6 +56,9 @@
     <string name="login_unknown_error">不明なエラーです</string>
 
     <!-- Main -->
+    <string name="main_open_navigation_drawer">ナビゲーションを開きました</string>
+    <string name="main_close_navigation_drawer">ナビゲーションを閉じました</string>
+    <string name="main_icon_description">アイコン</string>
     <string name="main_sync_failed_error">同期に失敗しました。時間をおいて再試行して下さい</string>
     <string name="main_campus_map_url">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="main_room_map_url">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
@@ -252,8 +255,4 @@
     <string name="subject_similar_sample_2">が類似科目です.</string>
     <string name="subject_similar_sample_3">類似科目は受講科目と同様に通知されます.</string>
 
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
 </resources>

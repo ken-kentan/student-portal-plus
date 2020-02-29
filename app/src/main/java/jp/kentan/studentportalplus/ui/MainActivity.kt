@@ -76,8 +76,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 val toggle = ActionBarDrawerToggle(
                     this@MainActivity, drawerLayout, appBar.toolbar,
-                    R.string.navigation_drawer_open,
-                    R.string.navigation_drawer_close
+                    R.string.main_open_navigation_drawer,
+                    R.string.main_close_navigation_drawer
                 )
                 drawerLayout.addDrawerListener(toggle)
                 toggle.syncState()
