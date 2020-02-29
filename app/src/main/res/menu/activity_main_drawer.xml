@@ -55,7 +55,7 @@
             android:id="@+id/settings_activity"
             android:checkable="false"
             android:icon="@drawable/ic_menu_setting"
-            android:title="@string/menu_setting" />
+            android:title="@string/menu_settings" />
     </group>
 
 </menu>

@@ -48,21 +48,21 @@ class LectureInformationDetailActivity : DaggerAppCompatActivity() {
 
         lectureInfoDetailViewModel.excludeFromAttendConfirmDialog.observeEvent(this) { subject ->
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.title_confirm)
+                .setTitle(R.string.all_confirm)
                 .setMessage(
                     getString(
-                        R.string.text_exclude_from_attend_confirm,
+                        R.string.all_exclude_from_attend_course,
                         subject
                     ).parseAsHtml()
                 )
-                .setPositiveButton(R.string.action_exclude) { _, _ ->
+                .setPositiveButton(R.string.all_exclude) { _, _ ->
                     lectureInfoDetailViewModel.onExcludeConfirmClick(subject)
                 }
-                .setNegativeButton(R.string.action_cancel, null)
+                .setNegativeButton(R.string.all_cancel, null)
                 .show()
         }
         lectureInfoDetailViewModel.finishWithNotFoundError.observe(this) {
-            Toast.makeText(this, R.string.error_not_found, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.all_not_found_error, Toast.LENGTH_LONG).show()
             finish()
         }
         lectureInfoDetailViewModel.snackbar.observeEvent(this) {
@@ -70,7 +70,7 @@ class LectureInformationDetailActivity : DaggerAppCompatActivity() {
         }
         lectureInfoDetailViewModel.indefiniteSnackbar.observeEvent(this) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).apply {
-                setAction(R.string.action_close) { dismiss() }
+                setAction(R.string.all_close) { dismiss() }
             }.show()
         }
 

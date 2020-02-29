@@ -27,7 +27,7 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name_subject" />
+                android:text="@string/all_subject" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_instructor" />
+                android:text="@string/all_instructor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_grade_and_day_of_week_and_period" />
+                android:text="@string/lecture_cancellation_detail_grade_and_day_of_week_and_period" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_cancel_date" />
+                android:text="@string/lecture_cancellation_detail_date" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_lecture_cancellation_detail" />
+                android:text="@string/lecture_cancellation_detail_detail" />
 
             <jp.kentan.studentportalplus.view.widget.CustomTabsTextView
                 android:layout_width="match_parent"

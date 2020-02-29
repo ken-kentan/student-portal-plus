@@ -39,8 +39,8 @@ abstract class NotificationHelper(
     fun sendAuthenticationError(message: String) {
         sendErrorInternal(
             intent = LoginActivity.createIntent(context, true),
-            subText = context.getString(R.string.login_required_again_title),
-            title = context.getString(R.string.error),
+            subText = context.getString(R.string.notification_required_login_again),
+            title = context.getString(R.string.notification_error),
             text = message
         )
     }
@@ -48,8 +48,8 @@ abstract class NotificationHelper(
     fun sendError(throwable: Throwable) {
         sendErrorInternal(
             intent = MainActivity.createIntent(context),
-            subText = context.getString(R.string.title_sync_failed),
-            title = context.getString(R.string.error),
+            subText = context.getString(R.string.notification_sync_failed),
+            title = context.getString(R.string.notification_error),
             text = throwable.message ?: throwable::class.java.simpleName
         )
     }
@@ -87,7 +87,7 @@ abstract class NotificationHelper(
 
         val action = NotificationCompat.Action.Builder(
             R.drawable.ic_notification_retry,
-            context.getString(R.string.action_retry),
+            context.getString(R.string.all_retry),
             retrySyncService
         ).build()
 

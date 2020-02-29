@@ -41,8 +41,8 @@ class NoticesFilterDialogFragment : AppCompatDialogFragment() {
         }
 
         return MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.title_filter_dialog)
-            .setPositiveButton(R.string.action_apply) { _, _ ->
+            .setTitle(R.string.all_search_filter)
+            .setPositiveButton(R.string.all_apply) { _, _ ->
                 val query = noticeQuery.copy(
                     dateRange = binding.dateRangeSpinner.selectedItem as NoticeQuery.DateRange,
                     isUnread = binding.unreadChip.isChecked,
@@ -52,7 +52,7 @@ class NoticesFilterDialogFragment : AppCompatDialogFragment() {
 
                 listener.onFilterApplyClick(query)
             }
-            .setNegativeButton(R.string.action_cancel, null)
+            .setNegativeButton(R.string.all_cancel, null)
             .setView(binding.root)
             .create()
     }

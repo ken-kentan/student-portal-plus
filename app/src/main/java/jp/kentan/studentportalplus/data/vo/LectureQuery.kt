@@ -16,8 +16,8 @@ data class LectureQuery(
     enum class Order(
         @StringRes val resId: Int
     ) {
-        UPDATED_DATE(R.string.name_order_update_date),
-        ATTEND_CLASS(R.string.name_order_attend_course)
+        UPDATED_DATE(R.string.lecture_order_update_date),
+        ATTEND_CLASS(R.string.lecture_order_attend_course)
     }
 
     val textList: List<String> = if (text.isNullOrBlank()) {

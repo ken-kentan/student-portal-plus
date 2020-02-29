@@ -28,7 +28,7 @@ class AttendCourseDetailViewModel @Inject constructor(
     private val _error = MediatorLiveData<Event<Int>>().apply {
         addSource(attendCourse) {
             if (it == null && !isDeleteAttendCourse) {
-                value = Event(R.string.error_not_found)
+                value = Event(R.string.all_not_found_error)
                 _finish.value = Unit
             }
         }
@@ -74,7 +74,7 @@ class AttendCourseDetailViewModel @Inject constructor(
                 _finish.value = Unit
             } else {
                 isDeleteAttendCourse = false
-                _error.value = Event(R.string.error_delete_failed)
+                _error.value = Event(R.string.all_delete_failed)
             }
         }
     }

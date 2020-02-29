@@ -62,7 +62,7 @@ class LectureInformationAdapter(
                 val header = currentList[position] as Header
 
                 textView.apply {
-                    setText(R.string.name_lecture_information)
+                    setText(R.string.all_lecture_information)
                     if (header.hasMoreItem) {
                         val suffix =
                             context.getString(R.string.dashboard_more_items_suffix, header.moreItemCount)
@@ -78,11 +78,11 @@ class LectureInformationAdapter(
                 dividerView.isVisible = item.isVisibleDivider
             }
             is ViewHolder.TextViewHolder -> holder.binding.executeAfter {
-                textView.setText(R.string.dashboard_empty_lecture_information_text)
+                textView.setText(R.string.dashboard_empty_lecture_information)
             }
             is ViewHolder.ShowAllViewHolder -> holder.binding.executeAfter {
                 textView.apply {
-                    setText(R.string.dashboard_open_lecture_informations_action)
+                    setText(R.string.dashboard_open_lecture_informations)
                     setOnClickListener { onShowAllClick.invoke() }
                 }
             }

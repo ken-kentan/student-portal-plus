@@ -58,7 +58,7 @@ class InboxStyleNotificationHelper(
 
         send(
             R.drawable.ic_notification_lecture_information,
-            R.string.name_lecture_information,
+            R.string.all_lecture_information,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.LECTURE_INFORMATION)
         )
@@ -75,7 +75,7 @@ class InboxStyleNotificationHelper(
 
         send(
             R.drawable.ic_notification_lecture_cancellation,
-            R.string.name_lecture_cancellation,
+            R.string.all_lecture_cancellation,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.LECTURE_CANCELLATION)
         )
@@ -92,7 +92,7 @@ class InboxStyleNotificationHelper(
 
         send(
             R.drawable.ic_notification_notice,
-            R.string.name_notice,
+            R.string.all_notice,
             contentList,
             MainActivity.createIntent(context, MainActivity.Destination.NOTICE)
         )
@@ -107,7 +107,7 @@ class InboxStyleNotificationHelper(
         var notificationId = localPreferences.notificationId
 
         val title = context.getString(titleResId)
-        val contentTitle = context.getString(R.string.title_inbox_style, contentList.size, title)
+        val contentTitle = context.getString(R.string.notification_inbox_style, contentList.size, title)
 
         val pendingIntent = PendingIntent.getActivity(
             context,
@@ -167,7 +167,7 @@ class InboxStyleNotificationHelper(
         if (moreContentSize > 0) {
             inboxStyle.setSummaryText(
                 context.getString(
-                    R.string.text_summary_inbox_style,
+                    R.string.notification_summary_inbox_style,
                     moreContentSize
                 )
             )

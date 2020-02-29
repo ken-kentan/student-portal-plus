@@ -92,7 +92,7 @@ class MainActivity : DaggerAppCompatActivity() {
         }
         mainViewModel.indefiniteSnackbar.observeEvent(this) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).apply {
-                setAction(R.string.action_close) { dismiss() }
+                setAction(R.string.all_close) { dismiss() }
             }.show()
         }
     }

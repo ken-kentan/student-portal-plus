@@ -20,7 +20,7 @@ object LectureCancellationBindingAdapter {
         }
 
         view.text = view.context.getString(
-            R.string.text_grade_day_of_week_period,
+            R.string.lecture_cancellation_detail_grade_day_of_week_period,
             lectureCancel.grade,
             lectureCancel.dayOfWeek.replace("曜日", "曜"),
             period
@@ -36,7 +36,7 @@ object LectureCancellationBindingAdapter {
         }
 
         view.text = view.context.getString(
-            R.string.text_lecture_cancellation_created_date,
+            R.string.lecture_cancellation_detail_created_date,
             lectureCancel.createdDate.formatYearMonthDay()
         )
     }

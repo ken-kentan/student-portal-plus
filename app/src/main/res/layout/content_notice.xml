@@ -27,7 +27,7 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name_title" />
+                android:text="@string/notice_detail_title" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_detail"
+                android:text="@string/notice_detail_detail"
                 app:isVisible="@{data.detailHtml != null}" />
 
             <jp.kentan.studentportalplus.view.widget.CustomTabsTextView
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/name_link"
+                android:text="@string/notice_detail_link"
                 app:isVisible="@{data.link != null}" />
 
             <jp.kentan.studentportalplus.view.widget.CustomTabsTextView

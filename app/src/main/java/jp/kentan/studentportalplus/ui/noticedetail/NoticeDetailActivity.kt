@@ -44,7 +44,7 @@ class NoticeDetailActivity : DaggerAppCompatActivity() {
         }
 
         noticeDetailViewModel.finishWithNotFoundError.observe(this) {
-            Toast.makeText(this, R.string.error_not_found, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.all_not_found_error, Toast.LENGTH_LONG).show()
             finish()
         }
 

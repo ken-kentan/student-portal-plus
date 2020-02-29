@@ -23,7 +23,7 @@ object NoticeDetailBindingAdapter {
         }
 
         view.text = view.context.getString(
-            R.string.text_notice_created_date,
+            R.string.notice_detail_created_date,
             notice.createdDate.formatYearMonthDay()
         )
     }

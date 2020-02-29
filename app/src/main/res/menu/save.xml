@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_check_secondary_24dp"
-        android:title="@string/action_save"
+        android:title="@string/all_save"
         app:showAsAction="always" />
 </menu>

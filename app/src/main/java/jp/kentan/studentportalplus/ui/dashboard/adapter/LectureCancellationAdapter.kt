@@ -62,7 +62,7 @@ class LectureCancellationAdapter(
                 val header = currentList[position] as Header
 
                 textView.apply {
-                    setText(R.string.name_lecture_cancellation)
+                    setText(R.string.all_lecture_cancellation)
                     if (header.hasMoreItem) {
                         val suffix =
                             context.getString(R.string.dashboard_more_items_suffix, header.moreItemCount)
@@ -78,11 +78,11 @@ class LectureCancellationAdapter(
                 dividerView.isVisible = item.isVisibleDivider
             }
             is ViewHolder.TextViewHolder -> holder.binding.executeAfter {
-                textView.setText(R.string.dashboard_empty_lecture_cancellation_text)
+                textView.setText(R.string.dashboard_empty_lecture_cancellation)
             }
             is ViewHolder.ShowAllViewHolder -> holder.binding.executeAfter {
                 textView.apply {
-                    setText(R.string.dashboard_open_lecture_cancellations_action)
+                    setText(R.string.dashboard_open_lecture_cancellations)
                     setOnClickListener { onShowAllClick.invoke() }
                 }
             }

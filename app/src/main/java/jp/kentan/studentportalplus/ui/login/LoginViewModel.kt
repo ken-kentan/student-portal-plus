@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(
     val hideSoftInput: LiveData<Event<Unit>>
         get() = _hideSoftInput
 
-    private val unknownErrorMessage = application.getString(R.string.error_unknown)
+    private val unknownErrorMessage = application.getString(R.string.login_unknown_error)
 
     private var shouldLaunchMainActivity = false
 
@@ -74,14 +74,14 @@ class LoginViewModel @Inject constructor(
         _errorPassword.value = null
 
         if (username.isBlank()) {
-            _errorUsername.value = R.string.error_field_empty
+            _errorUsername.value = R.string.all_field_empty
         } else if (!username.isValidUsername()) {
-            _errorUsername.value = R.string.error_invalid_username
+            _errorUsername.value = R.string.login_invalid_username
         }
         if (password.isBlank()) {
-            _errorPassword.value = R.string.error_field_empty
+            _errorPassword.value = R.string.all_field_empty
         } else if (!password.isValidPassword()) {
-            _errorPassword.value = R.string.error_invalid_password
+            _errorPassword.value = R.string.login_invalid_password
         }
 
         if (_errorUsername.value != null || _errorPassword.value != null) {

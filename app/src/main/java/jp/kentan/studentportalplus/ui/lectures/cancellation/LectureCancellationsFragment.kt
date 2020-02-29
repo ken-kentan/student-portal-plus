@@ -34,7 +34,7 @@ class LectureCancellationsFragment : Fragment(R.layout.fragment_list),
         setHasOptionsMenu(true)
 
         val lecturesAdapter = LecturesAdapter(
-            R.string.text_not_found_lecture_cancellation,
+            R.string.lecture_cancellations_not_found,
             lectureCancelsViewModel.onItemClick
         )
 
@@ -65,7 +65,7 @@ class LectureCancellationsFragment : Fragment(R.layout.fragment_list),
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.apply {
-            queryHint = getString(R.string.hint_query_subject_instructor)
+            queryHint = getString(R.string.all_subject_instructor_query)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = true
 

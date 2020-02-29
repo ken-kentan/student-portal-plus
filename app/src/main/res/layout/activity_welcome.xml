@@ -55,7 +55,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:checked="@={viewModel.isAgreeChecked}"
-            android:text="@string/text_agree_to_terms"
+            android:text="@string/welcome_agree_terms_of_service"
             app:layout_constraintBottom_toTopOf="@+id/shibboleth_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -69,7 +69,7 @@
             android:layout_marginBottom="16dp"
             android:enabled="@{viewModel.isAgreeChecked}"
             android:onClick="@{() -> viewModel.onShibbolethClick()}"
-            android:text="@string/button_shibboleth"
+            android:text="@string/welcome_shibboleth"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

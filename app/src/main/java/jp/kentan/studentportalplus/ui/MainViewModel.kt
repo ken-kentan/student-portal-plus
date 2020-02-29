@@ -52,7 +52,7 @@ class MainViewModel @Inject constructor(
                     if (localPreferences.isEnabledDetailError && !throwableMessage.isNullOrEmpty()) {
                         throwableMessage
                     } else {
-                        getApplication<Application>().getString(R.string.error_sync_failed)
+                        getApplication<Application>().getString(R.string.main_sync_failed_error)
                     }
 
                 _indefiniteSnackbar.value = Event(message)

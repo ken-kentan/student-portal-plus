@@ -63,7 +63,7 @@ class SummaryNotificationHelper(
     private fun setupChannels() {
         val newlyChannel = NotificationChannel(
             NEWLY_CHANNEL_ID,
-            context.getString(R.string.name_newly_channel),
+            context.getString(R.string.notification_newly_channel),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             enableLights(true)
@@ -74,7 +74,7 @@ class SummaryNotificationHelper(
 
         val appChannel = NotificationChannel(
             APP_CHANNEL_ID,
-            context.getString(R.string.name_app_channel),
+            context.getString(R.string.notification_app_channel),
             NotificationManager.IMPORTANCE_LOW
         ).apply {
             enableLights(true)
@@ -100,7 +100,7 @@ class SummaryNotificationHelper(
 
         sendContentToNewlyChannel(
             R.drawable.ic_notification_lecture_information,
-            R.string.name_lecture_information,
+            R.string.all_lecture_information,
             contentList
         )
     }
@@ -120,7 +120,7 @@ class SummaryNotificationHelper(
 
         sendContentToNewlyChannel(
             R.drawable.ic_notification_lecture_cancellation,
-            R.string.name_lecture_cancellation,
+            R.string.all_lecture_cancellation,
             contentList
         )
     }
@@ -140,7 +140,7 @@ class SummaryNotificationHelper(
 
         sendContentToNewlyChannel(
             R.drawable.ic_notification_notice,
-            R.string.name_notice,
+            R.string.all_notice,
             contentList
         )
     }
