@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/timetable_fragment"
         android:name="jp.kentan.studentportalplus.ui.timetable.TimetableFragment"
-        android:label="@string/title_timetable"
+        android:label="@string/timetable_title"
         tools:layout="@layout/fragment_timetable" />
 
     <fragment

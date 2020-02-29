@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Student Portal+</string>
 
+    <!-- All -->
+    <string name="all_add_action">追加</string>
+
     <!-- Login -->
     <string name="login_title">Shibboleth</string>
     <string name="login_required_again_title">再ログインが必要です</string>
@@ -17,9 +20,12 @@
     <string name="dashboard_open_notices_action">すべての最新情報を表示</string>
     <string name="dashboard_more_items_suffix">（他%1$d件）</string>
 
+    <!-- Timetable -->
+    <string name="timetable_title">Timetable</string>
+    <string name="timetable_switch_layout_action">レイアウト</string>
+
     <!-- title -->
     <string name="title_activity_welcome">Welcome</string>
-    <string name="title_timetable">Timetable</string>
     <string name="title_lecture_info">Class Schedule</string>
     <string name="title_lecture_cancel">Class Cancellations</string>
     <string name="title_notice">News &amp; Events</string>
@@ -160,7 +166,6 @@
     <string name="action_delete">消去</string>
     <string name="action_discard">破棄</string>
     <string name="action_exclude">除外</string>
-    <string name="action_add">追加</string>
     <string name="action_search">検索</string>
     <string name="action_close">閉じる</string>
     <string name="action_filter">絞り込み</string>

@@ -4,11 +4,11 @@
     <item
         android:id="@+id/action_add"
         android:icon="@drawable/ic_add_control_24dp"
-        android:title="@string/action_add"
+        android:title="@string/all_add_action"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_switch_layout"
         android:icon="@drawable/ic_layout_control_24dp"
-        android:title="@string/action_switch_layout"
+        android:title="@string/timetable_switch_layout_action"
         app:showAsAction="ifRoom" />
 </menu>
