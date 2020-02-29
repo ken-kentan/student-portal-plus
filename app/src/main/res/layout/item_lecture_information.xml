@@ -65,7 +65,7 @@
             android:id="@+id/attend_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/all_attend_description"
+            android:contentDescription="@string/all_attend_course"
             android:padding="16dp"
             app:attendType="@{data.attendType}"
             app:layout_constraintBottom_toBottomOf="parent"

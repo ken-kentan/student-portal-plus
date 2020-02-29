@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,12 +15,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/text_view"
+            android:id="@+id/header_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:gravity="center"
             android:text="@string/welcome_notification_select_type"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,11 +31,11 @@
             android:id="@+id/lecture_information_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/preference_lecture_information"
             android:layout_marginStart="16dp"
+            android:contentDescription="@string/all_lecture_information"
+            android:src="@drawable/preference_lecture_information"
             app:layout_constraintBottom_toBottomOf="@+id/lecture_information_text_input_layout"
             app:layout_constraintEnd_toStartOf="@+id/lecture_information_text_input_layout"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/lecture_information_text_input_layout" />
 
@@ -45,18 +47,78 @@
             android:layout_margin="16dp"
             android:hint="@string/all_lecture_information"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/lecture_information_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/text_view">
+            app:layout_constraintTop_toBottomOf="@+id/header_text_view">
 
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:editable="false"/>
+                android:editable="false"
+                tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- TODO add notification type selection -->
+        <ImageView
+            android:id="@+id/lecture_cancellation_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/all_lecture_cancellation"
+            android:src="@drawable/preference_lecture_cancellation"
+            app:layout_constraintBottom_toBottomOf="@+id/lecture_cancellation_text_input_layout"
+            app:layout_constraintEnd_toStartOf="@+id/lecture_cancellation_text_input_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lecture_cancellation_text_input_layout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lecture_cancellation_text_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/all_lecture_cancellation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lecture_cancellation_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/lecture_information_text_input_layout">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/notice_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/all_notice"
+            android:src="@drawable/preference_notice"
+            app:layout_constraintBottom_toBottomOf="@+id/notice_text_input_layout"
+            app:layout_constraintEnd_toStartOf="@+id/notice_text_input_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/notice_text_input_layout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notice_text_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/all_notice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/notice_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/lecture_cancellation_text_input_layout">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/complete_button"
@@ -67,9 +129,21 @@
             android:layout_marginEnd="16dp"
             android:onClick="@{() -> viewModel.onCompleteClick()}"
             android:text="@string/welcome_notification_complete"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notice_text_input_layout" />
+
+        <TextView
+            android:id="@+id/notes_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/welcome_notification_notes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/complete_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

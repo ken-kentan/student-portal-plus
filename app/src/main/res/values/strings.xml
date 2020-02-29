@@ -39,8 +39,6 @@
     <string name="all_delete_failed">消去に失敗しました</string>
     <string name="all_update_failed">更新に失敗しました</string>
     <string name="all_not_found_error">存在しないか, すでに消去されています</string>
-    <string name="all_favorite_description">お気に入り</string>
-    <string name="all_attend_description">受講科目</string>
     <string name="all_terms_url">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
     <string name="all_terms_local_url">file:///android_asset/terms_and_privacy_policy.html</string>
 
@@ -49,8 +47,9 @@
     <string name="welcome_terms_agree">上記の利用規約に同意します</string>
     <string name="welcome_terms_shibboleth">シボレス認証</string>
     <string name="welcome_notification_title">Notification</string>
-    <string name="welcome_notification_select_type">通知タイプを選択してください</string>
+    <string name="welcome_notification_select_type">通知の種類をそれぞれ選択してください</string>
     <string name="welcome_notification_complete">設定完了</string>
+    <string name="welcome_notification_notes">※この設定は後からでも変更が可能です。</string>
 
     <!-- Login -->
     <string name="login_title">Shibboleth</string>

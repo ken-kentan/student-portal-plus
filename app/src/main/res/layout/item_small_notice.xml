@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="?attr/actionBarItemBackground"
-            android:contentDescription="@string/all_favorite_description"
+            android:contentDescription="@string/all_favorite"
             android:padding="16dp"
             android:src="@{data.favorite ? @drawable/all_favorite_orange : @drawable/all_favorite_grey}"
             app:layout_constraintBottom_toTopOf="@id/divider_view"
