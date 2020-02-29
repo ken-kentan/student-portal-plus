@@ -52,7 +52,7 @@ class LectureCancellationDetailActivity : DaggerAppCompatActivity() {
                 .setTitle(R.string.all_confirm)
                 .setMessage(
                     getString(
-                        R.string.all_exclude_from_attend_course,
+                        R.string.all_exclude_from_attend_course_confirm,
                         subject
                     ).parseAsHtml()
                 )
