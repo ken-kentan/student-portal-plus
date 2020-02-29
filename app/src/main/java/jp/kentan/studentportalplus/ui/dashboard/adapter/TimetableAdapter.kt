@@ -51,7 +51,7 @@ class TimetableAdapter(
                     val header = currentList[position] as Header
 
                     text = context.getString(
-                        R.string.text_today_timetable,
+                        R.string.dashboard_today_attend_course_title,
                         context.getString(header.dayOfWeek.resId)
                     )
                 }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/dashboard_fragment"
         android:name="jp.kentan.studentportalplus.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/dashboard_title"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment

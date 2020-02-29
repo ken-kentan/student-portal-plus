@@ -7,9 +7,18 @@
     <string name="login_input_username_and_password_text">ユーザー名とパスワードを入力して下さい</string>
     <string name="login_action">ログイン</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_today_attend_course_title">%1$s曜日の時間割</string>
+    <string name="dashboard_empty_lecture_information_text">現在、あなたへの授業関連連絡はありません.</string>
+    <string name="dashboard_empty_lecture_cancellation_text">現在、あなたへの休講情報はありません.</string>
+    <string name="dashboard_open_lecture_informations_action">すべての授業関連連絡を表示</string>
+    <string name="dashboard_open_lecture_cancellations_action">すべての休講情報を表示</string>
+    <string name="dashboard_open_notices_action">すべての最新情報を表示</string>
+    <string name="dashboard_more_items_suffix">（他%1$d件）</string>
+
     <!-- title -->
     <string name="title_activity_welcome">Welcome</string>
-    <string name="title_dashboard">Dashboard</string>
     <string name="title_timetable">Timetable</string>
     <string name="title_lecture_info">Class Schedule</string>
     <string name="title_lecture_cancel">Class Cancellations</string>
@@ -174,18 +183,6 @@
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=%1$s</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
-
-    <!-- Dashboard -->
-    <string name="text_today_timetable">%1$s曜日の時間割</string>
-
-    <string name="suffix_more_item">（他%1$d件）</string>
-
-    <string name="action_show_all_lecture_information">すべての授業関連連絡を表示</string>
-    <string name="action_show_all_lecture_cancellation">すべての休講情報を表示</string>
-    <string name="action_show_all_notice">すべての最新情報を表示</string>
-
-    <string name="text_empty_lecture_information">現在、あなたへの授業関連連絡はありません.</string>
-    <string name="text_empty_lecture_cancellation">現在、あなたへの休講情報はありません.</string>
 
 
     <!-- AttendCourse -->

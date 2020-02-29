@@ -64,7 +64,7 @@ class NoticeAdapter(
             }
             is ViewHolder.ShowAllViewHolder -> holder.binding.executeAfter {
                 textView.apply {
-                    setText(R.string.action_show_all_notice)
+                    setText(R.string.dashboard_open_notices_action)
                     setOnClickListener { onShowAllClick.invoke() }
                 }
             }
