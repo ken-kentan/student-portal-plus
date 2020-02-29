@@ -41,7 +41,7 @@ class InboxStyleNotificationHelper(
     }
 
     private val largeIcon: Bitmap =
-        BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_large)
+        BitmapFactory.decodeResource(context.resources, R.mipmap.notification_large)
 
     private val color = ContextCompat.getColor(context, R.color.notification)
 

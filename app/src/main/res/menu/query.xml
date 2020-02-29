@@ -5,14 +5,14 @@
     tools:ignore="AlwaysShowAction">
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/query_menu_search_24dp"
+        android:icon="@drawable/query_menu_search"
         android:title="@string/all_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
 
     <item
         android:id="@+id/action_filter"
-        android:icon="@drawable/query_menu_filter_24dp"
+        android:icon="@drawable/query_menu_filter"
         android:title="@string/all_filter"
         app:showAsAction="always" />
 </menu>
