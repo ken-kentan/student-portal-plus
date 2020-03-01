@@ -2,6 +2,7 @@ package jp.kentan.studentportalplus.ui
 
 import android.graphics.Typeface
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -13,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.util.formatYearMonthDay
+import jp.kentan.studentportalplus.view.widget.MaterialArrayAdapter
 import java.util.*
 
 object CommonBindingAdapter {
@@ -55,6 +57,18 @@ object CommonBindingAdapter {
         } else {
             view.error = view.context.getString(resId)
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("entities")
+    fun setEntities(view: AutoCompleteTextView, entityList: List<String>) {
+        val adapter = MaterialArrayAdapter(
+            view.context,
+            R.layout.item_dropdown_menu_popup,
+            entityList
+        )
+        view.setAdapter(adapter)
+        view.filters = emptyArray()
     }
 
     @JvmStatic

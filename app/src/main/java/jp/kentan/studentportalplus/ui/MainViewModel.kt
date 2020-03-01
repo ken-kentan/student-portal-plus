@@ -29,6 +29,15 @@ class MainViewModel @Inject constructor(
     val closeDrawer: LiveData<Event<Unit>>
         get() = _closeDrawer
 
+    val shouldLaunchWelcomeActivity: Boolean
+        get() = !localPreferences.isAuthenticatedUser
+
+    fun onCreate(shouldRefresh: Boolean) {
+        if (shouldRefresh) {
+            onRefresh()
+        }
+    }
+
     fun onRefresh() {
         if (isSyncing.value == true) {
             return

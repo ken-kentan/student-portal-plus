@@ -15,6 +15,8 @@ import java.util.*
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+        private const val IS_AUTHENICATED_USER = "is_authenticated_user"
+
         private const val IS_GRID_TIMETABLE_LAYOUT = "is_grid_timetable_layout"
         private const val IS_ENABLED_PDF_OPEN_WITH_GDOCS = "is_enabled_pdf_open_with_gdocs"
         private const val IS_ENABLED_DETAIL_ERROR = "is_enabled_detail_error"
@@ -42,6 +44,12 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
 
     val isEnabledSync: Boolean
         get() = sharedPreferences.getBoolean(IS_ENABLED_SYNC, true)
+
+    var isAuthenticatedUser: Boolean
+        get() = sharedPreferences.getBoolean(IS_AUTHENICATED_USER, false)
+        set(value) = sharedPreferences.edit {
+            putBoolean(IS_AUTHENICATED_USER, value)
+        }
 
     var isGridTimetableLayout: Boolean
         get() = sharedPreferences.getBoolean(IS_GRID_TIMETABLE_LAYOUT, true)
@@ -126,24 +134,33 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             putInt(NOTIFICATION_ID, value)
         }
 
-    val lectureInformationNotificationType: LectureNotificationType
+    var lectureInformationNotificationType: LectureNotificationType
         get() {
             val type = sharedPreferences.getString(LECTURE_INFO_NOTIFICATION_TYPE, null)
                 ?: return LectureNotificationType.ALL
             return LectureNotificationType.valueOf(type)
         }
+        set(value) = sharedPreferences.edit {
+            putString(LECTURE_INFO_NOTIFICATION_TYPE, value.name)
+        }
 
-    val lectureCancellationNotificationType: LectureNotificationType
+    var lectureCancellationNotificationType: LectureNotificationType
         get() {
             val type = sharedPreferences.getString(LECTURE_CANCEL_NOTIFICATION_TYPE, null)
                 ?: return LectureNotificationType.ALL
             return LectureNotificationType.valueOf(type)
         }
+        set(value) = sharedPreferences.edit {
+            putString(LECTURE_CANCEL_NOTIFICATION_TYPE, value.name)
+        }
 
-    val noticeNotificationType: NoticeNotificationType
+    var noticeNotificationType: NoticeNotificationType
         get() {
             val type = sharedPreferences.getString(NOTICE_NOTIFICATION_TYPE, null)
                 ?: return NoticeNotificationType.ALL
             return NoticeNotificationType.valueOf(type)
+        }
+        set(value) = sharedPreferences.edit {
+            putString(NOTICE_NOTIFICATION_TYPE, value.name)
         }
 }

@@ -83,7 +83,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
         }
 
-        dashboardViewModel.navigation.observeEvent(viewLifecycleOwner) {
+        dashboardViewModel.navigate.observeEvent(viewLifecycleOwner) {
             findNavController().navigate(it, null, navOptions)
         }
         dashboardViewModel.startAttendCourseDetailActivity.observeEvent(viewLifecycleOwner) {

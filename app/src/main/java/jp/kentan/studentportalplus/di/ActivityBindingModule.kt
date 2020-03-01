@@ -15,7 +15,6 @@ import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformatio
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailModule
 import jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsModule
 import jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsModule
-import jp.kentan.studentportalplus.ui.login.LoginActivity
 import jp.kentan.studentportalplus.ui.login.LoginModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
@@ -23,6 +22,8 @@ import jp.kentan.studentportalplus.ui.notices.NoticesModule
 import jp.kentan.studentportalplus.ui.settings.SettingsActivity
 import jp.kentan.studentportalplus.ui.settings.SettingsModule
 import jp.kentan.studentportalplus.ui.timetable.TimetableModule
+import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
+import jp.kentan.studentportalplus.ui.welcome.notification.WelcomeNotificationModule
 
 @Module
 @Suppress("UNUSED")
@@ -64,11 +65,11 @@ abstract class ActivityBindingModule {
     abstract fun contributeAttendCourseEditActivity(): EditAttendCourseActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [LoginModule::class])
-    abstract fun contributeLoginActivity(): LoginActivity
+    @ContributesAndroidInjector(modules = [WelcomeNotificationModule::class, LoginModule::class])
+    abstract fun contributeWelcomeActivity(): WelcomeActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    @ContributesAndroidInjector(modules = [SettingsModule::class, LoginModule::class])
     abstract fun contributeSettingsActivity(): SettingsActivity
 
 }

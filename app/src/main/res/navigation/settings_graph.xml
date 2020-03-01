@@ -7,7 +7,35 @@
     <fragment
         android:id="@+id/general_preference_fragment"
         android:name="jp.kentan.studentportalplus.ui.settings.GeneralPreferenceFragment"
-        android:label="@string/settings_title" />
+        android:label="@string/settings_title">
+        <action
+            android:id="@+id/action_general_preference_fragment_to_notification_type_preference_fragment"
+            app:destination="@id/notification_type_preference_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_general_preference_fragment_to_similar_subject_preference_fragment"
+            app:destination="@id/similar_subject_preference_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_general_preference_fragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_general_preference_fragment_to_oss_licenses_menu_activity"
+            app:destination="@id/oss_licenses_menu_activity" />
+        <action
+            android:id="@+id/action_general_preference_fragment_to_terms_custom_tabs"
+            app:destination="@id/terms_custom_tabs" />
+    </fragment>
 
     <fragment
         android:id="@+id/notification_type_preference_fragment"
@@ -19,9 +47,10 @@
         android:name="jp.kentan.studentportalplus.ui.settings.SimilarSubjectPreferenceFragment"
         android:label="@string/settings_similar_subject_title" />
 
-    <activity
-        android:id="@+id/login_activity"
-        android:name="jp.kentan.studentportalplus.ui.login.LoginActivity" />
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
+        android:label="@string/login_title" />
 
     <activity
         android:id="@+id/oss_licenses_menu_activity"
@@ -29,5 +58,5 @@
 
     <customTabs
         android:id="@+id/terms_custom_tabs"
-        app:url="@string/settings_terms_of_service_url" />
+        app:url="@string/all_terms_url" />
 </navigation>

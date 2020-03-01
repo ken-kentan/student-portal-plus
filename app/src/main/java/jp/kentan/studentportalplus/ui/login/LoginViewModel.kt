@@ -3,19 +3,29 @@ package jp.kentan.studentportalplus.ui.login
 import android.app.Application
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
+import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.ui.Event
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     application: Application,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val localPreferences: LocalPreferences
 ) : AndroidViewModel(application) {
 
+    companion object {
+        private const val LOGIN_SUCCESSFUL_DELAY_MILLS = 1000L
+    }
+
     val isLoading = MutableLiveData<Boolean>()
+
+    val isSuccessful = MutableLiveData<Boolean>()
 
     val message = MutableLiveData<String>()
 
@@ -48,9 +58,13 @@ class LoginViewModel @Inject constructor(
         return@OnEditorActionListener false
     }
 
-    private val _finishActivity = MutableLiveData<Boolean>()
-    val finishActivity: LiveData<Boolean>
-        get() = _finishActivity
+    private val _navigate = MutableLiveData<Event<Int>>()
+    val navigate: LiveData<Event<Int>>
+        get() = _navigate
+
+    private val _popBackStack = MutableLiveData<Event<Unit>>()
+    val popBackStack: LiveData<Event<Unit>>
+        get() = _popBackStack
 
     private val _hideSoftInput = MutableLiveData<Event<Unit>>()
     val hideSoftInput: LiveData<Event<Unit>>
@@ -58,10 +72,11 @@ class LoginViewModel @Inject constructor(
 
     private val unknownErrorMessage = application.getString(R.string.login_unknown_error)
 
-    private var shouldLaunchMainActivity = false
+    @IdRes
+    private var navigateResId: Int? = null
 
-    fun onActivityCreate(shouldLaunchMainActivity: Boolean) {
-        this.shouldLaunchMainActivity = shouldLaunchMainActivity
+    fun onViewCreated(@IdRes navigateResId: Int?) {
+        this.navigateResId = navigateResId
     }
 
     fun onLoginClick() {
@@ -99,13 +114,30 @@ class LoginViewModel @Inject constructor(
                 userRepository.login(username, password)
             }.fold(
                 onSuccess = {
-                    _finishActivity.value = shouldLaunchMainActivity
+                    isSuccessful.value = true
+                    message.value = null
+
+                    localPreferences.isAuthenticatedUser = true
+
+                    viewModelScope.launch {
+                        delay(LOGIN_SUCCESSFUL_DELAY_MILLS)
+
+                        val resId = navigateResId
+                        if (resId != null) {
+                            _navigate.value = Event(resId)
+                        } else {
+                            _popBackStack.value = Event(Unit)
+                        }
+                    }
+
+                    return@fold
                 },
                 onFailure = {
                     message.value = it.message ?: unknownErrorMessage
-                    isLoading.value = false
                 }
-            )
+            ).also {
+                isLoading.value = false
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.login
+package jp.kentan.studentportalplus.ui.welcome.notification
 
 import androidx.lifecycle.ViewModel
 import dagger.Binds
@@ -10,15 +10,15 @@ import jp.kentan.studentportalplus.di.ViewModelKey
 
 @Module
 @Suppress("UNUSED")
-abstract class LoginModule {
+abstract class WelcomeNotificationModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun contributeLoginFragment(): LoginFragment
+    abstract fun contributeWelcomeNotificationFragment(): WelcomeNotificationFragment
 
     @Binds
     @IntoMap
-    @ViewModelKey(LoginViewModel::class)
-    abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
+    @ViewModelKey(WelcomeNotificationViewModel::class)
+    abstract fun bindWelcomeNotificationViewModel(viewModel: WelcomeNotificationViewModel): ViewModel
 
 }

@@ -3,35 +3,27 @@ package jp.kentan.studentportalplus.ui.welcome
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.ui.setupWithNavController
+import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.databinding.ActivityWelcomeBinding
-import jp.kentan.studentportalplus.ui.login.LoginActivity
-import jp.kentan.studentportalplus.ui.observeEvent
+import jp.kentan.studentportalplus.util.findNavController
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : DaggerAppCompatActivity() {
 
     companion object {
-        fun createIntent(context: Context) = Intent(context, WelcomeActivity::class.java)
+        fun createIntent(context: Context) = Intent(context, WelcomeActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
     }
-
-    private val welcomeViewModel by viewModels<WelcomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_welcome)
 
-        DataBindingUtil.setContentView<ActivityWelcomeBinding>(this, R.layout.activity_welcome)
-            .apply {
-                lifecycleOwner = this@WelcomeActivity
-                viewModel = welcomeViewModel
-
-                setSupportActionBar(toolbar)
-            }
-
-        welcomeViewModel.startLoginActivity.observeEvent(this) {
-            startActivity(LoginActivity.createIntent(this, shouldLaunchMainActivity = true))
-        }
+        val navController = supportFragmentManager.findNavController()
+        findViewById<Toolbar>(R.id.toolbar)
+            .setupWithNavController(navController)
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcome_graph"
+    app:startDestination="@id/welcome_terms_fragment">
+
+    <fragment
+        android:id="@+id/welcome_terms_fragment"
+        android:name="jp.kentan.studentportalplus.ui.welcome.terms.WelcomeTermsFragment"
+        android:label="@string/welcome_title"
+        tools:layout="@layout/fragment_welcome_terms">
+        <action
+            android:id="@+id/action_welcome_terms_fragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="jp.kentan.studentportalplus.ui.login.LoginFragment"
+        android:label="@string/login_title"
+        tools:layout="@layout/fragment_login">
+        <argument
+            android:name="NAVIGATE_RES_ID"
+            android:defaultValue="@id/action_login_fragment_to_welcome_notification_fragment"
+            app:argType="reference" />
+        <action
+            android:id="@+id/action_login_fragment_to_welcome_notification_fragment"
+            app:destination="@id/welcome_notification_fragment"
+            app:popUpTo="@id/welcome_terms_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/welcome_notification_fragment"
+        android:name="jp.kentan.studentportalplus.ui.welcome.notification.WelcomeNotificationFragment"
+        android:label="@string/welcome_notification_title"
+        tools:layout="@layout/fragment_welcome_notification" />
+</navigation>

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="jp.kentan.studentportalplus.ui.login.LoginActivity">
+    tools:context="jp.kentan.studentportalplus.ui.login.LoginFragment">
 
     <data>
 
@@ -15,38 +15,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/Widget.AppTheme.Toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
+        <ImageView
+            android:id="@+id/login_successful_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/login_successful_icon"
+            android:src="@drawable/login_successful"
+            app:isVisible="@{viewModel.isSuccessful}"
+            app:layout_constraintBottom_toTopOf="@+id/login_successful_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/login_successful_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_successful"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:isVisible="@{viewModel.isSuccessful}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_successful_image_view" />
 
         <ProgressBar
             android:id="@+id/progress_circular"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:isVisible="@{viewModel.isLoading}"
+            android:layout_margin="16dp"
+            app:isVisible="@{viewModel.isLoading &amp;&amp; !viewModel.isSuccessful}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ScrollView
             android:id="@+id/scroll_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:isVisible="@{!viewModel.isLoading}"
+            app:isVisible="@{!viewModel.isLoading &amp;&amp; !viewModel.isSuccessful}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -39,19 +39,25 @@
     <string name="all_delete_failed">消去に失敗しました</string>
     <string name="all_update_failed">更新に失敗しました</string>
     <string name="all_not_found_error">存在しないか, すでに消去されています</string>
-    <string name="all_favorite_description">お気に入り</string>
-    <string name="all_attend_description">受講科目</string>
+    <string name="all_terms_url">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
+    <string name="all_terms_local_url">file:///android_asset/terms_and_privacy_policy.html</string>
 
     <!-- Welcome -->
     <string name="welcome_title">Welcome</string>
-    <string name="welcome_agree_terms_of_service">上記の利用規約に同意します</string>
-    <string name="welcome_shibboleth">シボレス認証</string>
+    <string name="welcome_terms_agree">上記の利用規約に同意します</string>
+    <string name="welcome_terms_shibboleth">シボレス認証</string>
+    <string name="welcome_notification_title">Notification</string>
+    <string name="welcome_notification_select_type">通知の種類をそれぞれ選択してください</string>
+    <string name="welcome_notification_complete">設定完了</string>
+    <string name="welcome_notification_notes">※この設定は後からでも変更が可能です。</string>
 
     <!-- Login -->
     <string name="login_title">Shibboleth</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_input_username_and_password">ユーザー名とパスワードを入力して下さい</string>
+    <string name="login_successful">ログインに成功しました！</string>
+    <string name="login_successful_icon">成功アイコン</string>
     <string name="login_invalid_username">無効なユーザー名です</string>
     <string name="login_invalid_password">無効なパスワード文字数です</string>
     <string name="login_unknown_error">不明なエラーです</string>
@@ -142,7 +148,6 @@
     <string name="settings_notification_type_title">Notification Type</string>
     <string name="settings_similar_subject_title">Similar Subject</string>
     <string name="settings_share_app">Student Portal+\nhttps://play.google.com/store/apps/details?id=jp.kentan.student_portal_plus</string>
-    <string name="settings_terms_of_service_url">https://ken.kentan.jp/app/student_portal_plus/terms_and_privacy_policy.html</string>
 
     <!-- Lecture Filter -->
     <string name="lecture_filter_display_order">表示順</string>

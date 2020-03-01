@@ -41,12 +41,7 @@
             android:name=".ui.noticedetail.NoticeDetailActivity"
             android:label=""
             android:theme="@style/AppTheme.TransparentStatusBar" />
-        <activity
-            android:name=".ui.welcome.WelcomeActivity"
-            android:label="@string/welcome_title" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/login_title" />
+        <activity android:name=".ui.welcome.WelcomeActivity" />
         <activity android:name=".ui.editattendcourse.EditAttendCourseActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
 
