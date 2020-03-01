@@ -36,7 +36,8 @@ class TimetableItemDecoration(context: Context) : RecyclerView.ItemDecoration() 
         color = ContextCompat.getColor(context, R.color.timetable_grid_background)
     }
 
-    private val lineHeight = 10 // TODO
+    private val lineHeight =
+        context.resources.getDimensionPixelOffset(R.dimen.timetable_line_height)
     private val bounds = Rect()
 
     private val calender = Calendar.getInstance()

@@ -13,4 +13,5 @@
 
     <dimen name="timetable_grid_height">112dp</dimen>
     <dimen name="timetable_grid_period_width">32dp</dimen>
+    <dimen name="timetable_line_height">2dp</dimen>
 </resources>
