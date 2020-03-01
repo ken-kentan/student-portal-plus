@@ -23,21 +23,20 @@ data class NoticeQuery(
         MONTH(R.string.date_range_month),
         YEAR(R.string.date_range_year);
 
-        val timeInMillis: Long
-            get() = Calendar.getInstance().apply {
-                clear(Calendar.MINUTE)
-                clear(Calendar.SECOND)
-                clear(Calendar.MILLISECOND)
-                set(Calendar.HOUR_OF_DAY, 0)
+        fun createTimeInMillis(calender: Calendar) = calender.apply {
+            clear(Calendar.MINUTE)
+            clear(Calendar.SECOND)
+            clear(Calendar.MILLISECOND)
+            set(Calendar.HOUR_OF_DAY, 0)
 
-                when (this@DateRange) {
-                    ALL -> clear()
-                    DAY -> return@apply
-                    WEEK -> set(Calendar.DAY_OF_WEEK, firstDayOfWeek)
-                    MONTH -> set(Calendar.DAY_OF_MONTH, 1)
-                    YEAR -> set(Calendar.DAY_OF_YEAR, 1)
-                }
-            }.timeInMillis
+            when (this@DateRange) {
+                ALL -> clear()
+                DAY -> return@apply
+                WEEK -> set(Calendar.DAY_OF_WEEK, firstDayOfWeek)
+                MONTH -> set(Calendar.DAY_OF_MONTH, 1)
+                YEAR -> set(Calendar.DAY_OF_YEAR, 1)
+            }
+        }.timeInMillis
     }
 
     val textList: List<String> = if (text.isNullOrBlank()) {

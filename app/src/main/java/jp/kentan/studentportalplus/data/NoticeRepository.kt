@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import java.util.*
 
 interface NoticeRepository {
     fun getFlow(id: Long): Flow<Notice>
@@ -43,6 +44,9 @@ class DefaultNoticeRepository(
         noticeDao.getListFlow(),
         queryFlow
     ) { noticeList, query ->
+        val calendar = Calendar.getInstance()
+        val dateRangeTimeMillis = query.dateRange.createTimeInMillis(calendar)
+
         noticeList.filter { notice ->
             if (query.isUnread && notice.isRead) {
                 return@filter false
@@ -54,7 +58,7 @@ class DefaultNoticeRepository(
                 return@filter false
             }
             if (query.dateRange != NoticeQuery.DateRange.ALL) {
-                return@filter notice.createdDate.time >= query.dateRange.timeInMillis
+                return@filter notice.createdDate.time >= dateRangeTimeMillis
             }
             if (query.textList.isNotEmpty()) {
                 return@filter query.textList.any { notice.title.contains(it, true) }
