@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.welcome.term
+package jp.kentan.studentportalplus.ui.welcome.terms
 
 import android.os.Bundle
 import android.view.View

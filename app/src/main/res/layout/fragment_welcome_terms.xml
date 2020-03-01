@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermsViewModel" />
+            type="jp.kentan.studentportalplus.ui.welcome.terms.WelcomeTermsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.welcome.term
+package jp.kentan.studentportalplus.ui.welcome.terms
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

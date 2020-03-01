@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/welcome_graph"
-    app:startDestination="@id/welcome_term_fragment">
+    app:startDestination="@id/welcome_terms_fragment">
 
     <fragment
-        android:id="@+id/welcome_term_fragment"
-        android:name="jp.kentan.studentportalplus.ui.welcome.term.WelcomeTermsFragment"
+        android:id="@+id/welcome_terms_fragment"
+        android:name="jp.kentan.studentportalplus.ui.welcome.terms.WelcomeTermsFragment"
         android:label="@string/welcome_title"
         tools:layout="@layout/fragment_welcome_terms" />
 

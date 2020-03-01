@@ -134,24 +134,33 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
             putInt(NOTIFICATION_ID, value)
         }
 
-    val lectureInformationNotificationType: LectureNotificationType
+    var lectureInformationNotificationType: LectureNotificationType
         get() {
             val type = sharedPreferences.getString(LECTURE_INFO_NOTIFICATION_TYPE, null)
                 ?: return LectureNotificationType.ALL
             return LectureNotificationType.valueOf(type)
         }
+        set(value) = sharedPreferences.edit {
+            putString(LECTURE_INFO_NOTIFICATION_TYPE, value.name)
+        }
 
-    val lectureCancellationNotificationType: LectureNotificationType
+    var lectureCancellationNotificationType: LectureNotificationType
         get() {
             val type = sharedPreferences.getString(LECTURE_CANCEL_NOTIFICATION_TYPE, null)
                 ?: return LectureNotificationType.ALL
             return LectureNotificationType.valueOf(type)
         }
+        set(value) = sharedPreferences.edit {
+            putString(LECTURE_CANCEL_NOTIFICATION_TYPE, value.name)
+        }
 
-    val noticeNotificationType: NoticeNotificationType
+    var noticeNotificationType: NoticeNotificationType
         get() {
             val type = sharedPreferences.getString(NOTICE_NOTIFICATION_TYPE, null)
                 ?: return NoticeNotificationType.ALL
             return NoticeNotificationType.valueOf(type)
+        }
+        set(value) = sharedPreferences.edit {
+            putString(NOTICE_NOTIFICATION_TYPE, value.name)
         }
 }
