@@ -32,6 +32,12 @@ class MainViewModel @Inject constructor(
     val shouldLaunchWelcomeActivity: Boolean
         get() = !localPreferences.isAuthenticatedUser
 
+    fun onCreate(shouldRefresh: Boolean) {
+        if (shouldRefresh) {
+            onRefresh()
+        }
+    }
+
     fun onRefresh() {
         if (isSyncing.value == true) {
             return

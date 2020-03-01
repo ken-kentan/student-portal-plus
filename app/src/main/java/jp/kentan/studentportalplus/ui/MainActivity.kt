@@ -29,6 +29,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     companion object {
         private const val EXTRA_START_DESTINATION = "START_DESTINATION"
+        private const val EXTRA_SHOULD_REFRESH = "SHOULD_REFRESH"
 
         fun createIntent(context: Context, startDestination: Destination? = null) =
             Intent(context, MainActivity::class.java).apply {
@@ -38,6 +39,14 @@ class MainActivity : DaggerAppCompatActivity() {
                 if (startDestination != null) {
                     putExtra(EXTRA_START_DESTINATION, startDestination)
                 }
+            }
+
+        fun createIntent(context: Context, shouldRefresh: Boolean) =
+            Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+                putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
             }
     }
 
@@ -101,6 +110,10 @@ class MainActivity : DaggerAppCompatActivity() {
                 setAction(R.string.all_close) { dismiss() }
             }.show()
         }
+
+        mainViewModel.onCreate(
+            shouldRefresh = intent.getBooleanExtra(EXTRA_SHOULD_REFRESH, false)
+        )
     }
 
     override fun onBackPressed() {

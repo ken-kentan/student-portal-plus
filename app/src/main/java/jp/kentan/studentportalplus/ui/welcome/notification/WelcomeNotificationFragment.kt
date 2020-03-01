@@ -29,7 +29,7 @@ class WelcomeNotificationFragment : Fragment(R.layout.fragment_welcome_notificat
         }
 
         welcomeNotificationViewModel.startMainActivity.observeEvent(viewLifecycleOwner) {
-            startActivity(MainActivity.createIntent(requireContext()))
+            startActivity(MainActivity.createIntent(requireContext(), shouldRefresh = true))
         }
     }
 
