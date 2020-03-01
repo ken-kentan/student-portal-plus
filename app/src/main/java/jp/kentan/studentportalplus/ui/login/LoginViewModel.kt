@@ -9,6 +9,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.ui.Event
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +19,13 @@ class LoginViewModel @Inject constructor(
     private val localPreferences: LocalPreferences
 ) : AndroidViewModel(application) {
 
+    companion object {
+        private const val LOGIN_SUCCESSFUL_DELAY_MILLS = 1000L
+    }
+
     val isLoading = MutableLiveData<Boolean>()
+
+    val isSuccessful = MutableLiveData<Boolean>()
 
     val message = MutableLiveData<String>()
 
@@ -107,16 +114,23 @@ class LoginViewModel @Inject constructor(
                 userRepository.login(username, password)
             }.fold(
                 onSuccess = {
+                    isSuccessful.value = true
                     message.value = null
 
                     localPreferences.isAuthenticatedUser = true
 
-                    val resId = navigateResId
-                    if (resId != null) {
-                        _navigate.value = Event(resId)
-                    } else {
-                        _popBackStack.value = Event(Unit)
+                    viewModelScope.launch {
+                        delay(LOGIN_SUCCESSFUL_DELAY_MILLS)
+
+                        val resId = navigateResId
+                        if (resId != null) {
+                            _navigate.value = Event(resId)
+                        } else {
+                            _popBackStack.value = Event(Unit)
+                        }
                     }
+
+                    return@fold
                 },
                 onFailure = {
                     message.value = it.message ?: unknownErrorMessage

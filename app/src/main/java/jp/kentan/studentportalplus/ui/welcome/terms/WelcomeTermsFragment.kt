@@ -34,8 +34,8 @@ class WelcomeTermsFragment : Fragment(R.layout.fragment_welcome_terms) {
             }
         }
 
-        welcomeTermViewModel.navigate.observeEvent(viewLifecycleOwner) {
-            findNavController().navigate(it)
+        welcomeTermViewModel.navigateToLogin.observeEvent(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_welcome_terms_fragment_to_login_fragment)
         }
     }
 }

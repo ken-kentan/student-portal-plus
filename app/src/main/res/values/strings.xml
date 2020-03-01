@@ -56,6 +56,8 @@
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_input_username_and_password">ユーザー名とパスワードを入力して下さい</string>
+    <string name="login_successful">ログインに成功しました！</string>
+    <string name="login_successful_icon">成功アイコン</string>
     <string name="login_invalid_username">無効なユーザー名です</string>
     <string name="login_invalid_password">無効なパスワード文字数です</string>
     <string name="login_unknown_error">不明なエラーです</string>
