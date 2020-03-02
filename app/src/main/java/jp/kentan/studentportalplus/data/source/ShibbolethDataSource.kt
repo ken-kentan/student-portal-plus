@@ -47,13 +47,16 @@ class ShibbolethDataSource(
     } ?: throw ShibbolethDecryptException("KeyStore is null")
 
     val name: String
-        get() = decrypt(preferences.getString(KEY_NAME, null)) ?: fail("名前の復号に失敗しました")
+        get() = decrypt(preferences.getString(KEY_NAME, null))
+            ?: throw ShibbolethDecryptException("名前の復号に失敗しました")
 
     val username: String
-        get() = decrypt(preferences.getString(KEY_USERNAME, null)) ?: fail("ユーザー名の復号に失敗しました")
+        get() = decrypt(preferences.getString(KEY_USERNAME, null))
+            ?: throw ShibbolethDecryptException("ユーザー名の復号に失敗しました")
 
     val password: String
-        get() = decrypt(preferences.getString(KEY_PASSWORD, null)) ?: fail("パスワードの復号に失敗しました")
+        get() = decrypt(preferences.getString(KEY_PASSWORD, null))
+            ?: throw ShibbolethDecryptException("パスワードの復号に失敗しました")
 
 
     fun save(name: String, username: String, password: String) {
@@ -160,8 +163,4 @@ class ShibbolethDataSource(
 
         return null
     }
-
-    private fun fail(message: String): Nothing = throw ShibbolethDecryptException(message)
 }
-
-class ShibbolethDecryptException(message: String) : ShibbolethException(message)

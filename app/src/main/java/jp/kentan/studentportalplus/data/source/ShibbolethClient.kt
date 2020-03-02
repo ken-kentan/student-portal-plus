@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.data.source
 
-import android.os.Build
 import android.util.Log
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.User
@@ -8,11 +7,7 @@ import okhttp3.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.CookieManager
-import java.security.KeyStore
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
 class ShibbolethClient(
@@ -51,7 +46,6 @@ class ShibbolethClient(
         .writeTimeout(WRITE_TIMEOUT_SEC, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT_SEC, TimeUnit.SECONDS)
         .connectionSpecs(createConnectionSpec())
-        .enableTls12()
         .build()
 
     @Throws(ShibbolethException::class)
@@ -131,9 +125,7 @@ class ShibbolethClient(
             throw ShibbolethResponseException("Error HTTP status code: ${response.code()} ${response.message()}")
         }
 
-        val body = response.body() ?: throw ShibbolethResponseException(
-            "Empty response body"
-        )
+        val body = response.body() ?: throw ShibbolethResponseException("Empty response body")
 
         Log.d(TAG, "Passed: LoadingSessionInformationPage")
 
@@ -225,37 +217,7 @@ class ShibbolethClient(
             .allEnabledCipherSuites()
             .build()
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            return listOf(spec, ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT)
-        }
-
         return listOf(spec)
-    }
-
-    private fun OkHttpClient.Builder.enableTls12(): OkHttpClient.Builder {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            return this
-        }
-
-        try {
-            val trustManagerFactory =
-                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-            trustManagerFactory.init(null as KeyStore?)
-
-            val trustManager =
-                trustManagerFactory.trustManagers.firstOrNull() as? X509TrustManager ?: let {
-                    throw IllegalStateException("Unexpected default trust managers")
-                }
-
-            val sslContext = SSLContext.getInstance("TLSv1.2")
-            sslContext.init(null, arrayOf(trustManager), null)
-
-            sslSocketFactory(Tls12SocketFactory(sslContext.socketFactory), trustManager)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error while enabling TLSv1.2", e)
-        }
-
-        return this
     }
 
     private val Response.isRequireLogin: Boolean
@@ -264,9 +226,3 @@ class ShibbolethClient(
             return request.url().host() == IDP_AUTHENTICATION_HOST
         }
 }
-
-class ShibbolethAuthenticationException(message: String) : ShibbolethException(message)
-
-class ShibbolethResponseException(message: String) : ShibbolethException(message)
-
-abstract class ShibbolethException(override val message: String) : Exception(message)
