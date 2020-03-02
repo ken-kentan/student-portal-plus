@@ -10,7 +10,7 @@ import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
-import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import jp.kentan.studentportalplus.data.source.ShibbolethException
 import jp.kentan.studentportalplus.data.vo.LectureNotificationType
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import jp.kentan.studentportalplus.notification.NotificationHelper
@@ -105,8 +105,8 @@ class SyncWorker @AssistedInject constructor(
 
                 Result.success()
             } catch (e: Exception) {
-                if (e is ShibbolethAuthenticationException) {
-                    notificationHelper.sendAuthenticationError(e.message)
+                if (e is ShibbolethException) {
+                    notificationHelper.sendShibbolethError(e.message)
                 } else if (localPreferences.isEnabledDetailError) {
                     notificationHelper.sendError(e)
                 }

@@ -36,7 +36,7 @@ abstract class NotificationHelper(
 
     abstract fun sendNotice(noticeList: List<Notice>)
 
-    fun sendAuthenticationError(message: String) {
+    fun sendShibbolethError(message: String) {
         sendErrorInternal(
             intent = SettingsActivity.createIntent(context),
             subText = context.getString(R.string.notification_required_login_again),
