@@ -66,7 +66,9 @@
     <string name="main_open_navigation_drawer">ナビゲーションを開きました</string>
     <string name="main_close_navigation_drawer">ナビゲーションを閉じました</string>
     <string name="main_icon_description">アイコン</string>
+    <string name="main_login">再ログイン</string>
     <string name="main_sync_failed_error">同期に失敗しました。時間をおいて再試行して下さい</string>
+    <string name="main_authentication_failed_error">認証に失敗しました。再ログインして下さい</string>
     <string name="main_campus_map_url">https://www.kit.ac.jp/uni_index/campus-map/</string>
     <string name="main_room_map_url">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
 

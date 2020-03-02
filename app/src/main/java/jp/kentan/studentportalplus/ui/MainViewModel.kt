@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.*
-import jp.kentan.studentportalplus.data.source.ShibbolethAuthenticationException
+import jp.kentan.studentportalplus.data.source.ShibbolethException
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +21,13 @@ class MainViewModel @Inject constructor(
     val user = userRepository.getFlow().asLiveData()
     val isSyncing = MutableLiveData<Boolean>()
 
-    private val _indefiniteSnackbar = MutableLiveData<Event<String>>()
-    val indefiniteSnackbar: LiveData<Event<String>>
-        get() = _indefiniteSnackbar
+    private val _errorSnackbar = MutableLiveData<Event<String>>()
+    val errorSnackbar: LiveData<Event<String>>
+        get() = _errorSnackbar
+
+    private val _loginSnackbar = MutableLiveData<Event<Unit>>()
+    val loginSnackbar: LiveData<Event<Unit>>
+        get() = _loginSnackbar
 
     private val _closeDrawer = MutableLiveData<Event<Unit>>()
     val closeDrawer: LiveData<Event<Unit>>
@@ -52,8 +56,9 @@ class MainViewModel @Inject constructor(
                 lectureCancelRepository.syncWithRemote()
                 noticeRepository.syncWithRemote()
             }.onFailure {
-                if (it is ShibbolethAuthenticationException) {
-                    // TODO
+                if (it is ShibbolethException) {
+                    _loginSnackbar.value = Event(Unit)
+                    return@onFailure
                 }
 
                 val throwableMessage = it.message
@@ -64,7 +69,7 @@ class MainViewModel @Inject constructor(
                         getApplication<Application>().getString(R.string.main_sync_failed_error)
                     }
 
-                _indefiniteSnackbar.value = Event(message)
+                _errorSnackbar.value = Event(message)
             }.also {
                 isSyncing.value = false
             }

@@ -73,14 +73,14 @@ class MainActivity : DaggerAppCompatActivity() {
             return
         }
 
+        val navController = supportFragmentManager.findNavController()
+
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
             .apply {
                 lifecycleOwner = this@MainActivity
                 viewModel = mainViewModel
 
                 setSupportActionBar(appBar.toolbar)
-
-                val navController = supportFragmentManager.findNavController()
 
                 setupWithNavController(
                     navView,
@@ -105,9 +105,18 @@ class MainActivity : DaggerAppCompatActivity() {
         mainViewModel.closeDrawer.observeEvent(this) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
-        mainViewModel.indefiniteSnackbar.observeEvent(this) {
+        mainViewModel.errorSnackbar.observeEvent(this) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).apply {
                 setAction(R.string.all_close) { dismiss() }
+            }.show()
+        }
+        mainViewModel.loginSnackbar.observeEvent(this) {
+            Snackbar.make(
+                binding.root,
+                R.string.main_authentication_failed_error,
+                Snackbar.LENGTH_INDEFINITE
+            ).setAction(R.string.main_login) {
+                navController.navigate(R.id.settings_activity)
             }.show()
         }
 
