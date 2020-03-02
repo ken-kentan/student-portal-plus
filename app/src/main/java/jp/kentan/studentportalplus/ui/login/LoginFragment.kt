@@ -36,8 +36,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         loginViewModel.navigate.observeEvent(viewLifecycleOwner) {
             findNavController().navigate(it)
         }
-        loginViewModel.popBackStack.observeEvent(viewLifecycleOwner) {
-            findNavController().popBackStack()
+        loginViewModel.navigateUp.observeEvent(viewLifecycleOwner) {
+            findNavController().navigateUp()
         }
         loginViewModel.hideSoftInput.observeEvent(viewLifecycleOwner) {
             activity?.hideSoftInput()

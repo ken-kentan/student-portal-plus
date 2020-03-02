@@ -62,9 +62,9 @@ class LoginViewModel @Inject constructor(
     val navigate: LiveData<Event<Int>>
         get() = _navigate
 
-    private val _popBackStack = MutableLiveData<Event<Unit>>()
-    val popBackStack: LiveData<Event<Unit>>
-        get() = _popBackStack
+    private val _navigateUp = MutableLiveData<Event<Unit>>()
+    val navigateUp: LiveData<Event<Unit>>
+        get() = _navigateUp
 
     private val _hideSoftInput = MutableLiveData<Event<Unit>>()
     val hideSoftInput: LiveData<Event<Unit>>
@@ -126,7 +126,7 @@ class LoginViewModel @Inject constructor(
                         if (resId != null) {
                             _navigate.value = Event(resId)
                         } else {
-                            _popBackStack.value = Event(Unit)
+                            _navigateUp.value = Event(Unit)
                         }
                     }
 
