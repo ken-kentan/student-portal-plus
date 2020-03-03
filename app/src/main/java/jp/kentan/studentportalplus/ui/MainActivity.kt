@@ -73,8 +73,6 @@ class MainActivity : DaggerAppCompatActivity() {
             return
         }
 
-        val navController = supportFragmentManager.findNavController()
-
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
             .apply {
                 lifecycleOwner = this@MainActivity
@@ -85,7 +83,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 setupWithNavController(
                     navView,
                     drawerLayout,
-                    navController,
+                    supportFragmentManager.findNavController(),
                     intent.getSerializableExtra(EXTRA_START_DESTINATION) as Destination?
                 )
 
@@ -116,7 +114,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 R.string.main_authentication_failed_error,
                 Snackbar.LENGTH_INDEFINITE
             ).setAction(R.string.main_login) {
-                navController.navigate(R.id.settings_activity)
+                supportFragmentManager.findNavController().navigate(R.id.settings_activity)
             }.show()
         }
 
