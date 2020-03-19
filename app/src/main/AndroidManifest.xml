@@ -49,6 +49,17 @@
         <activity android:name=".ui.settings.SettingsActivity" />
 
         <activity
+            android:name=".ui.timetable.shortcut.TimetableShortcutActivity"
+            android:enabled="@bool/enabled_shortcut_widget"
+            android:icon="@mipmap/timetable_shortcut_activity"
+            android:label="@string/timetable_shortcut_label">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
