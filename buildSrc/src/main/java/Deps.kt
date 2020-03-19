@@ -21,7 +21,7 @@ object Deps {
     }
 
     object AndroidX {
-        const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+        const val appCompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
         const val coreKtx = "androidx.core:core-ktx:1.2.0"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.2"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
