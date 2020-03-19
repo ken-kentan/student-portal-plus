@@ -17,7 +17,11 @@ class TimetableShortcutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val shortcutIntent = MainActivity.createIntent(this).apply {
+        val shortcutIntent = MainActivity.createIntent(
+            context = this,
+            shouldRefresh = false,
+            isTimetableStartDestination = true
+        ).apply {
             action = intent.action
         }
 

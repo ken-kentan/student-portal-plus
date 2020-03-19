@@ -44,13 +44,14 @@ class MainActivity : DaggerAppCompatActivity() {
                 }
             }
 
-        fun createIntent(context: Context, shouldRefresh: Boolean) =
-            Intent(context, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
-                putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
-            }
+        fun createIntent(
+            context: Context,
+            shouldRefresh: Boolean,
+            isTimetableStartDestination: Boolean
+        ) = createIntent(context).apply {
+            putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
+            putExtra(EXTRA_IS_TIMETABLE_START_DESTINATION, isTimetableStartDestination)
+        }
     }
 
     @Inject
