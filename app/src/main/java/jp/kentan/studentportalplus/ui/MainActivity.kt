@@ -28,16 +28,16 @@ import javax.inject.Inject
 class MainActivity : DaggerAppCompatActivity() {
 
     companion object {
-        private const val EXTRA_START_DESTINATION = "START_DESTINATION"
+        private const val EXTRA_NAVIGATE = "NAVIGATE"
         private const val EXTRA_SHOULD_REFRESH = "SHOULD_REFRESH"
 
-        fun createIntent(context: Context, startDestination: Destination? = null) =
+        fun createIntent(context: Context, @IdRes navigateResId: Int? = null) =
             Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-                if (startDestination != null) {
-                    putExtra(EXTRA_START_DESTINATION, startDestination)
+                if (navigateResId != null) {
+                    putExtra(EXTRA_NAVIGATE, navigateResId)
                 }
             }
 
@@ -48,14 +48,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
             }
-    }
-
-    enum class Destination(
-        @IdRes val resId: Int
-    ) {
-        LECTURE_INFORMATION(R.id.lecture_informations_fragment),
-        LECTURE_CANCELLATION(R.id.lecture_cancellations_fragment),
-        NOTICE(R.id.notices_fragment)
     }
 
     @Inject
@@ -84,7 +76,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     navView,
                     drawerLayout,
                     supportFragmentManager.findNavController(),
-                    intent.getSerializableExtra(EXTRA_START_DESTINATION) as Destination?
+                    intent.getIntExtra(EXTRA_NAVIGATE, 0)
                 )
 
                 val toggle = ActionBarDrawerToggle(
@@ -136,7 +128,7 @@ class MainActivity : DaggerAppCompatActivity() {
         navigationView: NavigationView,
         drawerLayout: DrawerLayout,
         navController: NavController,
-        startDestination: Destination?
+        @IdRes navigateResId: Int
     ) {
         val fragmentIdSet = setOf(
             R.id.dashboard_fragment,
@@ -176,8 +168,8 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-        if (startDestination != null) {
-            navController.navigate(startDestination.resId)
+        if (navigateResId != 0) {
+            navController.navigate(navigateResId)
         }
     }
 }
