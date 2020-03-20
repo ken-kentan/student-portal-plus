@@ -1,6 +1,11 @@
 package jp.kentan.studentportalplus.ui.noticedetail
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.util.asLiveData
 import kotlinx.coroutines.launch

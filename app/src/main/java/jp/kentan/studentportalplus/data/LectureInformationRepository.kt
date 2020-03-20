@@ -81,8 +81,8 @@ class DefaultLectureInformationRepository(
             }
             if (query.textList.isNotEmpty()) {
                 return@filter query.textList.any {
-                    lecture.subject.contains(it, ignoreCase = true)
-                        || lecture.instructor.contains(it, ignoreCase = true)
+                    lecture.subject.contains(it, ignoreCase = true) ||
+                        lecture.instructor.contains(it, ignoreCase = true)
                 }
             }
 

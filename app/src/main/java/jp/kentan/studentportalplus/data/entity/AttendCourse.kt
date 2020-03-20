@@ -48,10 +48,10 @@ data class AttendCourse(
     val hash: Long = XxHash64.hash("$dayOfWeek$period$scheduleCode$credit$category$subject$instructor$type")
 ) {
     enum class Type {
-        PORTAL,  // ポータル取得
-        USER,    // ユーザー登録
+        PORTAL, // ポータル取得
+        USER, // ユーザー登録
         SIMILAR, // 類似
-        NOT,     // 未受講
+        NOT, // 未受講
         UNKNOWN; // 未確認
 
         val isAttend: Boolean
