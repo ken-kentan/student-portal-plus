@@ -2,8 +2,9 @@ object Deps {
     object GradlePlugin {
         const val android = "com.android.tools.build:gradle:3.6.0"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
+        const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:9.2.1"
         const val googleServices = "com.google.gms:google-services:4.3.3"
-        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.9.5"
+        const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.2"
         const val firebaseAppDistribution =
             "com.google.firebase:firebase-appdistribution-gradle:1.3.1"
     }

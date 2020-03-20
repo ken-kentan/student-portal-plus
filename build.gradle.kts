@@ -4,11 +4,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-
+        gradlePluginPortal()
     }
     dependencies {
         classpath(Deps.GradlePlugin.android)
         classpath(Deps.GradlePlugin.kotlin)
+        classpath(Deps.GradlePlugin.ktlint)
         classpath(Deps.GradlePlugin.googleServices)
         classpath(Deps.GradlePlugin.ossLicenses)
         classpath(Deps.GradlePlugin.firebaseAppDistribution)
@@ -22,6 +23,8 @@ allprojects {
         google()
         jcenter()
     }
+
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }
 
 task<Delete>("clean") {
