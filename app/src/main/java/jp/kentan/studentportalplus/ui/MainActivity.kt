@@ -28,34 +28,30 @@ import javax.inject.Inject
 class MainActivity : DaggerAppCompatActivity() {
 
     companion object {
-        private const val EXTRA_START_DESTINATION = "START_DESTINATION"
+        private const val EXTRA_NAVIGATE = "NAVIGATE"
         private const val EXTRA_SHOULD_REFRESH = "SHOULD_REFRESH"
+        private const val EXTRA_IS_TIMETABLE_START_DESTINATION = "IS_TIMETABLE_START_DESTINATION"
 
-        fun createIntent(context: Context, startDestination: Destination? = null) =
+        private const val RESOURCE_ID_NULL = 0
+
+        fun createIntent(context: Context, @IdRes navigateResId: Int? = null) =
             Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-                if (startDestination != null) {
-                    putExtra(EXTRA_START_DESTINATION, startDestination)
+                if (navigateResId != null) {
+                    putExtra(EXTRA_NAVIGATE, navigateResId)
                 }
             }
 
-        fun createIntent(context: Context, shouldRefresh: Boolean) =
-            Intent(context, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
-                putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
-            }
-    }
-
-    enum class Destination(
-        @IdRes val resId: Int
-    ) {
-        LECTURE_INFORMATION(R.id.lecture_informations_fragment),
-        LECTURE_CANCELLATION(R.id.lecture_cancellations_fragment),
-        NOTICE(R.id.notices_fragment)
+        fun createIntent(
+            context: Context,
+            shouldRefresh: Boolean,
+            isTimetableStartDestination: Boolean
+        ) = createIntent(context).apply {
+            putExtra(EXTRA_SHOULD_REFRESH, shouldRefresh)
+            putExtra(EXTRA_IS_TIMETABLE_START_DESTINATION, isTimetableStartDestination)
+        }
     }
 
     @Inject
@@ -84,7 +80,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     navView,
                     drawerLayout,
                     supportFragmentManager.findNavController(),
-                    intent.getSerializableExtra(EXTRA_START_DESTINATION) as Destination?
+                    intent.getIntExtra(EXTRA_NAVIGATE, RESOURCE_ID_NULL),
+                    intent.getBooleanExtra(EXTRA_IS_TIMETABLE_START_DESTINATION, false)
                 )
 
                 val toggle = ActionBarDrawerToggle(
@@ -136,8 +133,16 @@ class MainActivity : DaggerAppCompatActivity() {
         navigationView: NavigationView,
         drawerLayout: DrawerLayout,
         navController: NavController,
-        startDestination: Destination?
+        @IdRes navigateResId: Int,
+        isTimetableStartDestination: Boolean
     ) {
+        val navGraph = navController.navInflater.inflate(R.navigation.main_graph).apply {
+            if (isTimetableStartDestination) {
+                startDestination = R.id.timetable_fragment
+            }
+        }
+        navController.graph = navGraph
+
         val fragmentIdSet = setOf(
             R.id.dashboard_fragment,
             R.id.timetable_fragment,
@@ -145,13 +150,17 @@ class MainActivity : DaggerAppCompatActivity() {
             R.id.lecture_cancellations_fragment,
             R.id.notices_fragment
         )
+        val popUpToDestinationId = if (isTimetableStartDestination) {
+            R.id.timetable_fragment
+        } else {
+            R.id.dashboard_fragment
+        }
 
         navigationView.setNavigationItemSelectedListener { item ->
             val builder = NavOptions.Builder()
-                .setLaunchSingleTop(true)
 
             if (fragmentIdSet.contains(item.itemId)) {
-                builder.setPopUpTo(R.id.dashboard_fragment, false)
+                builder.setPopUpTo(popUpToDestinationId, false)
                     .setEnterAnim(androidx.navigation.ui.R.anim.nav_default_enter_anim)
                     .setExitAnim(androidx.navigation.ui.R.anim.nav_default_exit_anim)
                     .setPopEnterAnim(androidx.navigation.ui.R.anim.nav_default_pop_enter_anim)
@@ -176,8 +185,8 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-        if (startDestination != null) {
-            navController.navigate(startDestination.resId)
+        if (navigateResId != RESOURCE_ID_NULL) {
+            navController.navigate(navigateResId)
         }
     }
 }

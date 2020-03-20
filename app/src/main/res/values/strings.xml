@@ -85,6 +85,8 @@
     <!-- Timetable -->
     <string name="timetable_title">Timetable</string>
     <string name="timetable_lock_description">ロック</string>
+    <string name="timetable_shortcut_label">Timetable</string>
+    <string name="timetable_shortcut_disabled">\'Timetable\'ショートカットが無効化されました</string>
 
     <!-- Lecture Informations -->
     <string name="lecture_informations_title">Class Schedule</string>

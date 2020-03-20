@@ -24,6 +24,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".ui.lectureinformationdetail.LectureInformationDetailActivity"
@@ -44,6 +47,17 @@
         <activity android:name=".ui.welcome.WelcomeActivity" />
         <activity android:name=".ui.editattendcourse.EditAttendCourseActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
+
+        <activity
+            android:name=".ui.timetable.shortcut.TimetableShortcutActivity"
+            android:enabled="@bool/enabled_shortcut_widget"
+            android:icon="@mipmap/timetable_shortcut_activity"
+            android:label="@string/timetable_shortcut_label">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"

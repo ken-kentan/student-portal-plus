@@ -29,7 +29,13 @@ class WelcomeNotificationFragment : Fragment(R.layout.fragment_welcome_notificat
         }
 
         welcomeNotificationViewModel.startMainActivity.observeEvent(viewLifecycleOwner) {
-            startActivity(MainActivity.createIntent(requireContext(), shouldRefresh = true))
+            val intent = MainActivity.createIntent(
+                context = requireContext(),
+                shouldRefresh = true,
+                isTimetableStartDestination = false
+            )
+
+            startActivity(intent)
         }
     }
 
