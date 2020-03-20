@@ -14,7 +14,6 @@ import jp.kentan.studentportalplus.databinding.ItemSmallShowAllBinding
 import jp.kentan.studentportalplus.databinding.ItemTextBinding
 import jp.kentan.studentportalplus.util.executeAfter
 
-
 class LectureCancellationAdapter(
     private val onItemClick: (Long) -> Unit,
     private val onShowAllClick: (() -> Unit)
@@ -126,7 +125,6 @@ class LectureCancellationAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-
     private data class Header(
         val moreItemCount: Int = 0
     ) {
@@ -141,7 +139,6 @@ class LectureCancellationAdapter(
     private object EmptyItem
 
     private object ShowAll
-
 
     private class Callback(
         private val oldList: List<Any>,
@@ -175,7 +172,6 @@ class LectureCancellationAdapter(
             }
         }
     }
-
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         class HeaderViewHolder(

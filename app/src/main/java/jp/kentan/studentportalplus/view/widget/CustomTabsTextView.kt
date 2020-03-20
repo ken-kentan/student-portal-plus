@@ -8,7 +8,6 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.view.text.LinkTransformationMethod
 import java.util.regex.Pattern
 
-
 class CustomTabsTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

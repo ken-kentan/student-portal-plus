@@ -18,9 +18,8 @@ import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
 import jp.kentan.studentportalplus.util.requirePreference
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
-
 
 class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickListener {
 
@@ -53,7 +52,6 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
                     workManager.cancelUniqueWork(SyncWorker.NAME)
                     Log.d(TAG, "Cancelled a unique SyncWorker")
                 }
-
             } catch (e: IllegalStateException) {
                 Log.e(TAG, "Failed to update SyncWorker", e)
                 return@OnPreferenceChangeListener false

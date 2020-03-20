@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import jp.kentan.studentportalplus.R
-import java.util.*
+import java.util.Calendar
 
 data class NoticeQuery(
     val text: String? = null,

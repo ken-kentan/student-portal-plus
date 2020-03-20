@@ -1,6 +1,10 @@
 package jp.kentan.studentportalplus.ui.dashboard
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
@@ -11,7 +15,7 @@ import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.ui.Event
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(
@@ -41,7 +45,6 @@ class DashboardViewModel @Inject constructor(
     val startLectureCancelActivity: LiveData<Event<Long>>
         get() = _startLectureCancelDetailActivity
 
-
     private val _startNoticeDetailActivity = MutableLiveData<Event<Long>>()
     val startNoticeActivity: LiveData<Event<Long>>
         get() = _startNoticeDetailActivity
@@ -65,7 +68,9 @@ class DashboardViewModel @Inject constructor(
             else -> DayOfWeek.MONDAY
         }
 
-        _portalSet.addAttendCourseSource(attendCourseRepository.getListFlow(timetableDayOfWeek).asLiveData())
+        _portalSet.addAttendCourseSource(
+            attendCourseRepository.getListFlow(timetableDayOfWeek).asLiveData()
+        )
         _portalSet.addLectureInformationSource(
             lectureInfoRepository.getListFlow().map { list ->
                 list.filter { it.attendType.isAttend }

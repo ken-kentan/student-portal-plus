@@ -1,8 +1,12 @@
 package jp.kentan.studentportalplus.data.entity
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import jp.kentan.studentportalplus.util.XxHash64
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "lecture_cancels", indices = [Index(value = ["hash"], unique = true)])
 data class LectureCancellation(

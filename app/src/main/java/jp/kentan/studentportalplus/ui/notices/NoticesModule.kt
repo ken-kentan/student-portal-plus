@@ -20,5 +20,4 @@ abstract class NoticesModule {
     @IntoMap
     @ViewModelKey(NoticesViewModel::class)
     abstract fun bindNoticesViewModel(viewModel: NoticesViewModel): ViewModel
-
 }

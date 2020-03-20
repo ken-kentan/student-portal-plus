@@ -27,10 +27,10 @@ class FakeLectureInformationDao : LectureInformationDao {
     }
 
     override fun insert(lectureInfo: LectureInformation): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun deleteNotInHash(hash: List<Long>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 }

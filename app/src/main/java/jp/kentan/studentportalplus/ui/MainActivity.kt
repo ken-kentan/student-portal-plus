@@ -24,7 +24,6 @@ import jp.kentan.studentportalplus.ui.welcome.WelcomeActivity
 import jp.kentan.studentportalplus.util.findNavController
 import javax.inject.Inject
 
-
 class MainActivity : DaggerAppCompatActivity() {
 
     companion object {

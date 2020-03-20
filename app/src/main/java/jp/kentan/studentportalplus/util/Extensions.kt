@@ -15,7 +15,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import jp.kentan.studentportalplus.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 fun Activity.hideSoftInput() {
     try {

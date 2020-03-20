@@ -15,7 +15,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.util.formatYearMonthDay
 import jp.kentan.studentportalplus.view.widget.MaterialArrayAdapter
-import java.util.*
+import java.util.Date
 
 object CommonBindingAdapter {
 

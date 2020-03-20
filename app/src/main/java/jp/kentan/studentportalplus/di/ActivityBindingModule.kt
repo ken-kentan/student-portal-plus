@@ -71,5 +71,4 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = [SettingsModule::class, LoginModule::class])
     abstract fun contributeSettingsActivity(): SettingsActivity
-
 }

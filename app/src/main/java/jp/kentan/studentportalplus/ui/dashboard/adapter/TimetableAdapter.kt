@@ -94,7 +94,6 @@ class TimetableAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-
     private data class Header(
         val dayOfWeek: DayOfWeek
     )
@@ -103,7 +102,6 @@ class TimetableAdapter(
         val attendCourse: AttendCourse,
         val isLastPosition: Boolean
     )
-
 
     private class Callback(
         private val oldList: List<Any>,
@@ -135,7 +133,6 @@ class TimetableAdapter(
             }
         }
     }
-
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         class HeaderViewHolder(

@@ -2,10 +2,21 @@ package jp.kentan.studentportalplus.work.sync
 
 import android.content.Context
 import android.util.Log
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import jp.kentan.studentportalplus.data.*
+import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.LectureCancellationRepository
+import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.entity.Notice
@@ -17,7 +28,8 @@ import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import java.util.*
+import java.util.Calendar
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 class SyncWorker @AssistedInject constructor(

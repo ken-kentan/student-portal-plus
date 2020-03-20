@@ -1,7 +1,11 @@
 package jp.kentan.studentportalplus.data
 
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.spyk
+import io.mockk.verify
 import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
 import jp.kentan.studentportalplus.data.dao.FakeLectureInformationDao

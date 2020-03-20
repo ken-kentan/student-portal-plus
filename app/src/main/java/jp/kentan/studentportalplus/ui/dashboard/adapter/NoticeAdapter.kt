@@ -93,11 +93,9 @@ class NoticeAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-
     private object Header
 
     private object ShowAll
-
 
     private class Callback(
         private val oldList: List<Any>,
@@ -129,7 +127,6 @@ class NoticeAdapter(
             }
         }
     }
-
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         class HeaderViewHolder(

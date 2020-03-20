@@ -4,7 +4,7 @@ import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
-import java.util.*
+import java.util.Date
 
 object TestData {
     val attendCourse = AttendCourse(

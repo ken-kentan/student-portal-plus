@@ -14,5 +14,4 @@ abstract class LectureInformationDetailModule {
     @IntoMap
     @ViewModelKey(LectureInformationDetailViewModel::class)
     abstract fun bindLectureInformationDetailViewModel(viewModel: LectureInformationDetailViewModel): ViewModel
-
 }

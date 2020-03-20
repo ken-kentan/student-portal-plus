@@ -36,4 +36,3 @@ class TimetableShortcutActivity : AppCompatActivity() {
         finish()
     }
 }
-

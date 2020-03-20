@@ -24,5 +24,4 @@ class AttendCourseConverter {
 
     @TypeConverter
     fun colorTo(color: CourseColor?) = color?.name
-
 }

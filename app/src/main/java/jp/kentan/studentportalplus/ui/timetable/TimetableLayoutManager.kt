@@ -7,7 +7,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-
 class TimetableLayoutManager : RecyclerView.LayoutManager() {
 
     companion object {

@@ -23,7 +23,6 @@ import jp.kentan.studentportalplus.databinding.ActivityEditAttendCourseBinding
 import jp.kentan.studentportalplus.ui.observeEvent
 import javax.inject.Inject
 
-
 class EditAttendCourseActivity : DaggerAppCompatActivity() {
 
     private enum class Mode(

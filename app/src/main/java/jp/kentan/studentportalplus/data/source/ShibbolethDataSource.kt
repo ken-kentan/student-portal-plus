@@ -13,7 +13,7 @@ import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.KeyPairGenerator
 import java.security.KeyStore
-import java.util.*
+import java.util.Calendar
 import javax.crypto.Cipher
 import javax.security.auth.x500.X500Principal
 
@@ -58,7 +58,6 @@ class ShibbolethDataSource(
         get() = decrypt(preferences.getString(KEY_PASSWORD, null))
             ?: throw ShibbolethDecryptException("パスワードの復号に失敗しました")
 
-
     fun save(name: String, username: String, password: String) {
         preferences.edit {
             putString(KEY_NAME, encrypt(name))
@@ -79,8 +78,8 @@ class ShibbolethDataSource(
 
         val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             KeyGenParameterSpec.Builder(
-                KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-            )
+                    KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                )
                 .setUserAuthenticationRequired(false)
                 .setCertificateSubject(X500Principal(PRINCIPAL_NAME))
                 .setCertificateSerialNumber(BigInteger.ONE)

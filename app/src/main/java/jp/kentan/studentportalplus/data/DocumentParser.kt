@@ -9,7 +9,9 @@ import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.util.formatYearMonthDay
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object DocumentParser {
 
