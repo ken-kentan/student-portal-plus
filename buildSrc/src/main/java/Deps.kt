@@ -9,12 +9,12 @@ object Deps {
     }
 
     object Kotlin {
-        const val version = "1.3.61"
+        const val version = "1.3.70"
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
         object Coroutines {
-            internal const val version = "1.3.3"
+            internal const val version = "1.3.5"
 
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         }
@@ -23,10 +23,10 @@ object Deps {
     object AndroidX {
         const val appCompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
         const val coreKtx = "androidx.core:core-ktx:1.2.0"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.2"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.3"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-        const val workKtx = "androidx.work:work-runtime-ktx:2.3.2"
+        const val workKtx = "androidx.work:work-runtime-ktx:2.3.4"
         const val preferenceKtx = "androidx.preference:preference-ktx:1.1.0"
         const val browser = "androidx.browser:browser:1.2.0"
 
@@ -46,7 +46,7 @@ object Deps {
         }
 
         object Room {
-            private const val version = "2.2.4"
+            private const val version = "2.2.5"
 
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
@@ -59,7 +59,7 @@ object Deps {
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object Dagger {
-        private const val version = "2.26"
+        private const val version = "2.27"
 
         const val core = "com.google.dagger:dagger:$version"
         const val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -75,13 +75,13 @@ object Deps {
     }
 
     object OkHttp {
-        private const val version = "3.14.6"
+        private const val version = "3.14.7"
 
         const val client = "com.squareup.okhttp3:okhttp:$version"
         const val urlConnection = "com.squareup.okhttp3:okhttp-urlconnection:$version"
     }
 
-    const val jsoup = "org.jsoup:jsoup:1.12.2"
+    const val jsoup = "org.jsoup:jsoup:1.13.1"
 
     object Test {
         const val junit = "junit:junit:4.13"
