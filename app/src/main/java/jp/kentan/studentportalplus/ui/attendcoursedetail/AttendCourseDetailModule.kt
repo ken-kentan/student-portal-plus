@@ -14,5 +14,4 @@ abstract class AttendCourseDetailModule {
     @IntoMap
     @ViewModelKey(AttendCourseDetailViewModel::class)
     abstract fun bindAttendCourseDetailViewModel(viewModel: AttendCourseDetailViewModel): ViewModel
-
 }

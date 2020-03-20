@@ -19,5 +19,4 @@ abstract class WorkerModule {
 
     @Binds
     abstract fun bindWorkerFactory(factory: ListenableWorkerFactory): WorkerFactory
-
 }

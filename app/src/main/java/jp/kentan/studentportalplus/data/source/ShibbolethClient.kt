@@ -3,12 +3,17 @@ package jp.kentan.studentportalplus.data.source
 import android.util.Log
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.entity.User
-import okhttp3.*
+import okhttp3.ConnectionSpec
+import okhttp3.FormBody
+import okhttp3.JavaNetCookieJar
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.TlsVersion
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.CookieManager
 import java.util.concurrent.TimeUnit
-
 
 class ShibbolethClient(
     private val shibbolethDataSource: ShibbolethDataSource,

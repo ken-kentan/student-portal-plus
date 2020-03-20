@@ -4,7 +4,11 @@ import android.app.Application
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.IdRes
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
@@ -144,5 +148,4 @@ class LoginViewModel @Inject constructor(
     private fun String.isValidUsername() = startsWith('b') || startsWith('m') || startsWith('d')
 
     private fun String.isValidPassword() = length in 8..24
-
 }

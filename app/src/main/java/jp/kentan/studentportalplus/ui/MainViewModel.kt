@@ -1,9 +1,18 @@
 package jp.kentan.studentportalplus.ui
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.*
+import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.LectureCancellationRepository
+import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethException
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -12,7 +12,8 @@ import jp.kentan.studentportalplus.util.buildCustomTabsIntent
 import jp.kentan.studentportalplus.util.isPdf
 
 class CustomTabsUrlSpan(
-    private val context: Context, url: String
+    private val context: Context,
+    url: String
 ) : URLSpan(url) {
 
     private val localPreferences = LocalPreferences(context)

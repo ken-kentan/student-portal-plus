@@ -2,7 +2,11 @@ package jp.kentan.studentportalplus.ui.editattendcourse
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.entity.AttendCourse
@@ -223,7 +227,8 @@ class EditAttendCourseViewModel @Inject constructor(
         context.getString(resId)
     }
 
-    private fun Period.format(context: Context) = context.getString(R.string.all_period_suffix, value)
+    private fun Period.format(context: Context) =
+        context.getString(R.string.all_period_suffix, value)
 
     private fun String?.toDayOfWeekEnum(): DayOfWeek {
         val displayName = this ?: return DayOfWeek.UNKNOWN

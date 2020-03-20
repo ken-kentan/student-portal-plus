@@ -1,7 +1,12 @@
 package jp.kentan.studentportalplus.data.dao
 
 import android.util.Log
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import jp.kentan.studentportalplus.data.entity.Notice
 import kotlinx.coroutines.flow.Flow
 
@@ -44,5 +49,4 @@ interface NoticeDao {
 
     @Query("DELETE FROM notices WHERE is_favorite = 0 AND hash NOT IN (:hash)")
     fun deleteNotInHash(hash: List<Long>)
-
 }

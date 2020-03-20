@@ -1,7 +1,12 @@
 package jp.kentan.studentportalplus.data.dao
 
 import android.util.Log
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
@@ -56,5 +61,4 @@ interface AttendCourseDao {
 
     @Query("DELETE FROM attend_courses WHERE type = :type AND hash NOT IN (:hash)")
     fun deleteNotInHash(type: Int, hash: List<Long>)
-
 }

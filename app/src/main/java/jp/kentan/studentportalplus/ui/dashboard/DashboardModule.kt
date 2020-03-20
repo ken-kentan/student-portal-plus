@@ -20,5 +20,4 @@ abstract class DashboardModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel::class)
     abstract fun bindDashboardViewModel(viewModel: DashboardViewModel): ViewModel
-
 }

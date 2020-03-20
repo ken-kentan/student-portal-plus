@@ -7,7 +7,7 @@ import android.graphics.Rect
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import jp.kentan.studentportalplus.R
-import java.util.*
+import java.util.Calendar
 import kotlin.math.roundToInt
 
 class TimetableItemDecoration(context: Context) : RecyclerView.ItemDecoration() {

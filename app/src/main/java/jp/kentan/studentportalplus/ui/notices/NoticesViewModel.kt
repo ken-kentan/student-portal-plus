@@ -1,6 +1,10 @@
 package jp.kentan.studentportalplus.ui.notices
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.vo.NoticeQuery
 import jp.kentan.studentportalplus.ui.Event

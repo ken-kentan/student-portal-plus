@@ -28,30 +28,30 @@ class FakeAttendCourseDao : AttendCourseDao {
     override fun get(id: Long): AttendCourse? = TestData.attendCourse
 
     override fun getSubjectList(): List<AttendCourseSubject> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun insert(attendCourse: AttendCourse): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun insertAll(attendCourseList: List<AttendCourse>): List<Long> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun update(attendCourse: AttendCourse): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun delete(id: Long): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun delete(subject: String, attendType: AttendCourse.Type): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun deleteNotInHash(type: Int, hash: List<Long>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 }

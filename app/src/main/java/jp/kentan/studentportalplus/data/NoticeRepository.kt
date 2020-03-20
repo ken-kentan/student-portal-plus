@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import java.util.*
+import java.util.Calendar
 
 interface NoticeRepository {
     fun getFlow(id: Long): Flow<Notice>

@@ -20,5 +20,4 @@ abstract class TimetableModule {
     @IntoMap
     @ViewModelKey(TimetableViewModel::class)
     abstract fun bindTimetableViewModel(viewModel: TimetableViewModel): ViewModel
-
 }

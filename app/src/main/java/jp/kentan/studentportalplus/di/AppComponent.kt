@@ -20,5 +20,4 @@ interface AppComponent : AndroidInjector<StudentPortalPlus> {
 
     @Component.Factory
     interface Factory : AndroidInjector.Factory<StudentPortalPlus>
-
 }

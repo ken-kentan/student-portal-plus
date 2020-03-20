@@ -14,5 +14,4 @@ interface SyncWorkerModule {
     @IntoMap
     @WorkerKey(SyncWorker::class)
     fun bindSyncWorker(factory: SyncWorker.Factory): ChildWorkerFactory
-
 }

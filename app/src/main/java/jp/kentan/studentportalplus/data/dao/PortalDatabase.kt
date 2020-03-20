@@ -28,5 +28,4 @@ abstract class PortalDatabase : RoomDatabase() {
     abstract val lectureCancellationDao: LectureCancellationDao
 
     abstract val attendCourseDao: AttendCourseDao
-
 }

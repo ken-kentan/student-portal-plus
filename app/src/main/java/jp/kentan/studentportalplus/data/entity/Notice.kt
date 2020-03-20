@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import jp.kentan.studentportalplus.util.XxHash64
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "notices", indices = [Index(value = ["hash"], unique = true)])
 data class Notice(

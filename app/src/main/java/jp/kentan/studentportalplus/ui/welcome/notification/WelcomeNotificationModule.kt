@@ -20,5 +20,4 @@ abstract class WelcomeNotificationModule {
     @IntoMap
     @ViewModelKey(WelcomeNotificationViewModel::class)
     abstract fun bindWelcomeNotificationViewModel(viewModel: WelcomeNotificationViewModel): ViewModel
-
 }

@@ -9,8 +9,7 @@ import jp.kentan.studentportalplus.data.vo.LectureQuery
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
-import java.util.*
-
+import java.util.Date
 
 class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
