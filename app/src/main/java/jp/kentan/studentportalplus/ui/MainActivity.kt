@@ -156,6 +156,11 @@ class MainActivity : DaggerAppCompatActivity() {
         }
 
         navigationView.setNavigationItemSelectedListener { item ->
+            if (navController.currentDestination?.id == item.itemId) {
+                drawerLayout.closeDrawer(navigationView)
+                return@setNavigationItemSelectedListener true
+            }
+
             val builder = NavOptions.Builder()
 
             if (fragmentIdSet.contains(item.itemId)) {
