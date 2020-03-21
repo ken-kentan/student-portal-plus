@@ -162,6 +162,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }
 
             val builder = NavOptions.Builder()
+                .setLaunchSingleTop(true)
 
             if (fragmentIdSet.contains(item.itemId)) {
                 builder.setPopUpTo(popUpToDestinationId, false)
