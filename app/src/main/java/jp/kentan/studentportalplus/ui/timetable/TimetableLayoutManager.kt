@@ -42,9 +42,9 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
 
         for (row in 0 until ROW_COUNT) {
             offsetTop = addRow(row, offsetTop, recycler)
+            currentLastRow = row
 
             if (offsetTop > spaceBottom) {
-                currentLastRow = row
                 break
             }
         }
@@ -58,6 +58,7 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
         state: RecyclerView.State
     ): Int {
         if (dy == 0) return 0
+
         val firstItem = getChildAt(0) ?: return 0
         val lastItem = getChildAt(childCount - 1) ?: return 0
         val firstTop = getDecoratedTop(firstItem)
@@ -68,7 +69,7 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
         if (dy > 0) { // upper swipe
             val firstBottom = getDecoratedBottom(firstItem)
 
-            if (lastBottom - scrollAmount < height - paddingBottom) {
+            if (lastBottom - scrollAmount < height - paddingBottom && currentLastRow < ROW_COUNT - 1) {
                 addRow(++currentLastRow, lastBottom, recycler)
             }
             if (firstBottom - scrollAmount < paddingTop) {
@@ -112,12 +113,12 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
     private fun calculateScrollAmount(dy: Int, firstItemTop: Int, lastItemBottom: Int): Int {
         return if (dy > 0) { // upper swipe
             if (currentLastRow >= ROW_COUNT - 1) {
-                min(dy, lastItemBottom - height + paddingBottom)
+                min(dy, max(lastItemBottom - height + paddingBottom, 0))
             } else
                 dy
         } else {
             if (currentFirstRow <= 0)
-                max(dy, -(paddingTop - firstItemTop))
+                max(dy, min(-(paddingTop - firstItemTop), 0))
             else
                 dy
         }
