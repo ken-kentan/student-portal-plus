@@ -22,37 +22,45 @@ class PortalSetLiveData : MediatorLiveData<PortalSet>() {
     private var lectureCancelList: List<LectureCancellation>? = null
     private var noticeList: List<Notice>? = null
 
-    fun addAttendCourseSource(
-        liveData: LiveData<List<AttendCourse>>
-    ) {
+    fun addAttendCourseSource(liveData: LiveData<List<AttendCourse>>) {
         addSource(liveData) {
+            if (attendCourseList == it) {
+                return@addSource
+            }
+
             attendCourseList = it
             setValueIfReady()
         }
     }
 
-    fun addLectureInformationSource(
-        liveData: LiveData<List<LectureInformation>>
-    ) {
+    fun addLectureInformationSource(liveData: LiveData<List<LectureInformation>>) {
         addSource(liveData) {
+            if (lectureInfoList == it) {
+                return@addSource
+            }
+
             lectureInfoList = it
             setValueIfReady()
         }
     }
 
-    fun addLectureCancellationSource(
-        liveData: LiveData<List<LectureCancellation>>
-    ) {
+    fun addLectureCancellationSource(liveData: LiveData<List<LectureCancellation>>) {
         addSource(liveData) {
+            if (lectureCancelList == it) {
+                return@addSource
+            }
+
             lectureCancelList = it
             setValueIfReady()
         }
     }
 
-    fun addNoticeSource(
-        liveData: LiveData<List<Notice>>
-    ) {
+    fun addNoticeSource(liveData: LiveData<List<Notice>>) {
         addSource(liveData) {
+            if (noticeList == it) {
+                return@addSource
+            }
+
             noticeList = it
             setValueIfReady()
         }
@@ -64,17 +72,12 @@ class PortalSetLiveData : MediatorLiveData<PortalSet>() {
 
     @MainThread
     private fun setValueIfReady() {
-        val attendCourseList = attendCourseList ?: return
-        val lectureInfoList = lectureInfoList ?: return
-        val lectureCancelList = lectureCancelList ?: return
-        val noticeList = noticeList ?: return
-
         super.setValue(
             PortalSet(
-                attendCourseList = attendCourseList,
-                lectureInfoList = lectureInfoList,
-                lectureCancelList = lectureCancelList,
-                noticeList = noticeList
+                attendCourseList = attendCourseList ?: return,
+                lectureInfoList = lectureInfoList ?: return,
+                lectureCancelList = lectureCancelList ?: return,
+                noticeList = noticeList ?: return
             )
         )
     }

@@ -23,15 +23,15 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
         }
     }
 
-    override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        canvas.save()
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        c.save()
         val left: Int
         val right: Int
         //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
         if (parent.clipToPadding) {
             left = parent.paddingLeft
             right = parent.width - parent.paddingRight
-            canvas.clipRect(
+            c.clipRect(
                 left, parent.paddingTop, right,
                 parent.height - parent.paddingBottom
             )
@@ -48,9 +48,9 @@ class DividerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
             val top = bottom - divider.intrinsicHeight
             divider.alpha = (child.alpha * 255f).roundToInt()
             divider.setBounds(left, top, right, bottom)
-            divider.draw(canvas)
+            divider.draw(c)
         }
-        canvas.restore()
+        c.restore()
     }
 
     override fun getItemOffsets(
