@@ -11,5 +11,6 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="16dp"
         android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?attr/colorSecondary"
         tools:text="すべてのSampleを表示" />
 </layout>

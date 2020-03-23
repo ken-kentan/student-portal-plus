@@ -75,8 +75,8 @@
     <!-- Dashboard -->
     <string name="dashboard_title">Dashboard</string>
     <string name="dashboard_today_attend_course">%1$s曜日の時間割</string>
-    <string name="dashboard_empty_lecture_information">現在、あなたへの授業関連連絡はありません.</string>
-    <string name="dashboard_empty_lecture_cancellation">現在、あなたへの休講情報はありません.</string>
+    <string name="dashboard_empty_lecture_information">現在、あなたへの授業関連連絡はありません。</string>
+    <string name="dashboard_empty_lecture_cancellation">現在、あなたへの休講情報はありません。</string>
     <string name="dashboard_open_lecture_informations">すべての授業関連連絡を表示</string>
     <string name="dashboard_open_lecture_cancellations">すべての休講情報を表示</string>
     <string name="dashboard_open_notices">すべての最新情報を表示</string>
