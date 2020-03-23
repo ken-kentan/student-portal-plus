@@ -122,7 +122,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/day_of_week_text_input_layout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    style="@style/Widget.AppTheme.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -147,7 +147,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/period_text_input_layout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    style="@style/Widget.AppTheme.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
