@@ -29,13 +29,8 @@
         <item name="fontFamily">@font/orkney</item>
     </style>
 
-    <style name="TextAppearance.AppTheme.Primary" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/primary</item>
-    </style>
-
-    <style name="TextAppearance.AppTheme.PeriodStartTime" parent="AppTheme">
+    <style name="TextAppearance.AppTheme.Caption.Small" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/text_period_start_time</item>
     </style>
 
 </resources>

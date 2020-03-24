@@ -26,7 +26,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_monday"
-                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toStartOf="@id/tuesday_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_tuesday"
-                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toStartOf="@id/wednesday_text_view"
                 app:layout_constraintStart_toEndOf="@id/monday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_wednesday"
-                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toStartOf="@id/thursday_text_view"
                 app:layout_constraintStart_toEndOf="@id/tuesday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_thursday"
-                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toStartOf="@id/friday_text_view"
                 app:layout_constraintStart_toEndOf="@id/wednesday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -78,7 +78,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_friday"
-                android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/thursday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
