@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.getColorOrThrow
 import androidx.recyclerview.widget.RecyclerView
 import jp.kentan.studentportalplus.R
 import java.util.Calendar
@@ -26,9 +27,7 @@ class TimetableItemDecoration(context: Context) : RecyclerView.ItemDecoration() 
         private const val COURSE_MINUTES = 90
     }
 
-    private val linePaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.primary)
-    }
+    private val linePaint = Paint()
     private val maskPaint = Paint().apply {
         color = ContextCompat.getColor(context, R.color.timetable_grid_mask)
     }
@@ -45,6 +44,15 @@ class TimetableItemDecoration(context: Context) : RecyclerView.ItemDecoration() 
     private var currentDayOfWeek = calender.get(Calendar.DAY_OF_WEEK)
     private var currentMinutes =
         calender.get(Calendar.MINUTE) + calender.get(Calendar.HOUR_OF_DAY) * 60
+
+    init {
+        context.obtainStyledAttributes(
+            intArrayOf(R.attr.colorOnSurface)
+        ).run {
+            linePaint.color = getColorOrThrow(0)
+            recycle()
+        }
+    }
 
     fun syncCalenderByCurrentTime() {
         calender.timeInMillis = System.currentTimeMillis()

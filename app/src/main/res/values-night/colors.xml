@@ -40,8 +40,8 @@
     <color name="text_attend_course_subject">#212121</color>
     <color name="text_attend_course">#424242</color>
 
-    <color name="timetable_grid_mask">#212121</color>
-    <color name="timetable_grid_background">#1B1B1B</color>
+    <color name="timetable_grid_mask">#1E1E1E</color>
+    <color name="timetable_grid_background">#101010</color>
 
     <color name="background">#121212</color>
 
