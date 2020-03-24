@@ -41,5 +41,5 @@ data class Notice(
     val isFavorite: Boolean = false,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = XxHash64.hash("$createdDate$inCharge$category$title$detailHtml$link")
+    val hash: Long = XxHash64.hash("${createdDate.time}$inCharge$category$title$detailHtml$link")
 )

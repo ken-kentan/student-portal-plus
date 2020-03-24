@@ -48,7 +48,7 @@ data class LectureCancellation(
     val attendType: AttendCourse.Type = AttendCourse.Type.UNKNOWN,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = XxHash64.hash("$grade$subject$instructor$cancelDate$dayOfWeek$period$detailHtml$createdDate")
+    val hash: Long = XxHash64.hash("$grade$subject$instructor${cancelDate.time}$dayOfWeek$period$detailHtml${createdDate.time}")
 ) : Lecture {
     // Room constructor
     constructor(
