@@ -78,7 +78,7 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
         } else {
             val lastTop = getDecoratedTop(lastItem)
 
-            if (firstTop - scrollAmount > paddingTop) {
+            if (firstTop - scrollAmount > paddingTop && currentFirstRow > 0) {
                 addRow(--currentFirstRow, firstTop - firstItem.height, recycler, false)
             }
             if (lastTop - scrollAmount >= height - paddingBottom) {
