@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="jp.kentan.studentportalplus.R" />
+
+        <import type="jp.kentan.studentportalplus.data.vo.DayOfWeek" />
+
+        <variable
+            name="viewModel"
+            type="jp.kentan.studentportalplus.ui.timetable.TimetableViewModel" />
+    </data>
+
     <ViewSwitcher
         android:id="@+id/view_switcher"
         android:layout_width="match_parent"
@@ -26,7 +37,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_monday"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isTimetableTodayTextAppearance="@{viewModel.dayOfWeek == DayOfWeek.MONDAY}"
                 app:layout_constraintEnd_toStartOf="@id/tuesday_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +51,7 @@
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_tuesday"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isTimetableTodayTextAppearance="@{viewModel.dayOfWeek == DayOfWeek.TUESDAY}"
                 app:layout_constraintEnd_toStartOf="@id/wednesday_text_view"
                 app:layout_constraintStart_toEndOf="@id/monday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,6 +65,7 @@
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_wednesday"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isTimetableTodayTextAppearance="@{viewModel.dayOfWeek == DayOfWeek.WEDNESDAY}"
                 app:layout_constraintEnd_toStartOf="@id/thursday_text_view"
                 app:layout_constraintStart_toEndOf="@id/tuesday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,6 +79,7 @@
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_thursday"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isTimetableTodayTextAppearance="@{viewModel.dayOfWeek == DayOfWeek.THURSDAY}"
                 app:layout_constraintEnd_toStartOf="@id/friday_text_view"
                 app:layout_constraintStart_toEndOf="@id/wednesday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +93,7 @@
                 android:paddingBottom="2dp"
                 android:text="@string/day_of_week_friday"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isTimetableTodayTextAppearance="@{viewModel.dayOfWeek == DayOfWeek.FRIDAY}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/thursday_text_view"
                 app:layout_constraintTop_toTopOf="parent" />

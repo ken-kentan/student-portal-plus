@@ -33,4 +33,9 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="TextAppearance.AppTheme.Timetable.Today" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

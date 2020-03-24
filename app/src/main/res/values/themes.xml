@@ -44,14 +44,14 @@
     </style>
 
     <style name="ThemeOverlay.AppTheme.Button" parent="">
-        <item name="colorPrimary">?attr/colorSecondary</item>
+        <item name="colorPrimary">@color/secondary</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.TextInputEditText.FilledBox" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
-        <item name="colorPrimary">?attr/colorSecondary</item>
+        <item name="colorPrimary">@color/secondary</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.AutoCompleteTextView.FilledBox" parent="ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox">
-        <item name="colorPrimary">?attr/colorSecondary</item>
+        <item name="colorPrimary">@color/secondary</item>
     </style>
 </resources>
