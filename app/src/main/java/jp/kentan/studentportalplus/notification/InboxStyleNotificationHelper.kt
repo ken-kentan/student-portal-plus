@@ -107,7 +107,8 @@ class InboxStyleNotificationHelper(
         var notificationId = localPreferences.notificationId
 
         val title = context.getString(titleResId)
-        val contentTitle = context.getString(R.string.notification_inbox_style, contentList.size, title)
+        val contentTitle =
+            context.getString(R.string.notification_inbox_style, contentList.size, title)
 
         val pendingIntent = PendingIntent.getActivity(
             context,

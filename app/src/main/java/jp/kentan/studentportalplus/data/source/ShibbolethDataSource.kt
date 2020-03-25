@@ -78,8 +78,8 @@ class ShibbolethDataSource(
 
         val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             KeyGenParameterSpec.Builder(
-                    KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-                )
+                KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            )
                 .setUserAuthenticationRequired(false)
                 .setCertificateSubject(X500Principal(PRINCIPAL_NAME))
                 .setCertificateSerialNumber(BigInteger.ONE)

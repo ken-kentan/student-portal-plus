@@ -124,7 +124,7 @@ class LocalPreferences(context: Context) : SharedPreferences.OnSharedPreferenceC
     }
 
     val syncIntervalMinutes: Long
-        get() = sharedPreferences.getString("sync_interval_minutes", "120")?.toLongOrNull()
+        get() = sharedPreferences.getString(SYNC_INTERVAL_MINUTES, "120")?.toLongOrNull()
             ?: 120L
 
     var notificationId: Int

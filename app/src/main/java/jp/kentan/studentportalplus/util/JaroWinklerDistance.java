@@ -56,7 +56,7 @@ public class JaroWinklerDistance {
         for (int mi = 0; mi < min.length(); mi++) {
             char c1 = min.charAt(mi);
             for (int xi = Math.max(mi - range, 0), xn = Math.min(mi + range + 1, max
-                    .length()); xi < xn; xi++) {
+                .length()); xi < xn; xi++) {
                 if (!matchFlags[xi] && c1 == max.charAt(xi)) {
                     matchIndexes[mi] = xi;
                     matchFlags[xi] = true;

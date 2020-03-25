@@ -23,7 +23,10 @@ object AttendCourseDetailBindingAdapter {
         }
         val dayOfWeek = with(attendCourse.dayOfWeek) {
             if (hasSuffix) {
-                context.getString(R.string.attend_course_detail_day_of_week_suffix, context.getString(resId))
+                context.getString(
+                    R.string.attend_course_detail_day_of_week_suffix,
+                    context.getString(resId)
+                )
             } else {
                 context.getString(resId)
             }

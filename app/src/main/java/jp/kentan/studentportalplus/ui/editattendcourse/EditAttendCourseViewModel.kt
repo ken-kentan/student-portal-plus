@@ -59,7 +59,7 @@ class EditAttendCourseViewModel @Inject constructor(
         }
     }
 
-    private val _isEnabled = MutableLiveData<Boolean>(false)
+    private val _isEnabled = MutableLiveData(false)
     val isEnabled: LiveData<Boolean>
         get() = _isEnabled
 

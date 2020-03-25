@@ -64,7 +64,10 @@ class LectureCancellationAdapter(
                     setText(R.string.all_lecture_cancellation)
                     if (header.hasMoreItem) {
                         val suffix =
-                            context.getString(R.string.dashboard_more_items_suffix, header.moreItemCount)
+                            context.getString(
+                                R.string.dashboard_more_items_suffix,
+                                header.moreItemCount
+                            )
                         append(suffix)
                     }
                 }

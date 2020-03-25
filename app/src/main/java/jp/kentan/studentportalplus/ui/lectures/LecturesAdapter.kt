@@ -22,7 +22,7 @@ class LecturesAdapter(
     private val onItemClick: (Long) -> Unit
 ) : RecyclerView.Adapter<LecturesAdapter.ViewHolder>() {
 
-    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
+    private val differ = AsyncListDiffer(this, DiffCallback)
 
     override fun getItemCount() = differ.currentList.size
 

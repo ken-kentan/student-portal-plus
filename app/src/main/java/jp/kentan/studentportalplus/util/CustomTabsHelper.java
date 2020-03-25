@@ -36,7 +36,7 @@ public class CustomTabsHelper {
     private static final String DEV_PACKAGE = "com.chrome.dev";
     private static final String LOCAL_PACKAGE = "com.google.android.apps.chrome";
     private static final String ACTION_CUSTOM_TABS_CONNECTION =
-            "android.support.customtabs.action.CustomTabsService";
+        "android.support.customtabs.action.CustomTabsService";
 
     private static String sPackageNameToUse;
 
@@ -84,8 +84,8 @@ public class CustomTabsHelper {
         } else if (packagesSupportingCustomTabs.size() == 1) {
             sPackageNameToUse = packagesSupportingCustomTabs.get(0);
         } else if (!TextUtils.isEmpty(defaultViewHandlerPackageName)
-                && !hasSpecializedHandlerIntents(context, activityIntent)
-                && packagesSupportingCustomTabs.contains(defaultViewHandlerPackageName)) {
+            && !hasSpecializedHandlerIntents(context, activityIntent)
+            && packagesSupportingCustomTabs.contains(defaultViewHandlerPackageName)) {
             sPackageNameToUse = defaultViewHandlerPackageName;
         } else if (packagesSupportingCustomTabs.contains(STABLE_PACKAGE)) {
             sPackageNameToUse = STABLE_PACKAGE;
@@ -109,8 +109,8 @@ public class CustomTabsHelper {
         try {
             PackageManager pm = context.getPackageManager();
             List<ResolveInfo> handlers = pm.queryIntentActivities(
-                    intent,
-                    PackageManager.GET_RESOLVED_FILTER);
+                intent,
+                PackageManager.GET_RESOLVED_FILTER);
             if (handlers.size() == 0) {
                 return false;
             }

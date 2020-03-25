@@ -60,7 +60,12 @@ class AttendCourseDetailActivity : DaggerAppCompatActivity() {
         attendCourseDetailViewModel.showDeleteDialog.observeEvent(this) { subject ->
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.all_delete)
-                .setMessage(getString(R.string.attend_course_detail_delete_confirm, subject).parseAsHtml())
+                .setMessage(
+                    getString(
+                        R.string.attend_course_detail_delete_confirm,
+                        subject
+                    ).parseAsHtml()
+                )
                 .setPositiveButton(R.string.all_delete) { _, _ ->
                     attendCourseDetailViewModel.onDeleteConfirmClick()
                 }

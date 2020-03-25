@@ -25,7 +25,7 @@ class TimetableAdapter(
 
     enum class Layout { GRID, LIST }
 
-    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
+    private val differ = AsyncListDiffer(this, DiffCallback)
 
     private val attendCourseItemViewType = when (layout) {
         Layout.GRID -> R.layout.item_grid_attend_course

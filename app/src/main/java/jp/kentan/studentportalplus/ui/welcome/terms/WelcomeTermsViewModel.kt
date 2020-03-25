@@ -10,7 +10,7 @@ class WelcomeTermsViewModel : ViewModel() {
 
     val isAgreeChecked = MutableLiveData<Boolean>()
 
-    private val _termUrl = MutableLiveData<Int>(R.string.all_terms_url)
+    private val _termUrl = MutableLiveData(R.string.all_terms_url)
     val termUrl: LiveData<Int>
         get() = _termUrl
 
