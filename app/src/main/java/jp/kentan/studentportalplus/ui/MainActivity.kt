@@ -75,6 +75,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 setSupportActionBar(appBar.toolbar)
 
+                appBar.swipeRefreshLayout.setColorSchemeResources(R.color.secondary)
+
                 setupWithNavController(
                     navView,
                     drawerLayout,

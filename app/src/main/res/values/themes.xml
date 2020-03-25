@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorPrimaryDark">@color/primary_variant</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="android:windowBackground">@color/background</item>
+
+        <!-- Widget styles -->
+        <item name="navigationViewStyle">@style/Widget.AppTheme.NavigationView</item>
+        <item name="textInputStyle">@style/Widget.AppTheme.TextInputLayout.FilledBox</item>
+        <item name="materialButtonStyle">@style/Widget.AppTheme.Button</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceHeadline6">@style/TextAppearance.AppTheme.Headline6</item>
+    </style>
+
+    <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:navigationBarColor">?attr/colorPrimarySurface</item>
+    </style>
+
+    <style name="AppTheme.TransparentStatusBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="">
+        <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
+        <item name="android:textColorHint">@color/app_bar_text_hint</item>
+        <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+    </style>
+
+    <style name="AppTheme.ActionBar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.Button" parent="">
+        <item name="colorPrimary">@color/secondary</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.FilledBox" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="colorPrimary">@color/secondary</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.AutoCompleteTextView.FilledBox" parent="ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox">
+        <item name="colorPrimary">@color/secondary</item>
+    </style>
+</resources>

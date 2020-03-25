@@ -1,41 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="Platform.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_variant</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSecondary">@color/on_secondary</item>
-        <item name="android:windowBackground">@color/background</item>
-        <item name="navigationViewStyle">@style/Widget.AppTheme.NavigationView</item>
-        <item name="textAppearanceHeadline6">@style/TextAppearance.AppTheme.Headline6</item>
-    </style>
-
-    <style name="AppTheme" parent="Platform.AppTheme">
-        <item name="android:navigationBarColor">?attr/colorPrimarySurface</item>
-    </style>
-
-    <style name="AppTheme.TransparentStatusBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="">
-        <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
-        <item name="android:textColorHint">@color/app_bar_text_hint</item>
-        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
-        <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
-    </style>
-
-    <style name="AppTheme.ActionBar">
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">false</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
-    </style>
-
+    <!-- Widget styles -->
     <style name="Widget.AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface" />
 
     <style name="Widget.AppTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
@@ -44,17 +9,33 @@
         <item name="itemBackground">@android:color/transparent</item>
     </style>
 
+    <style name="Widget.AppTheme.Button" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.AppTheme.Button</item>
+    </style>
+
+    <style name="Widget.AppTheme.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.AppTheme.TextInputEditText.FilledBox
+        </item>
+    </style>
+
+    <style name="Widget.AppTheme.TextInputLayout.FilledBox.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.AppTheme.AutoCompleteTextView.FilledBox
+        </item>
+    </style>
+
+    <!-- Text appearances -->
     <style name="TextAppearance.AppTheme.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/orkney</item>
     </style>
 
-    <style name="TextAppearance.AppTheme.Primary" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/primary</item>
+    <style name="TextAppearance.AppTheme.Caption.Small" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="TextAppearance.AppTheme.PeriodStartTime" parent="AppTheme">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/text_period_start_time</item>
+    <style name="TextAppearance.AppTheme.Timetable.Today" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

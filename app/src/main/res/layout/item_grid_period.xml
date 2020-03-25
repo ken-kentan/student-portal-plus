@@ -20,7 +20,7 @@
             android:layout_marginTop="1dp"
             android:gravity="end"
             android:text="@{period.startTimeResId}"
-            android:textAppearance="@style/TextAppearance.AppTheme.PeriodStartTime"
+            android:textAppearance="@style/TextAppearance.AppTheme.Caption.Small"
             tools:text="10:30" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@{Integer.toString(period.value)}"
-            android:textAppearance="@style/TextAppearance.AppTheme.Primary"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="1" />
 
     </FrameLayout>

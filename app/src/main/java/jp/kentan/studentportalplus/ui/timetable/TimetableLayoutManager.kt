@@ -73,16 +73,16 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
                 addRow(++currentLastRow, lastBottom, recycler)
             }
             if (firstBottom - scrollAmount < paddingTop) {
-                removeColumn(currentFirstRow, recycler)
+                removeRow(currentFirstRow, recycler)
             }
         } else {
             val lastTop = getDecoratedTop(lastItem)
 
-            if (firstTop - scrollAmount > paddingTop) {
+            if (firstTop - scrollAmount > paddingTop && currentFirstRow > 0) {
                 addRow(--currentFirstRow, firstTop - firstItem.height, recycler, false)
             }
             if (lastTop - scrollAmount >= height - paddingBottom) {
-                removeColumn(currentLastRow, recycler)
+                removeRow(currentLastRow, recycler)
             }
         }
 
@@ -90,7 +90,7 @@ class TimetableLayoutManager : RecyclerView.LayoutManager() {
         return scrollAmount
     }
 
-    private fun removeColumn(row: Int, recycler: RecyclerView.Recycler) {
+    private fun removeRow(row: Int, recycler: RecyclerView.Recycler) {
         when (row) {
             currentFirstRow -> {
                 for (index in 5 downTo 0) {

@@ -44,7 +44,10 @@ class TimetableFragment : DaggerFragment(R.layout.fragment_timetable) {
 
         timetableItemDecoration = TimetableItemDecoration(requireContext())
 
-        val binding = FragmentTimetableBinding.bind(view)
+        val binding = FragmentTimetableBinding.bind(view).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = timetableViewModel
+        }
 
         binding.gridRecyclerView.apply {
             adapter = gridTimetableAdapter
@@ -82,6 +85,7 @@ class TimetableFragment : DaggerFragment(R.layout.fragment_timetable) {
     override fun onResume() {
         super.onResume()
         timetableItemDecoration.syncCalenderByCurrentTime()
+        timetableViewModel.onResume()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

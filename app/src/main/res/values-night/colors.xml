@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#565C67</color>
+    <color name="primary">#8490A3</color>
     <color name="primary_variant">#1E2128</color>
-    <color name="secondary">#1285D0</color>
+    <color name="secondary">#81D2FA</color>
     <color name="secondary_variant">#2B77BA</color>
     <color name="surface">#1D1D1D</color>
 
     <color name="app_bar_text_hint">#60FFFFFF</color>
 
-    <color name="course_light_blue_1">#81D4FA</color>
+    <color name="course_light_blue_1">#B3E5FC</color>
     <color name="course_light_blue_2">#4FC3F7</color>
-    <color name="course_light_blue_3">#29B6F6</color>
-    <color name="course_light_blue_4">#03A9F4</color>
-    <color name="course_green_1">#A5D6A7</color>
+    <color name="course_light_blue_3">#03A9F4</color>
+    <color name="course_light_blue_4">#0288D1</color>
+    <color name="course_green_1">#C8E6C9</color>
     <color name="course_green_2">#81C784</color>
-    <color name="course_green_3">#66BB6A</color>
-    <color name="course_green_4">#4CAF50</color>
-    <color name="course_red_1">#EF9A9A</color>
+    <color name="course_green_3">#4CAF50</color>
+    <color name="course_green_4">#388E3C</color>
+    <color name="course_red_1">#FFCDD2</color>
     <color name="course_red_2">#E57373</color>
-    <color name="course_red_3">#EF5350</color>
-    <color name="course_red_4">#F44336</color>
-    <color name="course_orange_1">#FFCC80</color>
+    <color name="course_red_3">#F44336</color>
+    <color name="course_red_4">#D32F2F</color>
+    <color name="course_orange_1">#FFE0B2</color>
     <color name="course_orange_2">#FFB74D</color>
-    <color name="course_orange_3">#FFA726</color>
-    <color name="course_orange_4">#FF9800</color>
-    <color name="course_purple_1">#CE93D8</color>
+    <color name="course_orange_3">#FF9800</color>
+    <color name="course_orange_4">#F57C00</color>
+    <color name="course_purple_1">#E1BEE7</color>
     <color name="course_purple_2">#BA68C8</color>
-    <color name="course_purple_3">#AB47BC</color>
-    <color name="course_purple_4">#9C27B0</color>
-    <color name="course_brown_1">#BCAAA4</color>
+    <color name="course_purple_3">#9C27B0</color>
+    <color name="course_purple_4">#7B1FA2</color>
+    <color name="course_brown_1">#D7CCC8</color>
     <color name="course_brown_2">#A1887F</color>
-    <color name="course_brown_3">#8D6E63</color>
-    <color name="course_brown_4">#795548</color>
+    <color name="course_brown_3">#795548</color>
+    <color name="course_brown_4">#5D4037</color>
 
     <color name="favorite_orange">#FFD180</color>
     <color name="favorite_grey">#757575</color>
@@ -40,8 +40,8 @@
     <color name="text_attend_course_subject">#212121</color>
     <color name="text_attend_course">#424242</color>
 
-    <color name="timetable_grid_mask">#212121</color>
-    <color name="timetable_grid_background">#1B1B1B</color>
+    <color name="timetable_grid_mask">#1E1E1E</color>
+    <color name="timetable_grid_background">#101010</color>
 
     <color name="background">#121212</color>
 
