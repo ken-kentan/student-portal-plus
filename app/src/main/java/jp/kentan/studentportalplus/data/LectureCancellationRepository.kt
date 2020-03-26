@@ -3,8 +3,6 @@ package jp.kentan.studentportalplus.data
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
-import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
-import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,58 +12,54 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 interface LectureCancellationRepository {
-    fun getFlow(id: Long): Flow<LectureCancellation?>
 
-    fun getListFlow(): Flow<List<LectureCancellation>>
+    fun getAsFlow(id: Long): Flow<LectureCancellation?>
 
-    fun getListFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureCancellation>>
+    fun getAllAsFlow(): Flow<List<LectureCancellation>>
+
+    fun getAllAsFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureCancellation>>
 
     suspend fun setRead(id: Long)
-
-    suspend fun syncWithRemote(): List<LectureCancellation>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultLectureCancellationRepository(
     private val lectureCancellationDao: LectureCancellationDao,
-    private val shibbolethClient: ShibbolethClient,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
-) : LectureCancellationRepository {
+) : LectureCancellationRepository, LectureRepository(attendCourseDao, localPreferences) {
 
-    companion object {
-        private const val LECTURE_CANCEL_URL =
-            "https://portal.student.kit.ac.jp/ead/?c=lecture_cancellation"
-    }
-
-    private val subjectListFlow = attendCourseDao.getSubjectListFlow()
-    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
     private val lectureCancelListFlow = combine(
-        lectureCancellationDao.getListFlow(),
-        subjectListFlow,
+        lectureCancellationDao.selectAsFlow(),
+        attendCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureCancelList, subjectList, threshold ->
+    ) { lectureCancelList, attendCourseList, threshold ->
         lectureCancelList.map { lecture ->
-            lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
+            lecture.copy(
+                attendType = attendCourseList.calcAttendCourseType(
+                    lecture.subject,
+                    threshold
+                )
+            )
         }
     }
 
-    override fun getFlow(id: Long): Flow<LectureCancellation?> = combine(
-        lectureCancellationDao.getFlow(id),
-        subjectListFlow,
+    override fun getAsFlow(id: Long): Flow<LectureCancellation?> = combine(
+        lectureCancellationDao.selectAsFlow(id),
+        attendCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureCancel, subjectList, threshold ->
+    ) { lectureCancel, attendCourseList, threshold ->
         lectureCancel.copy(
-            attendType = subjectList.calcAttendCourseType(
+            attendType = attendCourseList.calcAttendCourseType(
                 lectureCancel.subject,
                 threshold
             )
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun getListFlow() = lectureCancelListFlow.flowOn(Dispatchers.IO)
+    override fun getAllAsFlow() = lectureCancelListFlow.flowOn(Dispatchers.IO)
 
-    override fun getListFlow(queryFlow: Flow<LectureQuery>) = combine(
+    override fun getAllAsFlow(queryFlow: Flow<LectureQuery>) = combine(
         lectureCancelListFlow,
         queryFlow
     ) { lectureCancelList, query ->
@@ -103,11 +97,5 @@ class DefaultLectureCancellationRepository(
         withContext(Dispatchers.IO) {
             lectureCancellationDao.updateRead(id)
         }
-    }
-
-    override suspend fun syncWithRemote(): List<LectureCancellation> = withContext(Dispatchers.IO) {
-        val document = shibbolethClient.fetch(LECTURE_CANCEL_URL)
-        val lectureCancelList = DocumentParser.parseLectureCancellation(document)
-        lectureCancellationDao.updateAll(lectureCancelList)
     }
 }

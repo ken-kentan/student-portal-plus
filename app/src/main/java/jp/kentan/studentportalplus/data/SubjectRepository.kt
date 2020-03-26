@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 
 interface SubjectRepository {
 
-    fun getListFlow(): Flow<List<String>>
+    fun getAllAsFlow(): Flow<List<String>>
 }
 
 @ExperimentalCoroutinesApi
@@ -21,10 +21,10 @@ class DefaultSubjectRepository(
     private val attendCourseDao: AttendCourseDao
 ) : SubjectRepository {
 
-    override fun getListFlow(): Flow<List<String>> = combine(
-        lectureInformationDao.getListFlow(),
-        lectureCancellationDao.getListFlow(),
-        attendCourseDao.getListFlow()
+    override fun getAllAsFlow(): Flow<List<String>> = combine(
+        lectureInformationDao.selectAsFlow(),
+        lectureCancellationDao.selectAsFlow(),
+        attendCourseDao.selectAsFlow()
     ) { lectureInfoList, lectureCancelList, attendCourseList ->
         mutableListOf<String>().apply {
             addAll(lectureInfoList.map { it.subject })

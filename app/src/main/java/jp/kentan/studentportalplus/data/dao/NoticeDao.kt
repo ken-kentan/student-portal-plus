@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.Flow
 interface NoticeDao {
 
     @Query("SELECT * FROM notices WHERE _id = :id")
-    fun getFlow(id: Long): Flow<Notice>
+    fun selectAsFlow(id: Long): Flow<Notice>
 
     @Query("SELECT * FROM notices ORDER BY created_date DESC, _id DESC")
-    fun getListFlow(): Flow<List<Notice>>
+    fun selectAsFlow(): Flow<List<Notice>>
 
     @Transaction
-    fun updateAll(noticeList: List<Notice>): List<Notice> {
+    fun insertOrDelete(noticeList: List<Notice>): List<Notice> {
         val insertList = mutableListOf<Notice>()
 
         noticeList.asReversed().forEach { notice ->

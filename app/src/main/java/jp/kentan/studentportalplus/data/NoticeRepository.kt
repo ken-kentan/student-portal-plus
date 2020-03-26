@@ -2,7 +2,6 @@ package jp.kentan.studentportalplus.data
 
 import jp.kentan.studentportalplus.data.dao.NoticeDao
 import jp.kentan.studentportalplus.data.entity.Notice
-import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.NoticeQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,35 +12,29 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 interface NoticeRepository {
-    fun getFlow(id: Long): Flow<Notice>
 
-    fun getListFlow(): Flow<List<Notice>>
+    fun getAsFlow(id: Long): Flow<Notice>
 
-    fun getListFlow(queryFlow: Flow<NoticeQuery>): Flow<List<Notice>>
+    fun getAllAsFlow(): Flow<List<Notice>>
+
+    fun getAllAsFlow(queryFlow: Flow<NoticeQuery>): Flow<List<Notice>>
 
     suspend fun update(notice: Notice): Boolean
 
     suspend fun setRead(id: Long)
-
-    suspend fun syncWithRemote(): List<Notice>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultNoticeRepository(
-    private val noticeDao: NoticeDao,
-    private val shibbolethClient: ShibbolethClient
+    private val noticeDao: NoticeDao
 ) : NoticeRepository {
 
-    companion object {
-        private const val NOTICE_URL = "https://portal.student.kit.ac.jp"
-    }
+    override fun getAsFlow(id: Long): Flow<Notice> = noticeDao.selectAsFlow(id)
 
-    override fun getFlow(id: Long): Flow<Notice> = noticeDao.getFlow(id)
+    override fun getAllAsFlow(): Flow<List<Notice>> = noticeDao.selectAsFlow()
 
-    override fun getListFlow(): Flow<List<Notice>> = noticeDao.getListFlow()
-
-    override fun getListFlow(queryFlow: Flow<NoticeQuery>): Flow<List<Notice>> = combine(
-        noticeDao.getListFlow(),
+    override fun getAllAsFlow(queryFlow: Flow<NoticeQuery>): Flow<List<Notice>> = combine(
+        noticeDao.selectAsFlow(),
         queryFlow
     ) { noticeList, query ->
         val calendar = Calendar.getInstance()
@@ -77,11 +70,5 @@ class DefaultNoticeRepository(
         withContext(Dispatchers.IO) {
             noticeDao.updateRead(id)
         }
-    }
-
-    override suspend fun syncWithRemote(): List<Notice> = withContext(Dispatchers.IO) {
-        val document = shibbolethClient.fetch(NOTICE_URL)
-        val noticeList = DocumentParser.parseNotice(document)
-        noticeDao.updateAll(noticeList)
     }
 }

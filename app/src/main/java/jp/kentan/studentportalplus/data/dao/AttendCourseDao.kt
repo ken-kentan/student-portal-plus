@@ -16,25 +16,22 @@ import kotlinx.coroutines.flow.Flow
 interface AttendCourseDao {
 
     @Query("SELECT * FROM attend_courses WHERE _id = :id")
-    fun getFlow(id: Long): Flow<AttendCourse?>
+    fun selectAsFlow(id: Long): Flow<AttendCourse?>
 
     @Query("SELECT * FROM attend_courses")
-    fun getListFlow(): Flow<List<AttendCourse>>
+    fun selectAsFlow(): Flow<List<AttendCourse>>
 
     @Query("SELECT * FROM attend_courses WHERE day_of_week = :dayOfWeek ORDER BY period, subject")
-    fun getListFlow(dayOfWeek: DayOfWeek): Flow<List<AttendCourse>>
-
-    @Query("SELECT subject, type FROM attend_courses")
-    fun getSubjectListFlow(): Flow<List<AttendCourseSubject>>
+    fun selectAsFlow(dayOfWeek: DayOfWeek): Flow<List<AttendCourse>>
 
     @Query("SELECT * FROM attend_courses WHERE _id = :id")
-    fun get(id: Long): AttendCourse?
+    fun select(id: Long): AttendCourse?
 
-    @Query("SELECT subject, type FROM attend_courses")
-    fun getSubjectList(): List<AttendCourseSubject>
+    @Query("SELECT * FROM attend_courses")
+    fun select(): List<AttendCourse>
 
     @Transaction
-    fun updateAll(attendCourseList: List<AttendCourse>) {
+    fun insertOrDelete(attendCourseList: List<AttendCourse>) {
         attendCourseList.forEach { course ->
             val id = insert(course)
             Log.d("AttendCourseDao", "$id: ${course.subject}")
@@ -48,7 +45,7 @@ interface AttendCourseDao {
     fun insert(attendCourse: AttendCourse): Long
 
     @Insert
-    fun insertAll(attendCourseList: List<AttendCourse>): List<Long>
+    fun insert(attendCourseList: List<AttendCourse>): List<Long>
 
     @Update
     fun update(attendCourse: AttendCourse): Int

@@ -69,11 +69,9 @@ object AppModule {
     @Singleton
     fun provideLectureInformationRepository(
         database: PortalDatabase,
-        shibbolethClient: ShibbolethClient,
         localPreferences: LocalPreferences
     ): LectureInformationRepository = DefaultLectureInformationRepository(
         database.lectureInformationDao,
-        shibbolethClient,
         database.attendCourseDao,
         localPreferences
     )
@@ -82,11 +80,9 @@ object AppModule {
     @Singleton
     fun provideLectureCancellationRepository(
         database: PortalDatabase,
-        shibbolethClient: ShibbolethClient,
         localPreferences: LocalPreferences
     ): LectureCancellationRepository = DefaultLectureCancellationRepository(
         database.lectureCancellationDao,
-        shibbolethClient,
         database.attendCourseDao,
         localPreferences
     )
@@ -94,17 +90,15 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNoticeRepository(
-        database: PortalDatabase,
-        shibbolethClient: ShibbolethClient
-    ): NoticeRepository = DefaultNoticeRepository(database.noticeDao, shibbolethClient)
+        database: PortalDatabase
+    ): NoticeRepository = DefaultNoticeRepository(database.noticeDao)
 
     @Provides
     @Singleton
     fun provideAttendCourseRepository(
-        database: PortalDatabase,
-        shibbolethClient: ShibbolethClient
+        database: PortalDatabase
     ): AttendCourseRepository =
-        DefaultAttendCourseRepository(database.attendCourseDao, shibbolethClient)
+        DefaultAttendCourseRepository(database.attendCourseDao)
 
     @Provides
     @Singleton

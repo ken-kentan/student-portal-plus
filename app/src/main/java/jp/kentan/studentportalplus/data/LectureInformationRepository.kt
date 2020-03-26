@@ -3,8 +3,6 @@ package jp.kentan.studentportalplus.data
 import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureInformationDao
 import jp.kentan.studentportalplus.data.entity.LectureInformation
-import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
-import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.LectureQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,58 +12,54 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 interface LectureInformationRepository {
-    fun getFlow(id: Long): Flow<LectureInformation?>
 
-    fun getListFlow(): Flow<List<LectureInformation>>
+    fun getAsFlow(id: Long): Flow<LectureInformation?>
 
-    fun getListFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
+    fun getAllAsFlow(): Flow<List<LectureInformation>>
+
+    fun getAllAsFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
 
     suspend fun setRead(id: Long)
-
-    suspend fun syncWithRemote(): List<LectureInformation>
 }
 
 @ExperimentalCoroutinesApi
 class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
-    private val shibbolethClient: ShibbolethClient,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
-) : LectureInformationRepository {
+) : LectureInformationRepository, LectureRepository(attendCourseDao, localPreferences) {
 
-    companion object {
-        private const val LECTURE_INFO_URL =
-            "https://portal.student.kit.ac.jp/ead/?c=lecture_information"
-    }
-
-    private val subjectListFlow = attendCourseDao.getSubjectListFlow()
-    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
     private val lectureInfoListFlow = combine(
-        lectureInformationDao.getListFlow(),
-        subjectListFlow,
+        lectureInformationDao.selectAsFlow(),
+        attendCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureInfoList, subjectList, threshold ->
+    ) { lectureInfoList, attendCourseList, threshold ->
         lectureInfoList.map { lecture ->
-            lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
+            lecture.copy(
+                attendType = attendCourseList.calcAttendCourseType(
+                    lecture.subject,
+                    threshold
+                )
+            )
         }
     }
 
-    override fun getFlow(id: Long) = combine(
-        lectureInformationDao.getFlow(id),
-        subjectListFlow,
+    override fun getAsFlow(id: Long) = combine(
+        lectureInformationDao.selectAsFlow(id),
+        attendCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureInfo, subjectList, threshold ->
+    ) { lectureInfo, attendCourseList, threshold ->
         lectureInfo?.copy(
-            attendType = subjectList.calcAttendCourseType(
+            attendType = attendCourseList.calcAttendCourseType(
                 lectureInfo.subject,
                 threshold
             )
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun getListFlow() = lectureInfoListFlow.flowOn(Dispatchers.IO)
+    override fun getAllAsFlow() = lectureInfoListFlow.flowOn(Dispatchers.IO)
 
-    override fun getListFlow(queryFlow: Flow<LectureQuery>) = combine(
+    override fun getAllAsFlow(queryFlow: Flow<LectureQuery>) = combine(
         lectureInfoListFlow,
         queryFlow
     ) { lectureInfoList, query ->
@@ -101,11 +95,5 @@ class DefaultLectureInformationRepository(
         withContext(Dispatchers.IO) {
             lectureInformationDao.updateRead(id)
         }
-    }
-
-    override suspend fun syncWithRemote(): List<LectureInformation> = withContext(Dispatchers.IO) {
-        val document = shibbolethClient.fetch(LECTURE_INFO_URL)
-        val lectureInfoList = DocumentParser.parseLectureInformation(document)
-        lectureInformationDao.updateAll(lectureInfoList)
     }
 }

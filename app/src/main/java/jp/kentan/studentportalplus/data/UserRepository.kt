@@ -19,7 +19,7 @@ interface UserRepository {
 
     suspend fun get(): User?
 
-    fun getFlow(): Flow<User>
+    fun getAsFlow(): Flow<User>
 }
 
 @ExperimentalCoroutinesApi
@@ -44,7 +44,7 @@ class DefaultUserRepository(
         }.getOrNull()
     }
 
-    override fun getFlow(): Flow<User> {
+    override fun getAsFlow(): Flow<User> {
         coroutineScope.launch {
             runCatching {
                 User(shibbolethDataSource.name, shibbolethDataSource.username)
