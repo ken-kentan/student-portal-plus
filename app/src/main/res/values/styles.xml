@@ -18,6 +18,12 @@
         </item>
     </style>
 
+    <style name="Widget.AppTheme.TextInputLayout.FilledBox.AutoComplete">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.AppTheme.AutoCompleteTextView.FilledBox
+        </item>
+    </style>
+
     <style name="Widget.AppTheme.TextInputLayout.FilledBox.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
         <item name="materialThemeOverlay">
             @style/ThemeOverlay.AppTheme.AutoCompleteTextView.FilledBox

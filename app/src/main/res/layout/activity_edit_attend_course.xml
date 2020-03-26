@@ -43,6 +43,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/subject_text_input_layout"
+                    style="@style/Widget.AppTheme.TextInputLayout.FilledBox.AutoComplete"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -52,9 +53,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
+                        android:id="@+id/subject_auto_complete_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:completionThreshold="1"
                         android:enabled="@{viewModel.isEnabled}"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="text"
@@ -141,7 +144,7 @@
                         android:enabled="@{viewModel.isEnabled}"
                         android:hint="@string/edit_attend_course_day_of_week"
                         android:text="@={viewModel.dayOfWeek}"
-                        app:entities="@{viewModel.dayOfWeekList}" />
+                        app:entitiesWithoutFilter="@{viewModel.dayOfWeekList}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +168,7 @@
                         android:enabled="@{viewModel.isEnabled &amp;&amp; viewModel.isEnabledPeriod}"
                         android:hint="@string/edit_attend_course_period"
                         android:text="@={viewModel.period}"
-                        app:entities="@{viewModel.periodList}" />
+                        app:entitiesWithoutFilter="@{viewModel.periodList}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

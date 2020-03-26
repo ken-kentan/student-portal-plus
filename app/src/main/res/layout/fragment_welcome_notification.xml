@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:text="@={viewModel.lectureInformationNotificationType}"
-                    app:entities="@{viewModel.lectureNotificationTypeList}"
+                    app:entitiesWithoutFilter="@{viewModel.lectureNotificationTypeList}"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>

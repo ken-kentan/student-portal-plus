@@ -60,8 +60,8 @@ object CommonBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("entities")
-    fun setEntities(view: AutoCompleteTextView, entityList: List<String>) {
+    @BindingAdapter("entitiesWithoutFilter")
+    fun setEntitiesWithoutFilter(view: AutoCompleteTextView, entityList: List<String>) {
         val adapter = MaterialArrayAdapter(
             view.context,
             R.layout.item_dropdown_menu_popup,
