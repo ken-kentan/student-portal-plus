@@ -63,6 +63,7 @@
                         android:inputType="text"
                         android:nextFocusForward="@id/instructor_text_input_layout"
                         android:singleLine="true"
+                        app:entities="@{viewModel.subjectList}"
                         android:text="@={viewModel.subject}" />
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -44,8 +44,8 @@ class DefaultLectureCancellationRepository(
         lectureCancellationDao.getListFlow(),
         subjectListFlow,
         similarSubjectThresholdFlow
-    ) { lectureCancel, subjectList, threshold ->
-        lectureCancel.map { lecture ->
+    ) { lectureCancelList, subjectList, threshold ->
+        lectureCancelList.map { lecture ->
             lecture.copy(attendType = subjectList.calcAttendCourseType(lecture.subject, threshold))
         }
     }

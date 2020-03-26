@@ -12,11 +12,13 @@ import jp.kentan.studentportalplus.data.DefaultAttendCourseRepository
 import jp.kentan.studentportalplus.data.DefaultLectureCancellationRepository
 import jp.kentan.studentportalplus.data.DefaultLectureInformationRepository
 import jp.kentan.studentportalplus.data.DefaultNoticeRepository
+import jp.kentan.studentportalplus.data.DefaultSubjectRepository
 import jp.kentan.studentportalplus.data.DefaultUserRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.SubjectRepository
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.dao.PortalDatabase
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
@@ -103,6 +105,16 @@ object AppModule {
         shibbolethClient: ShibbolethClient
     ): AttendCourseRepository =
         DefaultAttendCourseRepository(database.attendCourseDao, shibbolethClient)
+
+    @Provides
+    @Singleton
+    fun provideSubjectRepository(
+        database: PortalDatabase
+    ): SubjectRepository = DefaultSubjectRepository(
+        database.lectureInformationDao,
+        database.lectureCancellationDao,
+        database.attendCourseDao
+    )
 
     @Provides
     fun provideNotificationHelper(

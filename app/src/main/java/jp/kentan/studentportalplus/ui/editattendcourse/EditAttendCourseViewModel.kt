@@ -6,9 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.SubjectRepository
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
@@ -19,8 +21,11 @@ import javax.inject.Inject
 
 class EditAttendCourseViewModel @Inject constructor(
     application: Application,
-    private val attendCourseRepository: AttendCourseRepository
+    private val attendCourseRepository: AttendCourseRepository,
+    subjectRepository: SubjectRepository
 ) : AndroidViewModel(application) {
+
+    val subjectList = subjectRepository.getListFlow().asLiveData()
 
     val dayOfWeekList = DayOfWeek.values().map { it.format(application) }
     val periodList = Period.values().map { it.format(application) }
