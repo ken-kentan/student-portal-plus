@@ -24,7 +24,7 @@ class LectureCancellationDetailViewModel @Inject constructor(
     private val lectureCancelId = MutableLiveData<Long>()
 
     val lectureCancel = lectureCancelId.switchMap {
-        lectureCancelRepository.getFlow(it).asLiveData()
+        lectureCancelRepository.getAsFlow(it).asLiveData()
     }
 
     private val _excludeFromAttendConfirmDialog = MutableLiveData<Event<String>>()

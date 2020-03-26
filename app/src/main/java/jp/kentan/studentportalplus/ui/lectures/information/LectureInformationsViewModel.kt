@@ -27,7 +27,7 @@ class LectureInformationsViewModel @Inject constructor(
         get() = query.text
 
     val lectureInfoList: LiveData<List<LectureInformation>> =
-        lectureInfoRepository.getListFlow(_query.asFlow()).asLiveData()
+        lectureInfoRepository.getAllAsFlow(_query.asFlow()).asLiveData()
 
     private val _startDetailActivity = MutableLiveData<Event<Long>>()
     val startDetailActivity: LiveData<Event<Long>>

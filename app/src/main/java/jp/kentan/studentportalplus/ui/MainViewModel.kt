@@ -10,13 +10,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.LectureCancellationRepository
-import jp.kentan.studentportalplus.data.LectureInformationRepository
 import jp.kentan.studentportalplus.data.LocalPreferences
-import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethException
+import jp.kentan.studentportalplus.domain.SyncUseCase
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,14 +21,11 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     userRepository: UserRepository,
-    private val attendCourseRepository: AttendCourseRepository,
-    private val lectureInfoRepository: LectureInformationRepository,
-    private val lectureCancelRepository: LectureCancellationRepository,
-    private val noticeRepository: NoticeRepository,
+    private val syncUseCase: SyncUseCase,
     private val localPreferences: LocalPreferences
 ) : AndroidViewModel(application) {
 
-    val user = userRepository.getFlow().asLiveData()
+    val user = userRepository.getAsFlow().asLiveData()
     val isSyncing = MutableLiveData<Boolean>()
 
     private val _errorSnackbar = MutableLiveData<Event<String>>()
@@ -66,10 +60,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                attendCourseRepository.syncWithRemote()
-                lectureInfoRepository.syncWithRemote()
-                lectureCancelRepository.syncWithRemote()
-                noticeRepository.syncWithRemote()
+                syncUseCase()
             }.onFailure {
                 if (it is ShibbolethException) {
                     _loginSnackbar.value = Event(Unit)

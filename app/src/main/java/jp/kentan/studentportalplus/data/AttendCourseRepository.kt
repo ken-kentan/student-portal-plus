@@ -28,6 +28,8 @@ interface AttendCourseRepository {
 
     suspend fun update(attendCourse: AttendCourse): Boolean
 
+    suspend fun updateAll(attendCourseList: List<AttendCourse>)
+
     suspend fun remove(id: Long): Boolean
 
     suspend fun remove(subject: String): Boolean
@@ -88,6 +90,9 @@ class DefaultAttendCourseRepository(
         val count = attendCourseDao.update(attendCourse)
         return@withContext count > 0
     }
+
+    override suspend fun updateAll(attendCourseList: List<AttendCourse>) =
+        attendCourseDao.insertOrDelete(attendCourseList)
 
     override suspend fun remove(id: Long): Boolean = withContext(Dispatchers.IO) {
         val count = attendCourseDao.delete(id)

@@ -19,6 +19,8 @@ interface LectureCancellationRepository {
 
     fun getAllAsFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureCancellation>>
 
+    suspend fun updateAll(lectureCancellationList: List<LectureCancellation>): List<LectureCancellation>
+
     suspend fun setRead(id: Long)
 }
 
@@ -92,6 +94,9 @@ class DefaultLectureCancellationRepository(
             }
         }
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun updateAll(lectureCancellationList: List<LectureCancellation>) =
+        lectureCancellationDao.insertOrDelete(lectureCancellationList)
 
     override suspend fun setRead(id: Long) {
         withContext(Dispatchers.IO) {

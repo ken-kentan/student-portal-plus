@@ -22,7 +22,7 @@ class AttendCourseDetailViewModel @Inject constructor(
     private val attendCourseId = MutableLiveData<Long>()
 
     val attendCourse = attendCourseId.switchMap {
-        attendCourseRepository.getFlow(it).asLiveData()
+        attendCourseRepository.getAsFlow(it).asLiveData()
     }
 
     val enabledDeleteOptionMenu = MediatorLiveData<Event<Unit>>().apply {

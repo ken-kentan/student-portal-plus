@@ -69,19 +69,19 @@ class DashboardViewModel @Inject constructor(
         }
 
         _portalSet.addAttendCourseSource(
-            attendCourseRepository.getListFlow(timetableDayOfWeek).asLiveData()
+            attendCourseRepository.getAllAsFlow(timetableDayOfWeek).asLiveData()
         )
         _portalSet.addLectureInformationSource(
-            lectureInfoRepository.getListFlow().map { list ->
+            lectureInfoRepository.getAllAsFlow().map { list ->
                 list.filter { it.attendType.isAttend }
             }.asLiveData()
         )
         _portalSet.addLectureCancellationSource(
-            lectureCancelRepository.getListFlow().map { list ->
+            lectureCancelRepository.getAllAsFlow().map { list ->
                 list.filter { it.attendType.isAttend }
             }.asLiveData()
         )
-        _portalSet.addNoticeSource(noticeRepository.getListFlow().asLiveData())
+        _portalSet.addNoticeSource(noticeRepository.getAllAsFlow().asLiveData())
     }
 
     val onAttendCourseItemClick = { id: Long ->

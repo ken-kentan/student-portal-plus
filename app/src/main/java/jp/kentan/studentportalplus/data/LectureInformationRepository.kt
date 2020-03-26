@@ -19,6 +19,8 @@ interface LectureInformationRepository {
 
     fun getAllAsFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
 
+    suspend fun updateAll(lectureInformationList: List<LectureInformation>): List<LectureInformation>
+
     suspend fun setRead(id: Long)
 }
 
@@ -90,6 +92,9 @@ class DefaultLectureInformationRepository(
             }
         }
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun updateAll(lectureInformationList: List<LectureInformation>) =
+        lectureInformationDao.insertOrDelete(lectureInformationList)
 
     override suspend fun setRead(id: Long) {
         withContext(Dispatchers.IO) {

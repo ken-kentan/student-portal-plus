@@ -18,7 +18,7 @@ class TimetableViewModel @Inject constructor(
     private val localPreferences: LocalPreferences
 ) : ViewModel() {
 
-    val attendCourseList = attendCourseRepository.getListFlow().asLiveData()
+    val attendCourseList = attendCourseRepository.getAllAsFlow().asLiveData()
 
     private val _isGridLayout = MutableLiveData(localPreferences.isGridTimetableLayout)
     val isGridLayout: LiveData<Boolean>

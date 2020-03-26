@@ -21,6 +21,8 @@ interface NoticeRepository {
 
     suspend fun update(notice: Notice): Boolean
 
+    suspend fun updateAll(noticeList: List<Notice>): List<Notice>
+
     suspend fun setRead(id: Long)
 }
 
@@ -65,6 +67,8 @@ class DefaultNoticeRepository(
         val count = noticeDao.update(notice)
         return@withContext count > 0
     }
+
+    override suspend fun updateAll(noticeList: List<Notice>) = noticeDao.insertOrDelete(noticeList)
 
     override suspend fun setRead(id: Long) {
         withContext(Dispatchers.IO) {

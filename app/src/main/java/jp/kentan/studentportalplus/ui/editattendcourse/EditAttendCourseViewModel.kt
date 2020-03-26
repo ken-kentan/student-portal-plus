@@ -25,7 +25,7 @@ class EditAttendCourseViewModel @Inject constructor(
     subjectRepository: SubjectRepository
 ) : AndroidViewModel(application) {
 
-    val subjectList = subjectRepository.getListFlow().asLiveData()
+    val subjectList = subjectRepository.getAllAsFlow().asLiveData()
 
     val dayOfWeekList = DayOfWeek.values().map { it.format(application) }
     val periodList = Period.values().map { it.format(application) }

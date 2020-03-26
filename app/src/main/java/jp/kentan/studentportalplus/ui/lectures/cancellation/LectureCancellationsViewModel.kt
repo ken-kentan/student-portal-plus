@@ -25,7 +25,7 @@ class LectureCancellationsViewModel @Inject constructor(
     val queryText: String?
         get() = query.text
 
-    val lectureCancelList = lectureCancelRepository.getListFlow(_query.asFlow()).asLiveData()
+    val lectureCancelList = lectureCancelRepository.getAllAsFlow(_query.asFlow()).asLiveData()
 
     private val _startDetailActivity = MutableLiveData<Event<Long>>()
     val startDetailActivity: LiveData<Event<Long>>

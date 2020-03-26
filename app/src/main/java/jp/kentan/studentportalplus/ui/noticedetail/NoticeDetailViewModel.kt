@@ -18,7 +18,7 @@ class NoticeDetailViewModel @Inject constructor(
     private val noticeId = MutableLiveData<Long>()
 
     val notice = noticeId.switchMap {
-        noticeRepository.getFlow(it).asLiveData()
+        noticeRepository.getAsFlow(it).asLiveData()
     }
 
     val finishWithNotFoundError = MediatorLiveData<Unit>().apply {

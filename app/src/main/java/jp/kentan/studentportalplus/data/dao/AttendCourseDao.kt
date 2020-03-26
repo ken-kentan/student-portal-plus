@@ -8,7 +8,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import jp.kentan.studentportalplus.data.entity.AttendCourse
-import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import kotlinx.coroutines.flow.Flow
 
