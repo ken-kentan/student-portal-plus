@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:text="@={viewModel.lectureCancellationNotificationType}"
-                    app:entities="@{viewModel.lectureNotificationTypeList}"
+                    app:entitiesWithoutFilter="@{viewModel.lectureNotificationTypeList}"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:text="@={viewModel.noticeNotificationType}"
-                    app:entities="@{viewModel.noticeNotificationTypeList}"
+                    app:entitiesWithoutFilter="@{viewModel.noticeNotificationTypeList}"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
