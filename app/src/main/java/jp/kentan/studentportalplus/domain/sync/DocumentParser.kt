@@ -207,7 +207,7 @@ object DocumentParser {
             attendCourseList.add(
                 createAttendCourse(
                     DayOfWeek.INTENSIVE,
-                    0,
+                    1,
                     scheduleCode,
                     lines
                 )

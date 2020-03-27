@@ -71,7 +71,7 @@ class DefaultAttendCourseRepository(
         val periodRange = if (dayOfWeek.hasPeriod) {
             Period.rangeOf(lecture.period)
         } else {
-            IntRange(0, 0)
+            IntRange(1, 1)
         }
 
         val attendCourseList = periodRange.map { period ->

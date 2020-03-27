@@ -128,7 +128,7 @@ class EditAttendCourseViewModel @Inject constructor(
         instructor.value = course.instructor
         location.value = course.location
         dayOfWeek.value = course.dayOfWeek.format(context)
-        period.value = if (course.period > 0) periodList[course.period - 1] else ""
+        period.value = periodList[course.period - 1]
         category.value = course.category
         credit.value = with(course.credit) { if (this > 0) toString() else "" }
         scheduleCode.value = course.scheduleCode
@@ -169,7 +169,7 @@ class EditAttendCourseViewModel @Inject constructor(
             instructor = instructor.value.orEmpty(),
             location = location,
             dayOfWeek = dayOfWeek,
-            period = if (dayOfWeek.hasPeriod) period.value.toPeriodValue() else 0,
+            period = if (dayOfWeek.hasPeriod) period.value.toPeriodValue() else 1,
             category = category.value.orEmpty(),
             credit = credit ?: 0,
             scheduleCode = scheduleCode,

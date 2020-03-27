@@ -63,5 +63,6 @@ data class AttendCourse(
 
     init {
         require(type == Type.PORTAL || type == Type.USER) { "type($type) should be PORTAL or USER" }
+        require(period in 1..7) { "period($period) should in 1..7" }
     }
 }
