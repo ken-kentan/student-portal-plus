@@ -14,7 +14,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.source.ShibbolethException
-import jp.kentan.studentportalplus.domain.SyncUseCase
+import jp.kentan.studentportalplus.domain.sync.SyncUseCase
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
 import java.util.Calendar

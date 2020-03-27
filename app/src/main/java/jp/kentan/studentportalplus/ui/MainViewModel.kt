@@ -13,7 +13,7 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethException
-import jp.kentan.studentportalplus.domain.SyncUseCase
+import jp.kentan.studentportalplus.domain.sync.SyncUseCase
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import kotlinx.coroutines.launch
 import javax.inject.Inject

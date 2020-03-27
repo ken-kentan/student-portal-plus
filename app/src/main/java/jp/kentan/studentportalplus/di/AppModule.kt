@@ -61,9 +61,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserRepository(
-        client: ShibbolethClient,
         source: ShibbolethDataSource
-    ): UserRepository = DefaultUserRepository(client, source)
+    ): UserRepository = DefaultUserRepository(source)
 
     @Provides
     @Singleton

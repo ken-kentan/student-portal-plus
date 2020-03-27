@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.domain
+package jp.kentan.studentportalplus.domain.sync
 
 import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
