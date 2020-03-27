@@ -29,7 +29,10 @@ class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
-) : LectureInformationRepository, LectureRepository(attendCourseDao, localPreferences) {
+) : LectureInformationRepository {
+
+    private val attendCourseListFlow = attendCourseDao.selectAsFlow()
+    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
 
     private val lectureInfoListFlow = combine(
         lectureInformationDao.selectAsFlow(),
@@ -38,7 +41,7 @@ class DefaultLectureInformationRepository(
     ) { lectureInfoList, attendCourseList, threshold ->
         lectureInfoList.map { lecture ->
             lecture.copy(
-                attendType = attendCourseList.calcAttendCourseType(
+                attendType = attendCourseList.resolveAttendCourseType(
                     lecture.subject,
                     threshold
                 )
@@ -52,7 +55,7 @@ class DefaultLectureInformationRepository(
         similarSubjectThresholdFlow
     ) { lectureInfo, attendCourseList, threshold ->
         lectureInfo?.copy(
-            attendType = attendCourseList.calcAttendCourseType(
+            attendType = attendCourseList.resolveAttendCourseType(
                 lectureInfo.subject,
                 threshold
             )

@@ -37,7 +37,7 @@ interface AttendCourseDao {
         }
 
         // Delete old notices
-        deleteNotInHash(AttendCourse.Type.PORTAL.ordinal, attendCourseList.map { it.hash })
+        deleteNotInHash(AttendCourse.Type.PORTAL, attendCourseList.map { it.hash })
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -55,6 +55,6 @@ interface AttendCourseDao {
     @Query("DELETE FROM attend_courses WHERE type = :attendType AND subject = :subject")
     fun delete(subject: String, attendType: AttendCourse.Type): Int
 
-    @Query("DELETE FROM attend_courses WHERE type = :type AND hash NOT IN (:hash)")
-    fun deleteNotInHash(type: Int, hash: List<Long>)
+    @Query("DELETE FROM attend_courses WHERE type = :attendType AND hash NOT IN (:hash)")
+    fun deleteNotInHash(attendType: AttendCourse.Type, hash: List<Long>)
 }

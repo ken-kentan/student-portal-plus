@@ -29,7 +29,10 @@ class DefaultLectureCancellationRepository(
     private val lectureCancellationDao: LectureCancellationDao,
     attendCourseDao: AttendCourseDao,
     localPreferences: LocalPreferences
-) : LectureCancellationRepository, LectureRepository(attendCourseDao, localPreferences) {
+) : LectureCancellationRepository {
+
+    private val attendCourseListFlow = attendCourseDao.selectAsFlow()
+    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
 
     private val lectureCancelListFlow = combine(
         lectureCancellationDao.selectAsFlow(),
@@ -38,7 +41,7 @@ class DefaultLectureCancellationRepository(
     ) { lectureCancelList, attendCourseList, threshold ->
         lectureCancelList.map { lecture ->
             lecture.copy(
-                attendType = attendCourseList.calcAttendCourseType(
+                attendType = attendCourseList.resolveAttendCourseType(
                     lecture.subject,
                     threshold
                 )
@@ -52,7 +55,7 @@ class DefaultLectureCancellationRepository(
         similarSubjectThresholdFlow
     ) { lectureCancel, attendCourseList, threshold ->
         lectureCancel.copy(
-            attendType = attendCourseList.calcAttendCourseType(
+            attendType = attendCourseList.resolveAttendCourseType(
                 lectureCancel.subject,
                 threshold
             )

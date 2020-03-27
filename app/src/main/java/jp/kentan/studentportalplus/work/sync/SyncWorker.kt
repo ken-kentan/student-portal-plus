@@ -12,22 +12,11 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.LectureCancellationRepository
-import jp.kentan.studentportalplus.data.LectureInformationRepository
 import jp.kentan.studentportalplus.data.LocalPreferences
-import jp.kentan.studentportalplus.data.NoticeRepository
-import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
-import jp.kentan.studentportalplus.data.entity.Lecture
-import jp.kentan.studentportalplus.data.entity.Notice
-import jp.kentan.studentportalplus.data.entity.calcAttendCourseType
 import jp.kentan.studentportalplus.data.source.ShibbolethException
-import jp.kentan.studentportalplus.data.vo.LectureNotificationType
-import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
+import jp.kentan.studentportalplus.domain.SyncUseCase
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.work.ChildWorkerFactory
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import java.util.Calendar
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
@@ -35,10 +24,7 @@ import java.util.concurrent.TimeUnit
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
-    private val attendCourseRepository: AttendCourseRepository,
-    private val lectureInfoRepository: LectureInformationRepository,
-    private val lectureCancelRepository: LectureCancellationRepository,
-    private val noticeRepository: NoticeRepository,
+    private val syncUseCase: SyncUseCase,
     private val localPreferences: LocalPreferences,
     private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(appContext, params) {
@@ -79,81 +65,30 @@ class SyncWorker @AssistedInject constructor(
             return Result.success()
         }
 
-        return coroutineScope {
-            try {
-                attendCourseRepository.syncWithRemote()
-                val subjectList = attendCourseRepository.getSubjectList()
+        try {
+            val result = syncUseCase()
 
-                val similarSubjectThreshold = localPreferences.similarSubjectThreshold
-
-                val lectureInfoDeferred = async {
-                    lectureInfoRepository.syncWithRemote()
-                        .filterWith(
-                            localPreferences.lectureInformationNotificationType,
-                            subjectList,
-                            similarSubjectThreshold
-                        )
-                }
-
-                val lectureCancelDeferred = async {
-                    lectureCancelRepository.syncWithRemote()
-                        .filterWith(
-                            localPreferences.lectureCancellationNotificationType,
-                            subjectList,
-                            similarSubjectThreshold
-                        )
-                }
-
-                val noticeDeferred = async {
-                    noticeRepository.syncWithRemote()
-                        .filterWith(
-                            localPreferences.noticeNotificationType
-                        )
-                }
-
-                notificationHelper.sendLectureInformation(lectureInfoDeferred.await())
-                notificationHelper.sendLectureCancellation(lectureCancelDeferred.await())
-                notificationHelper.sendNotice(noticeDeferred.await())
-
-                Result.success()
-            } catch (e: Exception) {
-                if (e is ShibbolethException) {
-                    notificationHelper.sendShibbolethError(e.message)
-                } else if (localPreferences.isEnabledDetailError) {
-                    notificationHelper.sendError(e)
-                }
-
-                Log.e(TAG, "Failed to sync", e)
-                Result.failure()
+            notificationHelper.sendLectureInformation(result.updatedLectureInformationList)
+            notificationHelper.sendLectureCancellation(result.updatedLectureCancellationList)
+            notificationHelper.sendNotice(result.updatedNoticeList)
+        } catch (e: Exception) {
+            if (e is ShibbolethException) {
+                notificationHelper.sendShibbolethError(e.message)
+            } else if (localPreferences.isEnabledDetailError) {
+                notificationHelper.sendError(e)
             }
+
+            Log.e(TAG, "Failed to sync", e)
+            return Result.failure()
         }
+
+        return Result.success()
     }
 
     private fun isInMidnight(): Boolean {
         val timeZone = TimeZone.getTimeZone("Asia/Tokyo")
         return Calendar.getInstance(timeZone).get(Calendar.HOUR_OF_DAY) !in AVAILABLE_HOUR
     }
-
-    private fun <T : Lecture> List<T>.filterWith(
-        notificationType: LectureNotificationType,
-        subjectList: List<AttendCourseSubject>,
-        threshold: Float
-    ): List<T> = when (notificationType) {
-        LectureNotificationType.ALL -> this
-        LectureNotificationType.ATTEND -> filter {
-            subjectList.calcAttendCourseType(it.subject, threshold).isAttend
-        }
-        LectureNotificationType.NOT -> emptyList()
-    }
-
-    private fun List<Notice>.filterWith(notificationType: NoticeNotificationType) =
-        when (notificationType) {
-            NoticeNotificationType.ALL -> this
-            NoticeNotificationType.IMPORTANT -> filter {
-                it.title.contains("重要") || it.title.contains("注意")
-            }
-            NoticeNotificationType.NOT -> emptyList()
-        }
 
     @AssistedInject.Factory
     interface Factory : ChildWorkerFactory

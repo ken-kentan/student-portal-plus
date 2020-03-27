@@ -22,6 +22,8 @@ interface AttendCourseRepository {
 
     suspend fun get(id: Long): AttendCourse?
 
+    suspend fun getAll(): List<AttendCourse>
+
     suspend fun add(attendCourse: AttendCourse): Boolean
 
     suspend fun add(lecture: Lecture): Boolean
@@ -56,6 +58,8 @@ class DefaultAttendCourseRepository(
     override suspend fun get(id: Long): AttendCourse? = withContext(Dispatchers.IO) {
         attendCourseDao.select(id)
     }
+
+    override suspend fun getAll(): List<AttendCourse> = attendCourseDao.select()
 
     override suspend fun add(attendCourse: AttendCourse): Boolean = withContext(Dispatchers.IO) {
         val row = attendCourseDao.insert(attendCourse)

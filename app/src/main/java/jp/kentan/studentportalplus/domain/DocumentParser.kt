@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.data
+package jp.kentan.studentportalplus.domain
 
 import android.util.Log
 import jp.kentan.studentportalplus.data.entity.AttendCourse

@@ -10,7 +10,7 @@ import jp.kentan.studentportalplus.TestData
 import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
 import jp.kentan.studentportalplus.data.dao.FakeLectureInformationDao
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
-import kotlinx.coroutines.flow.collect
+import jp.kentan.studentportalplus.domain.DocumentParser
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
