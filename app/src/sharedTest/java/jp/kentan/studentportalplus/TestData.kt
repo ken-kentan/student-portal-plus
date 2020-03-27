@@ -1,7 +1,6 @@
 package jp.kentan.studentportalplus
 
 import jp.kentan.studentportalplus.data.entity.AttendCourse
-import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import java.util.Date
@@ -17,11 +16,6 @@ object TestData {
         subject = "subject",
         instructor = "instructor",
         type = AttendCourse.Type.USER
-    )
-
-    val attendCourseSubject = AttendCourseSubject(
-        subject = "subject",
-        type = AttendCourse.Type.PORTAL
     )
 
     val lectureInfo = LectureInformation(
