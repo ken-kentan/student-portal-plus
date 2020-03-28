@@ -1,6 +1,5 @@
 package jp.kentan.studentportalplus.data.dao
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -31,20 +30,20 @@ interface AttendCourseDao {
 
     @Transaction
     fun insertOrDelete(attendCourseList: List<AttendCourse>) {
-        attendCourseList.forEach { course ->
-            val id = insert(course)
-            Log.d("AttendCourseDao", "$id: ${course.subject}")
-        }
+        insertIgnore(attendCourseList)
 
         // Delete old notices
         deleteNotInHash(AttendCourse.Type.PORTAL, attendCourseList.map { it.hash })
     }
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     fun insert(attendCourse: AttendCourse): Long
 
     @Insert
     fun insert(attendCourseList: List<AttendCourse>): List<Long>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertIgnore(attendCourseList: List<AttendCourse>): List<Long>
 
     @Update
     fun update(attendCourse: AttendCourse): Int

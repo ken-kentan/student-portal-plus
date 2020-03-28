@@ -7,7 +7,7 @@ import java.util.Date
 
 object TestData {
     val attendCourse = AttendCourse(
-        id = 123,
+        id = 1,
         dayOfWeek = DayOfWeek.MONDAY,
         period = 1,
         scheduleCode = "scheduleCode",
@@ -29,8 +29,8 @@ object TestData {
         category = "category",
         detailText = "detailText",
         detailHtml = "detailHtml",
-        createdDate = Date(),
-        updatedDate = Date(),
+        createdDate = Date(0),
+        updatedDate = Date(0),
         attendType = AttendCourse.Type.PORTAL,
         isRead = false
     )
