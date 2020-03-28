@@ -2,7 +2,6 @@ package jp.kentan.studentportalplus.data.dao
 
 import com.google.common.truth.Truth
 import org.junit.Test
-import java.sql.Timestamp
 import java.util.Date
 
 class DateConverterTest {
@@ -24,7 +23,7 @@ class DateConverterTest {
     @Test
     fun `dateToTimestamp should return Timestamp if valid Date`() {
         Truth.assertThat(converter.dateToTimestamp(Date(123)))
-            .isEqualTo(Timestamp(123))
+            .isEqualTo(123L)
     }
 
     @Test
