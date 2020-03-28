@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
 import jp.kentan.studentportalplus.ui.Event
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 class TimetableViewModel @Inject constructor(
     attendCourseRepository: AttendCourseRepository,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : ViewModel() {
 
     val attendCourseList = attendCourseRepository.getAllAsFlow().asLiveData()
 
-    private val _isGridLayout = MutableLiveData(localPreferences.isGridTimetableLayout)
+    private val _isGridLayout = MutableLiveData(preferences.isGridTimetableLayout)
     val isGridLayout: LiveData<Boolean>
         get() = _isGridLayout
 
@@ -64,6 +64,6 @@ class TimetableViewModel @Inject constructor(
         val isGrid = requireNotNull(_isGridLayout.value)
 
         _isGridLayout.value = !isGrid
-        localPreferences.isGridTimetableLayout = !isGrid
+        preferences.isGridTimetableLayout = !isGrid
     }
 }

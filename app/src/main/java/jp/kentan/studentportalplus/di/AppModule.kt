@@ -18,6 +18,7 @@ import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
 import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.SubjectRepository
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.dao.PortalDatabase
@@ -51,12 +52,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideShibbolethClient(source: ShibbolethDataSource, localPreferences: LocalPreferences) =
-        ShibbolethClient(source, localPreferences)
+    fun provideShibbolethClient(source: ShibbolethDataSource, preferences: Preferences) =
+        ShibbolethClient(source, preferences)
 
     @Provides
     @Singleton
-    fun provideLocalPreferences(context: Context) = LocalPreferences(context)
+    fun providePreferences(context: Context): Preferences = LocalPreferences(context)
 
     @Provides
     @Singleton
@@ -68,22 +69,22 @@ object AppModule {
     @Singleton
     fun provideLectureInformationRepository(
         database: PortalDatabase,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): LectureInformationRepository = DefaultLectureInformationRepository(
         database.lectureInformationDao,
         database.attendCourseDao,
-        localPreferences
+        preferences
     )
 
     @Provides
     @Singleton
     fun provideLectureCancellationRepository(
         database: PortalDatabase,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): LectureCancellationRepository = DefaultLectureCancellationRepository(
         database.lectureCancellationDao,
         database.attendCourseDao,
-        localPreferences
+        preferences
     )
 
     @Provides
@@ -112,10 +113,10 @@ object AppModule {
     @Provides
     fun provideNotificationHelper(
         context: Context,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): NotificationHelper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        SummaryNotificationHelper(context, localPreferences)
+        SummaryNotificationHelper(context, preferences)
     } else {
-        InboxStyleNotificationHelper(context, localPreferences)
+        InboxStyleNotificationHelper(context, preferences)
     }
 }

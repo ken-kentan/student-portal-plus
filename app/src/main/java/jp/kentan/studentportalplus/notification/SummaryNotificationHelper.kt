@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
@@ -24,7 +24,7 @@ import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 @RequiresApi(Build.VERSION_CODES.N)
 class SummaryNotificationHelper(
     context: Context,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : NotificationHelper(context) {
 
     companion object {
@@ -152,7 +152,7 @@ class SummaryNotificationHelper(
     ) {
         sendGroupSummary()
 
-        var notificationId = localPreferences.notificationId
+        var notificationId = preferences.notificationId
 
         val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -175,7 +175,7 @@ class SummaryNotificationHelper(
             }
         }
 
-        localPreferences.notificationId = notificationId
+        preferences.notificationId = notificationId
     }
 
     private fun sendGroupSummary() {
@@ -190,7 +190,7 @@ class SummaryNotificationHelper(
 
         // If notification chanel not supported
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
+            val vibratePattern = if (preferences.isNotificationVibrationEnabled) {
                 VIBRATION_PATTERN
             } else {
                 longArrayOf(0)
@@ -198,7 +198,7 @@ class SummaryNotificationHelper(
 
             builder.setVibrate(vibratePattern)
 
-            if (localPreferences.isEnabledNotificationLed) {
+            if (preferences.isNotificationLedEnabled) {
                 builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
             }
         }

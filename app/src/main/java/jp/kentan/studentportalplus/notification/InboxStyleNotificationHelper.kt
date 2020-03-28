@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.bold
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
@@ -20,7 +20,7 @@ import jp.kentan.studentportalplus.ui.MainActivity
 
 class InboxStyleNotificationHelper(
     context: Context,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : NotificationHelper(context) {
 
     companion object {
@@ -104,7 +104,7 @@ class InboxStyleNotificationHelper(
         contentList: List<NotificationContent>,
         intent: Intent
     ) {
-        var notificationId = localPreferences.notificationId
+        var notificationId = preferences.notificationId
 
         val title = context.getString(titleResId)
         val contentTitle =
@@ -132,7 +132,7 @@ class InboxStyleNotificationHelper(
         if (isFirstNotification) {
             isFirstNotification = false
 
-            val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
+            val vibratePattern = if (preferences.isNotificationVibrationEnabled) {
                 VIBRATION_PATTERN
             } else {
                 longArrayOf(0)
@@ -140,7 +140,7 @@ class InboxStyleNotificationHelper(
 
             builder.setVibrate(vibratePattern)
 
-            if (localPreferences.isEnabledNotificationLed) {
+            if (preferences.isNotificationLedEnabled) {
                 builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
             }
         }
@@ -150,7 +150,7 @@ class InboxStyleNotificationHelper(
         if (++notificationId >= Int.MAX_VALUE) {
             notificationId = 1
         }
-        localPreferences.notificationId = notificationId
+        preferences.notificationId = notificationId
     }
 
     private fun createInboxStyle(

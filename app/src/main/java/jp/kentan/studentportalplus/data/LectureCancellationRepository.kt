@@ -28,11 +28,11 @@ interface LectureCancellationRepository {
 class DefaultLectureCancellationRepository(
     private val lectureCancellationDao: LectureCancellationDao,
     attendCourseDao: AttendCourseDao,
-    localPreferences: LocalPreferences
+    preferences: Preferences
 ) : LectureCancellationRepository {
 
     private val attendCourseListFlow = attendCourseDao.selectAsFlow()
-    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
+    private val similarSubjectThresholdFlow = preferences.similarSubjectThresholdFlow
 
     private val lectureCancelListFlow = combine(
         lectureCancellationDao.selectAsFlow(),

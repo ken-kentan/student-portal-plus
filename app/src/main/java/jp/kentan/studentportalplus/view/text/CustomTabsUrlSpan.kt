@@ -16,12 +16,13 @@ class CustomTabsUrlSpan(
     url: String
 ) : URLSpan(url) {
 
+    // TODO injection ?
     private val localPreferences = LocalPreferences(context)
 
     override fun onClick(widget: View) {
         var url = this.url
 
-        if (url.isPdf() && localPreferences.isEnabledPdfOpenWithGdocs) {
+        if (url.isPdf() && localPreferences.isPdfOpenWithGdocsEnabled) {
             val isRequireLogin = url.startsWith("https://portal.student.kit.ac.jp", true)
 
             if (isRequireLogin) {

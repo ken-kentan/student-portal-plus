@@ -20,12 +20,10 @@ object DocumentParser {
     private val ASIA_TOKYO: TimeZone = TimeZone.getTimeZone("Asia/Tokyo")
 
     private val LECTURE_DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN).apply {
-        timeZone =
-            ASIA_TOKYO
+        timeZone = ASIA_TOKYO
     }
     private val NOTICE_DATE_FORMAT = SimpleDateFormat("yyyy.MM.dd", Locale.JAPAN).apply {
-        timeZone =
-            ASIA_TOKYO
+        timeZone = ASIA_TOKYO
     }
 
     private const val LECTURE_INFO_ELEMENT_SIZE = 11

@@ -12,7 +12,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.source.ShibbolethException
 import jp.kentan.studentportalplus.domain.sync.SyncUseCase
 import jp.kentan.studentportalplus.notification.NotificationHelper
@@ -25,7 +25,7 @@ class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
     private val syncUseCase: SyncUseCase,
-    private val localPreferences: LocalPreferences,
+    private val preferences: Preferences,
     private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(appContext, params) {
 
@@ -74,7 +74,7 @@ class SyncWorker @AssistedInject constructor(
         } catch (e: Exception) {
             if (e is ShibbolethException) {
                 notificationHelper.sendShibbolethError(e.message)
-            } else if (localPreferences.isEnabledDetailError) {
+            } else if (preferences.isDetailErrorEnabled) {
                 notificationHelper.sendError(e)
             }
 

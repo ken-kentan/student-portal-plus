@@ -28,11 +28,11 @@ interface LectureInformationRepository {
 class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
     attendCourseDao: AttendCourseDao,
-    localPreferences: LocalPreferences
+    preferences: Preferences
 ) : LectureInformationRepository {
 
     private val attendCourseListFlow = attendCourseDao.selectAsFlow()
-    private val similarSubjectThresholdFlow = localPreferences.similarSubjectThresholdFlow
+    private val similarSubjectThresholdFlow = preferences.similarSubjectThresholdFlow
 
     private val lectureInfoListFlow = combine(
         lectureInformationDao.selectAsFlow(),

@@ -13,7 +13,7 @@ import androidx.work.WorkManager
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
 import jp.kentan.studentportalplus.util.requirePreference
 import jp.kentan.studentportalplus.work.sync.SyncWorker
@@ -28,7 +28,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
     }
 
     @Inject
-    lateinit var localPreferences: LocalPreferences
+    lateinit var preferences: Preferences
 
     private val onIsEnabledSyncPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
@@ -39,7 +39,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
                 if (isEnabled) {
                     val syncWorkRequest =
-                        SyncWorker.buildPeriodicWorkRequest(localPreferences.syncIntervalMinutes)
+                        SyncWorker.buildPeriodicWorkRequest(preferences.syncIntervalMinutes)
 
                     workManager.enqueueUniquePeriodicWork(
                         SyncWorker.NAME,
@@ -102,7 +102,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
         val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN)
         requirePreference<Preference>("shibboleth_last_login_date").summary =
-            dateFormat.format(localPreferences.shibbolethLastLoginDate)
+            dateFormat.format(preferences.shibbolethLastLoginDate)
     }
 
     override fun onPreferenceClick(preference: Preference?): Boolean {

@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethException
 import jp.kentan.studentportalplus.domain.sync.SyncUseCase
@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
     application: Application,
     userRepository: UserRepository,
     private val syncUseCase: SyncUseCase,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : AndroidViewModel(application) {
 
     val user = userRepository.getAsFlow().asLiveData()
@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
         get() = _closeDrawer
 
     val shouldLaunchWelcomeActivity: Boolean
-        get() = !localPreferences.isAuthenticatedUser
+        get() = !preferences.isAuthenticatedUser
 
     fun onCreate(shouldRefresh: Boolean) {
         if (shouldRefresh) {
@@ -69,7 +69,7 @@ class MainViewModel @Inject constructor(
 
                 val throwableMessage = it.message
                 val message =
-                    if (localPreferences.isEnabledDetailError && !throwableMessage.isNullOrEmpty()) {
+                    if (preferences.isDetailErrorEnabled && !throwableMessage.isNullOrEmpty()) {
                         throwableMessage
                     } else {
                         getApplication<Application>().getString(R.string.main_sync_failed_error)
@@ -83,7 +83,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun scheduleSyncWorkerIfNeeded() {
-        if (!localPreferences.isEnabledSync) {
+        if (!preferences.isSyncEnabled) {
             return
         }
 
@@ -91,7 +91,7 @@ class MainViewModel @Inject constructor(
             val workManager = WorkManager.getInstance(getApplication())
 
             val syncWorkRequest =
-                SyncWorker.buildPeriodicWorkRequest(localPreferences.syncIntervalMinutes)
+                SyncWorker.buildPeriodicWorkRequest(preferences.syncIntervalMinutes)
 
             workManager.enqueueUniquePeriodicWork(
                 SyncWorker.NAME,

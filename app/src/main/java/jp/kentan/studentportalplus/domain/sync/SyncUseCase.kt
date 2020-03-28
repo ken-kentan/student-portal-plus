@@ -3,8 +3,8 @@ package jp.kentan.studentportalplus.domain.sync
 import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
-import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
@@ -25,7 +25,7 @@ class SyncUseCase @Inject constructor(
     private val lectureInformationRepository: LectureInformationRepository,
     private val lectureCancellationRepository: LectureCancellationRepository,
     private val noticeRepository: NoticeRepository,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) {
 
     companion object {
@@ -45,14 +45,14 @@ class SyncUseCase @Inject constructor(
         )
 
         val attendCourseList = attendCourseRepository.getAll()
-        val similarSubjectThreshold = localPreferences.similarSubjectThreshold
+        val similarSubjectThreshold = preferences.similarSubjectThreshold
 
         val lectureInfoDeferred = async {
             val document = shibbolethClient.fetch(LECTURE_INFO_URL)
             val lectureInfoList = DocumentParser.parseLectureInformation(document)
             lectureInformationRepository.updateAll(lectureInfoList)
                 .filterWith(
-                    localPreferences.lectureInformationNotificationType,
+                    preferences.lectureInformationNotificationType,
                     attendCourseList,
                     similarSubjectThreshold
                 )
@@ -63,7 +63,7 @@ class SyncUseCase @Inject constructor(
             val lectureCancelList = DocumentParser.parseLectureCancellation(document)
             lectureCancellationRepository.updateAll(lectureCancelList)
                 .filterWith(
-                    localPreferences.lectureCancellationNotificationType,
+                    preferences.lectureCancellationNotificationType,
                     attendCourseList,
                     similarSubjectThreshold
                 )
@@ -73,7 +73,7 @@ class SyncUseCase @Inject constructor(
             val document = shibbolethClient.fetch(NOTICE_URL)
             val noticeList = DocumentParser.parseNotice(document)
             noticeRepository.updateAll(noticeList)
-                .filterWith(localPreferences.noticeNotificationType)
+                .filterWith(preferences.noticeNotificationType)
         }
 
         return@withContext SyncUseCaseResult(

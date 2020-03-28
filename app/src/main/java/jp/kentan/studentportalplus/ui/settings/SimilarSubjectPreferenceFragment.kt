@@ -9,7 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.util.requirePreference
 import jp.kentan.studentportalplus.view.widget.SimilarSubjectSamplePreference
 import javax.inject.Inject
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class SimilarSubjectPreferenceFragment : PreferenceFragmentCompat() {
 
     @Inject
-    lateinit var localPreferences: LocalPreferences
+    lateinit var preferences: Preferences
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         AndroidSupportInjection.inject(this)
@@ -33,7 +33,7 @@ class SimilarSubjectPreferenceFragment : PreferenceFragmentCompat() {
         val similarSubjectSamplePreference =
             requirePreference<SimilarSubjectSamplePreference>("similar_subject_sample")
 
-        localPreferences.similarSubjectThresholdFlow.asLiveData().observe(viewLifecycleOwner) {
+        preferences.similarSubjectThresholdFlow.asLiveData().observe(viewLifecycleOwner) {
             similarSubjectSamplePreference.threshold = it
         }
     }

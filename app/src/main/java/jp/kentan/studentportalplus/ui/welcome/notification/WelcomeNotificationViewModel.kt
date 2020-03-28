@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.vo.LectureNotificationType
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
 import jp.kentan.studentportalplus.ui.Event
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class WelcomeNotificationViewModel @Inject constructor(
     context: Context,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : ViewModel() {
 
     val lectureNotificationTypeList: List<String> =
@@ -39,30 +39,30 @@ class WelcomeNotificationViewModel @Inject constructor(
     init {
         lectureInformationNotificationType.value = lectureNotificationTypeMap.entries
             .first { entry ->
-                entry.value == localPreferences.lectureInformationNotificationType
+                entry.value == preferences.lectureInformationNotificationType
             }.key
 
         lectureCancellationNotificationType.value = lectureNotificationTypeMap.entries
             .first { entry ->
-                entry.value == localPreferences.lectureCancellationNotificationType
+                entry.value == preferences.lectureCancellationNotificationType
             }.key
 
         noticeNotificationType.value = noticeNotificationTypeMap.entries
             .first { entry ->
-                entry.value == localPreferences.noticeNotificationType
+                entry.value == preferences.noticeNotificationType
             }.key
     }
 
     fun onCompleteClick() {
-        localPreferences.lectureInformationNotificationType =
+        preferences.lectureInformationNotificationType =
             lectureNotificationTypeMap[lectureInformationNotificationType.value]
                 ?: throw IllegalStateException("Invalid lecture info notification type name")
 
-        localPreferences.lectureCancellationNotificationType =
+        preferences.lectureCancellationNotificationType =
             lectureNotificationTypeMap[lectureCancellationNotificationType.value]
                 ?: throw IllegalStateException("Invalid lecture cancel notification type name")
 
-        localPreferences.noticeNotificationType =
+        preferences.noticeNotificationType =
             noticeNotificationTypeMap[noticeNotificationType.value]
                 ?: throw IllegalStateException("Invalid notice notification type name")
 
