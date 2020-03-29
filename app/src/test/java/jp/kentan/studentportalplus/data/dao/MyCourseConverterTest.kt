@@ -1,7 +1,6 @@
 package jp.kentan.studentportalplus.data.dao
 
 import com.google.common.truth.Truth
-import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import org.junit.Test
@@ -9,30 +8,6 @@ import org.junit.Test
 class MyCourseConverterTest {
 
     private val converter = MyCourseConverter()
-
-    @Test
-    fun `fromType should return AttendCourse Type if valid name`() {
-        Truth.assertThat(converter.fromType(MyCourse.Type.USER.name))
-            .isEqualTo(MyCourse.Type.USER)
-    }
-
-    @Test
-    fun `fromType should return null if null name`() {
-        Truth.assertThat(converter.fromType(null))
-            .isNull()
-    }
-
-    @Test
-    fun `typeTo should return name if valid AttendCourse Type`() {
-        Truth.assertThat(converter.typeTo(MyCourse.Type.USER))
-            .isEqualTo(MyCourse.Type.USER.name)
-    }
-
-    @Test
-    fun `typeTo should return null if null AttendCourse Type`() {
-        Truth.assertThat(converter.typeTo(null))
-            .isNull()
-    }
 
     @Test
     fun `fromDayOfWeek should return name if valid DayOfWeek`() {

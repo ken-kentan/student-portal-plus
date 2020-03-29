@@ -29,15 +29,14 @@ class FakeMyCourseDao : MyCourseDao {
     override fun insert(myCourseList: List<MyCourse>) =
         List(myCourseList.size) { 1L }
 
-    override fun insertIgnore(myCourseList: List<MyCourse>) =
-        List(myCourseList.size) { 1L }
+    override fun insertIgnore(myCourseList: List<MyCourse>) = Unit
 
     override fun update(myCourse: MyCourse) = 1
 
     override fun delete(id: Long) = if (id == TestData.attendCourse.id) 1 else 0
 
-    override fun delete(subject: String, attendType: MyCourse.Type) =
-        if (subject == TestData.attendCourse.subject && attendType == TestData.attendCourse.type) 1 else 0
+    override fun delete(subject: String) =
+        if (subject == TestData.attendCourse.subject && TestData.attendCourse.isEditable) 1 else 0
 
-    override fun deleteNotInHash(attendType: MyCourse.Type, hash: List<Long>) {}
+    override fun deleteNotInHash(hash: List<Long>) {}
 }

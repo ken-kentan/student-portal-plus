@@ -108,7 +108,7 @@ class DefaultMyCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = MyCourse.Type.USER
+            isEditable = true
         )
 
         repository.add(lecture)
@@ -132,7 +132,7 @@ class DefaultMyCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = MyCourse.Type.USER
+            isEditable = true
         )
 
         every { attendCourseDao.insert(listOf(attendCourse)) } returns listOf(1L)
@@ -156,7 +156,7 @@ class DefaultMyCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = MyCourse.Type.USER
+            isEditable = true
         )
 
         every { attendCourseDao.insert(listOf(attendCourse)) } returns emptyList()
@@ -211,7 +211,7 @@ class DefaultMyCourseRepositoryTest {
     fun `remove_subject should delete AttendCourse on database`() = runBlocking {
         repository.remove("subject")
 
-        verify { attendCourseDao.delete("subject", MyCourse.Type.USER) }
+        verify { attendCourseDao.delete("subject") }
     }
 
     @Test
