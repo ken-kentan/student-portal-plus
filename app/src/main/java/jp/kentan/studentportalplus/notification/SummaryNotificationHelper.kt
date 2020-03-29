@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -78,13 +77,6 @@ class SummaryNotificationHelper(
 
         notificationManager.createNotificationChannels(listOf(newlyChannel, appChannel))
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun createNewlyChannelSettingsIntent() =
-        Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            putExtra(Settings.EXTRA_CHANNEL_ID, NEWLY_CHANNEL_ID)
-        }
 
     override fun sendLectureInformation(lectureInfoList: List<LectureInformation>) {
         if (lectureInfoList.isEmpty()) {
