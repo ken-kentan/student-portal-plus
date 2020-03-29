@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.attendcoursedetail
+package jp.kentan.studentportalplus.ui.mycoursedetail
 
 import android.content.Context
 import android.content.Intent
@@ -14,18 +14,18 @@ import androidx.lifecycle.observe
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerAppCompatActivity
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.databinding.ActivityAttendCourseDetailBinding
-import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseActivity
+import jp.kentan.studentportalplus.databinding.ActivityMyCourseDetailBinding
+import jp.kentan.studentportalplus.ui.editmycourse.EditMyCourseActivity
 import jp.kentan.studentportalplus.ui.observeEvent
 import javax.inject.Inject
 
-class AttendCourseDetailActivity : DaggerAppCompatActivity() {
+class MyCourseDetailActivity : DaggerAppCompatActivity() {
 
     companion object {
         private const val EXTRA_ID = "ID"
 
         fun createIntent(context: Context, id: Long) =
-            Intent(context, AttendCourseDetailActivity::class.java).apply {
+            Intent(context, MyCourseDetailActivity::class.java).apply {
                 putExtra(EXTRA_ID, id)
             }
     }
@@ -33,53 +33,53 @@ class AttendCourseDetailActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val attendCourseDetailViewModel by viewModels<AttendCourseDetailViewModel> { viewModelFactory }
+    private val myCourseDetailViewModel by viewModels<MyCourseDetailViewModel> { viewModelFactory }
 
     private var isEnabledDeleteOptionMenu = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DataBindingUtil.setContentView<ActivityAttendCourseDetailBinding>(
+        DataBindingUtil.setContentView<ActivityMyCourseDetailBinding>(
             this,
-            R.layout.activity_attend_course_detail
+            R.layout.activity_my_course_detail
         ).apply {
-            lifecycleOwner = this@AttendCourseDetailActivity
-            viewModel = attendCourseDetailViewModel
+            lifecycleOwner = this@MyCourseDetailActivity
+            viewModel = myCourseDetailViewModel
 
             setSupportActionBar(toolbar)
         }
 
-        attendCourseDetailViewModel.enabledDeleteOptionMenu.observe(this) {
+        myCourseDetailViewModel.enabledDeleteOptionMenu.observe(this) {
             isEnabledDeleteOptionMenu = true
             invalidateOptionsMenu()
         }
-        attendCourseDetailViewModel.startEditAttendCourseActivity.observeEvent(this) {
-            startActivity(EditAttendCourseActivity.createIntent(this, it))
+        myCourseDetailViewModel.startEditMyCourseActivity.observeEvent(this) {
+            startActivity(EditMyCourseActivity.createIntent(this, it))
         }
-        attendCourseDetailViewModel.showDeleteDialog.observeEvent(this) { subject ->
+        myCourseDetailViewModel.showDeleteDialog.observeEvent(this) { subject ->
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.all_delete)
                 .setMessage(
                     getString(
-                        R.string.attend_course_detail_delete_confirm,
+                        R.string.my_course_detail_delete_confirm,
                         subject
                     ).parseAsHtml()
                 )
                 .setPositiveButton(R.string.all_delete) { _, _ ->
-                    attendCourseDetailViewModel.onDeleteConfirmClick()
+                    myCourseDetailViewModel.onDeleteConfirmClick()
                 }
                 .setNegativeButton(R.string.all_cancel, null)
                 .show()
         }
-        attendCourseDetailViewModel.error.observeEvent(this) {
+        myCourseDetailViewModel.error.observeEvent(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
-        attendCourseDetailViewModel.finish.observe(this) {
+        myCourseDetailViewModel.finish.observe(this) {
             finish()
         }
 
-        attendCourseDetailViewModel.onActivityCreate(
+        myCourseDetailViewModel.onActivityCreate(
             intent.getLongExtra(EXTRA_ID, 0)
         )
     }
@@ -94,7 +94,7 @@ class AttendCourseDetailActivity : DaggerAppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_delete -> attendCourseDetailViewModel.onDeleteClick()
+            R.id.action_delete -> myCourseDetailViewModel.onDeleteClick()
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)

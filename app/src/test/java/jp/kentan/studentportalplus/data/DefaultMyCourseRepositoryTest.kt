@@ -5,10 +5,10 @@ import io.mockk.every
 import io.mockk.spyk
 import io.mockk.verify
 import jp.kentan.studentportalplus.TestData
-import jp.kentan.studentportalplus.data.dao.AttendCourseDao
-import jp.kentan.studentportalplus.data.dao.FakeAttendCourseDao
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.dao.FakeMyCourseDao
+import jp.kentan.studentportalplus.data.dao.MyCourseDao
 import jp.kentan.studentportalplus.data.entity.Lecture
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -16,11 +16,11 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DefaultAttendCourseRepositoryTest {
+class DefaultMyCourseRepositoryTest {
 
-    private val attendCourseDao = spyk<AttendCourseDao>(FakeAttendCourseDao())
+    private val attendCourseDao = spyk<MyCourseDao>(FakeMyCourseDao())
 
-    private val repository = DefaultAttendCourseRepository(attendCourseDao)
+    private val repository = DefaultMyCourseRepository(attendCourseDao)
 
     @Test
     fun `getAsFlow should return AttendCourse if exist`() = runBlocking {
@@ -100,7 +100,7 @@ class DefaultAttendCourseRepositoryTest {
             override val dayOfWeek = "月曜日"
             override val period = "1限"
         }
-        val attendCourse = AttendCourse(
+        val attendCourse = MyCourse(
             subject = lecture.subject,
             instructor = lecture.instructor,
             dayOfWeek = DayOfWeek.MONDAY,
@@ -108,7 +108,7 @@ class DefaultAttendCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = AttendCourse.Type.USER
+            type = MyCourse.Type.USER
         )
 
         repository.add(lecture)
@@ -124,7 +124,7 @@ class DefaultAttendCourseRepositoryTest {
             override val dayOfWeek = "月曜日"
             override val period = "1限"
         }
-        val attendCourse = AttendCourse(
+        val attendCourse = MyCourse(
             subject = lecture.subject,
             instructor = lecture.instructor,
             dayOfWeek = DayOfWeek.MONDAY,
@@ -132,7 +132,7 @@ class DefaultAttendCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = AttendCourse.Type.USER
+            type = MyCourse.Type.USER
         )
 
         every { attendCourseDao.insert(listOf(attendCourse)) } returns listOf(1L)
@@ -148,7 +148,7 @@ class DefaultAttendCourseRepositoryTest {
             override val dayOfWeek = "月曜日"
             override val period = "1限"
         }
-        val attendCourse = AttendCourse(
+        val attendCourse = MyCourse(
             subject = lecture.subject,
             instructor = lecture.instructor,
             dayOfWeek = DayOfWeek.MONDAY,
@@ -156,7 +156,7 @@ class DefaultAttendCourseRepositoryTest {
             scheduleCode = "",
             credit = 0,
             category = "",
-            type = AttendCourse.Type.USER
+            type = MyCourse.Type.USER
         )
 
         every { attendCourseDao.insert(listOf(attendCourse)) } returns emptyList()
@@ -211,7 +211,7 @@ class DefaultAttendCourseRepositoryTest {
     fun `remove_subject should delete AttendCourse on database`() = runBlocking {
         repository.remove("subject")
 
-        verify { attendCourseDao.delete("subject", AttendCourse.Type.USER) }
+        verify { attendCourseDao.delete("subject", MyCourse.Type.USER) }
     }
 
     @Test

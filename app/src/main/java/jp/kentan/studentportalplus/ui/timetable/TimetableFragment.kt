@@ -11,8 +11,8 @@ import androidx.lifecycle.observe
 import dagger.android.support.DaggerFragment
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.FragmentTimetableBinding
-import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailActivity
-import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseActivity
+import jp.kentan.studentportalplus.ui.editmycourse.EditMyCourseActivity
+import jp.kentan.studentportalplus.ui.mycoursedetail.MyCourseDetailActivity
 import jp.kentan.studentportalplus.ui.observeEvent
 import jp.kentan.studentportalplus.view.widget.DividerItemDecoration
 import javax.inject.Inject
@@ -34,12 +34,12 @@ class TimetableFragment : DaggerFragment(R.layout.fragment_timetable) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val gridTimetableAdapter = TimetableAdapter(
             layout = TimetableAdapter.Layout.GRID,
-            onAttendCourseClick = timetableViewModel.onAttendCourseClick,
+            onMyCourseClick = timetableViewModel.onMyCourseClick,
             onBlankClick = timetableViewModel.onBlankClick
         )
         val listTimetableAdapter = TimetableAdapter(
             layout = TimetableAdapter.Layout.LIST,
-            onAttendCourseClick = timetableViewModel.onAttendCourseClick
+            onMyCourseClick = timetableViewModel.onMyCourseClick
         )
 
         timetableItemDecoration = TimetableItemDecoration(requireContext())
@@ -61,24 +61,24 @@ class TimetableFragment : DaggerFragment(R.layout.fragment_timetable) {
             addItemDecoration(DividerItemDecoration(requireContext()))
         }
 
-        timetableViewModel.attendCourseList.observe(viewLifecycleOwner) {
+        timetableViewModel.myCourseList.observe(viewLifecycleOwner) {
             gridTimetableAdapter.submitList(it)
             listTimetableAdapter.submitList(it)
         }
         timetableViewModel.isGridLayout.observe(viewLifecycleOwner) { isGrid ->
             binding.viewSwitcher.displayedChild = if (isGrid) 0 else 1
         }
-        timetableViewModel.startEditAttendCourseActivity.observeEvent(viewLifecycleOwner) { (period, dayOfWeek) ->
+        timetableViewModel.startEditMyCourseActivity.observeEvent(viewLifecycleOwner) { (period, dayOfWeek) ->
             startActivity(
-                EditAttendCourseActivity.createIntent(
+                EditMyCourseActivity.createIntent(
                     requireContext(),
                     period,
                     dayOfWeek
                 )
             )
         }
-        timetableViewModel.startAttendCourseDetailActivity.observeEvent(viewLifecycleOwner) {
-            startActivity(AttendCourseDetailActivity.createIntent(requireContext(), it))
+        timetableViewModel.startMyCourseDetailActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(MyCourseDetailActivity.createIntent(requireContext(), it))
         }
     }
 

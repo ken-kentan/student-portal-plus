@@ -1,15 +1,16 @@
-package jp.kentan.studentportalplus.ui.editattendcourse
+package jp.kentan.studentportalplus.ui.editmycourse
 
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
 
-sealed class EditAttendCourseMode {
+sealed class EditMyCourseMode {
+
     class Update(
         val id: Long
-    ) : EditAttendCourseMode()
+    ) : EditMyCourseMode()
 
     class Add(
         val period: Period,
         val dayOfWeek: DayOfWeek
-    ) : EditAttendCourseMode()
+    ) : EditMyCourseMode()
 }

@@ -3,9 +3,9 @@ package jp.kentan.studentportalplus.view.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.animation.AnticipateOvershootInterpolator
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.vo.MyCourseType
 
-class CourseAttendFloatingActionButton @JvmOverloads constructor(
+class MyCourseFloatingActionButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = com.google.android.material.R.attr.floatingActionButtonStyle
@@ -20,14 +20,14 @@ class CourseAttendFloatingActionButton @JvmOverloads constructor(
     private val interpolator = AnticipateOvershootInterpolator()
     private var isInitialized = false
 
-    fun setAttendType(attendType: AttendCourse.Type?) {
-        attendType ?: return
+    fun setMyCourseType(myCourseType: MyCourseType?) {
+        myCourseType ?: return
 
-        if (attendType == AttendCourse.Type.PORTAL) {
+        if (myCourseType == MyCourseType.NOT_EDITABLE) {
             hide()
         } else {
             show()
-            isChecked = attendType == AttendCourse.Type.USER
+            isChecked = myCourseType == MyCourseType.EDITABLE
         }
     }
 

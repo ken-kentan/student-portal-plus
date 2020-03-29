@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.editattendcourse
+package jp.kentan.studentportalplus.ui.editmycourse
 
 import android.content.Context
 import android.content.Intent
@@ -19,17 +19,17 @@ import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
-import jp.kentan.studentportalplus.databinding.ActivityEditAttendCourseBinding
+import jp.kentan.studentportalplus.databinding.ActivityEditMyCourseBinding
 import jp.kentan.studentportalplus.ui.observeEvent
 import javax.inject.Inject
 
-class EditAttendCourseActivity : DaggerAppCompatActivity() {
+class EditMyCourseActivity : DaggerAppCompatActivity() {
 
     private enum class Mode(
         @StringRes val titleId: Int
     ) {
-        UPDATE(R.string.edit_attend_course_edit_title),
-        ADD(R.string.edit_attend_course_add_title)
+        UPDATE(R.string.edit_my_course_edit_title),
+        ADD(R.string.edit_my_course_add_title)
     }
 
     companion object {
@@ -41,13 +41,13 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         private const val COLOR_PICKER_COLUMN = 4
 
         fun createIntent(context: Context, id: Long) =
-            Intent(context, EditAttendCourseActivity::class.java).apply {
+            Intent(context, EditMyCourseActivity::class.java).apply {
                 putExtra(EXTRA_MODE, Mode.UPDATE)
                 putExtra(EXTRA_ID, id)
             }
 
         fun createIntent(context: Context, period: Period, dayOfWeek: DayOfWeek) =
-            Intent(context, EditAttendCourseActivity::class.java).apply {
+            Intent(context, EditMyCourseActivity::class.java).apply {
                 putExtra(EXTRA_MODE, Mode.ADD)
                 putExtra(EXTRA_PERIOD, period)
                 putExtra(EXTRA_DAY_OF_WEEK, dayOfWeek)
@@ -57,52 +57,52 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val editAttendCourseViewModel by viewModels<EditAttendCourseViewModel> { viewModelFactory }
+    private val editMyCourseViewModel by viewModels<EditMyCourseViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DataBindingUtil.setContentView<ActivityEditAttendCourseBinding>(
+        DataBindingUtil.setContentView<ActivityEditMyCourseBinding>(
             this,
-            R.layout.activity_edit_attend_course
+            R.layout.activity_edit_my_course
         ).apply {
-            lifecycleOwner = this@EditAttendCourseActivity
-            viewModel = editAttendCourseViewModel
+            lifecycleOwner = this@EditMyCourseActivity
+            viewModel = editMyCourseViewModel
 
             setSupportActionBar(toolbar)
         }
 
-        editAttendCourseViewModel.toast.observeEvent(this) {
+        editMyCourseViewModel.toast.observeEvent(this) {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
-        editAttendCourseViewModel.showColorPickerDialog.observeEvent(this, showColorPickerDialog)
-        editAttendCourseViewModel.showFinishConfirmDialog.observeEvent(this) {
+        editMyCourseViewModel.showColorPickerDialog.observeEvent(this, showColorPickerDialog)
+        editMyCourseViewModel.showFinishConfirmDialog.observeEvent(this) {
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.all_confirm)
-                .setMessage(R.string.edit_attend_course_discard_confirm)
+                .setMessage(R.string.edit_my_course_discard_confirm)
                 .setPositiveButton(R.string.all_discard) { _, _ -> super.finish() }
                 .setNegativeButton(R.string.all_cancel, null)
                 .show()
         }
-        editAttendCourseViewModel.finish.observe(this) {
+        editMyCourseViewModel.finish.observe(this) {
             super.finish()
         }
 
-        val editAttendCourseMode = with(intent.getSerializableExtra(EXTRA_MODE) as Mode) {
+        val editMyCourseMode = with(intent.getSerializableExtra(EXTRA_MODE) as Mode) {
             setTitle(titleId)
 
             return@with when (this) {
-                Mode.UPDATE -> EditAttendCourseMode.Update(
+                Mode.UPDATE -> EditMyCourseMode.Update(
                     id = intent.getLongExtra(EXTRA_ID, 0)
                 )
-                Mode.ADD -> EditAttendCourseMode.Add(
+                Mode.ADD -> EditMyCourseMode.Add(
                     period = intent.getSerializableExtra(EXTRA_PERIOD) as Period,
                     dayOfWeek = intent.getSerializableExtra(EXTRA_DAY_OF_WEEK) as DayOfWeek
                 )
             }
         }
 
-        editAttendCourseViewModel.onActivityCreate(editAttendCourseMode)
+        editMyCourseViewModel.onActivityCreate(editMyCourseMode)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,14 +112,14 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_save -> editAttendCourseViewModel.onSaveClick()
+            R.id.action_save -> editMyCourseViewModel.onSaveClick()
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun finish() {
-        editAttendCourseViewModel.onFinish()
+        editMyCourseViewModel.onFinish()
     }
 
     private val showColorPickerDialog = { courseColor: CourseColor ->
@@ -127,7 +127,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
             .associateBy { ContextCompat.getColor(this, it.resId) }
 
         ColorPickerDialog.newInstance(
-            R.string.edit_attend_course_color_picker,
+            R.string.edit_my_course_color_picker,
             colorMap.keys.toIntArray(),
             ContextCompat.getColor(this, courseColor.resId),
             COLOR_PICKER_COLUMN,
@@ -135,7 +135,7 @@ class EditAttendCourseActivity : DaggerAppCompatActivity() {
         ).run {
             setOnColorSelectedListener {
                 val selectedColor = requireNotNull(colorMap[it])
-                editAttendCourseViewModel.onCourseColorSelect(selectedColor)
+                editMyCourseViewModel.onCourseColorSelect(selectedColor)
             }
             show(supportFragmentManager, "color_picker_dialog")
         }

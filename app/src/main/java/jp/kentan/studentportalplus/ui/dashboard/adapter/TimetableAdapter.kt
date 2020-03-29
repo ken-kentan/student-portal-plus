@@ -9,10 +9,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
-import jp.kentan.studentportalplus.databinding.ItemSmallAttendCourseBinding
 import jp.kentan.studentportalplus.databinding.ItemSmallHeaderBinding
+import jp.kentan.studentportalplus.databinding.ItemSmallMyCourseBinding
 import jp.kentan.studentportalplus.util.executeAfter
 
 class TimetableAdapter(
@@ -26,7 +26,7 @@ class TimetableAdapter(
 
     override fun getItemViewType(position: Int) = when (currentList[position]) {
         is Header -> R.layout.item_small_header
-        is Item -> R.layout.item_small_attend_course
+        is Item -> R.layout.item_small_my_course
         else -> throw IllegalStateException("Unknown view type at position $position")
     }
 
@@ -37,8 +37,8 @@ class TimetableAdapter(
             R.layout.item_small_header -> ViewHolder.HeaderViewHolder(
                 ItemSmallHeaderBinding.inflate(inflater, parent, false)
             )
-            R.layout.item_small_attend_course -> ViewHolder.AttendCourseViewHolder(
-                ItemSmallAttendCourseBinding.inflate(inflater, parent, false)
+            R.layout.item_small_my_course -> ViewHolder.MyCourseViewHolder(
+                ItemSmallMyCourseBinding.inflate(inflater, parent, false)
             )
             else -> throw IllegalStateException("Unknown viewType $viewType")
         }
@@ -51,22 +51,22 @@ class TimetableAdapter(
                     val header = currentList[position] as Header
 
                     text = context.getString(
-                        R.string.dashboard_today_attend_course,
+                        R.string.dashboard_today_my_course,
                         context.getString(header.dayOfWeek.resId)
                     )
                 }
             }
-            is ViewHolder.AttendCourseViewHolder -> holder.binding.executeAfter {
+            is ViewHolder.MyCourseViewHolder -> holder.binding.executeAfter {
                 val item = currentList[position] as Item
 
-                data = item.attendCourse
-                layout.setOnClickListener { onItemClick(item.attendCourse.id) }
+                data = item.myCourse
+                layout.setOnClickListener { onItemClick(item.myCourse.id) }
                 dividerView.isGone = item.isLastPosition
             }
         }
     }
 
-    fun submitList(list: List<AttendCourse>) {
+    fun submitList(list: List<MyCourse>) {
         val newList = mutableListOf<Any>()
         val oldList = currentList
 
@@ -75,8 +75,8 @@ class TimetableAdapter(
             newList.add(Header(list.first().dayOfWeek))
 
             // data
-            newList.addAll(list.mapIndexed { index, attendCourse ->
-                Item(attendCourse, index >= list.lastIndex)
+            newList.addAll(list.mapIndexed { index, myCourse ->
+                Item(myCourse, index >= list.lastIndex)
             })
         }
 
@@ -99,7 +99,7 @@ class TimetableAdapter(
     )
 
     private data class Item(
-        val attendCourse: AttendCourse,
+        val myCourse: MyCourse,
         val isLastPosition: Boolean
     )
 
@@ -117,7 +117,7 @@ class TimetableAdapter(
 
             return when {
                 oldItem is Header && newItem is Header -> true
-                oldItem is Item && newItem is Item -> oldItem.attendCourse.id == newItem.attendCourse.id
+                oldItem is Item && newItem is Item -> oldItem.myCourse.id == newItem.myCourse.id
                 else -> false
             }
         }
@@ -139,8 +139,8 @@ class TimetableAdapter(
             val binding: ItemSmallHeaderBinding
         ) : ViewHolder(binding.root)
 
-        class AttendCourseViewHolder(
-            val binding: ItemSmallAttendCourseBinding
+        class MyCourseViewHolder(
+            val binding: ItemSmallMyCourseBinding
         ) : ViewHolder(binding.root)
     }
 }

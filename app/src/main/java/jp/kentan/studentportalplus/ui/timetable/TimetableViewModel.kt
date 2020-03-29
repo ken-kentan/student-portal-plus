@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
@@ -14,11 +14,11 @@ import java.util.Calendar
 import javax.inject.Inject
 
 class TimetableViewModel @Inject constructor(
-    attendCourseRepository: AttendCourseRepository,
+    myCourseRepository: MyCourseRepository,
     private val preferences: Preferences
 ) : ViewModel() {
 
-    val attendCourseList = attendCourseRepository.getAllAsFlow().asLiveData()
+    val myCourseList = myCourseRepository.getAllAsFlow().asLiveData()
 
     private val _isGridLayout = MutableLiveData(preferences.isGridTimetableLayout)
     val isGridLayout: LiveData<Boolean>
@@ -28,20 +28,20 @@ class TimetableViewModel @Inject constructor(
     val dayOfWeek: LiveData<DayOfWeek>
         get() = _dayOfWeek
 
-    private val _startEditAttendCourseActivity = MutableLiveData<Event<Pair<Period, DayOfWeek>>>()
-    val startEditAttendCourseActivity: LiveData<Event<Pair<Period, DayOfWeek>>>
-        get() = _startEditAttendCourseActivity
+    private val _startEditMyCourseActivity = MutableLiveData<Event<Pair<Period, DayOfWeek>>>()
+    val startEditMyCourseActivity: LiveData<Event<Pair<Period, DayOfWeek>>>
+        get() = _startEditMyCourseActivity
 
-    private val _startAttendCourseDetailActivity = MutableLiveData<Event<Long>>()
-    val startAttendCourseDetailActivity: LiveData<Event<Long>>
-        get() = _startAttendCourseDetailActivity
+    private val _startMyCourseDetailActivity = MutableLiveData<Event<Long>>()
+    val startMyCourseDetailActivity: LiveData<Event<Long>>
+        get() = _startMyCourseDetailActivity
 
-    val onAttendCourseClick = { id: Long ->
-        _startAttendCourseDetailActivity.value = Event(id)
+    val onMyCourseClick = { id: Long ->
+        _startMyCourseDetailActivity.value = Event(id)
     }
 
     val onBlankClick = { period: Period, dayOfWeek: DayOfWeek ->
-        _startEditAttendCourseActivity.value = Event(Pair(period, dayOfWeek))
+        _startEditMyCourseActivity.value = Event(Pair(period, dayOfWeek))
     }
 
     fun onResume() {
@@ -56,7 +56,7 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun onAddClick() {
-        _startEditAttendCourseActivity.value = Event(Pair(Period.ONE, DayOfWeek.MONDAY))
+        _startEditMyCourseActivity.value = Event(Pair(Period.ONE, DayOfWeek.MONDAY))
         R.style.TextAppearance_MaterialComponents_Body1
     }
 

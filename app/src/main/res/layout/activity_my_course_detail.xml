@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailViewModel" />
+            type="jp.kentan.studentportalplus.ui.mycoursedetail.MyCourseDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -28,10 +28,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:background="@{viewModel.attendCourse.color.resId}"
+                app:background="@{viewModel.myCourse.color.resId}"
                 app:contentScrim="?attr/colorPrimarySurface"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@{viewModel.attendCourse.subject}"
+                app:title="@{viewModel.myCourse.subject}"
                 app:toolbarId="@+id/toolbar">
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -45,8 +45,8 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
-            layout="@layout/content_attend_course"
-            app:attendCourse="@{viewModel.attendCourse}" />
+            layout="@layout/content_my_course"
+            app:attendCourse="@{viewModel.myCourse}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

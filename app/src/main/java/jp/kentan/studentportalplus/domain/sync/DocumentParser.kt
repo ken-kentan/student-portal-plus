@@ -1,9 +1,9 @@
 package jp.kentan.studentportalplus.domain.sync
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.util.formatYearMonthDay
@@ -29,7 +29,7 @@ object DocumentParser {
     private const val LECTURE_INFO_ELEMENT_SIZE = 11
     private const val LECTURE_CANCEL_ELEMENT_SIZE = 9
     private const val NOTICE_ELEMENT_SIZE = 4
-    private const val DEFAULT_ATTEND_COURSE_CREDIT = 0
+    private const val DEFAULT_MY_COURSE_CREDIT = 0
 
     fun parseLectureInformation(document: Document): List<LectureInformation> {
         val lectureInfoList = document.select("tr[class~=gen_tbl1_(odd|even)]").mapNotNull {
@@ -148,8 +148,8 @@ object DocumentParser {
         return noticeList
     }
 
-    fun parseAttendCourse(document: Document): List<AttendCourse> {
-        val attendCourseList = mutableListOf<AttendCourse>()
+    fun parseMyCourse(document: Document): List<MyCourse> {
+        val myCourseList = mutableListOf<MyCourse>()
 
         var dayOfWeekIndex = 0
 
@@ -182,8 +182,8 @@ object DocumentParser {
                 val period = index + 1
                 val scheduleCode = pElement.selectFirst("a").text()
 
-                attendCourseList.add(
-                    createAttendCourse(
+                myCourseList.add(
+                    createMyCourse(
                         dayOfWeek,
                         period,
                         scheduleCode,
@@ -202,8 +202,8 @@ object DocumentParser {
 
             val scheduleCode = it.selectFirst("a").text()
 
-            attendCourseList.add(
-                createAttendCourse(
+            myCourseList.add(
+                createMyCourse(
                     DayOfWeek.INTENSIVE,
                     1,
                     scheduleCode,
@@ -212,22 +212,22 @@ object DocumentParser {
             )
         }
 
-        Log.d(TAG, "Parsed ${attendCourseList.size} attendType courses")
+        Log.d(TAG, "Parsed ${myCourseList.size} my courses")
 
-        return attendCourseList
+        return myCourseList
     }
 
-    private fun createAttendCourse(
+    private fun createMyCourse(
         dayOfWeek: DayOfWeek,
         period: Int,
         scheduleCode: String,
         lines: List<String>
-    ): AttendCourse {
+    ): MyCourse {
         val credit = lines[1]
             .filter { it.isDigit() }
-            .toIntOrNull() ?: DEFAULT_ATTEND_COURSE_CREDIT
+            .toIntOrNull() ?: DEFAULT_MY_COURSE_CREDIT
 
-        return AttendCourse(
+        return MyCourse(
             dayOfWeek = dayOfWeek,
             period = period,
             scheduleCode = scheduleCode,
@@ -235,7 +235,7 @@ object DocumentParser {
             category = lines[2].trim(),
             subject = lines[3].trim(),
             instructor = lines[4].trim(),
-            type = AttendCourse.Type.PORTAL
+            isEditable = false
         )
     }
 

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.editattendcourse.EditAttendCourseActivity">
+    tools:context=".ui.editmycourse.EditMyCourseActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseViewModel" />
+            type="jp.kentan.studentportalplus.ui.editmycourse.EditMyCourseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:hint="@string/edit_attend_course_subject"
+                    android:hint="@string/edit_my_course_subject"
                     app:error="@{viewModel.errorSubject}"
                     app:layout_constraintEnd_toStartOf="@id/color_button"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
                     android:layout_height="0dp"
                     android:onClick="@{() -> viewModel.onColorClick()}"
                     app:courseColor="@{viewModel.color}"
-                    app:icon="@drawable/edit_attend_course_palette"
+                    app:icon="@drawable/edit_my_course_palette"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:layout_constraintBottom_toBottomOf="@id/subject_text_input_layout"
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/edit_attend_course_instructor"
+                    android:hint="@string/edit_my_course_instructor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/subject_text_input_layout">
@@ -108,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/edit_attend_course_location"
+                    android:hint="@string/edit_my_course_location"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/instructor_text_input_layout">
@@ -143,7 +143,7 @@
                         android:completionThreshold="100"
                         android:editable="false"
                         android:enabled="@{viewModel.isEnabled}"
-                        android:hint="@string/edit_attend_course_day_of_week"
+                        android:hint="@string/edit_my_course_day_of_week"
                         android:text="@={viewModel.dayOfWeek}"
                         app:entitiesWithoutFilter="@{viewModel.dayOfWeekList}" />
 
@@ -167,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:editable="false"
                         android:enabled="@{viewModel.isEnabled &amp;&amp; viewModel.isEnabledPeriod}"
-                        android:hint="@string/edit_attend_course_period"
+                        android:hint="@string/edit_my_course_period"
                         android:text="@={viewModel.period}"
                         app:entitiesWithoutFilter="@{viewModel.periodList}" />
 
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/edit_attend_course_category"
+                    android:hint="@string/edit_my_course_category"
                     app:layout_constraintEnd_toStartOf="@id/credit_text_input_layout"
                     app:layout_constraintHorizontal_weight="0.6"
                     app:layout_constraintStart_toStartOf="parent"
@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/edit_attend_course_credit"
+                    android:hint="@string/edit_my_course_credit"
                     app:error="@{viewModel.errorCredit}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="0.4"
@@ -226,7 +226,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/edit_attend_course_schedule_code"
+                    android:hint="@string/edit_my_course_schedule_code"
                     app:error="@{viewModel.errorScheduleCode}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="@string/edit_attend_course_note"
+                    android:text="@string/edit_my_course_note"
                     android:textColor="?attr/colorError"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

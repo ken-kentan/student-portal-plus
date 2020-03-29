@@ -4,6 +4,7 @@
     <color name="primary_variant">#1E2128</color>
     <color name="secondary">#81D2FA</color>
     <color name="secondary_variant">#2B77BA</color>
+    <color name="on_secondary">#1D1D1D</color>
     <color name="surface">#1D1D1D</color>
 
     <color name="app_bar_text_hint">#60FFFFFF</color>
@@ -33,17 +34,25 @@
     <color name="course_brown_3">#795548</color>
     <color name="course_brown_4">#5D4037</color>
 
-    <color name="favorite_orange">#FFD180</color>
+    <color name="favorite_orange">#FFB74D</color>
     <color name="favorite_grey">#757575</color>
+
+    <color name="my_course_red">#E57373</color>
+    <color name="my_course_yellow">#FFB74D</color>
+    <color name="my_course_grey">#757575</color>
+
+    <color name="lock_green">#81C784</color>
+    <color name="lock_grey">#757575</color>
 
     <color name="text_shadow_attend_course">#FAFAFA</color>
     <color name="text_attend_course_subject">#212121</color>
     <color name="text_attend_course">#424242</color>
 
-    <color name="timetable_grid_mask">#1E1E1E</color>
-    <color name="timetable_grid_background">#101010</color>
+    <color name="timetable_grid_mask">#101010</color>
+    <color name="timetable_grid_background">#1E1E1E</color>
 
     <color name="background">#121212</color>
 
+    <color name="notification">#81D2FA</color>
     <color name="notification_error">#CF6679</color>
 </resources>

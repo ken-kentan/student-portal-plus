@@ -12,13 +12,13 @@ import androidx.transition.TransitionManager
 import dagger.android.support.DaggerFragment
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.databinding.FragmentDashboardBinding
-import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailActivity
 import jp.kentan.studentportalplus.ui.dashboard.adapter.LectureCancellationAdapter
 import jp.kentan.studentportalplus.ui.dashboard.adapter.LectureInformationAdapter
 import jp.kentan.studentportalplus.ui.dashboard.adapter.NoticeAdapter
 import jp.kentan.studentportalplus.ui.dashboard.adapter.TimetableAdapter
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
+import jp.kentan.studentportalplus.ui.mycoursedetail.MyCourseDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.observeEvent
 import javax.inject.Inject
@@ -36,9 +36,9 @@ class DashboardFragment : DaggerFragment(R.layout.fragment_dashboard) {
             viewModel = dashboardViewModel
         }
 
-        val attendCourseAdapter = TimetableAdapter(
+        val timetableAdapter = TimetableAdapter(
             parentCardView = binding.timetableCardView,
-            onItemClick = dashboardViewModel.onAttendCourseItemClick
+            onItemClick = dashboardViewModel.onMyCourseItemClick
         )
         val lectureInfoAdapter = LectureInformationAdapter(
             onItemClick = dashboardViewModel.onLectureInformationItemClick,
@@ -55,7 +55,7 @@ class DashboardFragment : DaggerFragment(R.layout.fragment_dashboard) {
         )
 
         binding.apply {
-            timetableRecyclerView.setup(attendCourseAdapter)
+            timetableRecyclerView.setup(timetableAdapter)
             lectureInformationRecyclerView.setup(lectureInfoAdapter)
             lectureCancellationRecyclerView.setup(lectureCancelAdapter)
             noticeRecyclerView.setup(noticeAdapter)
@@ -64,7 +64,7 @@ class DashboardFragment : DaggerFragment(R.layout.fragment_dashboard) {
         dashboardViewModel.portalSet.observe(viewLifecycleOwner) { set ->
             TransitionManager.beginDelayedTransition(binding.layout)
 
-            attendCourseAdapter.submitList(set.attendCourseList)
+            timetableAdapter.submitList(set.myCourseList)
             lectureInfoAdapter.submitList(set.lectureInfoList)
             lectureCancelAdapter.submitList(set.lectureCancelList)
             noticeAdapter.submitList(set.noticeList)
@@ -84,8 +84,8 @@ class DashboardFragment : DaggerFragment(R.layout.fragment_dashboard) {
         dashboardViewModel.navigate.observeEvent(viewLifecycleOwner) {
             findNavController().navigate(it, null, navOptions)
         }
-        dashboardViewModel.startAttendCourseDetailActivity.observeEvent(viewLifecycleOwner) {
-            startActivity(AttendCourseDetailActivity.createIntent(requireContext(), it))
+        dashboardViewModel.startMyCourseDetailActivity.observeEvent(viewLifecycleOwner) {
+            startActivity(MyCourseDetailActivity.createIntent(requireContext(), it))
         }
         dashboardViewModel.startLectureInfoActivity.observeEvent(viewLifecycleOwner) {
             startActivity(LectureInformationDetailActivity.createIntent(requireContext(), it))

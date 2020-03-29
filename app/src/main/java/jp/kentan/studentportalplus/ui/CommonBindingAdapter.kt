@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.vo.MyCourseType
 import jp.kentan.studentportalplus.util.formatYearMonthDay
 import jp.kentan.studentportalplus.view.widget.MaterialArrayAdapter
 import java.util.Date
@@ -72,12 +72,12 @@ object CommonBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("attendType")
-    fun setAttendType(view: ImageView, attendType: AttendCourse.Type?) {
-        val resourceId = when (attendType) {
-            AttendCourse.Type.PORTAL, AttendCourse.Type.USER -> R.drawable.all_attend_red
-            AttendCourse.Type.SIMILAR -> R.drawable.all_attend_yellow
-            else -> R.drawable.all_attend_grey
+    @BindingAdapter("myCourseType")
+    fun setMyCourseType(view: ImageView, myCourseType: MyCourseType?) {
+        val resourceId = when (myCourseType) {
+            MyCourseType.EDITABLE, MyCourseType.NOT_EDITABLE -> R.drawable.all_my_course_red
+            MyCourseType.SIMILAR -> R.drawable.all_my_course_yellow
+            else -> R.drawable.all_my_course_grey
         }
 
         view.setImageResource(resourceId)

@@ -47,15 +47,15 @@
             layout="@layout/content_lecture_information"
             bind:data="@{viewModel.lectureInfo}" />
 
-        <jp.kentan.studentportalplus.view.widget.CourseAttendFloatingActionButton
+        <jp.kentan.studentportalplus.view.widget.MyCourseFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{() -> viewModel.onCourseAttendFabClick()}"
+            android:onClick="@{() -> viewModel.onMyCourseFabClick()}"
             android:visibility="gone"
-            app:attendType="@{viewModel.lectureInfo.attendType}"
-            app:backgroundTint="@color/attend_red"
+            app:myCourseType="@{viewModel.lectureInfo.myCourseType}"
+            app:backgroundTint="@color/my_course_red"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/all_add_white"

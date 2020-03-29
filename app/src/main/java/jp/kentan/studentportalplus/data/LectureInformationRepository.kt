@@ -1,9 +1,10 @@
 package jp.kentan.studentportalplus.data
 
-import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureInformationDao
+import jp.kentan.studentportalplus.data.dao.MyCourseDao
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.vo.LectureQuery
+import jp.kentan.studentportalplus.data.vo.resolveMyCourseType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -27,21 +28,21 @@ interface LectureInformationRepository {
 @ExperimentalCoroutinesApi
 class DefaultLectureInformationRepository(
     private val lectureInformationDao: LectureInformationDao,
-    attendCourseDao: AttendCourseDao,
+    myCourseDao: MyCourseDao,
     preferences: Preferences
 ) : LectureInformationRepository {
 
-    private val attendCourseListFlow = attendCourseDao.selectAsFlow()
+    private val myCourseListFlow = myCourseDao.selectAsFlow()
     private val similarSubjectThresholdFlow = preferences.similarSubjectThresholdFlow
 
     private val lectureInfoListFlow = combine(
         lectureInformationDao.selectAsFlow(),
-        attendCourseListFlow,
+        myCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureInfoList, attendCourseList, threshold ->
+    ) { lectureInfoList, myCourseList, threshold ->
         lectureInfoList.map { lecture ->
             lecture.copy(
-                attendType = attendCourseList.resolveAttendCourseType(
+                myCourseType = myCourseList.resolveMyCourseType(
                     lecture.subject,
                     threshold
                 )
@@ -51,11 +52,11 @@ class DefaultLectureInformationRepository(
 
     override fun getAsFlow(id: Long) = combine(
         lectureInformationDao.selectAsFlow(id),
-        attendCourseListFlow,
+        myCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureInfo, attendCourseList, threshold ->
+    ) { lectureInfo, myCourseList, threshold ->
         lectureInfo?.copy(
-            attendType = attendCourseList.resolveAttendCourseType(
+            myCourseType = myCourseList.resolveMyCourseType(
                 lectureInfo.subject,
                 threshold
             )
@@ -75,7 +76,7 @@ class DefaultLectureInformationRepository(
             if (query.isRead && !lecture.isRead) {
                 return@filter false
             }
-            if (query.isAttend && !lecture.attendType.isAttend) {
+            if (query.isMyCourse && !lecture.myCourseType.isMyCourse) {
                 return@filter false
             }
             if (query.textList.isNotEmpty()) {
@@ -90,8 +91,8 @@ class DefaultLectureInformationRepository(
 
         return@combine when (query.order) {
             LectureQuery.Order.UPDATED_DATE -> filteredList
-            LectureQuery.Order.ATTEND_CLASS -> filteredList.sortedByDescending {
-                it.attendType.isAttend
+            LectureQuery.Order.MY_COURSE -> filteredList.sortedByDescending {
+                it.myCourseType.isMyCourse
             }
         }
     }.flowOn(Dispatchers.IO)

@@ -8,9 +8,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.MyCourseRepository
+import jp.kentan.studentportalplus.data.vo.MyCourseType
 import jp.kentan.studentportalplus.ui.Event
 import jp.kentan.studentportalplus.util.asLiveData
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class LectureCancellationDetailViewModel @Inject constructor(
     private val lectureCancelRepository: LectureCancellationRepository,
-    private val attendCourseRepository: AttendCourseRepository
+    private val myCourseRepository: MyCourseRepository
 ) : ViewModel() {
 
     private val lectureCancelId = MutableLiveData<Long>()
@@ -27,9 +27,9 @@ class LectureCancellationDetailViewModel @Inject constructor(
         lectureCancelRepository.getAsFlow(it).asLiveData()
     }
 
-    private val _excludeFromAttendConfirmDialog = MutableLiveData<Event<String>>()
-    val excludeFromAttendConfirmDialog: LiveData<Event<String>>
-        get() = _excludeFromAttendConfirmDialog
+    private val _excludeFromMyConfirmDialog = MutableLiveData<Event<String>>()
+    val excludeFromMyConfirmDialog: LiveData<Event<String>>
+        get() = _excludeFromMyConfirmDialog
 
     private val _snackbar = MutableLiveData<Event<Int>>()
     val snackbar: LiveData<Event<Int>>
@@ -53,30 +53,30 @@ class LectureCancellationDetailViewModel @Inject constructor(
         lectureCancelId.value = id
     }
 
-    fun onCourseAttendFabClick() {
+    fun onMyCourseFabClick() {
         val lectureCancel = lectureCancel.value ?: return
 
-        if (lectureCancel.attendType.canAttend) {
+        if (lectureCancel.myCourseType.canAddToMyCourse) {
             viewModelScope.launch {
-                val isSuccess = attendCourseRepository.add(lectureCancel)
+                val isSuccess = myCourseRepository.add(lectureCancel)
 
                 if (isSuccess) {
-                    _snackbar.value = Event(R.string.all_add_to_attend_course)
+                    _snackbar.value = Event(R.string.all_add_to_my_course)
                 } else {
                     _indefiniteSnackbar.value = Event(R.string.all_update_failed)
                 }
             }
-        } else if (lectureCancel.attendType != AttendCourse.Type.PORTAL) {
-            _excludeFromAttendConfirmDialog.value = Event(lectureCancel.subject)
+        } else if (lectureCancel.myCourseType == MyCourseType.EDITABLE) {
+            _excludeFromMyConfirmDialog.value = Event(lectureCancel.subject)
         }
     }
 
     fun onExcludeConfirmClick(subject: String) {
         viewModelScope.launch {
-            val isSuccess = attendCourseRepository.remove(subject)
+            val isSuccess = myCourseRepository.remove(subject)
 
             if (isSuccess) {
-                _snackbar.value = Event(R.string.all_exclude_from_attend_course)
+                _snackbar.value = Event(R.string.all_exclude_from_my_course)
             } else {
                 _indefiniteSnackbar.value = Event(R.string.all_update_failed)
             }

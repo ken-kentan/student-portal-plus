@@ -4,7 +4,7 @@
 
     <!-- All -->
     <string name="all_search_filter">検索フィルタ</string>
-    <string name="all_attend_course">受講科目</string>
+    <string name="all_my_course">受講科目</string>
     <string name="all_lecture_information">授業関連連絡</string>
     <string name="all_lecture_cancellation">休講情報</string>
     <string name="all_notice">最新情報</string>
@@ -32,9 +32,9 @@
     <string name="all_retry">再試行</string>
     <string name="all_period_suffix">%1$d限</string>
     <string name="all_subject_instructor_query">科目・教員名で検索&#8230;</string>
-    <string name="all_exclude_from_attend_course">受講科目から除外しました</string>
-    <string name="all_exclude_from_attend_course_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
-    <string name="all_add_to_attend_course">受講科目に追加しました</string>
+    <string name="all_exclude_from_my_course">受講科目から除外しました</string>
+    <string name="all_exclude_from_my_course_confirm">&lt;b>%1$s&lt;/b> を受講科目から除外しますか？</string>
+    <string name="all_add_to_my_course">受講科目に追加しました</string>
     <string name="all_field_empty">未入力です</string>
     <string name="all_delete_failed">消去に失敗しました</string>
     <string name="all_update_failed">更新に失敗しました</string>
@@ -74,7 +74,7 @@
 
     <!-- Dashboard -->
     <string name="dashboard_title">Dashboard</string>
-    <string name="dashboard_today_attend_course">%1$s曜日の時間割</string>
+    <string name="dashboard_today_my_course">%1$s曜日の時間割</string>
     <string name="dashboard_empty_lecture_information">現在、あなたへの授業関連連絡はありません。</string>
     <string name="dashboard_empty_lecture_cancellation">現在、あなたへの休講情報はありません。</string>
     <string name="dashboard_open_lecture_informations">すべての授業関連連絡を表示</string>
@@ -101,31 +101,31 @@
     <string name="notices_not_found">表示できる最新情報はありません</string>
     <string name="notices_query">タイトルで検索&#8230;</string>
 
-    <!-- Edit Attend Course -->
-    <string name="edit_attend_course_edit_title">Edit</string>
-    <string name="edit_attend_course_add_title">Add</string>
-    <string name="edit_attend_course_subject">授業科目</string>
-    <string name="edit_attend_course_instructor">担当教員</string>
-    <string name="edit_attend_course_location">場所</string>
-    <string name="edit_attend_course_day_of_week">曜日</string>
-    <string name="edit_attend_course_period">時限</string>
-    <string name="edit_attend_course_category">分類</string>
-    <string name="edit_attend_course_credit">単位数</string>
-    <string name="edit_attend_course_schedule_code">時間割番号</string>
-    <string name="edit_attend_course_color_picker">色を選択</string>
-    <string name="edit_attend_course_day_of_week_suffix">%1$s曜日</string>
-    <string name="edit_attend_course_note">正式な受講登録は大学のシステムを使用してください</string>
-    <string name="edit_attend_course_discard_confirm">編集中の内容を破棄しますか？</string>
-    <string name="edit_attend_course_invalid_credit">不正な単位数です</string>
-    <string name="edit_attend_course_invalid_schedule_code">不正な時間割番号です</string>
-    <string name="edit_attend_course_save_failed">保存に失敗しました</string>
+    <!-- Edit My Course -->
+    <string name="edit_my_course_edit_title">Edit</string>
+    <string name="edit_my_course_add_title">Add</string>
+    <string name="edit_my_course_subject">授業科目</string>
+    <string name="edit_my_course_instructor">担当教員</string>
+    <string name="edit_my_course_location">場所</string>
+    <string name="edit_my_course_day_of_week">曜日</string>
+    <string name="edit_my_course_period">時限</string>
+    <string name="edit_my_course_category">分類</string>
+    <string name="edit_my_course_credit">単位数</string>
+    <string name="edit_my_course_schedule_code">時間割番号</string>
+    <string name="edit_my_course_color_picker">色を選択</string>
+    <string name="edit_my_course_day_of_week_suffix">%1$s曜日</string>
+    <string name="edit_my_course_note">正式な受講登録は大学のシステムを使用してください</string>
+    <string name="edit_my_course_discard_confirm">編集中の内容を破棄しますか？</string>
+    <string name="edit_my_course_invalid_credit">不正な単位数です</string>
+    <string name="edit_my_course_invalid_schedule_code">不正な時間割番号です</string>
+    <string name="edit_my_course_save_failed">保存に失敗しました</string>
 
-    <!-- Attend Course Detail -->
-    <string name="attend_course_detail_location">場所</string>
-    <string name="attend_course_detail_day_of_week_and_period">曜日時限</string>
-    <string name="attend_course_detail_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
-    <string name="attend_course_detail_day_of_week_suffix">%1$s曜</string>
-    <string name="attend_course_detail_day_of_week_period">%1$s %2$s</string>
+    <!-- My Course Detail -->
+    <string name="my_course_detail_location">場所</string>
+    <string name="my_course_detail_day_of_week_and_period">曜日時限</string>
+    <string name="my_course_detail_delete_confirm">&lt;b>%1$s&lt;/b> を消去しますか？</string>
+    <string name="my_course_detail_day_of_week_suffix">%1$s曜</string>
+    <string name="my_course_detail_day_of_week_period">%1$s %2$s</string>
 
     <!-- Lecture Information Detail -->
     <string name="lecture_information_detail_detail">連絡事項</string>
@@ -188,7 +188,7 @@
 
     <!-- Lecture Order -->
     <string name="lecture_order_update_date">最終更新日</string>
-    <string name="lecture_order_attend_course">受講科目優先</string>
+    <string name="lecture_order_my_course">受講科目優先</string>
 
     <!-- Notification -->
     <string name="notification_newly_channel">新着通知</string>
@@ -202,7 +202,7 @@
     <!-- Notification Type -->
     <string name="notification_type_all">すべて</string>
     <string name="notification_type_important">重要・注意を含む</string>
-    <string name="notification_type_attend">受講科目・類似科目</string>
+    <string name="notification_type_my_class">受講科目・類似科目</string>
     <string name="notification_type_not">通知しない</string>
 
     <!-- Menu -->

@@ -1,19 +1,19 @@
 package jp.kentan.studentportalplus.data.dao
 
 import com.google.common.truth.Truth
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import org.junit.Test
 
-class AttendCourseConverterTest {
+class MyCourseConverterTest {
 
-    private val converter = AttendCourseConverter()
+    private val converter = MyCourseConverter()
 
     @Test
     fun `fromType should return AttendCourse Type if valid name`() {
-        Truth.assertThat(converter.fromType(AttendCourse.Type.USER.name))
-            .isEqualTo(AttendCourse.Type.USER)
+        Truth.assertThat(converter.fromType(MyCourse.Type.USER.name))
+            .isEqualTo(MyCourse.Type.USER)
     }
 
     @Test
@@ -24,8 +24,8 @@ class AttendCourseConverterTest {
 
     @Test
     fun `typeTo should return name if valid AttendCourse Type`() {
-        Truth.assertThat(converter.typeTo(AttendCourse.Type.USER))
-            .isEqualTo(AttendCourse.Type.USER.name)
+        Truth.assertThat(converter.typeTo(MyCourse.Type.USER))
+            .isEqualTo(MyCourse.Type.USER.name)
     }
 
     @Test

@@ -8,8 +8,8 @@ import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.util.XxHash64
 
-@Entity(tableName = "attend_courses", indices = [Index(value = ["hash"], unique = true)])
-data class AttendCourse(
+@Entity(tableName = "my_courses", indices = [Index(value = ["hash"], unique = true)])
+data class MyCourse(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     val id: Long = 0,
@@ -35,8 +35,8 @@ data class AttendCourse(
     @ColumnInfo(name = "instructor")
     val instructor: String, // 担当教員名
 
-    @ColumnInfo(name = "type")
-    val type: Type,
+    @ColumnInfo(name = "is_editable")
+    val isEditable: Boolean,
 
     @ColumnInfo(name = "color")
     val color: CourseColor = CourseColor.DEFAULT,
@@ -45,24 +45,9 @@ data class AttendCourse(
     val location: String? = null,
 
     @ColumnInfo(name = "hash")
-    val hash: Long = XxHash64.hash("$dayOfWeek$period$scheduleCode$credit$category$subject$instructor$type")
+    val hash: Long = XxHash64.hash("$dayOfWeek$period$scheduleCode$credit$category$subject$instructor$isEditable")
 ) {
-    enum class Type {
-        PORTAL, // ポータル取得
-        USER, // ユーザー登録
-        SIMILAR, // 類似
-        NOT, // 未受講
-        UNKNOWN; // 未確認
-
-        val isAttend: Boolean
-            get() = this == PORTAL || this == USER || this == SIMILAR
-
-        val canAttend: Boolean
-            get() = this == SIMILAR || this == NOT
-    }
-
     init {
-        require(type == Type.PORTAL || type == Type.USER) { "type($type) should be PORTAL or USER" }
         require(period in 1..7) { "period($period) should in 1..7" }
     }
 }

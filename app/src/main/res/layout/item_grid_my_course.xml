@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="jp.kentan.studentportalplus.data.entity.AttendCourse" />
+            type="jp.kentan.studentportalplus.data.entity.MyCourse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

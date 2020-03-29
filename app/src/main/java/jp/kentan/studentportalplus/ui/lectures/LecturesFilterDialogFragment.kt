@@ -47,7 +47,7 @@ class LecturesFilterDialogFragment : AppCompatDialogFragment() {
                     order = binding.orderSpinner.selectedItem as LectureQuery.Order,
                     isUnread = binding.unreadChip.isChecked,
                     isRead = binding.readChip.isChecked,
-                    isAttend = binding.attendChip.isChecked
+                    isMyCourse = binding.myCourseChip.isChecked
                 )
 
                 listener.onFilterApplyClick(query)

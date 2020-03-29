@@ -1,19 +1,19 @@
 package jp.kentan.studentportalplus.domain.sync
 
-import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.Preferences
-import jp.kentan.studentportalplus.data.entity.AttendCourse
 import jp.kentan.studentportalplus.data.entity.Lecture
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.entity.Notice
-import jp.kentan.studentportalplus.data.resolveAttendCourseType
 import jp.kentan.studentportalplus.data.source.ShibbolethClient
 import jp.kentan.studentportalplus.data.vo.LectureNotificationType
 import jp.kentan.studentportalplus.data.vo.NoticeNotificationType
+import jp.kentan.studentportalplus.data.vo.resolveMyCourseType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class SyncUseCase @Inject constructor(
     private val shibbolethClient: ShibbolethClient,
-    private val attendCourseRepository: AttendCourseRepository,
+    private val myCourseRepository: MyCourseRepository,
     private val lectureInformationRepository: LectureInformationRepository,
     private val lectureCancellationRepository: LectureCancellationRepository,
     private val noticeRepository: NoticeRepository,
@@ -29,7 +29,7 @@ class SyncUseCase @Inject constructor(
 ) {
 
     companion object {
-        private const val ATTEND_COURSE_URL =
+        private const val MY_COURSE_URL =
             "https://portal.student.kit.ac.jp/ead/?c=attend_course"
         private const val LECTURE_INFO_URL =
             "https://portal.student.kit.ac.jp/ead/?c=lecture_information"
@@ -39,12 +39,12 @@ class SyncUseCase @Inject constructor(
     }
 
     suspend operator fun invoke(): SyncUseCaseResult = withContext(Dispatchers.IO) {
-        val attendCourseDocument = shibbolethClient.fetch(ATTEND_COURSE_URL)
-        attendCourseRepository.updateAll(
-            DocumentParser.parseAttendCourse(attendCourseDocument)
+        val myCourseDocument = shibbolethClient.fetch(MY_COURSE_URL)
+        myCourseRepository.updateAll(
+            DocumentParser.parseMyCourse(myCourseDocument)
         )
 
-        val attendCourseList = attendCourseRepository.getAll()
+        val myCourseList = myCourseRepository.getAll()
         val similarSubjectThreshold = preferences.similarSubjectThreshold
 
         val lectureInfoDeferred = async {
@@ -53,7 +53,7 @@ class SyncUseCase @Inject constructor(
             lectureInformationRepository.updateAll(lectureInfoList)
                 .filterWith(
                     preferences.lectureInformationNotificationType,
-                    attendCourseList,
+                    myCourseList,
                     similarSubjectThreshold
                 )
         }
@@ -64,7 +64,7 @@ class SyncUseCase @Inject constructor(
             lectureCancellationRepository.updateAll(lectureCancelList)
                 .filterWith(
                     preferences.lectureCancellationNotificationType,
-                    attendCourseList,
+                    myCourseList,
                     similarSubjectThreshold
                 )
         }
@@ -85,12 +85,12 @@ class SyncUseCase @Inject constructor(
 
     private fun <T : Lecture> List<T>.filterWith(
         notificationType: LectureNotificationType,
-        attendCourseList: List<AttendCourse>,
+        myCourseList: List<MyCourse>,
         threshold: Float
     ): List<T> = when (notificationType) {
         LectureNotificationType.ALL -> this
-        LectureNotificationType.ATTEND -> filter {
-            attendCourseList.resolveAttendCourseType(it.subject, threshold).isAttend
+        LectureNotificationType.MY_COURSE -> filter {
+            myCourseList.resolveMyCourseType(it.subject, threshold).isMyCourse
         }
         LectureNotificationType.NOT -> emptyList()
     }

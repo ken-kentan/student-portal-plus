@@ -7,11 +7,9 @@
 
         <import type="android.text.TextUtils" />
 
-        <import type="jp.kentan.studentportalplus.data.entity.AttendCourse" />
-
         <variable
             name="data"
-            type="jp.kentan.studentportalplus.data.entity.AttendCourse" />
+            type="jp.kentan.studentportalplus.data.entity.MyCourse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +72,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:textSize="13sp"
-            app:attendCourseListDayOfWeek="@{data}"
+            app:myCourseListDayOfWeek="@{data}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="月1" />
@@ -85,7 +83,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/timetable_lock_description"
             android:padding="16dp"
-            android:src="@{data.type == AttendCourse.Type.USER ? @drawable/all_lock_grey : @drawable/all_lock_green}"
+            android:src="@{data.isEditable ? @drawable/all_lock_grey : @drawable/all_lock_green}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:src="@drawable/all_lock_green" />

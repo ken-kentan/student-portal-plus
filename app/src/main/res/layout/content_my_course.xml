@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.lectureinformationdetail.LectureInformationDetailActivity"
-    tools:showIn="@layout/activity_attend_course_detail">
+    tools:showIn="@layout/activity_my_course_detail">
 
     <data>
 
@@ -11,7 +11,7 @@
 
         <variable
             name="attendCourse"
-            type="jp.kentan.studentportalplus.data.entity.AttendCourse" />
+            type="jp.kentan.studentportalplus.data.entity.MyCourse" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/attend_course_detail_location" />
+                android:text="@string/my_course_detail_location" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -86,14 +86,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/attend_course_detail_day_of_week_and_period" />
+                android:text="@string/my_course_detail_day_of_week_and_period" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textIsSelectable="true"
-                app:attendCourseDayOfWeek="@{attendCourse}" />
+                app:myCourseDayOfWeek="@{attendCourse}" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

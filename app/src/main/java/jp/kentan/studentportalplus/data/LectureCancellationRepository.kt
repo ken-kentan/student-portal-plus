@@ -1,9 +1,10 @@
 package jp.kentan.studentportalplus.data
 
-import jp.kentan.studentportalplus.data.dao.AttendCourseDao
 import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
+import jp.kentan.studentportalplus.data.dao.MyCourseDao
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.vo.LectureQuery
+import jp.kentan.studentportalplus.data.vo.resolveMyCourseType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -27,21 +28,21 @@ interface LectureCancellationRepository {
 @ExperimentalCoroutinesApi
 class DefaultLectureCancellationRepository(
     private val lectureCancellationDao: LectureCancellationDao,
-    attendCourseDao: AttendCourseDao,
+    myCourseDao: MyCourseDao,
     preferences: Preferences
 ) : LectureCancellationRepository {
 
-    private val attendCourseListFlow = attendCourseDao.selectAsFlow()
+    private val myCourseListFlow = myCourseDao.selectAsFlow()
     private val similarSubjectThresholdFlow = preferences.similarSubjectThresholdFlow
 
     private val lectureCancelListFlow = combine(
         lectureCancellationDao.selectAsFlow(),
-        attendCourseListFlow,
+        myCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureCancelList, attendCourseList, threshold ->
+    ) { lectureCancelList, myCourseList, threshold ->
         lectureCancelList.map { lecture ->
             lecture.copy(
-                attendType = attendCourseList.resolveAttendCourseType(
+                myCourseType = myCourseList.resolveMyCourseType(
                     lecture.subject,
                     threshold
                 )
@@ -51,11 +52,11 @@ class DefaultLectureCancellationRepository(
 
     override fun getAsFlow(id: Long): Flow<LectureCancellation?> = combine(
         lectureCancellationDao.selectAsFlow(id),
-        attendCourseListFlow,
+        myCourseListFlow,
         similarSubjectThresholdFlow
-    ) { lectureCancel, attendCourseList, threshold ->
+    ) { lectureCancel, myCourseList, threshold ->
         lectureCancel.copy(
-            attendType = attendCourseList.resolveAttendCourseType(
+            myCourseType = myCourseList.resolveMyCourseType(
                 lectureCancel.subject,
                 threshold
             )
@@ -75,7 +76,7 @@ class DefaultLectureCancellationRepository(
             if (query.isRead && !lecture.isRead) {
                 return@filter false
             }
-            if (query.isAttend && !lecture.attendType.isAttend) {
+            if (query.isMyCourse && !lecture.myCourseType.isMyCourse) {
                 return@filter false
             }
             if (query.textList.isNotEmpty()) {
@@ -92,8 +93,8 @@ class DefaultLectureCancellationRepository(
 
         return@combine when (query.order) {
             LectureQuery.Order.UPDATED_DATE -> filteredList
-            LectureQuery.Order.ATTEND_CLASS -> filteredList.sortedByDescending {
-                it.attendType.isAttend
+            LectureQuery.Order.MY_COURSE -> filteredList.sortedByDescending {
+                it.myCourseType.isMyCourse
             }
         }
     }.flowOn(Dispatchers.IO)

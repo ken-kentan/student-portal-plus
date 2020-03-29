@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.editattendcourse
+package jp.kentan.studentportalplus.ui.editmycourse
 
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.button.MaterialButton
 import jp.kentan.studentportalplus.data.vo.CourseColor
 
-object EditAttendCourseBindingAdapter {
+object EditMyCourseBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("courseColor")

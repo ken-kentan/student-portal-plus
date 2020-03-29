@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.editattendcourse
+package jp.kentan.studentportalplus.ui.editmycourse
 
 import android.app.Application
 import android.content.Context
@@ -9,9 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import jp.kentan.studentportalplus.data.SubjectRepository
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.CourseColor
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
@@ -19,9 +19,9 @@ import jp.kentan.studentportalplus.ui.Event
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class EditAttendCourseViewModel @Inject constructor(
+class EditMyCourseViewModel @Inject constructor(
     application: Application,
-    private val attendCourseRepository: AttendCourseRepository,
+    private val myCourseRepository: MyCourseRepository,
     subjectRepository: SubjectRepository
 ) : AndroidViewModel(application) {
 
@@ -84,27 +84,27 @@ class EditAttendCourseViewModel @Inject constructor(
     val finish: LiveData<Unit>
         get() = _finish
 
-    private lateinit var editAttendCourseMode: EditAttendCourseMode
+    private lateinit var editMyCourseMode: EditMyCourseMode
 
-    private lateinit var originalAttendCourse: AttendCourse
+    private lateinit var originalMyCourse: MyCourse
 
-    fun onActivityCreate(mode: EditAttendCourseMode) {
-        editAttendCourseMode = mode
+    fun onActivityCreate(mode: EditMyCourseMode) {
+        editMyCourseMode = mode
 
         when (mode) {
-            is EditAttendCourseMode.Update -> {
+            is EditMyCourseMode.Update -> {
                 viewModelScope.launch {
-                    val course = attendCourseRepository.get(mode.id) ?: let {
+                    val course = myCourseRepository.get(mode.id) ?: let {
                         _toast.value = Event(R.string.all_not_found_error)
                         _finish.value = Unit
                         return@launch
                     }
 
-                    setAttendCourse(course)
+                    setMyCourse(course)
                 }
             }
-            is EditAttendCourseMode.Add -> setAttendCourse(
-                AttendCourse(
+            is EditMyCourseMode.Add -> setMyCourse(
+                MyCourse(
                     subject = "",
                     instructor = "",
                     dayOfWeek = mode.dayOfWeek,
@@ -112,14 +112,14 @@ class EditAttendCourseViewModel @Inject constructor(
                     category = "",
                     credit = 0,
                     scheduleCode = "",
-                    type = AttendCourse.Type.USER
+                    isEditable = true
                 )
             )
         }
     }
 
-    private fun setAttendCourse(course: AttendCourse) {
-        originalAttendCourse = course
+    private fun setMyCourse(course: MyCourse) {
+        originalMyCourse = course
 
         val context: Context = getApplication()
 
@@ -133,7 +133,7 @@ class EditAttendCourseViewModel @Inject constructor(
         credit.value = with(course.credit) { if (this > 0) toString() else "" }
         scheduleCode.value = course.scheduleCode
 
-        _isEnabled.value = course.type == AttendCourse.Type.USER
+        _isEnabled.value = course.isEditable
     }
 
     fun onSaveClick() {
@@ -148,11 +148,11 @@ class EditAttendCourseViewModel @Inject constructor(
             isCancel = true
         }
         if (credit != null && credit !in 1..10) {
-            _errorCredit.value = R.string.edit_attend_course_invalid_credit
+            _errorCredit.value = R.string.edit_my_course_invalid_credit
             isCancel = true
         }
         if (scheduleCode.validateScheduleCode()) {
-            _errorScheduleCode.value = R.string.edit_attend_course_invalid_schedule_code
+            _errorScheduleCode.value = R.string.edit_my_course_invalid_schedule_code
             isCancel = true
         }
 
@@ -163,8 +163,8 @@ class EditAttendCourseViewModel @Inject constructor(
         val location: String? = with(location.value) { if (isNullOrBlank()) null else this }
         val dayOfWeek = dayOfWeek.value.toDayOfWeekEnum()
 
-        val course = AttendCourse(
-            id = originalAttendCourse.id,
+        val course = MyCourse(
+            id = originalMyCourse.id,
             subject = subject,
             instructor = instructor.value.orEmpty(),
             location = location,
@@ -174,19 +174,19 @@ class EditAttendCourseViewModel @Inject constructor(
             credit = credit ?: 0,
             scheduleCode = scheduleCode,
             color = requireNotNull(color.value),
-            type = originalAttendCourse.type
+            isEditable = originalMyCourse.isEditable
         )
 
         viewModelScope.launch {
-            val isSuccess = when (editAttendCourseMode) {
-                is EditAttendCourseMode.Update -> attendCourseRepository.update(course)
-                is EditAttendCourseMode.Add -> attendCourseRepository.add(course)
+            val isSuccess = when (editMyCourseMode) {
+                is EditMyCourseMode.Update -> myCourseRepository.update(course)
+                is EditMyCourseMode.Add -> myCourseRepository.add(course)
             }
 
             if (isSuccess) {
                 _finish.value = Unit
             } else {
-                _toast.value = Event(R.string.edit_attend_course_save_failed)
+                _toast.value = Event(R.string.edit_my_course_save_failed)
             }
         }
     }
@@ -203,7 +203,7 @@ class EditAttendCourseViewModel @Inject constructor(
     fun onFinish() {
         val context: Context = getApplication()
 
-        val original = originalAttendCourse
+        val original = originalMyCourse
         val originalCredit = with(original.credit) { if (this > 0) toString() else "" }
 
         val location = with(location.value) { if (isNullOrEmpty()) null else this }
@@ -227,7 +227,7 @@ class EditAttendCourseViewModel @Inject constructor(
     }
 
     private fun DayOfWeek.format(context: Context) = if (hasSuffix) {
-        context.getString(R.string.edit_attend_course_day_of_week_suffix, context.getString(resId))
+        context.getString(R.string.edit_my_course_day_of_week_suffix, context.getString(resId))
     } else {
         context.getString(resId)
     }

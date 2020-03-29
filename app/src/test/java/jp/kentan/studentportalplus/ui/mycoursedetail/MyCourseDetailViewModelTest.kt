@@ -1,4 +1,4 @@
-package jp.kentan.studentportalplus.ui.attendcoursedetail
+package jp.kentan.studentportalplus.ui.mycoursedetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
@@ -9,7 +9,7 @@ import jp.kentan.studentportalplus.LiveDataTestUtil
 import jp.kentan.studentportalplus.MainCoroutineRule
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.TestData
-import jp.kentan.studentportalplus.data.AttendCourseRepository
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
@@ -18,7 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class AttendCourseDetailViewModelTest {
+class MyCourseDetailViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -26,15 +26,15 @@ class AttendCourseDetailViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val attendCourseRepository = mockk<AttendCourseRepository>()
+    private val attendCourseRepository = mockk<MyCourseRepository>()
 
-    private lateinit var viewModel: AttendCourseDetailViewModel
+    private lateinit var viewModel: MyCourseDetailViewModel
 
     @Before
     fun setUp() {
         val id = TestData.attendCourse.id
 
-        viewModel = AttendCourseDetailViewModel(attendCourseRepository)
+        viewModel = MyCourseDetailViewModel(attendCourseRepository)
         viewModel.onActivityCreate(id)
 
         every {
@@ -44,10 +44,10 @@ class AttendCourseDetailViewModelTest {
 
     @Test
     fun onActivityCreate_dataLoad() {
-        val vm = AttendCourseDetailViewModel(attendCourseRepository)
+        val vm = MyCourseDetailViewModel(attendCourseRepository)
         vm.onActivityCreate(TestData.attendCourse.id)
 
-        val attendCourse = LiveDataTestUtil.getValue(vm.attendCourse)
+        val attendCourse = LiveDataTestUtil.getValue(vm.myCourse)
 
         assertThat(attendCourse).isEqualTo(TestData.attendCourse)
 
@@ -61,10 +61,10 @@ class AttendCourseDetailViewModelTest {
             attendCourseRepository.getAsFlow(TestData.attendCourse.id)
         } returns flowOf(null)
 
-        val vm = AttendCourseDetailViewModel(attendCourseRepository)
+        val vm = MyCourseDetailViewModel(attendCourseRepository)
         vm.onActivityCreate(TestData.attendCourse.id)
 
-        assertThat(LiveDataTestUtil.getValue(vm.attendCourse)).isNull()
+        assertThat(LiveDataTestUtil.getValue(vm.myCourse)).isNull()
 
         assertThat(LiveDataTestUtil.getValue(vm.error)?.peekContent())
             .isEqualTo(R.string.all_not_found_error)
@@ -76,14 +76,14 @@ class AttendCourseDetailViewModelTest {
     fun onEditClick_startEditActivity() {
         viewModel.onEditClick()
 
-        val startEditActivity = LiveDataTestUtil.getValue(viewModel.startEditAttendCourseActivity)
+        val startEditActivity = LiveDataTestUtil.getValue(viewModel.startEditMyCourseActivity)
         assertThat(startEditActivity?.peekContent()).isEqualTo(TestData.attendCourse.id)
     }
 
     @Test
     fun onDeleteClick_showDialog() {
         // TODO resume
-        LiveDataTestUtil.getValue(viewModel.attendCourse)
+        LiveDataTestUtil.getValue(viewModel.myCourse)
 
         viewModel.onDeleteClick()
 
