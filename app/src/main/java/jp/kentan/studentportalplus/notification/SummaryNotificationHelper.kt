@@ -32,13 +32,6 @@ class SummaryNotificationHelper(
         private const val SUMMARY_NOTIFICATION_ID = 0
 
         private const val SMALL_APP_ICON_RES_ID = R.drawable.notification_app
-
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun createNewlyChannelSettingsIntent(context: Context) =
-            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                putExtra(Settings.EXTRA_CHANNEL_ID, NEWLY_CHANNEL_ID)
-            }
     }
 
     private inner class NotificationContent(
@@ -85,6 +78,13 @@ class SummaryNotificationHelper(
 
         notificationManager.createNotificationChannels(listOf(newlyChannel, appChannel))
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun createNewlyChannelSettingsIntent() =
+        Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            putExtra(Settings.EXTRA_CHANNEL_ID, NEWLY_CHANNEL_ID)
+        }
 
     override fun sendLectureInformation(lectureInfoList: List<LectureInformation>) {
         if (lectureInfoList.isEmpty()) {

@@ -3,6 +3,8 @@ package jp.kentan.studentportalplus.notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -29,6 +31,11 @@ abstract class NotificationHelper(
     }
 
     protected val notificationManager = NotificationManagerCompat.from(context)
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    open fun createNewlyChannelSettingsIntent(): Intent {
+        throw UnsupportedOperationException()
+    }
 
     abstract fun sendLectureInformation(lectureInfoList: List<LectureInformation>)
 

@@ -14,7 +14,7 @@ import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.Preferences
-import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
+import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.util.requirePreference
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import java.text.SimpleDateFormat
@@ -29,6 +29,9 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
     @Inject
     lateinit var preferences: Preferences
+
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
 
     private val onIsSyncEnabledPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
@@ -89,7 +92,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             requirePreference<Preference>("notification_settings").setOnPreferenceClickListener {
                 startActivity(
-                    SummaryNotificationHelper.createNewlyChannelSettingsIntent(requireContext())
+                    notificationHelper.createNewlyChannelSettingsIntent()
                 )
 
                 return@setOnPreferenceClickListener true
