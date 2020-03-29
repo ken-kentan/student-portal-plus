@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.animation.AnticipateOvershootInterpolator
 import jp.kentan.studentportalplus.data.vo.MyCourseType
 
-class MyCourseFloatingActionButton @JvmOverloads constructor(
+class LectureFloatingActionButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = com.google.android.material.R.attr.floatingActionButtonStyle

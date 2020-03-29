@@ -30,7 +30,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
     @Inject
     lateinit var preferences: Preferences
 
-    private val onIsEnabledSyncPreferenceChangeListener =
+    private val onIsSyncEnabledPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
             val isEnabled = newValue as Boolean
 
@@ -60,8 +60,8 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
             requirePreference<Preference>("sync_interval_minutes").isEnabled = isEnabled
             requirePreference<Preference>("notification_type").isEnabled = isEnabled
 
-            findPreference<Preference>("is_enabled_notification_vibration")?.isEnabled = isEnabled
-            findPreference<Preference>("is_enabled_notification_led")?.isEnabled = isEnabled
+            findPreference<Preference>("is_notification_vibration_enabled")?.isEnabled = isEnabled
+            findPreference<Preference>("is_notification_led_enabled")?.isEnabled = isEnabled
 
             return@OnPreferenceChangeListener true
         }
@@ -83,14 +83,14 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
         registerOnPreferenceClickListener("oss_licenses")
         registerOnPreferenceClickListener("share")
 
-        requirePreference<Preference>("is_enabled_sync").onPreferenceChangeListener =
-            onIsEnabledSyncPreferenceChangeListener
+        requirePreference<Preference>("is_sync_enabled").onPreferenceChangeListener =
+            onIsSyncEnabledPreferenceChangeListener
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             requirePreference<Preference>("notification_settings").setOnPreferenceClickListener {
-                val settingsIntent =
+                startActivity(
                     SummaryNotificationHelper.createNewlyChannelSettingsIntent(requireContext())
-                startActivity(settingsIntent)
+                )
 
                 return@setOnPreferenceClickListener true
             }

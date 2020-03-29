@@ -23,9 +23,7 @@ interface Preferences {
 
     var isGridTimetableLayout: Boolean
 
-    var isPdfOpenWithGdocsEnabled: Boolean
-
-    var isDetailErrorEnabled: Boolean
+    val isDetailErrorEnabled: Boolean
 
     var lectureInformationsOrder: LectureQuery.Order
     var lectureCancellationsOrder: LectureQuery.Order
@@ -37,8 +35,8 @@ interface Preferences {
 
     var notificationId: Int
 
-    var isNotificationVibrationEnabled: Boolean
-    var isNotificationLedEnabled: Boolean
+    val isNotificationVibrationEnabled: Boolean
+    val isNotificationLedEnabled: Boolean
 
     var lectureInformationNotificationType: LectureNotificationType
     var lectureCancellationNotificationType: LectureNotificationType
@@ -62,8 +60,6 @@ class LocalPreferences(
         private const val SYNC_INTERVAL_MINUTES = "sync_interval_minutes"
 
         private const val IS_GRID_TIMETABLE_LAYOUT = "is_grid_timetable_layout"
-
-        private const val IS_PDF_OPEN_WITH_GDOCS_ENABLED = "is_pdf_open_with_gdocs_enabled"
 
         private const val IS_DETAIL_ERROR_ENABLED = "is_detail_error_enabled"
 
@@ -113,17 +109,8 @@ class LocalPreferences(
             putBoolean(IS_GRID_TIMETABLE_LAYOUT, value)
         }
 
-    override var isPdfOpenWithGdocsEnabled: Boolean
-        get() = sharedPreferences.getBoolean(IS_PDF_OPEN_WITH_GDOCS_ENABLED, true)
-        set(value) = sharedPreferences.edit {
-            putBoolean(IS_PDF_OPEN_WITH_GDOCS_ENABLED, value)
-        }
-
-    override var isDetailErrorEnabled: Boolean
+    override val isDetailErrorEnabled: Boolean
         get() = sharedPreferences.getBoolean(IS_DETAIL_ERROR_ENABLED, false)
-        set(value) = sharedPreferences.edit {
-            putBoolean(IS_DETAIL_ERROR_ENABLED, value)
-        }
 
     override var lectureInformationsOrder: LectureQuery.Order
         get() = sharedPreferences.getString(LECTURE_INFORMATIONS_ORDER, null)
@@ -155,17 +142,11 @@ class LocalPreferences(
             putInt(NOTIFICATION_ID, value)
         }
 
-    override var isNotificationVibrationEnabled: Boolean
+    override val isNotificationVibrationEnabled: Boolean
         get() = sharedPreferences.getBoolean(IS_NOTIFICATION_VIBRATION_ENABLED, true)
-        set(value) = sharedPreferences.edit {
-            putBoolean(IS_NOTIFICATION_VIBRATION_ENABLED, value)
-        }
 
-    override var isNotificationLedEnabled: Boolean
+    override val isNotificationLedEnabled: Boolean
         get() = sharedPreferences.getBoolean(IS_NOTIFICATION_LED_ENABLED, true)
-        set(value) = sharedPreferences.edit {
-            putBoolean(IS_NOTIFICATION_LED_ENABLED, value)
-        }
 
     override var lectureInformationNotificationType: LectureNotificationType
         get() = sharedPreferences.getString(LECTURE_INFO_NOTIFICATION_TYPE, null)

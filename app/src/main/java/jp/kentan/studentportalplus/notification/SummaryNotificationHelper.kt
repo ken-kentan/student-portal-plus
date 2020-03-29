@@ -52,6 +52,7 @@ class SummaryNotificationHelper(
     }
 
     private val color = context.getColor(R.color.notification)
+    private val colorLight = context.getColor(R.color.notification_light)
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -67,7 +68,7 @@ class SummaryNotificationHelper(
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             enableLights(true)
-            lightColor = color
+            lightColor = colorLight
             vibrationPattern = VIBRATION_PATTERN
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
@@ -78,7 +79,7 @@ class SummaryNotificationHelper(
             NotificationManager.IMPORTANCE_LOW
         ).apply {
             enableLights(true)
-            lightColor = color
+            lightColor = colorLight
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
 
@@ -199,7 +200,11 @@ class SummaryNotificationHelper(
             builder.setVibrate(vibratePattern)
 
             if (preferences.isNotificationLedEnabled) {
-                builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
+                builder.setLights(
+                    colorLight,
+                    NOTIFICATION_LED_ON_MILLIS,
+                    NOTIFICATION_LED_OFF_MILLIS
+                )
             }
         }
 

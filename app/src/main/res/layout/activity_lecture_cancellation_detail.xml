@@ -47,7 +47,7 @@
             layout="@layout/content_lecture_cancellation"
             bind:data="@{viewModel.lectureCancel}" />
 
-        <jp.kentan.studentportalplus.view.widget.MyCourseFloatingActionButton
+        <jp.kentan.studentportalplus.view.widget.LectureFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
 
     <declare-styleable name="NoticeFloatingActionButton" />
 
-    <declare-styleable name="MyCourseFloatingActionButton">
+    <declare-styleable name="LectureFloatingActionButton">
         <attr name="myCourseType" format="enum" />
     </declare-styleable>
 
