@@ -13,7 +13,6 @@ import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.ui.Event
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
@@ -72,14 +71,10 @@ class DashboardViewModel @Inject constructor(
             myCourseRepository.getAllAsFlow(timetableDayOfWeek).asLiveData()
         )
         _portalSet.addLectureInformationSource(
-            lectureInfoRepository.getAllAsFlow().map { list ->
-                list.filter { it.myCourseType.isMyCourse }
-            }.asLiveData()
+            lectureInfoRepository.getAllFilteredByMyCourseAsFlow().asLiveData()
         )
         _portalSet.addLectureCancellationSource(
-            lectureCancelRepository.getAllAsFlow().map { list ->
-                list.filter { it.myCourseType.isMyCourse }
-            }.asLiveData()
+            lectureCancelRepository.getAllFilteredByMyCourseAsFlow().asLiveData()
         )
         _portalSet.addNoticeSource(noticeRepository.getAllAsFlow().asLiveData())
     }

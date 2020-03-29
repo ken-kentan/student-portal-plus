@@ -10,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 interface LectureInformationRepository {
@@ -19,6 +20,8 @@ interface LectureInformationRepository {
     fun getAllAsFlow(): Flow<List<LectureInformation>>
 
     fun getAllAsFlow(queryFlow: Flow<LectureQuery>): Flow<List<LectureInformation>>
+
+    fun getAllFilteredByMyCourseAsFlow(): Flow<List<LectureInformation>>
 
     suspend fun updateAll(lectureInformationList: List<LectureInformation>): List<LectureInformation>
 
@@ -95,6 +98,10 @@ class DefaultLectureInformationRepository(
                 it.myCourseType.isMyCourse
             }
         }
+    }.flowOn(Dispatchers.IO)
+
+    override fun getAllFilteredByMyCourseAsFlow() = lectureInfoListFlow.map { lectureInfoList ->
+        lectureInfoList.filter { it.myCourseType.isMyCourse }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun updateAll(lectureInformationList: List<LectureInformation>) =
