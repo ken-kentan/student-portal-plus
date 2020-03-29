@@ -33,11 +33,11 @@ class InboxStyleNotificationHelper(
     ) {
         val styleText: CharSequence
             get() = SpannableStringBuilder()
-                .append(title)
-                .append(' ')
                 .bold {
-                    append(text)
+                    append(title)
                 }
+                .append(' ')
+                .append(text)
     }
 
     private val largeIcon: Bitmap =
