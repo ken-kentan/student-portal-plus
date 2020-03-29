@@ -70,7 +70,7 @@ class DefaultMyCourseRepository(
         val periodRange = if (dayOfWeek.hasPeriod) {
             Period.rangeOf(lecture.period)
         } else {
-            IntRange(1, 1)
+            Period.DEFAULT_RANGE
         }
 
         val myCourseList = periodRange.map { period ->
