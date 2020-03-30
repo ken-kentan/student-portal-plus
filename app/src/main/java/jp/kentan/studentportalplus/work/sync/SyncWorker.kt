@@ -30,7 +30,7 @@ class SyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, params) {
 
     companion object {
-        const val NAME = "sync_worker"
+        const val NAME = "sync_work"
 
         private const val TAG = "SyncWorker"
 
