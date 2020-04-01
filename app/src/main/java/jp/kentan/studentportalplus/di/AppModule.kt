@@ -7,17 +7,18 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import jp.kentan.studentportalplus.StudentPortalPlus
-import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.DefaultAttendCourseRepository
 import jp.kentan.studentportalplus.data.DefaultLectureCancellationRepository
 import jp.kentan.studentportalplus.data.DefaultLectureInformationRepository
+import jp.kentan.studentportalplus.data.DefaultMyCourseRepository
 import jp.kentan.studentportalplus.data.DefaultNoticeRepository
 import jp.kentan.studentportalplus.data.DefaultSubjectRepository
 import jp.kentan.studentportalplus.data.DefaultUserRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
 import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.SubjectRepository
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.dao.PortalDatabase
@@ -26,8 +27,12 @@ import jp.kentan.studentportalplus.data.source.ShibbolethDataSource
 import jp.kentan.studentportalplus.notification.InboxStyleNotificationHelper
 import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 @Module
 object AppModule {
 
@@ -51,60 +56,53 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideShibbolethClient(source: ShibbolethDataSource, localPreferences: LocalPreferences) =
-        ShibbolethClient(source, localPreferences)
+    fun provideShibbolethClient(source: ShibbolethDataSource, preferences: Preferences) =
+        ShibbolethClient(source, preferences)
 
     @Provides
     @Singleton
-    fun provideLocalPreferences(context: Context) = LocalPreferences(context)
+    fun providePreferences(context: Context): Preferences = LocalPreferences(context)
 
     @Provides
     @Singleton
     fun provideUserRepository(
-        client: ShibbolethClient,
         source: ShibbolethDataSource
-    ): UserRepository = DefaultUserRepository(client, source)
+    ): UserRepository = DefaultUserRepository(source)
 
     @Provides
     @Singleton
     fun provideLectureInformationRepository(
         database: PortalDatabase,
-        shibbolethClient: ShibbolethClient,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): LectureInformationRepository = DefaultLectureInformationRepository(
         database.lectureInformationDao,
-        shibbolethClient,
-        database.attendCourseDao,
-        localPreferences
+        database.myCourseDao,
+        preferences
     )
 
     @Provides
     @Singleton
     fun provideLectureCancellationRepository(
         database: PortalDatabase,
-        shibbolethClient: ShibbolethClient,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): LectureCancellationRepository = DefaultLectureCancellationRepository(
         database.lectureCancellationDao,
-        shibbolethClient,
-        database.attendCourseDao,
-        localPreferences
+        database.myCourseDao,
+        preferences
     )
 
     @Provides
     @Singleton
     fun provideNoticeRepository(
-        database: PortalDatabase,
-        shibbolethClient: ShibbolethClient
-    ): NoticeRepository = DefaultNoticeRepository(database.noticeDao, shibbolethClient)
+        database: PortalDatabase
+    ): NoticeRepository = DefaultNoticeRepository(database.noticeDao)
 
     @Provides
     @Singleton
-    fun provideAttendCourseRepository(
-        database: PortalDatabase,
-        shibbolethClient: ShibbolethClient
-    ): AttendCourseRepository =
-        DefaultAttendCourseRepository(database.attendCourseDao, shibbolethClient)
+    fun provideMyCourseRepository(
+        database: PortalDatabase
+    ): MyCourseRepository =
+        DefaultMyCourseRepository(database.myCourseDao)
 
     @Provides
     @Singleton
@@ -113,16 +111,16 @@ object AppModule {
     ): SubjectRepository = DefaultSubjectRepository(
         database.lectureInformationDao,
         database.lectureCancellationDao,
-        database.attendCourseDao
+        database.myCourseDao
     )
 
     @Provides
     fun provideNotificationHelper(
         context: Context,
-        localPreferences: LocalPreferences
+        preferences: Preferences
     ): NotificationHelper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        SummaryNotificationHelper(context, localPreferences)
+        SummaryNotificationHelper(context, preferences)
     } else {
-        InboxStyleNotificationHelper(context, localPreferences)
+        InboxStyleNotificationHelper(context, preferences)
     }
 }

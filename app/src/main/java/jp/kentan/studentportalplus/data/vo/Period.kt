@@ -17,10 +17,12 @@ enum class Period(
     SEVEN(7, R.string.period_7_start_time);
 
     companion object {
+        val DEFAULT_RANGE = IntRange(1, 1)
+
         fun rangeOf(period: String): IntRange = with(period) {
             if (length >= 3) {
-                val first = find { it.isDigit() } ?: return IntRange(0, 0)
-                val last = findLast { it.isDigit() } ?: return IntRange(0, 0)
+                val first = find { it.isDigit() } ?: return DEFAULT_RANGE
+                val last = findLast { it.isDigit() } ?: return DEFAULT_RANGE
 
                 IntRange(
                     start = Character.getNumericValue(first),
@@ -28,7 +30,7 @@ enum class Period(
                 )
             } else {
                 val p = find { it.isDigit() }?.let(Character::getNumericValue)
-                    ?: return@with IntRange(0, 0)
+                    ?: return@with DEFAULT_RANGE
 
                 IntRange(p, p)
             }

@@ -1,14 +1,14 @@
 package jp.kentan.studentportalplus
 
-import jp.kentan.studentportalplus.data.entity.AttendCourse
-import jp.kentan.studentportalplus.data.entity.AttendCourseSubject
 import jp.kentan.studentportalplus.data.entity.LectureInformation
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
+import jp.kentan.studentportalplus.data.vo.MyCourseType
 import java.util.Date
 
 object TestData {
-    val attendCourse = AttendCourse(
-        id = 123,
+    val attendCourse = MyCourse(
+        id = 1,
         dayOfWeek = DayOfWeek.MONDAY,
         period = 1,
         scheduleCode = "scheduleCode",
@@ -16,12 +16,7 @@ object TestData {
         category = "category",
         subject = "subject",
         instructor = "instructor",
-        type = AttendCourse.Type.USER
-    )
-
-    val attendCourseSubject = AttendCourseSubject(
-        subject = "subject",
-        type = AttendCourse.Type.PORTAL
+        isEditable = true
     )
 
     val lectureInfo = LectureInformation(
@@ -35,9 +30,9 @@ object TestData {
         category = "category",
         detailText = "detailText",
         detailHtml = "detailHtml",
-        createdDate = Date(),
-        updatedDate = Date(),
-        attendType = AttendCourse.Type.PORTAL,
+        createdDate = Date(0),
+        updatedDate = Date(0),
+        myCourseType = MyCourseType.EDITABLE,
         isRead = false
     )
 }

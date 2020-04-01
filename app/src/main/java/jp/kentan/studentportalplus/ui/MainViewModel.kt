@@ -10,13 +10,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
-import jp.kentan.studentportalplus.data.LectureCancellationRepository
-import jp.kentan.studentportalplus.data.LectureInformationRepository
-import jp.kentan.studentportalplus.data.LocalPreferences
-import jp.kentan.studentportalplus.data.NoticeRepository
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.UserRepository
 import jp.kentan.studentportalplus.data.source.ShibbolethException
+import jp.kentan.studentportalplus.domain.sync.SyncUseCase
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,14 +21,11 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     userRepository: UserRepository,
-    private val attendCourseRepository: AttendCourseRepository,
-    private val lectureInfoRepository: LectureInformationRepository,
-    private val lectureCancelRepository: LectureCancellationRepository,
-    private val noticeRepository: NoticeRepository,
-    private val localPreferences: LocalPreferences
+    private val syncUseCase: SyncUseCase,
+    private val preferences: Preferences
 ) : AndroidViewModel(application) {
 
-    val user = userRepository.getFlow().asLiveData()
+    val user = userRepository.getAsFlow().asLiveData()
     val isSyncing = MutableLiveData<Boolean>()
 
     private val _errorSnackbar = MutableLiveData<Event<String>>()
@@ -47,7 +41,7 @@ class MainViewModel @Inject constructor(
         get() = _closeDrawer
 
     val shouldLaunchWelcomeActivity: Boolean
-        get() = !localPreferences.isAuthenticatedUser
+        get() = !preferences.isAuthenticatedUser
 
     fun onCreate(shouldRefresh: Boolean) {
         if (shouldRefresh) {
@@ -66,10 +60,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                attendCourseRepository.syncWithRemote()
-                lectureInfoRepository.syncWithRemote()
-                lectureCancelRepository.syncWithRemote()
-                noticeRepository.syncWithRemote()
+                syncUseCase()
             }.onFailure {
                 if (it is ShibbolethException) {
                     _loginSnackbar.value = Event(Unit)
@@ -78,7 +69,7 @@ class MainViewModel @Inject constructor(
 
                 val throwableMessage = it.message
                 val message =
-                    if (localPreferences.isEnabledDetailError && !throwableMessage.isNullOrEmpty()) {
+                    if (preferences.isDetailErrorEnabled && !throwableMessage.isNullOrEmpty()) {
                         throwableMessage
                     } else {
                         getApplication<Application>().getString(R.string.main_sync_failed_error)
@@ -92,7 +83,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun scheduleSyncWorkerIfNeeded() {
-        if (!localPreferences.isEnabledSync) {
+        if (!preferences.isSyncEnabled) {
             return
         }
 
@@ -100,7 +91,7 @@ class MainViewModel @Inject constructor(
             val workManager = WorkManager.getInstance(getApplication())
 
             val syncWorkRequest =
-                SyncWorker.buildPeriodicWorkRequest(localPreferences.syncIntervalMinutes)
+                SyncWorker.buildPeriodicWorkRequest(preferences.syncIntervalMinutes)
 
             workManager.enqueueUniquePeriodicWork(
                 SyncWorker.NAME,

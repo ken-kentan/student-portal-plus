@@ -7,13 +7,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.entity.LectureCancellation
 import jp.kentan.studentportalplus.data.entity.LectureInformation
 import jp.kentan.studentportalplus.data.entity.Notice
@@ -24,7 +23,7 @@ import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 @RequiresApi(Build.VERSION_CODES.N)
 class SummaryNotificationHelper(
     context: Context,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) : NotificationHelper(context) {
 
     companion object {
@@ -32,13 +31,6 @@ class SummaryNotificationHelper(
         private const val SUMMARY_NOTIFICATION_ID = 0
 
         private const val SMALL_APP_ICON_RES_ID = R.drawable.notification_app
-
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun createNewlyChannelSettingsIntent(context: Context) =
-            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                putExtra(Settings.EXTRA_CHANNEL_ID, NEWLY_CHANNEL_ID)
-            }
     }
 
     private inner class NotificationContent(
@@ -52,6 +44,7 @@ class SummaryNotificationHelper(
     }
 
     private val color = context.getColor(R.color.notification)
+    private val colorLight = context.getColor(R.color.notification_light)
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -67,7 +60,7 @@ class SummaryNotificationHelper(
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             enableLights(true)
-            lightColor = color
+            lightColor = colorLight
             vibrationPattern = VIBRATION_PATTERN
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
@@ -78,7 +71,7 @@ class SummaryNotificationHelper(
             NotificationManager.IMPORTANCE_LOW
         ).apply {
             enableLights(true)
-            lightColor = color
+            lightColor = colorLight
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
 
@@ -152,7 +145,7 @@ class SummaryNotificationHelper(
     ) {
         sendGroupSummary()
 
-        var notificationId = localPreferences.notificationId
+        var notificationId = preferences.notificationId
 
         val builder = NotificationCompat.Builder(context, NEWLY_CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -175,7 +168,7 @@ class SummaryNotificationHelper(
             }
         }
 
-        localPreferences.notificationId = notificationId
+        preferences.notificationId = notificationId
     }
 
     private fun sendGroupSummary() {
@@ -190,7 +183,7 @@ class SummaryNotificationHelper(
 
         // If notification chanel not supported
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            val vibratePattern = if (localPreferences.isEnabledNotificationVibration) {
+            val vibratePattern = if (preferences.isNotificationVibrationEnabled) {
                 VIBRATION_PATTERN
             } else {
                 longArrayOf(0)
@@ -198,8 +191,12 @@ class SummaryNotificationHelper(
 
             builder.setVibrate(vibratePattern)
 
-            if (localPreferences.isEnabledNotificationLed) {
-                builder.setLights(color, NOTIFICATION_LED_ON_MILLIS, NOTIFICATION_LED_OFF_MILLIS)
+            if (preferences.isNotificationLedEnabled) {
+                builder.setLights(
+                    colorLight,
+                    NOTIFICATION_LED_ON_MILLIS,
+                    NOTIFICATION_LED_OFF_MILLIS
+                )
             }
         }
 

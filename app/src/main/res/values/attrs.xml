@@ -4,8 +4,8 @@
 
     <declare-styleable name="NoticeFloatingActionButton" />
 
-    <declare-styleable name="CourseAttendFloatingActionButton">
-        <attr name="attendType" format="enum" />
+    <declare-styleable name="LectureFloatingActionButton">
+        <attr name="myCourseType" format="enum" />
     </declare-styleable>
 
     <declare-styleable name="CustomTabsTextView">

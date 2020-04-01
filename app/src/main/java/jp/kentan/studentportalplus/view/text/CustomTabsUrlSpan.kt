@@ -5,8 +5,8 @@ import android.text.style.URLSpan
 import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.preference.PreferenceManager
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.util.CustomTabsHelper
 import jp.kentan.studentportalplus.util.buildCustomTabsIntent
 import jp.kentan.studentportalplus.util.isPdf
@@ -16,12 +16,16 @@ class CustomTabsUrlSpan(
     url: String
 ) : URLSpan(url) {
 
-    private val localPreferences = LocalPreferences(context)
+    companion object {
+        private const val IS_PDF_OPEN_WITH_GDOCS_ENABLED = "is_pdf_open_with_gdocs_enabled"
+    }
+
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     override fun onClick(widget: View) {
         var url = this.url
 
-        if (url.isPdf() && localPreferences.isEnabledPdfOpenWithGdocs) {
+        if (url.isPdf() && sharedPreferences.getBoolean(IS_PDF_OPEN_WITH_GDOCS_ENABLED, true)) {
             val isRequireLogin = url.startsWith("https://portal.student.kit.ac.jp", true)
 
             if (isRequireLogin) {

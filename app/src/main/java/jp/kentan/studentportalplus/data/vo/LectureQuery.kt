@@ -10,14 +10,14 @@ data class LectureQuery(
     val order: Order = Order.UPDATED_DATE,
     val isUnread: Boolean = false,
     val isRead: Boolean = false,
-    val isAttend: Boolean = false
+    val isMyCourse: Boolean = false
 ) : Parcelable {
 
     enum class Order(
         @StringRes val resId: Int
     ) {
         UPDATED_DATE(R.string.lecture_order_update_date),
-        ATTEND_CLASS(R.string.lecture_order_attend_course)
+        MY_COURSE(R.string.lecture_order_my_course)
     }
 
     val textList: List<String> = if (text.isNullOrBlank()) {
@@ -43,7 +43,7 @@ data class LectureQuery(
         parcel.writeSerializable(order)
         parcel.writeInt(if (isUnread) 1 else 0)
         parcel.writeInt(if (isRead) 1 else 0)
-        parcel.writeInt(if (isAttend) 1 else 0)
+        parcel.writeInt(if (isMyCourse) 1 else 0)
     }
 
     override fun describeContents() = 0

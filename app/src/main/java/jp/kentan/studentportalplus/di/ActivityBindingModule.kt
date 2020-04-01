@@ -4,11 +4,9 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import jp.kentan.studentportalplus.ui.MainActivity
 import jp.kentan.studentportalplus.ui.MainModule
-import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailActivity
-import jp.kentan.studentportalplus.ui.attendcoursedetail.AttendCourseDetailModule
 import jp.kentan.studentportalplus.ui.dashboard.DashboardModule
-import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseActivity
-import jp.kentan.studentportalplus.ui.editattendcourse.EditAttendCourseModule
+import jp.kentan.studentportalplus.ui.editmycourse.EditMyCourseActivity
+import jp.kentan.studentportalplus.ui.editmycourse.EditMyCourseModule
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailActivity
 import jp.kentan.studentportalplus.ui.lecturecancellationdetail.LectureCancellationDetailModule
 import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformationDetailActivity
@@ -16,6 +14,8 @@ import jp.kentan.studentportalplus.ui.lectureinformationdetail.LectureInformatio
 import jp.kentan.studentportalplus.ui.lectures.cancellation.LectureCancellationsModule
 import jp.kentan.studentportalplus.ui.lectures.information.LectureInformationsModule
 import jp.kentan.studentportalplus.ui.login.LoginModule
+import jp.kentan.studentportalplus.ui.mycoursedetail.MyCourseDetailActivity
+import jp.kentan.studentportalplus.ui.mycoursedetail.MyCourseDetailModule
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailActivity
 import jp.kentan.studentportalplus.ui.noticedetail.NoticeDetailModule
 import jp.kentan.studentportalplus.ui.notices.NoticesModule
@@ -53,16 +53,16 @@ abstract class ActivityBindingModule {
     abstract fun contributeLectureCancellationDetailActivity(): LectureCancellationDetailActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [AttendCourseDetailModule::class])
-    abstract fun contributeAttendCourseDetailActivity(): AttendCourseDetailActivity
+    @ContributesAndroidInjector(modules = [MyCourseDetailModule::class])
+    abstract fun contributeMyCourseDetailActivity(): MyCourseDetailActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [NoticeDetailModule::class])
     abstract fun contributeNoticeDetailActivity(): NoticeDetailActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [EditAttendCourseModule::class])
-    abstract fun contributeAttendCourseEditActivity(): EditAttendCourseActivity
+    @ContributesAndroidInjector(modules = [EditMyCourseModule::class])
+    abstract fun contributeMyCourseEditActivity(): EditMyCourseActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [WelcomeNotificationModule::class, LoginModule::class])

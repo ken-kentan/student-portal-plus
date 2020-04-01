@@ -47,12 +47,12 @@ class LectureCancellationDetailActivity : DaggerAppCompatActivity() {
             setSupportActionBar(toolbar)
         }
 
-        lectureCancelViewModel.excludeFromAttendConfirmDialog.observeEvent(this) { subject ->
+        lectureCancelViewModel.excludeFromMyConfirmDialog.observeEvent(this) { subject ->
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.all_confirm)
                 .setMessage(
                     getString(
-                        R.string.all_exclude_from_attend_course_confirm,
+                        R.string.all_exclude_from_my_course_confirm,
                         subject
                     ).parseAsHtml()
                 )

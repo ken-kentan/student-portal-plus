@@ -1,7 +1,7 @@
 package jp.kentan.studentportalplus.data.source
 
 import android.util.Log
-import jp.kentan.studentportalplus.data.LocalPreferences
+import jp.kentan.studentportalplus.data.Preferences
 import jp.kentan.studentportalplus.data.entity.User
 import okhttp3.ConnectionSpec
 import okhttp3.FormBody
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class ShibbolethClient(
     private val shibbolethDataSource: ShibbolethDataSource,
-    private val localPreferences: LocalPreferences
+    private val preferences: Preferences
 ) {
 
     private companion object {
@@ -209,7 +209,7 @@ class ShibbolethClient(
             "Empty response body"
         )
 
-        localPreferences.updateShibbolethLastLoginDate()
+        preferences.updateShibbolethLastLoginDate()
 
         Log.d(TAG, "Passed: SamlResponsePage")
 

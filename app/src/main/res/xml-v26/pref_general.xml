@@ -21,7 +21,7 @@
         <androidx.preference.SwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/preference_sync"
-            android:key="is_enabled_sync"
+            android:key="is_sync_enabled"
             android:summary="@string/preference_sync_summary"
             android:title="@string/preference_sync_title" />
 
@@ -55,13 +55,13 @@
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
-            android:key="is_enabled_pdf_open_with_gdocs"
+            android:key="is_pdf_open_with_gdocs_enabled"
             android:summary="@string/preference_pdf_gdocs_summary"
             android:title="@string/preference_pdf_gdocs_title" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="false"
-            android:key="is_enabled_detail_error"
+            android:key="is_detail_error_enabled"
             android:summary="@string/preference_detail_error_summary"
             android:title="@string/preference_detail_error_title" />
 

@@ -13,8 +13,8 @@ import androidx.work.WorkManager
 import dagger.android.support.AndroidSupportInjection
 import jp.kentan.studentportalplus.BuildConfig
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
-import jp.kentan.studentportalplus.notification.SummaryNotificationHelper
+import jp.kentan.studentportalplus.data.Preferences
+import jp.kentan.studentportalplus.notification.NotificationHelper
 import jp.kentan.studentportalplus.util.requirePreference
 import jp.kentan.studentportalplus.work.sync.SyncWorker
 import java.text.SimpleDateFormat
@@ -28,9 +28,12 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
     }
 
     @Inject
-    lateinit var localPreferences: LocalPreferences
+    lateinit var preferences: Preferences
 
-    private val onIsEnabledSyncPreferenceChangeListener =
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
+
+    private val onIsSyncEnabledPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
             val isEnabled = newValue as Boolean
 
@@ -39,7 +42,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
                 if (isEnabled) {
                     val syncWorkRequest =
-                        SyncWorker.buildPeriodicWorkRequest(localPreferences.syncIntervalMinutes)
+                        SyncWorker.buildPeriodicWorkRequest(preferences.syncIntervalMinutes)
 
                     workManager.enqueueUniquePeriodicWork(
                         SyncWorker.NAME,
@@ -60,8 +63,8 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
             requirePreference<Preference>("sync_interval_minutes").isEnabled = isEnabled
             requirePreference<Preference>("notification_type").isEnabled = isEnabled
 
-            findPreference<Preference>("is_enabled_notification_vibration")?.isEnabled = isEnabled
-            findPreference<Preference>("is_enabled_notification_led")?.isEnabled = isEnabled
+            findPreference<Preference>("is_notification_vibration_enabled")?.isEnabled = isEnabled
+            findPreference<Preference>("is_notification_led_enabled")?.isEnabled = isEnabled
 
             return@OnPreferenceChangeListener true
         }
@@ -83,14 +86,14 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
         registerOnPreferenceClickListener("oss_licenses")
         registerOnPreferenceClickListener("share")
 
-        requirePreference<Preference>("is_enabled_sync").onPreferenceChangeListener =
-            onIsEnabledSyncPreferenceChangeListener
+        requirePreference<Preference>("is_sync_enabled").onPreferenceChangeListener =
+            onIsSyncEnabledPreferenceChangeListener
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             requirePreference<Preference>("notification_settings").setOnPreferenceClickListener {
-                val settingsIntent =
-                    SummaryNotificationHelper.createNewlyChannelSettingsIntent(requireContext())
-                startActivity(settingsIntent)
+                startActivity(
+                    notificationHelper.createNewlyChannelSettingsIntent()
+                )
 
                 return@setOnPreferenceClickListener true
             }
@@ -102,7 +105,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPrefe
 
         val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN)
         requirePreference<Preference>("shibboleth_last_login_date").summary =
-            dateFormat.format(localPreferences.shibbolethLastLoginDate)
+            dateFormat.format(preferences.shibbolethLastLoginDate)
     }
 
     override fun onPreferenceClick(preference: Preference?): Boolean {

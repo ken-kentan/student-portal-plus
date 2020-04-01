@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import jp.kentan.studentportalplus.data.vo.MyCourseType
 import jp.kentan.studentportalplus.util.XxHash64
 import java.util.Date
 
@@ -51,7 +52,7 @@ data class LectureInformation(
     val isRead: Boolean = false,
 
     @Ignore
-    val attendType: AttendCourse.Type = AttendCourse.Type.UNKNOWN,
+    val myCourseType: MyCourseType = MyCourseType.UNKNOWN,
 
     @ColumnInfo(name = "hash")
     val hash: Long = XxHash64.hash("$grade$semester$subject$instructor$dayOfWeek$period$category$detailHtml${createdDate.time}${updatedDate.time}")
@@ -86,7 +87,7 @@ data class LectureInformation(
         createdDate,
         updatedDate,
         isRead,
-        AttendCourse.Type.UNKNOWN,
+        MyCourseType.UNKNOWN,
         hash
     )
 }

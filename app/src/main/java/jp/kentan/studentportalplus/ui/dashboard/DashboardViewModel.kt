@@ -6,20 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.AttendCourseRepository
 import jp.kentan.studentportalplus.data.LectureCancellationRepository
 import jp.kentan.studentportalplus.data.LectureInformationRepository
+import jp.kentan.studentportalplus.data.MyCourseRepository
 import jp.kentan.studentportalplus.data.NoticeRepository
 import jp.kentan.studentportalplus.data.entity.Notice
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.ui.Event
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(
-    attendCourseRepository: AttendCourseRepository,
+    myCourseRepository: MyCourseRepository,
     lectureInfoRepository: LectureInformationRepository,
     lectureCancelRepository: LectureCancellationRepository,
     noticeRepository: NoticeRepository
@@ -33,9 +32,9 @@ class DashboardViewModel @Inject constructor(
     val navigate: LiveData<Event<Int>>
         get() = _navigate
 
-    private val _startAttendCourseDetailActivity = MutableLiveData<Event<Long>>()
-    val startAttendCourseDetailActivity: LiveData<Event<Long>>
-        get() = _startAttendCourseDetailActivity
+    private val _startMyCourseDetailActivity = MutableLiveData<Event<Long>>()
+    val startMyCourseDetailActivity: LiveData<Event<Long>>
+        get() = _startMyCourseDetailActivity
 
     private val _startLectureInfoDetailActivity = MutableLiveData<Event<Long>>()
     val startLectureInfoActivity: LiveData<Event<Long>>
@@ -68,24 +67,20 @@ class DashboardViewModel @Inject constructor(
             else -> DayOfWeek.MONDAY
         }
 
-        _portalSet.addAttendCourseSource(
-            attendCourseRepository.getListFlow(timetableDayOfWeek).asLiveData()
+        _portalSet.addMyCourseSource(
+            myCourseRepository.getAllAsFlow(timetableDayOfWeek).asLiveData()
         )
         _portalSet.addLectureInformationSource(
-            lectureInfoRepository.getListFlow().map { list ->
-                list.filter { it.attendType.isAttend }
-            }.asLiveData()
+            lectureInfoRepository.getAllFilteredByMyCourseAsFlow().asLiveData()
         )
         _portalSet.addLectureCancellationSource(
-            lectureCancelRepository.getListFlow().map { list ->
-                list.filter { it.attendType.isAttend }
-            }.asLiveData()
+            lectureCancelRepository.getAllFilteredByMyCourseAsFlow().asLiveData()
         )
-        _portalSet.addNoticeSource(noticeRepository.getListFlow().asLiveData())
+        _portalSet.addNoticeSource(noticeRepository.getAllAsFlow().asLiveData())
     }
 
-    val onAttendCourseItemClick = { id: Long ->
-        _startAttendCourseDetailActivity.value = Event(id)
+    val onMyCourseItemClick = { id: Long ->
+        _startMyCourseDetailActivity.value = Event(id)
     }
 
     val onLectureInformationItemClick = { id: Long ->

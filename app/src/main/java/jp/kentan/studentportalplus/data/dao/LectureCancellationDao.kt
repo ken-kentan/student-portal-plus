@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.Flow
 interface LectureCancellationDao {
 
     @Query("SELECT * FROM lecture_cancels WHERE _id = :id")
-    fun getFlow(id: Long): Flow<LectureCancellation>
+    fun selectAsFlow(id: Long): Flow<LectureCancellation>
 
     @Query("SELECT * FROM lecture_cancels ORDER BY created_date DESC, subject")
-    fun getListFlow(): Flow<List<LectureCancellation>>
+    fun selectAsFlow(): Flow<List<LectureCancellation>>
 
     @Transaction
-    fun updateAll(lectureCancelList: List<LectureCancellation>): List<LectureCancellation> {
+    fun insertOrDelete(lectureCancelList: List<LectureCancellation>): List<LectureCancellation> {
         val insertList = mutableListOf<LectureCancellation>()
 
         lectureCancelList.forEach { cancel ->

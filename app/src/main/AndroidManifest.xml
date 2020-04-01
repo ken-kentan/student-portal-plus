@@ -37,7 +37,7 @@
             android:label=""
             android:theme="@style/AppTheme.TransparentStatusBar" />
         <activity
-            android:name=".ui.attendcoursedetail.AttendCourseDetailActivity"
+            android:name=".ui.mycoursedetail.MyCourseDetailActivity"
             android:label=""
             android:theme="@style/AppTheme.TransparentStatusBar" />
         <activity
@@ -45,7 +45,7 @@
             android:label=""
             android:theme="@style/AppTheme.TransparentStatusBar" />
         <activity android:name=".ui.welcome.WelcomeActivity" />
-        <activity android:name=".ui.editattendcourse.EditAttendCourseActivity" />
+        <activity android:name=".ui.editmycourse.EditMyCourseActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
 
         <activity

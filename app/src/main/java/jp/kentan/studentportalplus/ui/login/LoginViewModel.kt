@@ -10,8 +10,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.LocalPreferences
 import jp.kentan.studentportalplus.data.UserRepository
+import jp.kentan.studentportalplus.domain.login.LoginUseCase
 import jp.kentan.studentportalplus.ui.Event
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     application: Application,
-    private val userRepository: UserRepository,
-    private val localPreferences: LocalPreferences
+    private val loginUseCase: LoginUseCase,
+    private val userRepository: UserRepository
 ) : AndroidViewModel(application) {
 
     companion object {
@@ -115,13 +115,11 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                userRepository.login(username, password)
+                loginUseCase(username, password)
             }.fold(
                 onSuccess = {
                     isSuccessful.value = true
                     message.value = null
-
-                    localPreferences.isAuthenticatedUser = true
 
                     viewModelScope.launch {
                         delay(LOGIN_SUCCESSFUL_DELAY_MILLS)

@@ -37,9 +37,9 @@
     <color name="favorite_orange">#FF9100</color>
     <color name="favorite_grey">#E0E0E0</color>
 
-    <color name="attend_red">#E53935</color>
-    <color name="attend_yellow">#FF9100</color>
-    <color name="attend_grey">#E0E0E0</color>
+    <color name="my_course_red">#E53935</color>
+    <color name="my_course_yellow">#FF9100</color>
+    <color name="my_course_grey">#E0E0E0</color>
 
     <color name="lock_green">#66BB6A</color>
     <color name="lock_grey">#E0E0E0</color>
@@ -56,5 +56,6 @@
     <color name="background">#F5F5F5</color>
 
     <color name="notification">#1285D0</color>
+    <color name="notification_light">#1285D0</color>
     <color name="notification_error">#B00020</color>
 </resources>

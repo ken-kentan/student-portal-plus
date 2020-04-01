@@ -4,22 +4,22 @@ import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.databinding.BindingAdapter
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.MyCourse
 
 object TimetableBindingAdapter {
 
     @JvmStatic
-    @BindingAdapter("attendCourseListDayOfWeek")
-    fun setListDayOfWeek(view: TextView, attendCourse: AttendCourse?) {
-        if (attendCourse == null) {
+    @BindingAdapter("myCourseListDayOfWeek")
+    fun setListDayOfWeek(view: TextView, myCourse: MyCourse?) {
+        if (myCourse == null) {
             view.text = null
             return
         }
 
-        view.text = view.context.getString(attendCourse.dayOfWeek.resId)
+        view.text = view.context.getString(myCourse.dayOfWeek.resId)
 
-        if (attendCourse.dayOfWeek.hasPeriod) {
-            view.append(attendCourse.period.toString())
+        if (myCourse.dayOfWeek.hasPeriod) {
+            view.append(myCourse.period.toString())
         }
     }
 

@@ -8,18 +8,18 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import jp.kentan.studentportalplus.R
-import jp.kentan.studentportalplus.data.entity.AttendCourse
+import jp.kentan.studentportalplus.data.entity.MyCourse
 import jp.kentan.studentportalplus.data.vo.DayOfWeek
 import jp.kentan.studentportalplus.data.vo.Period
-import jp.kentan.studentportalplus.databinding.ItemGridAttendCourseBinding
 import jp.kentan.studentportalplus.databinding.ItemGridBlankBinding
+import jp.kentan.studentportalplus.databinding.ItemGridMyCourseBinding
 import jp.kentan.studentportalplus.databinding.ItemGridPeriodBinding
-import jp.kentan.studentportalplus.databinding.ItemListAttendCourseBinding
+import jp.kentan.studentportalplus.databinding.ItemListMyCourseBinding
 import jp.kentan.studentportalplus.util.executeAfter
 
 class TimetableAdapter(
     private val layout: Layout,
-    private val onAttendCourseClick: (Long) -> Unit,
+    private val onMyCourseClick: (Long) -> Unit,
     private val onBlankClick: ((Period, DayOfWeek) -> Unit)? = null
 ) : RecyclerView.Adapter<TimetableAdapter.ViewHolder>() {
 
@@ -27,9 +27,9 @@ class TimetableAdapter(
 
     private val differ = AsyncListDiffer(this, DiffCallback)
 
-    private val attendCourseItemViewType = when (layout) {
-        Layout.GRID -> R.layout.item_grid_attend_course
-        Layout.LIST -> R.layout.item_list_attend_course
+    private val myCourseItemViewType = when (layout) {
+        Layout.GRID -> R.layout.item_grid_my_course
+        Layout.LIST -> R.layout.item_list_my_course
     }
 
     override fun getItemCount() = differ.currentList.size
@@ -37,7 +37,7 @@ class TimetableAdapter(
     override fun getItemViewType(position: Int) = when (differ.currentList[position]) {
         is Period -> R.layout.item_grid_period
         is Blank -> R.layout.item_grid_blank
-        is AttendCourse -> attendCourseItemViewType
+        is MyCourse -> myCourseItemViewType
         else -> throw IllegalStateException("Unknown view type at position $position")
     }
 
@@ -51,11 +51,11 @@ class TimetableAdapter(
             R.layout.item_grid_blank -> ViewHolder.BlankViewHolder(
                 ItemGridBlankBinding.inflate(inflater, parent, false)
             )
-            R.layout.item_grid_attend_course -> ViewHolder.GridAttendCourseViewHolder(
-                ItemGridAttendCourseBinding.inflate(inflater, parent, false)
+            R.layout.item_grid_my_course -> ViewHolder.GridMyCourseViewHolder(
+                ItemGridMyCourseBinding.inflate(inflater, parent, false)
             )
-            R.layout.item_list_attend_course -> ViewHolder.ListAttendCourseViewHolder(
-                ItemListAttendCourseBinding.inflate(inflater, parent, false)
+            R.layout.item_list_my_course -> ViewHolder.ListMyCourseViewHolder(
+                ItemListMyCourseBinding.inflate(inflater, parent, false)
             )
             else -> throw IllegalStateException("Unknown viewType $viewType")
         }
@@ -63,18 +63,18 @@ class TimetableAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder.GridAttendCourseViewHolder -> holder.binding.executeAfter {
-                val attendCourse = differ.currentList[position] as AttendCourse
-                data = attendCourse
+            is ViewHolder.GridMyCourseViewHolder -> holder.binding.executeAfter {
+                val myCourse = differ.currentList[position] as MyCourse
+                data = myCourse
                 root.setOnClickListener {
-                    onAttendCourseClick(attendCourse.id)
+                    onMyCourseClick(myCourse.id)
                 }
             }
-            is ViewHolder.ListAttendCourseViewHolder -> holder.binding.executeAfter {
-                val attendCourse = differ.currentList[position] as AttendCourse
-                data = attendCourse
+            is ViewHolder.ListMyCourseViewHolder -> holder.binding.executeAfter {
+                val myCourse = differ.currentList[position] as MyCourse
+                data = myCourse
                 root.setOnClickListener {
-                    onAttendCourseClick(attendCourse.id)
+                    onMyCourseClick(myCourse.id)
                 }
             }
             is ViewHolder.BlankViewHolder -> holder.binding.executeAfter {
@@ -89,14 +89,14 @@ class TimetableAdapter(
         }
     }
 
-    fun submitList(list: List<AttendCourse>) {
+    fun submitList(list: List<MyCourse>) {
         when (layout) {
             Layout.GRID -> differ.submitList(list.asTimetable())
             Layout.LIST -> differ.submitList(list)
         }
     }
 
-    private fun List<AttendCourse>.asTimetable(): List<Any> {
+    private fun List<MyCourse>.asTimetable(): List<Any> {
         val list = mutableListOf<Any>()
 
         for (period in Period.values()) {
@@ -125,7 +125,7 @@ class TimetableAdapter(
             return when {
                 oldItem is Blank && newItem is Blank -> newItem == oldItem
                 oldItem is Period && newItem is Period -> newItem == oldItem
-                oldItem is AttendCourse && newItem is AttendCourse -> oldItem.id == newItem.id
+                oldItem is MyCourse && newItem is MyCourse -> oldItem.id == newItem.id
                 else -> false
             }
         }
@@ -133,19 +133,19 @@ class TimetableAdapter(
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
             return when {
-                oldItem is AttendCourse && newItem is AttendCourse -> oldItem == newItem
+                oldItem is MyCourse && newItem is MyCourse -> oldItem == newItem
                 else -> true
             }
         }
     }
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        class GridAttendCourseViewHolder(
-            val binding: ItemGridAttendCourseBinding
+        class GridMyCourseViewHolder(
+            val binding: ItemGridMyCourseBinding
         ) : ViewHolder(binding.root)
 
-        class ListAttendCourseViewHolder(
-            val binding: ItemListAttendCourseBinding
+        class ListMyCourseViewHolder(
+            val binding: ItemListMyCourseBinding
         ) : ViewHolder(binding.root)
 
         class PeriodViewHolder(

@@ -43,7 +43,7 @@
             android:singleLine="true"
             android:text="@{data.detailText}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/attend_image_view"
+            app:layout_constraintEnd_toStartOf="@id/my_course_image_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subject_text_view"
             tools:text="Detail" />
@@ -62,15 +62,15 @@
             tools:text="2019/01/01" />
 
         <ImageView
-            android:id="@+id/attend_image_view"
+            android:id="@+id/my_course_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/all_attend_course"
+            android:contentDescription="@string/all_my_course"
             android:padding="16dp"
-            app:attendType="@{data.attendType}"
+            app:myCourseType="@{data.myCourseType}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/all_attend_grey" />
+            app:srcCompat="@drawable/all_my_course_grey" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

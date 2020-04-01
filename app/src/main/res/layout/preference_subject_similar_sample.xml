@@ -80,14 +80,14 @@
             app:layout_constraintTop_toBottomOf="@id/item_lecture_information4" />
 
         <ImageView
-            android:id="@+id/attend_red_image_view"
+            android:id="@+id/my_course_red_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_view4"
-            app:srcCompat="@drawable/all_attend_red"
+            app:srcCompat="@drawable/all_my_course_red"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -98,19 +98,19 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/subject_similar_sample_1"
-            app:layout_constraintBottom_toBottomOf="@id/attend_red_image_view"
-            app:layout_constraintStart_toEndOf="@id/attend_red_image_view"
-            app:layout_constraintTop_toTopOf="@id/attend_red_image_view" />
+            app:layout_constraintBottom_toBottomOf="@id/my_course_red_image_view"
+            app:layout_constraintStart_toEndOf="@id/my_course_red_image_view"
+            app:layout_constraintTop_toTopOf="@id/my_course_red_image_view" />
 
         <ImageView
-            android:id="@+id/attend_yellow_image_view"
+            android:id="@+id/my_course_yellow_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@id/similar_text_view1"
             app:layout_constraintStart_toEndOf="@id/similar_text_view1"
             app:layout_constraintTop_toTopOf="@id/similar_text_view1"
-            app:srcCompat="@drawable/all_attend_yellow"
+            app:srcCompat="@drawable/all_my_course_yellow"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -120,10 +120,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/subject_similar_sample_2"
-            app:layout_constraintBottom_toBottomOf="@id/attend_yellow_image_view"
+            app:layout_constraintBottom_toBottomOf="@id/my_course_yellow_image_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/attend_yellow_image_view"
-            app:layout_constraintTop_toTopOf="@id/attend_yellow_image_view" />
+            app:layout_constraintStart_toEndOf="@id/my_course_yellow_image_view"
+            app:layout_constraintTop_toTopOf="@id/my_course_yellow_image_view" />
 
         <TextView
             android:id="@+id/similar_text_view3"
@@ -137,6 +137,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attend_red_image_view" />
+            app:layout_constraintTop_toBottomOf="@id/my_course_red_image_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
