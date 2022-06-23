@@ -110,7 +110,7 @@ class MyClassEditActivity : AppCompatActivity() {
                     ClassColor.size)
 
             dialog.setOnColorSelectedListener(listener)
-            dialog.show(fragmentManager, "ColorPickerDialog")
+            dialog.show(supportFragmentManager, "ColorPickerDialog")
         })
 
         showFinishConfirmDialog.observe(activity, Observer {
