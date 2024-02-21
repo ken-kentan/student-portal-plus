@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.licensetools'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "jp.kentan.student_portal_plus"
         minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 22
-        versionName "2.0.2"
+        targetSdkVersion 30
+        versionCode 23
+        versionName "2.0.3"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

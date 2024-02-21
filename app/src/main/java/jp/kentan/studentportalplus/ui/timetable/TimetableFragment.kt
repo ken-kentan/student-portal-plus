@@ -86,8 +86,8 @@ class TimetableFragment : Fragment() {
         inflater.inflate(R.menu.timetable, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_add -> viewModel.onAddClick(ClassWeek.MONDAY, 1)
             R.id.action_switch_layout -> showLayoutSelectPopup()
         }

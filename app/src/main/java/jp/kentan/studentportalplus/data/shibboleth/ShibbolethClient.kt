@@ -106,6 +106,13 @@ class ShibbolethClient(
 
         val name: String
         val shibbolethData = ShibbolethData(username, password)
+
+        if (shibbolethData == ShibbolethData.DEMO) {
+            Log.d(TAG, "Auth success as DEMO mode")
+            shibbolethDataProvider.save("DEMO", shibbolethData)
+            return Pair(true, null)
+        }
+
         try {
             val document = fetch(IDP_AUTH_URL, shibbolethData)
             name = document.selectFirst("p#user_info")?.text() ?: "unknown"
@@ -143,7 +150,12 @@ class ShibbolethClient(
         var document = Jsoup.parse(body.string())
 
         if (isRequireLogin(response)) {
-            val (username, password) = shibbolethData ?: shibbolethDataProvider.get()
+            val data = shibbolethData ?: shibbolethDataProvider.get()
+            if (data == ShibbolethData.DEMO) {
+                return Document("")
+            }
+
+            val (username, password) = data
 
             document = passLoadingSessionInformationPage(document)
             document = passLoginPage(document, username, password)
