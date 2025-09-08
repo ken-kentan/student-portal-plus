@@ -64,7 +64,7 @@ class MyClassDetailActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.action_delete -> viewModel.onDeleteClick()
             android.R.id.home -> finish()

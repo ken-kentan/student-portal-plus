@@ -179,7 +179,7 @@ class NotificationController(context: Context) : ContextWrapper(context) {
             MainActivity.createIntent(this)
         }
 
-        val pendingIntent = PendingIntent.getActivity(this, ERROR_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(this, ERROR_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(applicationContext, APP_CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -197,7 +197,7 @@ class NotificationController(context: Context) : ContextWrapper(context) {
             val retryService = PendingIntent.getService(this,
                     ERROR_NOTIFICATION_ID,
                     Intent(this, RetryActionService::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             val retryAction = NotificationCompat.Action.Builder(R.drawable.ic_retry, getString(R.string.name_retry), retryService).build()
 
             builder.addAction(retryAction)
@@ -242,7 +242,7 @@ class NotificationController(context: Context) : ContextWrapper(context) {
             else -> return null
         }
 
-        return PendingIntent.getActivity(context, code, intent.clearTask().newTask(), PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, code, intent.clearTask().newTask(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun PortalData.createIntent(id: Int): PendingIntent {
@@ -256,7 +256,7 @@ class NotificationController(context: Context) : ContextWrapper(context) {
         }
 
         val intent = MainActivity.createIntent(context, fragment = fragment)
-        return PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun List<PortalContent>.createInboxStyle(type: PortalData): NotificationCompat.InboxStyle {

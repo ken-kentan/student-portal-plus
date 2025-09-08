@@ -1,7 +1,11 @@
 package jp.kentan.studentportalplus.ui.timetable
 
 import android.content.SharedPreferences
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.data.model.MyClass
@@ -10,7 +14,7 @@ import jp.kentan.studentportalplus.util.isGridTimetableLayout
 import jp.kentan.studentportalplus.util.setGridTimetableLayout
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 
 class TimetableViewModel(
         private val preferences: SharedPreferences,
@@ -33,7 +37,7 @@ class TimetableViewModel(
 
     val isGridLayout = MutableLiveData<Boolean>()
 
-    val myClassList: LiveData<List<MyClass>> = Transformations.switchMap(isGridLayout) { isGrid ->
+    val myClassList: LiveData<List<MyClass>> = isGridLayout.switchMap { isGrid ->
         dayOfWeek.value = getDayOfWeek()
 
         if (isGrid) {

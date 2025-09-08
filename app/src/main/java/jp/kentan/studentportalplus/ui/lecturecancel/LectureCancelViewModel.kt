@@ -3,8 +3,8 @@ package jp.kentan.studentportalplus.ui.lecturecancel
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.model.LectureCancellation
@@ -27,7 +27,7 @@ class LectureCancelViewModel(
             preferences.setLectureCancelOrder(value.order)
         }
 
-    val lectureCancelList: LiveData<List<LectureCancellation>> = Transformations.switchMap(queryLiveData) {
+    val lectureCancelList: LiveData<List<LectureCancellation>> = queryLiveData.switchMap {
         portalRepository.getLectureCancelList(it)
     }
 

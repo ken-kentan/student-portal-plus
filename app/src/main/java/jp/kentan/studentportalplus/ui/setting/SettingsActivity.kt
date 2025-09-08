@@ -23,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         NotificationController.setupChannel(this)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         onBackPressed()
         return true
     }

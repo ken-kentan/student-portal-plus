@@ -1,6 +1,10 @@
 package jp.kentan.studentportalplus.ui.myclass.detail
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.ui.SingleLiveData
@@ -13,7 +17,7 @@ class MyClassDetailViewModel(
 
     private val idLiveData = MutableLiveData<Long>()
 
-    val myClass: LiveData<MyClass> = Transformations.switchMap(idLiveData) { id ->
+    val myClass: LiveData<MyClass> = idLiveData.switchMap { id ->
         portalRepository.getMyClass(id, true)
     }
 

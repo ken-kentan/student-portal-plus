@@ -2,7 +2,11 @@ package jp.kentan.studentportalplus.ui.notice.detail
 
 import android.app.Application
 import android.content.Intent
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.model.Notice
@@ -18,7 +22,7 @@ class NoticeDetailViewModel(
 
     private val idLiveData = MutableLiveData<Long>()
 
-    val notice: LiveData<Notice> = Transformations.switchMap(idLiveData) { id ->
+    val notice: LiveData<Notice> = idLiveData.switchMap { id ->
         portalRepository.getNotice(id)
     }
     val snackbar = SingleLiveData<Int>()

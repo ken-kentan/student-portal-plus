@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +48,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
+        setSupportActionBar(binding.toolbar)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val insets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
+
         AndroidInjection.inject(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -66,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.onActivityCreated()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return super.onOptionsItemSelected(item)
     }

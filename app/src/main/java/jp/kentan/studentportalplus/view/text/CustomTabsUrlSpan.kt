@@ -15,7 +15,7 @@ class CustomTabsUrlSpan(
         private val context: Context, url: String
 ) : URLSpan(url) {
 
-    override fun onClick(widget: View?) {
+    override fun onClick(widget: View) {
         val isPdf = url.endsWith(".pdf", true)
 
         var urlStr = url

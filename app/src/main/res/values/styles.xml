@@ -21,11 +21,11 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" >
-        <item name="fontFamily">@font/orkney</item>
+<!--        <item name="fontFamily">@font/orkney</item>-->
     </style>
 
     <style name="AppTheme.Light.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" >
-        <item name="fontFamily">@font/orkney</item>
+<!--        <item name="fontFamily">@font/orkney</item>-->
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />

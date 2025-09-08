@@ -1,15 +1,15 @@
 package jp.kentan.studentportalplus.ui.dashboard
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.ClassWeek
 import jp.kentan.studentportalplus.data.component.PortalDataSet
 import jp.kentan.studentportalplus.data.model.MyClass
 import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.ui.SingleLiveData
-import java.util.*
+import java.util.Calendar
 
 class DashboardViewModel(
         private val portalRepository: PortalRepository
@@ -19,7 +19,7 @@ class DashboardViewModel(
         const val MAX_ITEM_SIZE = 3
     }
 
-    val portalDataSet: LiveData<PortalDataSet> = Transformations.map(portalRepository.portalDataSet) { set ->
+    val portalDataSet: LiveData<PortalDataSet> = portalRepository.portalDataSet.map { set ->
         return@map PortalDataSet(
                 myClassList = set.myClassList.toTodayTimetable(),
                 lectureInfoList = set.lectureInfoList.filter { it.attend.isAttend() },

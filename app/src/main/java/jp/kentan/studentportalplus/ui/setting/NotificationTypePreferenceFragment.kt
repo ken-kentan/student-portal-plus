@@ -10,9 +10,9 @@ class NotificationTypePreferenceFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_notification_type)
 
-        (findPreference("notification_type_lecture_info") as ListPreference).bindSummaryToValue()
-        (findPreference("notification_type_lecture_cancel") as ListPreference).bindSummaryToValue()
-        (findPreference("notification_type_notice") as ListPreference).bindSummaryToValue()
+        checkNotNull(findPreference<ListPreference>("notification_type_lecture_info")).bindSummaryToValue()
+        checkNotNull(findPreference<ListPreference>("notification_type_lecture_cancel")).bindSummaryToValue()
+        checkNotNull(findPreference<ListPreference>("notification_type_notice")).bindSummaryToValue()
     }
 
     private fun ListPreference.bindSummaryToValue() {

@@ -12,9 +12,11 @@ class SimilarSubjectPreferenceFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_similar_subject)
 
-        val samplePreference = findPreference("similar_threshold_sample") as SimilarSubjectSamplePreference
+        val samplePreference = checkNotNull(
+            findPreference<SimilarSubjectSamplePreference>("similar_threshold_sample")
+        )
 
-        findPreference("similar_subject_threshold").apply {
+        checkNotNull(findPreference("similar_subject_threshold")).apply {
             requireContext().defaultSharedPreferences.getSimilarSubjectThreshold().let { percent ->
                 summary = if (percent < 100) "$percent%%以上" else "$percent%%"
             }

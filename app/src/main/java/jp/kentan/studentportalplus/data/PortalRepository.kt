@@ -6,13 +6,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.component.NoticeQuery
 import jp.kentan.studentportalplus.data.component.PortalData
 import jp.kentan.studentportalplus.data.component.PortalDataSet
-import jp.kentan.studentportalplus.data.dao.*
-import jp.kentan.studentportalplus.data.model.*
+import jp.kentan.studentportalplus.data.dao.LectureCancellationDao
+import jp.kentan.studentportalplus.data.dao.LectureInformationDao
+import jp.kentan.studentportalplus.data.dao.MyClassDao
+import jp.kentan.studentportalplus.data.dao.NoticeDao
+import jp.kentan.studentportalplus.data.dao.database
+import jp.kentan.studentportalplus.data.model.Lecture
+import jp.kentan.studentportalplus.data.model.LectureCancellation
+import jp.kentan.studentportalplus.data.model.LectureInformation
+import jp.kentan.studentportalplus.data.model.MyClass
+import jp.kentan.studentportalplus.data.model.Notice
 import jp.kentan.studentportalplus.data.parser.LectureCancellationParser
 import jp.kentan.studentportalplus.data.parser.LectureInformationParser
 import jp.kentan.studentportalplus.data.parser.MyClassParser
@@ -249,7 +257,7 @@ class PortalRepository(
             loadFromDb()
         }
 
-        return Transformations.map(noticeList) { list -> list.find { it.id == id } }
+        return noticeList.map { list -> checkNotNull(list.find { it.id == id }) }
     }
 
     fun getLectureInfo(id: Long): LiveData<LectureInformation> {
@@ -257,7 +265,7 @@ class PortalRepository(
             loadFromDb()
         }
 
-        return Transformations.map(lectureInfoList) { list -> list.find { it.id == id } }
+        return lectureInfoList.map { list -> checkNotNull(list.find { it.id == id }) }
     }
 
     fun getLectureCancel(id: Long): LiveData<LectureCancellation> {
@@ -265,7 +273,7 @@ class PortalRepository(
             loadFromDb()
         }
 
-        return Transformations.map(lectureCancelList) { list -> list.find { it.id == id } }
+        return lectureCancelList.map { list -> checkNotNull(list.find { it.id == id }) }
     }
 
     fun getMyClass(id: Long, isAllowNullOnlyFirst: Boolean = false): LiveData<MyClass> {
@@ -277,7 +285,7 @@ class PortalRepository(
             val data = list.find { it.id == id }
 
             if (!isAllowNullOnlyFirst || isFirst || data != null) {
-                result.value = data
+                result.value = checkNotNull(data)
             }
 
             isFirst = false

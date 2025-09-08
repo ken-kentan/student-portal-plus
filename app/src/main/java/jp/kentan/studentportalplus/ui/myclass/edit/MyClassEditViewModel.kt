@@ -1,5 +1,6 @@
 package jp.kentan.studentportalplus.ui.myclass.edit
 
+import android.annotation.SuppressLint
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -7,8 +8,8 @@ import androidx.databinding.ObservableInt
 import androidx.databinding.adapters.AdapterViewBindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.android.colorpicker.ColorPickerSwatch
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
@@ -34,7 +35,7 @@ class MyClassEditViewModel(
     val credit = ObservableField<String>()
     val scheduleCode = ObservableField<String>()
 
-    val subjects: LiveData<List<String>> = Transformations.map(portalRepository.subjectList) { it.sorted() }
+    val subjects: LiveData<List<String>> = portalRepository.subjectList.map { it.sorted() }
 
     val weekEntries = ClassWeek.values().map { it.fullDisplayName }
     val periodEntries = (1..7).map { "${it}限" }
@@ -53,6 +54,7 @@ class MyClassEditViewModel(
     val errorSaveFailed = SingleLiveData<Unit>()
     val errorNotFound = SingleLiveData<Unit>()
 
+    @SuppressLint("RestrictedApi")
     val onWeekItemSelected = AdapterViewBindingAdapter.OnItemSelected { _, _, position: Int, _ ->
         val week = ClassWeek.values()[position]
         val isDisabled = week == ClassWeek.INTENSIVE || week == ClassWeek.UNKNOWN

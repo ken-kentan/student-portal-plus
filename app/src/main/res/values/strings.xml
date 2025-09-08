@@ -179,7 +179,7 @@
     <string name="url_licenses">file:///android_asset/licenses.html</string>
     <string name="url_gdocs">https://docs.google.com/gview?embedded=true&amp;url=%1$s</string>
     <string name="url_campus_map">https://www.kit.ac.jp/uni_index/campus-map/</string>
-    <string name="url_room_map">https://www.cis.kit.ac.jp/~gakumuka/ead/files/gakumuka/map/roommap.pdf</string>
+    <string name="url_room_map">https://www.kit.ac.jp/wp/wp-content/uploads/2020/03/kougishitsu20200401.pdf</string>
 
     <!-- Common image descriptions -->
     <string name="description_attend">受講</string>

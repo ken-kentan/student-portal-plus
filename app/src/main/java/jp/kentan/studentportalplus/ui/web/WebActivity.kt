@@ -44,12 +44,11 @@ class WebActivity : AppCompatActivity() {
         setTitle(title)
         webView.apply {
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
-            settings.setAppCacheEnabled(false)
             loadUrl(url)
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
     }

@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="java.lang.String" />
-
         <import type="android.text.TextUtils" />
 
         <variable

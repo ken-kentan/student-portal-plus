@@ -2,7 +2,11 @@ package jp.kentan.studentportalplus.ui.lectureinfo.detail
 
 import android.app.Application
 import android.content.Intent
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.R
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureAttend
@@ -19,7 +23,7 @@ class LectureInfoDetailViewModel(
 
     private val idLiveData = MutableLiveData<Long>()
 
-    val lectureInfo: LiveData<LectureInformation> = Transformations.switchMap(idLiveData) { id ->
+    val lectureInfo: LiveData<LectureInformation> = idLiveData.switchMap { id ->
         portalRepository.getLectureInfo(id)
     }
     val showAttendNotDialog = SingleLiveData<String>()

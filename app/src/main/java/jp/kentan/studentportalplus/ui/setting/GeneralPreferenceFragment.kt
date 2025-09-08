@@ -26,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.defaultSharedPreferences
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -47,9 +47,9 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
 
         AndroidSupportInjection.inject(this)
 
-        shibbolethLastLoginDate = findPreference("shibboleth_last_login_date")
-        syncInterval = findPreference("sync_interval_minutes") as ListPreference
-        notificationType = findPreference("notification_type")
+        shibbolethLastLoginDate = checkNotNull(findPreference("shibboleth_last_login_date"))
+        syncInterval = checkNotNull(findPreference("sync_interval_minutes"))
+        notificationType = checkNotNull(findPreference("notification_type"))
         isEnabledNotificationVibration = findPreference("is_enabled_notification_vibration")
         isEnabledNotificationLed = findPreference("is_enabled_notification_led")
 
@@ -71,13 +71,13 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
             return@setOnPreferenceClickListener true
         }
 
-        findPreference("similar_subject_threshold").setOnPreferenceClickListener {
+        checkNotNull(findPreference<Preference>("similar_subject_threshold")).setOnPreferenceClickListener {
             commitFragment(SimilarSubjectPreferenceFragment())
             return@setOnPreferenceClickListener true
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            findPreference("notification_settings")?.setOnPreferenceClickListener {
+            findPreference<Preference>("notification_settings")?.setOnPreferenceClickListener {
                 val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
                     putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
                     putExtra(Settings.EXTRA_CHANNEL_ID, NotificationController.NEWLY_CHANNEL_ID)
@@ -91,7 +91,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
         setupSummary()
     }
 
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String?) {
         when (key) {
             "shibboleth_last_login_date" -> {
                 shibbolethLastLoginDate.summary = preferences.getFormatShibbolethLastLoginDate()
@@ -152,7 +152,7 @@ class GeneralPreferenceFragment : PreferenceFragmentCompat(), SharedPreferences.
 
         shibbolethLastLoginDate.summary = pref.getFormatShibbolethLastLoginDate()
         syncInterval.summary = getString(R.string.pref_summary_sync_interval, syncInterval.entry)
-        findPreference("version").summary = BuildConfig.VERSION_NAME
+        checkNotNull(findPreference("version")).summary = BuildConfig.VERSION_NAME
     }
 
     private fun setEnabledSync(isEnabled: Boolean) {

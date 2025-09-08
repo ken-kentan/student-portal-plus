@@ -3,8 +3,8 @@ package jp.kentan.studentportalplus.ui.lectureinfo
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.LectureQuery
 import jp.kentan.studentportalplus.data.model.LectureInformation
@@ -26,7 +26,7 @@ class LectureInfoViewModel(
             preferences.setLectureInfoOrder(value.order)
         }
 
-    val lectureInfoList: LiveData<List<LectureInformation>> = Transformations.switchMap(queryLiveData) {
+    val lectureInfoList: LiveData<List<LectureInformation>> = queryLiveData.switchMap {
         portalRepository.getLectureInfoList(it)
     }
 

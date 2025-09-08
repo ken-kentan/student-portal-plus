@@ -9,7 +9,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.colorpicker.ColorPickerDialog
@@ -29,15 +32,15 @@ class MyClassEditActivity : AppCompatActivity() {
         private const val EXTRA_PERIOD = "PERIOD"
 
         fun createIntent(context: Context, id: Long) =
-                Intent(context, MyClassEditActivity::class.java).apply {
-                    putExtra(EXTRA_ID, id)
-                }
+            Intent(context, MyClassEditActivity::class.java).apply {
+                putExtra(EXTRA_ID, id)
+            }
 
         fun createIntent(context: Context, week: ClassWeek, period: Int) =
-                Intent(context, MyClassEditActivity::class.java).apply {
-                    putExtra(EXTRA_WEEK, week)
-                    putExtra(EXTRA_PERIOD, period)
-                }
+            Intent(context, MyClassEditActivity::class.java).apply {
+                putExtra(EXTRA_WEEK, week)
+                putExtra(EXTRA_PERIOD, period)
+            }
     }
 
     @Inject
@@ -51,6 +54,12 @@ class MyClassEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_class_edit)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val insets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
 
         AndroidInjection.inject(this)
 
@@ -68,8 +77,8 @@ class MyClassEditActivity : AppCompatActivity() {
             viewModel.onActivityCreated(intent.getLongExtra(EXTRA_ID, -1))
         } else {
             viewModel.onActivityCreated(
-                    intent.getSerializableExtra(EXTRA_WEEK) as ClassWeek,
-                    intent.getIntExtra(EXTRA_PERIOD, 1)
+                intent.getSerializableExtra(EXTRA_WEEK) as ClassWeek,
+                intent.getIntExtra(EXTRA_PERIOD, 1)
             )
         }
     }
@@ -79,8 +88,8 @@ class MyClassEditActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_save -> viewModel.onClickSave()
             android.R.id.home -> finish()
         }
@@ -103,23 +112,24 @@ class MyClassEditActivity : AppCompatActivity() {
         @Suppress("DEPRECATION")
         showColorPickerDialog.observe(activity, Observer { listener ->
             val dialog = ColorPickerDialog.newInstance(
-                    R.string.title_color_picker,
-                    ClassColor.ALL,
-                    viewModel.color.get(),
-                    4,
-                    ClassColor.size)
+                R.string.title_color_picker,
+                ClassColor.ALL,
+                viewModel.color.get(),
+                4,
+                ClassColor.size
+            )
 
             dialog.setOnColorSelectedListener(listener)
-            dialog.show(supportFragmentManager, "ColorPickerDialog")
+            dialog.show(fragmentManager, "ColorPickerDialog")
         })
 
         showFinishConfirmDialog.observe(activity, Observer {
             AlertDialog.Builder(activity)
-                    .setTitle(R.string.title_confirm)
-                    .setMessage(R.string.text_discard_confirm)
-                    .setPositiveButton(R.string.action_yes) { _, _ -> super.finish() }
-                    .setNegativeButton(R.string.action_no, null)
-                    .show()
+                .setTitle(R.string.title_confirm)
+                .setMessage(R.string.text_discard_confirm)
+                .setPositiveButton(R.string.action_yes) { _, _ -> super.finish() }
+                .setNegativeButton(R.string.action_no, null)
+                .show()
         })
 
         validation.observe(activity, Observer { result ->
@@ -149,5 +159,16 @@ class MyClassEditActivity : AppCompatActivity() {
             Toast.makeText(activity, R.string.error_not_found, Toast.LENGTH_LONG).show()
             finish()
         })
+
+        color.addOnPropertyChangedCallback(
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(
+                    sender: Observable,
+                    propertyId: Int
+                ) {
+                    binding.colorButton.setBackgroundColor(color.get())
+                }
+            }
+        )
     }
 }

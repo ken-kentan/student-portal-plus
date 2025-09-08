@@ -2,8 +2,8 @@ package jp.kentan.studentportalplus.ui.notice
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import jp.kentan.studentportalplus.data.PortalRepository
 import jp.kentan.studentportalplus.data.component.NoticeQuery
 import jp.kentan.studentportalplus.data.model.Notice
@@ -21,7 +21,7 @@ class NoticeViewModel(
 
     private val queryLiveData = MutableLiveData<NoticeQuery>()
 
-    val noticeList: LiveData<List<Notice>> = Transformations.switchMap(queryLiveData) {
+    val noticeList: LiveData<List<Notice>> = queryLiveData.switchMap {
         portalRepository.getNoticeList(it)
     }
     val startDetailActivity = SingleLiveData<Long>()

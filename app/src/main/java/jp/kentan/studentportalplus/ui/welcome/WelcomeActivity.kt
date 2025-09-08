@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -30,6 +32,13 @@ class WelcomeActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome)
 
+        setSupportActionBar(binding.toolbar)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val insets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
+
         val viewModel = ViewModelProviders.of(this).get(WelcomeViewModel::class.java)
 
         binding.setLifecycleOwner(this)
@@ -42,7 +51,7 @@ class WelcomeActivity : AppCompatActivity() {
         binding.webView.apply {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView, url: String?) {
-                    if (!title.contains(context.getString(R.string.title_terms))) {
+                    if (!title.orEmpty().contains(context.getString(R.string.title_terms))) {
                         view.loadUrl(context.getString(R.string.url_terms_local))
                     }
                 }
