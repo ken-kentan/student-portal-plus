@@ -10,7 +10,7 @@ android {
         applicationId "jp.kentan.student_portal_plus"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 23
+        versionCode 24
         versionName "2.0.3"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
